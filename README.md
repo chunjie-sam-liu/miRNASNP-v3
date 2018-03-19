@@ -9,7 +9,7 @@ update miRNA SNP database
 
 # Data collection
 1. Extend species
-2. update data in /data/miRNASNP3
+2. update data in /data/data_tmp/miRNASNP3
 
 # miRNASNP3 database construction
 
