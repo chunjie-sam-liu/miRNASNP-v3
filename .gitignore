@@ -56,5 +56,9 @@ typings/
 
 # dotenv environment variables file
 .env
+<<<<<<< HEAD
 
 .Rproj.user
+=======
+ettings.py
+>>>>>>> 062a01831bd9241fb4aca0d0a705c8df2c7eede3
