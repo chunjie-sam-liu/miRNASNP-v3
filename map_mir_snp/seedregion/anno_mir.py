@@ -23,7 +23,8 @@ with open("snp_in_seedregion.anno","a") as annofile:
 			if not mir:
 				print("findMir return none!")
 				break
-			annoline = line +"\t" +  mir[0] + "\t"+ mir[2] + "\t" + mir[3] + "\t" + mir[4] + "\t" + mir[6] + "\t" + mir[9] + "\n"
+			#add mir[15] mir_name
+			annoline = line +"\t" +  mir[0] + "\t"+ mir[2] + "\t" + mir[3] + "\t" + mir[4] + "\t" + mir[6] + "\t" + mir[9] + "\t"+ mir[15] +"\n"
 			annofile.write(annoline)
 """
 
