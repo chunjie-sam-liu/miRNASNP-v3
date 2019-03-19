@@ -17,6 +17,7 @@ def getVcf(snpid,ch):
 		'chr13':'NC_000013.11','chr14':'NC_000014.9','chr15':'NC_000015.10','chr16':'NC_000016.10','chr17':'NC_000017.11','chr18':'NC_000018.10',\
 		'chr19':'NC_000019.10','chr20':'NC_000020.11','chr21':'NC_000021.9','chr22':'NC_000022.11','chrX':'NC_000023.11','chrY':'NC_000024.10'}
 	vcfile = chrom[ch]+".pvcf"
+	#grep -w to ensure accurate matching
 	cmd = "grep"+"\t"+ snpid + "\t/home/fux/fux/miRNASNP3/data/dbsnp/VCF/" + vcfile + ">>snp_in_utr3.vcf"
 	os.system(cmd)
 	
