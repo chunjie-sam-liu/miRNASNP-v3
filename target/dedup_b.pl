@@ -11,9 +11,12 @@ my $dedup=0;
 while(<IN>){
 	if($dedup>0){
 		$dedup-=1;
+		if($dedup == 0){
+			@curmir=('',1);
+				}
                 next;
 		}
-        elsif(/^Read Sequence:/){
+        if(/^Read Sequence:/){
                 if($curmir[0]){
 			if($curmir[0] == $curmir[1]){
 				$dedup=$countitem;
