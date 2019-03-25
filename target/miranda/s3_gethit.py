@@ -1,9 +1,9 @@
 import re
 
-with open("hit.txt","a") as hit:
+with open("hit_a.txt","a") as hit:
 	hit.write("mirid\tutr_chr\tutr_start-end\tutr_strand\thit_counts\n")
 	chit=0
-	with open("s1_miranda_res_02_b.txt") as res:
+	with open("s1_miranda_res_02_a.txt") as res:
 		for line in res:
 			if line:	
 				if line.startswith('Performing Scan:'):
