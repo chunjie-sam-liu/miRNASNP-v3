@@ -1,8 +1,11 @@
 #!/usr/bin/perl
 
-open RES,"miranda_result.txt";
-open OUT,">>miranda_split_res.txt";
-open ERR,">>error.txt";
+if(@ARGV != 2){
+	print("usage: perl $0 input_file output_file\n") 
+	}
+open RES,"$ARGV[0]";
+open OUT,">>$ARGV[1]";
+open NOTE,">>summery.txt";
 
 my $item=0;
 my $curmir='';
@@ -39,8 +42,8 @@ while(<RES>){
 					@temp=();
 					}
 				else{
-					print ERR "exception!";
-					print ERR @temp;
+					print NOTE "exception!";
+					print NOTE @temp;
 					@temp=();
 				}
 				$item=0;
@@ -50,11 +53,11 @@ while(<RES>){
 	}
 	}
 
-print "remove items:",$rmitem,"\tcollect items:",$collecitem,"\n";
+print NOTE "remove items:",$rmitem,"\tcollect items:",$collecitem,"\n";
 
 close RES;
 close OUT;
-close ERR;
+close NOTE;
 
 
 		
