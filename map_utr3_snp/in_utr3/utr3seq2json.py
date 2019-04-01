@@ -1,12 +1,20 @@
 import re,json
 
-with open("utr3.json","a") as ujson:
-	utr_dict={}
-	with open("utr3.fa") as seqs:
-		line = seqs.readline().strip()
+def getUtr():
+	with open("utr3.json") as ujson:
+		utr_dict = json.load(ujson)
+		return utr_dict
+
+utr_dict=getUtr()
+new_dict= {}
+
+with open("utr3_02.json","a") as ujson:
+	with open("utr3.bed") as ubed:
+		line = ubed.readline().strip()
 		while line:
-			if line.startswith('>'):
-				utr3 = line[1:]
-				utr_dict[utr3] = seqs.readline().strip()
-			line = seqs.readline().strip()
-	json.dump(utr_dict,ujson)
+			line = line.split()
+			utrkey = line[0]+":"+line[1]+"-"+line[2]+"("+line[5]+")"
+			utrid = line[3] 
+			new_dict[utrid] = utr_dict[utrkey]
+			line = ubed.readline().strip()
+	json.dump(new_dict,ujson)
