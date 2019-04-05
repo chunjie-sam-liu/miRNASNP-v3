@@ -5,3 +5,5 @@ files_name=$(ls *.coverage)
 for file in ${files_name};do
 	awk '$5>0{print $0}'  ${file} > ${file}.filter
 done
+
+awk '{print $1"\t"$2"\t"$3"\t"$4"_"$5}' grch38.coverage.filter >grch38.coverage.filter.bed
