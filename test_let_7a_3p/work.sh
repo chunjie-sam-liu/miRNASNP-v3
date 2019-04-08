@@ -13,3 +13,7 @@ grep -n 'Read Sequence:hsa-let-7f-1-3p_rs780673185 (22 nt)' s1_miranda_altmir_re
 #562938739:Read Sequence:hsa-let-7f-1-3p_rs780673185 (22 nt)
 
 sed -n '562573081,562938739p' s1_miranda_altmir_res_02.txt>>/home/fux/fux/miRNASNP3/test_let_7a_3p/miranda_altmir_res.txt
+
+awk '{print $1":"$2"\t"$4"\t"$5}' Targetscan_wildmir_res.txt >Targetscan_wildmir_res.bed
+
+cat miranda_wildmir_res.txt |tr -s '\n' >miranda_wildmir_res_0.txt
