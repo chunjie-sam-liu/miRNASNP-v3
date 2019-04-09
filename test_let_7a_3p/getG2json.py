@@ -52,9 +52,9 @@ def outJson(miranda_infile,outfile):
 
 if __name__ == '__main__':
     if len(sys.argv)!=4:
-        print("### covert gain/loss hits info to json format ###")
+        print("### covert gain hits info to json format ###")
         print("---------------------------------------------------")
-        print("usage:python "+sys.argv[0]+" Gain/Loss_file miranda_res outfile")
+        print("usage:python "+sys.argv[0]+" Gain_file miranda_res outfile")
     else:
         grch38_utr3 = getJson("/home/fux/fux/miRNASNP3/data/genome/grch38_utr3.json")
         glist = getGlist(sys.argv[1])
