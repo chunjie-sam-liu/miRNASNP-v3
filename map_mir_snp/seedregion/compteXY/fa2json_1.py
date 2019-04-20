@@ -7,6 +7,7 @@ with open("wild_mir.fa.json","a") as faj:
         line = fa.readline().strip()
         while line:
             if line.startswith('>'):
+                line = line.split()[0][1:]
                 fa_dict[line] = fa.readline().strip()
                 item += 1
             line = fa.readline().strip()
