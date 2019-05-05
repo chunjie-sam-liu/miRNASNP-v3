@@ -1,0 +1,49 @@
+<div paging
+     page="currentPage"
+     page-size=30
+     total="records_number"
+     scroll-top="true"
+     hide-if-empty="true"
+     show-prev-next="true"
+     show-first-last="true"
+     text-title-page="Page {page} Hover Over"
+     text-title-first="First hover"
+     text-title-last="Last hover"
+     text-title-next="Next hover"
+     text-title-prev="Prev hover"
+     show-prev-next="true"
+     show-first-last="true"
+     ul-class="pagination"
+     active-class="active"
+     disabled-class="disabled"
+     paging-action="update_page('test',page,page-size,total)"
+
+></div>
+<table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>chromosome</th>
+        <th>start</th>
+        <th>end</th>
+        <th>strand</th>
+        <th>lnc</th>
+        <th>snp</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="lncrna_snp in lncrna_snp_list">
+        <td>{$ $index+1 $}</td>
+        <td>{$ lncrna_snp.chromosome $}</td>
+        <td>{$ lncrna_snp.start $}</td>
+        <td>{$ lncrna_snp.end $}</td>
+        <td>{$ lncrna_snp.strand $}</td>
+        <td>
+            <a href="#!/test2?gene={$ lncrna_snp.lnc $}" target="_blank">
+                {$ lncrna_snp.lnc $}
+            </a>
+        </td>
+        <td>{$ lncrna_snp.snp $}</td>
+    </tr>
+    </tbody>
+</table>

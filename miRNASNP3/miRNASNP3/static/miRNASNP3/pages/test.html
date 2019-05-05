@@ -1,0 +1,47 @@
+<form class="form">
+    <label for="">lncRNA</label>
+    <input type="text" ng-model="q_lncrna">
+    <button ng-click="fetch_results()">submit</button>
+</form>
+
+<div>
+    <prev>
+        {$ q_lncrna $}
+    </prev>
+</div>
+
+<table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>chromosome</th>
+        <th>start</th>
+        <th>end</th>
+        <th>strand</th>
+        <th>lnc</th>
+        <th>snp</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="lncrna_snp in lncrna_snp_list">
+        <td>{$ $index+1 $}</td>
+        <td>{$ lncrna_snp.chromosome $}</td>
+        <td>{$ lncrna_snp.start $}</td>
+        <td>{$ lncrna_snp.end $}</td>
+        <td>{$ lncrna_snp.strand $}</td>
+        <td>
+            <a href="#!/test2?gene={$ lncrna_snp.lnc $}" target="_blank">
+                {$ lncrna_snp.lnc $}
+            </a>
+        </td>
+        <td>{$ lncrna_snp.snp $}</td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<div>
+    <a href="#!/test2">jump to test page</a>
+    <button class="btn btn-default" ng-click="jump_to_test2()">click</button> here to jump
+</div>
