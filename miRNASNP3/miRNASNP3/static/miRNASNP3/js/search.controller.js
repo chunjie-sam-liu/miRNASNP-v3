@@ -30,3 +30,19 @@ $scope.fetch_results = function () {
     })
     }
 }
+
+function butClick(){
+    document.getElementById("d").style.display = "block";
+}
+function butClick1(){
+    document.getElementById("d1").style.display = "block";
+}
+function butClick2(){
+    document.getElementById("d2").style.display = "block";
+}
+function butClick3(){
+    document.getElementById("d3").style.display = "block";
+}
+function butClick4(){
+    document.getElementById("d4").style.display = "block";
+}
