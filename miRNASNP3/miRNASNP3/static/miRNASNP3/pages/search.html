@@ -33,4 +33,110 @@
     </thead>
 </table>
 
-
+<div class="container"><!--搜索框-->
+        <form action="" class="parent">
+            <input type="text" placeholder="Enter ID">
+            <input type="button" value="Search">
+        </form>
+    </div>
+<div id="container" class="container_12">
+    <input type="button" onclick="butClick();" value="Advance" />
+    <div id="d" style="display: none;">
+        <div id="mainSearch" class="new_box" style="color: #005825; border-top-left-radius: 0px; border-top-right-radius: 0px; background-color: white">
+            <div class="searchFrame">
+                <div class="searchTitle">
+                    <input type="button" onclick="butClick1();" value="+variant" />
+                </div>
+                <div id="d1" style="display: none;">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            snp in seed miR
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            snp in UTR3
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            mutation in seedmiR
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            mutation in UTR3
+                        </label>
+                    </div>
+                </div>
+                <div class="searchTitle">
+                    <input type="button" onclick="butClick2();" value="+effect" />
+                </div>
+                <div id="d2" style="display: none;">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            gain
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            loss
+                        </label>
+                    </div>
+                </div>
+                <div class="searchTitle">
+                    <input type="button" onclick="butClick3();" value="+expression" />
+                </div>
+                <div id="d3" style="display: none;">
+                    <label>
+                        <select name="" class="select-control" >
+                            <option value="0">All</option>
+                            <option value="3">>1</option>
+                            <option value="1">>10</option>
+                            <option value="2">>100</option>
+                        </select>
+                        Gene expression
+                    </label>
+                    <label>
+                        <select name="" class="select-control" >
+                            <option value="0">All</option>
+                            <option value="3">>1</option>
+                            <option value="1">>10</option>
+                            <option value="2">>100</option>
+                        </select>
+                        miRexpression
+                    </label>
+                </div>
+                <div class="searchTitle">
+                    <input type="button" onclick="butClick4();" value="+other Attribute" />
+                </div>
+                <div id="d4" style="display: none;">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            experimental validate
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            expression correction
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="" id="">
+                            GWAS LD
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
