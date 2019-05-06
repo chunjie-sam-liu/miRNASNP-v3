@@ -35,6 +35,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/mutation.html",
                 controller:"MutationController",
             })
+            .when("/searchdoc",{
+                templateUrl:"/static/miRNASNP3/pages/search_doc.html",
+                controller:"SearchdocController"
+            })
             .otherwise({
                 redirectTo: "/404.html",
             });
