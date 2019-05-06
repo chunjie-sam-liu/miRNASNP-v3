@@ -6,3 +6,4 @@ angular.module('miRNASNP3')
 function HomeController($scope) {
     console.log("HomeController loaded");
 }
+

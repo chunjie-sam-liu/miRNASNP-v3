@@ -1,0 +1,36 @@
+<!--
+<div class="search bar3">
+    <input name="" type="checkbox" value="checkbox" checked="checked" /> something
+</div>
+-->
+
+<div style="margin: auto;width: 300px;height: 100px">
+    <td class="top" style="padding-top: 2px">
+        <form class="form">
+            <label for="">snp_id/mir_id/gene_symbol</label>
+            <input type="text" ng-model="search_ids",style="width:200px" >
+            <button ng-click="fetch_results()">Search</button>
+        </form>
+        <a href="/#!" id="searchFieldsLink" onclick="fieldsShow()">Fileds>></a>
+    </td>
+</div>
+
+<div id="result" style="font-size: 16px;color:  red;"></div>
+<table class="table table-condensed table-bordered table-striped table-hover" id="project" border="1">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>miRNA</th>
+        <th>snp</th>
+        <th>utr3</th>
+        <th>query</th>
+        <th>mirandaScore</th>
+        <th>hitEnergy</th>
+        <th>utr_map_start</th>
+        <th>utr_map_end</th>
+        <th>effect</th>
+    </tr>
+    </thead>
+</table>
+
+

@@ -1,1 +1,34 @@
-<h3>Hello world!</h3>
+<div >
+    <h3>Welcome!</h3>
+    <p>Micrornas with SNP on the seed region may targets variate Genes compared with wild type </p>
+    <p>Mirnasnp is an online resource where you can  explor:</p>
+    <ul>
+        <li><a href="#!/search">Target Gain/Loss of microRNA caused by SNP on miR-seed region</a> </li>
+        <li><a href="#!/search">Target Gain/Loss of microRNA caused by SNP on Gene UTR3</a> </li>
+        <li><a href="#!/tools">Predict your own sequence</a> </li>
+    </ul>
+</div>
+
+<div style="margin: auto;width: 300px;height: 100px">
+    <td class="top" style="padding-top: 2px">
+        <form class="form">
+            <label for="">snp_id/mir_id/gene_symbol</label>
+            <input type="text" ng-model="search_ids",style="width:200px" >
+            <button ng-click="fetch_results()">Search</button>
+        </form>
+        <a href="/#!" id="searchFieldsLink" onclick="fieldsShow()">Fileds>></a>
+    </td>
+</div>
+
+<div>
+    <a href="#!/mutation">
+        <img src="static/miRNASNP3/img/mutaion.PNG">
+    </a>
+    <img src="static/miRNASNP3/img/SNP.PNG">
+    <a href="#!/tools">
+        <img src="static/miRNASNP3/img/Tool.PNG">
+    </a>
+    <img src="static/miRNASNP3/img/broswer.PNG">
+</div>
+
+

@@ -6,6 +6,52 @@ from miRNASNP3.core import mongo
 
 from flask_restful import Resource, fields, marshal_with, reqparse, marshal
 
+gain_hit_info = {
+    'mir_id':fields.String,
+    'snp_id':fields.String,
+    'utr3_pos':fields.String,
+    'query':fields.String,
+    'score':fields.String,
+    'energy':fields.String,
+    'utr_map_start':fields.String,
+    'utr_map_end':fields.String,
+    'effect':fields.String
+}
+hit_list = {
+    'hit_list':fields.List(fields.Nested(gain_hit_info))
+}
+
+class GainHits(Resource):
+    @marshal_with(hit_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids',type = str)
+        args = parser.parse_args()
+        if args['search_ids'] is None:
+         #   gain_hit = {'mir_id': 'tmir', 'snp_id': 'tsnp', 'utr3_pos': 'tutr', 'query': 'tquery', 'score': 'tscore','energy': 'tenergy', 'utr_map_start':'0','utr_map_end':'0','effect': 'tgian'}
+            return {'hit_list':None}
+        if args['search_ids'].lower().startswith('hsa'):
+            mir_id = args['search_ids']
+            gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id})
+        elif args['search_ids'].lower().startswith('mir'):
+            mir_id = 'hsa'+args['search_ids']
+            gain_hit = mongo.db.target_gain_test.find_one({'mir_id': mir_id})
+        elif args['search_ids'].lower().startswith('rs'):
+            snp_id = args['search_ids']
+            gain_hit = mongo.db.target_gain_test.find({'snp_id': snp_id}).limit(10)
+        else:
+            symbol = args['search_ids']
+            gain_hit ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
+        #gain_hit['effect'] = 'gain'
+        app.logger.debug("gain_hit={}".format(gain_hit))
+        return {'hit_list':list(gain_hit)}
+
+
+api.add_resource(GainHits, '/api/gain_hit')
+
+
+
+'''
 test_fields = {
     'fields1': fields.String,
     'fields2': fields.Integer,
@@ -73,3 +119,4 @@ class LncRNASNPList(Resource):
         print(records_number)
         return {"lncrna_snp_sfs": 1,"records_number":records_number}
 api.add_resource(LncRNASNPList, '/api/lncrna_snp_list')
+'''

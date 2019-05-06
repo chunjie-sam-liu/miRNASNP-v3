@@ -15,17 +15,25 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl: "/static/miRNASNP3/pages/contact.html",
                 controller: "ContactController",
             })
-            .when("/test", {
-                templateUrl: "/static/miRNASNP3/pages/test.html",
-                controller: "TestController",
+            .when("/search",{
+                templateUrl:"/static/miRNASNP3/pages/search.html",
+                controller:"SearchController",
             })
-            .when("/test2", {
-                templateUrl: "/static/miRNASNP3/pages/test2.html",
-                controller: "Test2Controller",
+            .when("/download", {
+                templateUrl: "/static/miRNASNP3/pages/download.html",
+                controller: "DownloadController",
             })
-            .when("/test3", {
-                templateUrl: "/static/miRNASNP3/pages/test3.html",
-                controller: "Test3Controller",
+            .when("/contact", {
+                templateUrl: "/static/miRNASNP3/pages/contact.html",
+                controller: "ContactController",
+            })
+            .when("/tools", {
+                templateUrl: "/static/miRNASNP3/pages/tools.html",
+                controller: "ToolsController",
+            })
+            .when("/mutation",{
+                templateUrl:"/static/miRNASNP3/pages/mutation.html",
+                controller:"MutationController",
             })
             .otherwise({
                 redirectTo: "/404.html",
