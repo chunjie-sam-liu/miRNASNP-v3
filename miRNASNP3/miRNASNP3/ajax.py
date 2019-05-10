@@ -32,13 +32,13 @@ class GainHits(Resource):
             return {'hit_list':None}
         if args['search_ids'].lower().startswith('hsa'):
             mir_id = args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id})
+            gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id}).limit(50)
         elif args['search_ids'].lower().startswith('mir'):
             mir_id = 'hsa'+args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find_one({'mir_id': mir_id})
+            gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id}).limit(50)
         elif args['search_ids'].lower().startswith('rs'):
             snp_id = args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find({'snp_id': snp_id}).limit(10)
+            gain_hit = mongo.db.target_gain_test.find({'snp_id': snp_id}).limit(50)
         else:
             symbol = args['search_ids']
             gain_hit ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
