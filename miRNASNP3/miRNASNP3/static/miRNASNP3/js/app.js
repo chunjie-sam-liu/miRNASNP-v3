@@ -5,42 +5,46 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
         $routeProvider
             .when("/", {
                 templateUrl: "/static/miRNASNP3/pages/home.html",
-                controller: "HomeController",
+                controller: "HomeController"
             })
             .when("/document", {
                 templateUrl: "/static/miRNASNP3/pages/document.html",
-                controller: "DocumentController",
+                controller: "DocumentController"
             })
             .when("/contact", {
                 templateUrl: "/static/miRNASNP3/pages/contact.html",
-                controller: "ContactController",
+                controller: "ContactController"
             })
             .when("/search",{
                 templateUrl:"/static/miRNASNP3/pages/search.html",
-                controller:"SearchController",
+                controller:"SearchController"
             })
             .when("/download", {
                 templateUrl: "/static/miRNASNP3/pages/download.html",
-                controller: "DownloadController",
+                controller: "DownloadController"
             })
             .when("/contact", {
                 templateUrl: "/static/miRNASNP3/pages/contact.html",
-                controller: "ContactController",
+                controller: "ContactController"
             })
             .when("/tools", {
                 templateUrl: "/static/miRNASNP3/pages/tools.html",
-                controller: "ToolsController",
+                controller: "ToolsController"
             })
             .when("/mutation",{
                 templateUrl:"/static/miRNASNP3/pages/mutation.html",
-                controller:"MutationController",
+                controller:"MutationController"
             })
-            .when("/searchdoc",{
+            .when("/search_doc",{
                 templateUrl:"/static/miRNASNP3/pages/search_doc.html",
                 controller:"SearchdocController"
             })
+            .when("/browser",{
+                templateUrl:"/static/miRNASNP3/pages/browser.html",
+                controller:"BrowserController"
+            })
             .otherwise({
-                redirectTo: "/404.html",
+                redirectTo: "/404.html"
             });
     })
     .config(function ($interpolateProvider) {
