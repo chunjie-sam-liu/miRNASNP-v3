@@ -6,7 +6,7 @@ angular.module('miRNASNP3')
 function SearchController($scope,$http) {
     $scope.gain_hit_main = {'mir_id':'tmir','snp_id':'tsnp'};
     console.log("SearchController loaded");
-$scope.fetch_results = function () {
+    $scope.fetch_results = function () {
     $http({
         url: '/api/gain_hit',
         method: 'GET',
