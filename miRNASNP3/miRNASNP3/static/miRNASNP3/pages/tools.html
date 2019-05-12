@@ -1,1 +1,31 @@
-<h4>Tools</h4>
+<!-- ngInclude: '/static/lncRNASNP2/partials/navigation.html' -->
+<!--div class="container" style="background-color: floralwhite">
+    <div ng-view="" class="ng-scope">
+        <div class="panel panel-default ng-scope">
+            <div class="panel-heading"><strong>1.Predict the impact of variant in gene on miRNA:mRNA interaction</strong>
+            </div>
+            <div class="panel-body">
+            <p>This is a web server to predict the loss and gain of miRNA:mRNA binding sites disturbed by a SNP in the mRNA 3'UTR sequence.
+                If only one sequence is provided, it will predict miRNAs which target this sequence. While if wild sequence and SNP sequence
+                are provided, it will predict the wild sequence related miRNAs, SNP sequence related miRNAs, the lost miRNAs of the wild sequence
+                and the gained miRNAs of the SNP sequence by comparing the results of the wild and SNP sequences. Only one base difference
+                is allowed between the wild sequence and SNP sequence.</p>
+            </div>
+            <div class="alert alert-danger ng-binding ng-hide" ng-show="flash_message">
+                <button type="button" class="close" ng-click="flash_message = null"><span aria-hidden="true">×</span></button>
+                <strong>Error:</strong> false
+            </div-->
+            <h5><strong>Wild Sequence (Required):</strong></h5>
+            <textarea id="wild_sequence" rows="3" class=" form-control" style="border: solid; border-color: #5bc0de" placeholder="CCCTGG"></textarea>
+            <h5><strong>Mutant Sequence (Optional):</strong></h5>
+            <textarea id="snp_sequence" rows="3" class=" form-control" style="border: solid; border-color: #5bc0de" placeholder="CCCTGG"></textarea>
+            <div class="form-group" style="margin-top: 3px">
+                <div class="pull-right">
+                    <button class="btn btn-primary" ng-click="predict()">Predict</button>
+                    <button class="btn btn-success" ng-click="load()" style="margin-left: 10px">Example</button>
+                </div>
+            </div>
+        <!--/div>
+    </div>
+</div-->
+<p>tools</p>
