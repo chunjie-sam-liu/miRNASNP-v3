@@ -19,6 +19,14 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/search.html",
                 controller:"SearchController"
             })
+            .when("/search_summary",{
+                templateUrl:"/static/miRNASNP3/pages/search_summary.html",
+                controller:"SearchController"
+            })
+            .when("/search_summary_mir",{
+                templateUrl:"/static/miRNASNP3/pages/search_summary_mir.html",
+                controller:"SearchController"
+            })
             .when("/download", {
                 templateUrl: "/static/miRNASNP3/pages/download.html",
                 controller: "DownloadController"
@@ -41,6 +49,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
             })
             .when("/browser",{
                 templateUrl:"/static/miRNASNP3/pages/browser.html",
+                controller:"BrowserController"
+            })
+            .when("/browserY",{
+                templateUrl:"/static/miRNASNP3/pages/browserY.html",
                 controller:"BrowserController"
             })
             .otherwise({
