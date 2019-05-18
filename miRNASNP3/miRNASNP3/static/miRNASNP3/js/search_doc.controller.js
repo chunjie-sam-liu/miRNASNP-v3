@@ -3,19 +3,19 @@
 var app=angular.module('miRNASNP3')
     .controller('SearchdocController',SearchdocController);
 
-function getPages(currentpage,firstPage,endPage,pageNum){
-				var pages = [];
-				console.log("f:"+firstPage);console.log("e:"+endPage);
-				for(var i=firstPage;i<=endPage;i++){
-					pages.push(i);
-				}
-				console.log(pages);
-				return pages;
-			};
-function SearchdocController($scope,$http,$filter) {
-    $scope.gain_hit_main = {'mir_id': 'tmir', 'snp_id': 'tsnp'};
+//function getPages(currentpage,firstPage,endPage,pageNum){
+//				var pages = [];
+//				console.log("f:"+firstPage);console.log("e:"+endPage);
+//				for(var i=firstPage;i<=endPage;i++){
+//					pages.push(i);
+//				}
+//				console.log(pages);
+//				return pages;
+//			};
+function SearchdocController($scope,$http,$filter,$rootScope) {
+ //   $scope.gain_hit_main = {'mir_id': 'tmir', 'snp_id': 'tsnp'};
     console.log("SearchdocController loaded");
-    $scope.fetch_results = function () {
+    $scope.search_ids = $rootScope.search_ids
         $http({
             url: '/api/gain_hit',
             method: 'GET',
@@ -36,7 +36,7 @@ function SearchdocController($scope,$http,$filter) {
 					$scope.getPages(1);
 				});
 
-                	$scope.$watch('pagenum',function(n,o){
+				$scope.$watch('pagenum',function(n,o){
 					$scope.getPages(1);
 				});
 
@@ -74,7 +74,4 @@ function SearchdocController($scope,$http,$filter) {
 				}
 				$scope.getPages(1);
             });
-
-
     };
-}
