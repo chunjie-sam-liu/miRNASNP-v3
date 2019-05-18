@@ -28,7 +28,6 @@ class GainHits(Resource):
         parser.add_argument('search_ids',type = str)
         args = parser.parse_args()
         if args['search_ids'] is None:
-         #   gain_hit = {'mir_id': 'tmir', 'snp_id': 'tsnp', 'utr3_pos': 'tutr', 'query': 'tquery', 'score': 'tscore','energy': 'tenergy', 'utr_map_start':'0','utr_map_end':'0','effect': 'tgian'}
             return {'hit_list':None}
         if args['search_ids'].lower().startswith('hsa'):
             mir_id = args['search_ids']
@@ -38,17 +37,114 @@ class GainHits(Resource):
             gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id}).limit(50)
         elif args['search_ids'].lower().startswith('rs'):
             snp_id = args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find({'snp_id': snp_id}).limit(50)
+            gain_hit = mongo.db.target_gain_test.find_one({'snp_id': snp_id})
         else:
-            symbol = args['search_ids']
             gain_hit ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
-        #gain_hit['effect'] = 'gain'
         app.logger.debug("gain_hit={}".format(gain_hit))
-        return {'hit_list':list(gain_hit)}
-
+        #gain_hit=[{'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'},
+         #         {'mir_id':'let-7a-3p','snp_id':'rs779353569','utr3_pos':'chr1:3457-9876(+)','query':'ACGT-atgc','score':'147.0','energy':'51.9','effect':'gian'}]
+        return {'hit_list':gain_hit}
 
 api.add_resource(GainHits, '/api/gain_hit')
 
+
+class LossHits(Resource):
+    @marshal_with(hit_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        if args['search_ids'] is None:
+            return {'hit_list': None}
+        if args['search_ids'].lower().startswith('hsa'):
+            mir_id = args['search_ids']
+            loss_hit = mongo.db.target_loss_test.find_one({'mir_id': mir_id})
+        elif args['search_ids'].lower().startswith('mir'):
+            mir_id = 'hsa' + args['search_ids']
+            loss_hit = mongo.db.target_loss_test.find_one({'mir_id': mir_id})
+        elif args['search_ids'].lower().startswith('rs'):
+            snp_id = args['search_ids']
+            loss_hit = mongo.db.target_loss_test.find_one({'snp_id': snp_id})
+        else:
+            loss_hit = [{'mir_id': 'tmir', 'snp_id': 'tsnp', 'utr3_pos': 'tutr', 'query': 'tquery', 'score': 'tscore','energy': 'tenergy', 'effect': 'tloss'},
+                        {'mir_id': 'let-7a-3p-o', 'snp_id': 'rs779353569','utr3_pos': 'chr1:3457-9876(-)','query': 'ACGT-atgc', 'score': '147.0', 'energy': '51.9', 'effect': 'loss'}]
+        return {'hit_list': list(loss_hit)}
+        #return hit_list
+api.add_resource(LossHits,'/api/loss_hit')
+
+mir_ifo = {
+    'mir_id':fields.String,
+    'mir_acc':fields.String,
+    'mir_chr':fields.String,
+    'mir_start':fields.String,
+    'mir_end':fields.String,
+    'mir_strand':fields.String,
+    'location':fields.String,
+    'count_snp':fields.Integer,
+    'snp_info':fields.String,
+    'count_nutation':fields.Integer,
+    'mutation_info':fields.String
+}
+
+browse_list = {
+    'browse_list':fields.List(fields.Nested(mir_ifo))
+}
+
+class BrowseMir(Resource):
+    @marshal_with(browse_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('chr',type=str)
+        #parser.add_argument('vtype',type=list)
+        #parser.add_argument('loc_region',type=list)
+        args = parser.parse_args()
+        browse_list = []
+        if args['chr']:
+            chrome = args['chr']
+         #   for chrome in args['chr']:
+            browse_list_temp = mongo.db.browserY.find({'mir_chr':chrome})
+            browse_list.extend(browse_list_temp)
+        else:
+            browse_list = [{'mir_id':'hsa-mir-3690','mir_acc':'MI0023561','mir_chr':'chrY','mir_start':'1293918','mir_end':'1293992',
+                        'mir_strand':'+','location':'Premir','count_snp':20,'snp_info':['rs1198477790','rs1281005500','rs765405423'],
+                        'count_mutation':0,'mutation_info':['no_count']}]
+        return {'browse_list':list(browse_list)}
+
+api.add_resource(BrowseMir,'/api/browsemir')
+
+
+
+mirinfo_line = {
+    'mir_id':fields.String,
+    'mir_acc':fields.String,
+    'mir_pos':fields.String,
+    'mir_type':fields.String,
+    'mature_seq':fields.String,
+    'precusor':fields.String,
+    'express_profile':{'LIHC':fields.Integer,
+                       'BRCA':fields.Integer},
+    'mir_structure':fields.String
+}
+
+mirinfo = {
+    'mirinfo':fields.Nested(mirinfo_line)
+}
+
+class SearchMir(Resource):
+    @marshal_with(mirinfo)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        mirinfo = {'mir_id':'init_id'}
+        if args['search_ids']:
+            mirinfo = mongo.db.mirna.find_one({'mir_id':args['search_ids']})
+        else:
+            mirinfo = {'mir_id':'no_id'}
+
+        return {'mirinfo':mirinfo}
+
+api.add_resource(SearchMir,'/api/mirinfo')
 
 
 '''
