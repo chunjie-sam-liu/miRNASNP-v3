@@ -1,0 +1,134 @@
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs ng-scope" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#!/search_summary_mir#mir_detail" aria-controls="mir_detail" role="tab" data-toggle="tab">mirDetail</a></li>
+        <li role="presentation">
+            <a href="#!/search_summary_mir#snp_in_seed_gain" aria-controls="snp_in_seed_gain" role="tab" data-toggle="tab"
+               ng-click="search_target_gain()">snp_in_seed(Target Gain)</a></li>
+        <li role="presentation">
+            <a href="#!/search_summary_mir#snp_in_seed_loss" aria-controls="snp_in_seed_loss" role="tab" data-toggle="tab"
+               ng-click="search_target_loss()">snp_in_seed(TargetLoss)</a></li>
+        <li role="presentation">
+            <a href="#!/search_summary_mir#mutation_in_seed_gain" aria-controls="mutation_in_seed_gain" role="tab" data-toggle="tab">mutation_in_seed(Gain)</a></li>
+        <li role="presentation">
+            <a href="#!/search_summary_mir#mutation_in_seed_loss" aria-controls="mutation_in_seed_loss" role="tab" data-toggle="tab" >mutation_in_seed(Loss)</a></li>
+    </ul>
+    <div class="tab-content ng-scope">
+        <div role="tabpanel" class="tab-pane active" id="mir_detail">
+            <div class="panel-heading">
+                <h4>miRNA information</h4>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>miRNA ID</dt>
+                    <dd class="ng-binding">{$ mirinfo.mir_id$}</dd>
+                    <dt>Accession</dt>
+                    <dd class="ng-binding">{$ mirinfo.mir_acc$}</dd>
+                    <dt>Coordinates</dt>
+                    <dd class="ng-binding">{$mirinfo.mir_pos$}</dd>
+                    <dt>Mature Sequence</dt>
+                    <dd class="ng-binding">{$ mirinfo.mature_seq$}</dd>
+                    <dt>Average expression
+                        <!--span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body" data-trigger="hover"
+                        data-content="miRNA expression profiles were calculated from 36 cancer types of  11635 samples from TCGA"
+                        style="color: #5bc0de" data-original-title="" title=""></span-->
+                    </dt>
+                    <dd class="ng-binding">interget</dd>
+                    <dt>Profile
+                        <!--span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body" data-trigger="hover"
+                              data-content="The average expression levels in different cancer samples are from green(low) to red(high)"
+                              style="color: #5bc0de" data-original-title="" title=""></span-->
+                    </dt>
+                    <dd class="ng-binding" >Profile</dd>
+                    <dt>Precursor</dt>
+                    <dd class="ng-binding">{$ mirinfo.precusor$}</dd>
+                    <dt>RNA strucure</dt>
+                    <dd class="ng-binding">
+                        <img >
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="snp_in_seed_gain">
+            <p>{$ showchar $}</p>
+            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>miRNA</th>
+                    <th>snp</th>
+                    <th>utr3</th>
+                    <th>query</th>
+                    <th>mirandaScore</th>
+                    <th>hitEnergy</th>
+                    <th>utr_map_start</th>
+                    <th>utr_map_end</th>
+                    <th>effect</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="v in data_gain">
+                    <td>{$ $index+1 $}</td>
+                    <td>{$v.mir_id$}</td>
+                    <td>{$ v.snp_id $}</td>
+                    <td>{$v.utr3_pos$}</td>
+                    <td>{$v.query $} </td>
+                    <td>{$ v.score $}</td>
+                    <td>{$ v.energy $}</td>
+                    <td>{$ v.utr_map_start $}</td>
+                    <td>{$ v.utr_map_end $}</td>
+                    <td>{$ v.effect $}</td>
+				</tr>
+            </tbody>
+            </table>
+            <ul class="pagination pull-right">
+			<li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
+			<li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
+			<li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
+		</ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="snp_in_seed_loss">
+            <p>{$ showchar $}</p>
+            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>miRNA</th>
+                    <th>snp</th>
+                    <th>utr3</th>
+                    <th>query</th>
+                    <th>mirandaScore</th>
+                    <th>hitEnergy</th>
+                    <th>utr_map_start</th>
+                    <th>utr_map_end</th>
+                    <th>effect</th>
+                </tr>
+                </thead>
+            <tbody>
+                <tr ng-repeat="v in data_loss">
+                    <td>{$ $index+1 $}</td>
+                    <td>{$v.mir_id$}</td>
+                    <td>{$ v.snp_id $}</td>
+                    <td>{$v.utr3_pos$}</td>
+                    <td>{$v.query $} </td>
+                    <td>{$ v.score $}</td>
+                    <td>{$ v.energy $}</td>
+                    <td>{$ v.utr_map_start $}</td>
+                    <td>{$ v.utr_map_end $}</td>
+                    <td>{$ v.effect $}</td>
+				</tr>
+            </tbody>
+            </table>
+            <ul class="pagination pull-right">
+                <li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
+                <li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
+                <li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
+            </ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="mutation_in_seed_gain">mutation in seed target gain table</div>
+        <div role="tabpanel" class="tab-pane" id="mutation_in_seed_loss">mutation in seed target loss table</div>
+    </div>
+</div>

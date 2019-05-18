@@ -1,0 +1,53 @@
+<div>
+    <select id="chr"  class="selectpicker" data-live-search="true" multiple>
+        <option>chr1</option>
+        <option>chr2</option>
+        <option>chr3</option>
+        <option>chrY</option>
+    </select>
+    <select id="loc_region" class="selectpicker" data-live-search="ture" mutiple>
+        <option>miRNA seed region</option>
+        <option>preMir</option>
+        <option>flanks</option>
+        <option>mature</option>
+    </select>
+</div>
+<br/>
+<br/>
+<p>每页显示<input type="text" ng-model="pagenum" />条数
+            <!--span style="float: right;">搜索：<input type="text" ng-model="txt" ng-blur=""></span--></p>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+                    <th>miRNA</th>
+                    <th>ACC</th>
+                    <th>mir_chr</th>
+                    <th>start</th>
+                    <th>end</th>
+                    <th>strand</th>
+                    <th>location</th>
+                    <th>count_snp</th>
+                    <th>count_mutation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="v in data">
+                    <td>{$ $index+1 $}</td>
+                    <td>{$v.mir_id$}</td>
+                    <td>{$ v.mir_acc $}</td>
+                    <td>{$v.mir_chr$}</td>
+                    <td>{$v.mir_start $} </td>
+                    <td>{$ v.mir_end $}</td>
+                    <td>{$ v.mir_strand $}</td>
+                    <td>{$ v.location $}</td>
+                    <td>{$ v.count_snp $}</td>
+                    <td>{$ v.count_mutation $}</td>
+				</tr>
+			</tbody>
+		</table>
+		<ul class="pagination pull-right">
+			<li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
+			<li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
+			<li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
+		</ul>

@@ -1,0 +1,29 @@
+<table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>miRNA</th>
+        <th>snp</th>
+        <th>utr3</th>
+        <th>query</th>
+        <th>mirandaScore</th>
+        <th>hitEnergy</th>
+        <th>utr_map_start</th>
+        <th>utr_map_end</th>
+        <th>effect</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="hit_gain in hit_list">
+        <td>{$ $index+1 $}</td>
+        <td>{$ hit_gain.mir_id $}</td>
+        <td>{$ hit_gain.snp_id $}</td>
+        <td>{$ hit_gain.utr_pos3 $}</td>
+        <td>{$ hit_gain.query $}</td>
+        <td>{$ hit_gain.score$}</td>
+        <td>{$ hit_gain.energy$}</td>
+        <td>{$ hit_gain.utr_map_start$}</td>
+        <td>{$ hit_gain.utr_map_end$}</td>
+    </tr>
+    </tbody>
+</table>

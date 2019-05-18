@@ -73,32 +73,21 @@ function Test3Controller($scope, $http) {
 
     $scope.page = 1;
     $scope.per_page=30;
-     $scope.fetch_lncrna_snp_list = function () {
+    $http({}).then(
+        function (response) {
+            $scope.num_records = response.data.num_lncrnas;
+        }
+    )
+
+    $scope.update_page = function (a, page) {
         $http({
-            url: '/api/lncrna_snp_list',
+            url: '',
             method: 'GET',
-            params: {page: 1, per_page: 30}
+            params: {page: page}
         }).then(
             function (response) {
-                console.log(response);
-                $scope.records_number=10000;
-                $scope.lncrna_snp_list = response.data.lncrna_snp_list;
+
             }
-        )
+        );
     };
-
-    $scope.fetch_lncrna_snp_list();
-
-    $scope.update_page = function (test,page,size,total) {
-        $http({
-            url: '/api/lncrna_snp_list',
-            params: {page:page},
-            method: 'GET'
-        }).then(
-            function (response) {
-                $scope.lncrna_snp_list = response.data.lncrna_snp_list;
-            }
-        )
-    };
-
 }
