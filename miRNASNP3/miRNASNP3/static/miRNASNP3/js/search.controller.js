@@ -31,7 +31,16 @@ function SearchController($scope,$http,$filter,$rootScope) {
             console.log(response);
             $scope.mirinfo = response.data.mirinfo
         })
-
+    $http({
+        url:'/api/snpinfo',
+        method:'GET',
+        params:{search_ids:$scope.search_ids}
+    }).then(
+        function(response){
+            console.log(response);
+            $scope.snpinfo = response.data.snpinfo
+        }
+    )
     $scope.search_target_gain = function () {
         $scope.showchar = "you see!"
         $http({
@@ -41,7 +50,7 @@ function SearchController($scope,$http,$filter,$rootScope) {
     }).then(
         function (response) {
             console.log(response);
-            $scope.hit_list_array = response.data.hit_list;
+            $scope.hit_list_array = response.data.gain_hit_list;
             $scope.pagenum = 5
             var showData = $scope.hit_list_array;
             $scope.$watch('search_ids', function (n, o) {
@@ -93,7 +102,6 @@ function SearchController($scope,$http,$filter,$rootScope) {
         });
     }
     $scope.search_target_loss = function () {
-        $scope.showchar = "you see loss!"
         $http({
         url: '/api/loss_hit',
         method: 'GET',
@@ -101,7 +109,7 @@ function SearchController($scope,$http,$filter,$rootScope) {
     }).then(
         function (response) {
             console.log(response);
-            $scope.hit_list_array = response.data.hit_list;
+            $scope.hit_list_array = response.data.loss_hit_list;
             $scope.pagenum = 5
             var showData = $scope.hit_list_array;
             $scope.$watch('search_ids', function (n, o) {

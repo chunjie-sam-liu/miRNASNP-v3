@@ -26,9 +26,17 @@
                     <dt>Accession</dt>
                     <dd class="ng-binding">{$ mirinfo.mir_acc$}</dd>
                     <dt>Coordinates</dt>
-                    <dd class="ng-binding">{$mirinfo.mir_pos$}</dd>
+                    <dd class="ng-binding">{$mirinfo.mir_chr$}:{$mirinfo.mir_start$}-{$mirinfo.mir_end$}[{$mirinfo.mir_strand$}]</dd>
                     <dt>Mature Sequence</dt>
-                    <dd class="ng-binding">{$ mirinfo.mature_seq$}</dd>
+                    <dd class="ng-binding">{$ mirinfo.matureSeq$}</dd>
+                    <dt>Precursor</dt>
+                    <dd class="ng-binding"><{$ mirinfo.pre_id $}</dd>
+                    <dt>Precursor_accession</dt>
+                    <dd class="ng-binding">{$ mirinfo.pre_acc $}</dd>
+                    <dt>Precursor coordinate</dt>
+                    <dd class="ng-binding"><{$ mirinfo.pre_chr$}:{$mirinfo.pre_start$}-{$mirinfo.pre_end$}[{$mirinfo.pre_strand$}]</dd>
+                    <dt>Precursor sequence</dt>
+                    <dd class="ng-binding">{$mirinfo.harpin_seq$}</dd>
                     <dt>Average expression
                         <!--span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body" data-trigger="hover"
                         data-content="miRNA expression profiles were calculated from 36 cancer types of  11635 samples from TCGA"
@@ -41,8 +49,6 @@
                               style="color: #5bc0de" data-original-title="" title=""></span-->
                     </dt>
                     <dd class="ng-binding" >Profile</dd>
-                    <dt>Precursor</dt>
-                    <dd class="ng-binding">{$ mirinfo.precusor$}</dd>
                     <dt>RNA strucure</dt>
                     <dd class="ng-binding">
                         <img >
@@ -51,21 +57,19 @@
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="snp_in_seed_gain">
-            <p>{$ showchar $}</p>
-            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>miRNA</th>
-                    <th>snp</th>
-                    <th>utr3</th>
-                    <th>query</th>
-                    <th>mirandaScore</th>
-                    <th>hitEnergy</th>
-                    <th>utr_map_start</th>
-                    <th>utr_map_end</th>
-                    <th>effect</th>
+                    <th>SNP</th>
+                    <th>Gene</th>
+                    <th>Gene ACC </th>
+                    <th>Transript ID</th>
+                    <th>UTR3 Coodinate</th>
+                    <th>Site Counts</th>
+                    <th>Predict Detail </th>
+                    <th>Effect</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,16 +77,17 @@
                     <td>{$ $index+1 $}</td>
                     <td>{$v.mir_id$}</td>
                     <td>{$ v.snp_id $}</td>
-                    <td>{$v.utr3_pos$}</td>
-                    <td>{$v.query $} </td>
-                    <td>{$ v.score $}</td>
-                    <td>{$ v.energy $}</td>
-                    <td>{$ v.utr_map_start $}</td>
-                    <td>{$ v.utr_map_end $}</td>
+                    <td>{$v.gene_symbol$}</td>
+                    <td>{$v.gene_acc $} </td>
+                    <td>{$ v.enst_id $}</td>
+                    <td>{$ v.utr3_pos$}</td>
+                    <td>{$ v.site_count $}</td>
+                    <td>Predict</td>
                     <td>{$ v.effect $}</td>
 				</tr>
             </tbody>
             </table>
+            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
             <ul class="pagination pull-right">
 			<li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
 			<li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
@@ -90,21 +95,21 @@
 		</ul>
         </div>
         <div role="tabpanel" class="tab-pane" id="snp_in_seed_loss">
-            <p>{$ showchar $}</p>
-            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>miRNA</th>
-                    <th>snp</th>
-                    <th>utr3</th>
-                    <th>query</th>
-                    <th>mirandaScore</th>
-                    <th>hitEnergy</th>
-                    <th>utr_map_start</th>
-                    <th>utr_map_end</th>
-                    <th>effect</th>
+                    <th>SNP</th>
+                    <th>Gene</th>
+                    <th>Gene ACC</th>
+                    <th>Transcript ID</th>
+                    <th>UTR3 Coordinate</th>
+                    <th>Site counts</th>
+                    <th>Predict Detail</th>
+                    <th>Experiment Validation</th>
+                    <th>Gene Expression Correlation</th>
+                    <th>Effect</th>
                 </tr>
                 </thead>
             <tbody>
@@ -112,16 +117,20 @@
                     <td>{$ $index+1 $}</td>
                     <td>{$v.mir_id$}</td>
                     <td>{$ v.snp_id $}</td>
-                    <td>{$v.utr3_pos$}</td>
-                    <td>{$v.query $} </td>
-                    <td>{$ v.score $}</td>
-                    <td>{$ v.energy $}</td>
-                    <td>{$ v.utr_map_start $}</td>
-                    <td>{$ v.utr_map_end $}</td>
+                    <td>{$v.gene_symbol$}</td>
+                    <td>{$v.gene_acc $} </td>
+                    <td>{$ v.enst_id $}</td>
+                    <td>{$ v.utr3_pos $}</td>
+                    <td>{$ v.site_count $}</td>
+                    <td>Predict Details</td>
+                    <td>{$ v.experiment_valid $}</td>
+                    <td>{$ v.gene_correlation$}</td>
                     <td>{$ v.effect $}</td>
+
 				</tr>
             </tbody>
             </table>
+            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
             <ul class="pagination pull-right">
                 <li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
                 <li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>

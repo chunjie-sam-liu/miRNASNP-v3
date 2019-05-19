@@ -3,8 +3,10 @@
     <!-- Nav tabs -->
   <ul class="nav nav-tabs ng-scope" role="tablist">
     <li role="presentation" class="active"><a href="#!/search_summary#snp_detail" aria-controls="snp_detail" role="tab" data-toggle="tab">SnpDetail</a></li>
-    <li role="presentation"><a href="#!/search_summary#mirseed_gain" aria-controls="mirseed_gian" role="tab" data-toggle="tab" ng-click="search_gain()">miR:snp_in_seed(Target Gain)</a></li>
-      <li role="presentation"><a href="#!/search_summary#mirseed_loss" aria-controls="mirseed_loss" role="tab" data-toggle="tab" ng-click="search_loss()"</li>
+    <li role="presentation"><a href="#!/search_summary#mirseed_gain" aria-controls="mirseed_gian" role="tab" data-toggle="tab"
+                               ng-click="search_target_gain()">miR:snp_in_seed(Target Gain)</a></li>
+      <li role="presentation"><a href="#!/search_summary#mirseed_loss" aria-controls="mirseed_loss" role="tab" data-toggle="tab"
+                                 ng-click="search_target_loss()">miR:snp_in_seed(Target Loss)</a></li>
     <li role="presentation"><a href="#!/search_summary#geneutr" aria-controls="geneutr" role="tab" data-toggle="tab">Gene:snp_in_utr3</a></li>
     <li role="presentation"><a href="#!/search_summary#mutation" aria-controls="mutation" role="tab" data-toggle="tab">mutation:Related</a></li>
       <li role="presentation"><a href="#!/search_summary#ld" aria-controls="ld" role="tab" data-toggle="tab" >LD</a></li>
@@ -12,51 +14,112 @@
 
   <!-- Tab panes -->
   <div class="tab-content ng-scope">
-    <div role="tabpanel" class="tab-pane active" id="snp_detail">snp details</div>
-      <div role="tabpanel" class="tab-pane" id="mirseed">
-        <!--form class="form">
-        <label>SNP ID</label>
-        <input type="text" ng-model="search_ids">
-        <button ng-click="fetch_results()">submit</button>
-        </form-->
-        <p>{$ showchar $}</p>
-		<p>每页显示<input type="text" ng-model="pagenum" />条数
-            <!--span style="float: right;">搜索：<input type="text" ng-model="txt" ng-blur=""></span--></p>
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>#</th>
+    <div role="tabpanel" class="tab-pane active" id="snp_detail">
+        <div class="panel-heading">
+            <h4>SNP Details</h4>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>SNP ID</dt>
+                <dd class="ng-binding">{$ snpinfo.snp_id$}</dd>
+                <dt>SNP Coordinate</dt>
+                <dd class="ng-binding">{$ snpinfo.snp_chr$}:{$snpinfo.snp_coordinate$}</dd>
+                <dt>REF/ALT</dt>
+                <dd class="ng-binidng">{$snpinfo.ref$}/{$snpinfo.alt$}</dd>
+                <dt>Frequency</dt>
+                <dd class="ng-binding">{$snpinfo.freqence$}</dd>
+                <dt>GWAS Tag</dt>
+                <dd class="ng-binidng">{$snpinfo.gwas_tag$}</dd>
+                <dt>Located in LD region</dt>
+                <dd class="ng-binding">{$snpinfo.loc_in_ld$}</dd>
+                <dt>Clinvar Relation</dt>
+                <dd class="ng-binding">{$snpinfo.relate_clinvar$}</dd>
+                <dt>COSMIC Relation</dt>
+                <dd class="ng-binding">{$snpinfo.relate_cosmic$}</dd>
+            </dl>
+            <dt></dt>
+        </div>
+    </div>
+      <div role="tabpanel" class="tab-pane" id="mirseed_gain">
+        <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
                     <th>miRNA</th>
-                    <th>snp</th>
-                    <th>utr3</th>
-                    <th>query</th>
-                    <th>mirandaScore</th>
-                    <th>hitEnergy</th>
-                    <th>utr_map_start</th>
-                    <th>utr_map_end</th>
-                    <th>effect</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="v in data">
+                    <th>SNP</th>
+                    <th>Gene</th>
+                    <th>Gene ACC </th>
+                    <th>Transript ID</th>
+                    <th>UTR3 Coodinate</th>
+                    <th>Site Counts</th>
+                    <th>Predict Detail </th>
+                    <th>Effect</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="v in data_gain">
                     <td>{$ $index+1 $}</td>
                     <td>{$v.mir_id$}</td>
                     <td>{$ v.snp_id $}</td>
-                    <td>{$v.utr3_pos$}</td>
-                    <td>{$v.query $} </td>
-                    <td>{$ v.score $}</td>
-                    <td>{$ v.energy $}</td>
-                    <td>{$ v.utr_map_start $}</td>
-                    <td>{$ v.utr_map_end $}</td>
+                    <td>{$v.gene_symbol$}</td>
+                    <td>{$v.gene_acc $} </td>
+                    <td>{$ v.enst_id $}</td>
+                    <td>{$ v.utr3_pos$}</td>
+                    <td>{$ v.site_count $}</td>
+                    <td>Predict</td>
                     <td>{$ v.effect $}</td>
 				</tr>
-			</tbody>
-		</table>
-		<ul class="pagination pull-right">
+            </tbody>
+            </table>
+            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+            <ul class="pagination pull-right">
 			<li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
 			<li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
 			<li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
-		</ul>
+            </ul>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="mirseed_loss">
+          <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>miRNA</th>
+                    <th>SNP</th>
+                    <th>Gene</th>
+                    <th>Gene ACC</th>
+                    <th>Transcript ID</th>
+                    <th>UTR3 Coordinate</th>
+                    <th>Site counts</th>
+                    <th>Predict Detail</th>
+                    <th>Experiment Validation</th>
+                    <th>Gene Expression Correlation</th>
+                    <th>Effect</th>
+                </tr>
+                </thead>
+            <tbody>
+                <tr ng-repeat="v in data_loss">
+                    <td>{$ $index+1 $}</td>
+                    <td>{$v.mir_id$}</td>
+                    <td>{$ v.snp_id $}</td>
+                    <td>{$v.gene_symbol$}</td>
+                    <td>{$v.gene_acc $} </td>
+                    <td>{$ v.enst_id $}</td>
+                    <td>{$ v.utr3_pos $}</td>
+                    <td>{$ v.site_count $}</td>
+                    <td>Predict Details</td>
+                    <td>{$ v.experiment_valid $}</td>
+                    <td>{$ v.gene_correlation$}</td>
+                    <td>{$ v.effect $}</td>
+
+				</tr>
+            </tbody>
+            </table>
+            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+            <ul class="pagination pull-right">
+                <li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
+                <li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
+                <li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
+            </ul>
       </div>
       <div role="tabpanel" class="tab-pane" id="geneutr">gene:snp in utr</div>
       <div role="tabpanel" class="tab-pane" id="mutation">mutation</div>

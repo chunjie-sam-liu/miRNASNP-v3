@@ -7,7 +7,7 @@ function HomeController($scope,$http,$rootScope,$window) {
     console.log("HomeController loaded");
     var snp_pattern=/^rs[0-9]*/;
     var mir_pattern=/^hsa/;
-    var mutation_pattern=/[a-z]/;
+    var mutation_pattern=/COS[0-9]*/;
     var gene_pattern=/[a-z]/;
 
     $scope.search_query = function () {
