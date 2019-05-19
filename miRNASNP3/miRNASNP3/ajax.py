@@ -6,23 +6,35 @@ from miRNASNP3.core import mongo
 
 from flask_restful import Resource, fields, marshal_with, reqparse, marshal
 
+site_info = {
+    'site_start':fields.String,
+    'site_end':fields.String,
+    'g_duplex':fields.Integer,
+    'g_binding':fields.Integer,
+    'g_open':fields.Integer,
+    'au_content':fields.Integer,
+    'pair3p':fields.Integer,
+    'tgs_score':fields.Integer,
+    'pro_exac':fields.Integer,
+    'pro_bino':fields.Integer
+}
 gain_hit_info = {
     'mir_id':fields.String,
     'snp_id':fields.String,
+    'gene_symbol':fields.String,
+    'gene_acc':fields.String,
+    'enst_id':fields.String,
     'utr3_pos':fields.String,
-    'query':fields.String,
-    'score':fields.String,
-    'energy':fields.String,
-    'utr_map_start':fields.String,
-    'utr_map_end':fields.String,
+    'site_count':fields.Integer,
+    'predict_info':fields.List(fields.Nested(site_info)),
     'effect':fields.String
 }
-hit_list = {
-    'hit_list':fields.List(fields.Nested(gain_hit_info))
+gain_hit_list = {
+    'gain_hit_list':fields.List(fields.Nested(gain_hit_info))
 }
 
 class GainHits(Resource):
-    @marshal_with(hit_list)
+    @marshal_with(gain_hit_list)
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids',type = str)
@@ -31,48 +43,62 @@ class GainHits(Resource):
             return {'hit_list':None}
         if args['search_ids'].lower().startswith('hsa'):
             mir_id = args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id}).limit(50)
+            gain_hit_list = mongo.db.gain_hit.find_one({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('mir'):
             mir_id = 'hsa'+args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find({'mir_id': mir_id}).limit(50)
+            gain_hit_list = mongo.db.gain_hit.find_one({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('rs'):
             snp_id = args['search_ids']
-            gain_hit = mongo.db.target_gain_test.find_one({'snp_id': snp_id})
+            gain_hit_list = mongo.db.gain_hit.find_one({'snp_id': snp_id})
         else:
-            gain_hit ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
-        app.logger.debug("gain_hit={}".format(gain_hit))
-        #gain_hit=[{'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'},
-         #         {'mir_id':'let-7a-3p','snp_id':'rs779353569','utr3_pos':'chr1:3457-9876(+)','query':'ACGT-atgc','score':'147.0','energy':'51.9','effect':'gian'}]
-        return {'hit_list':gain_hit}
+            gain_hit_list ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
+        app.logger.debug("gain_hit={}".format(gain_hit_list))
+
+        return {'gain_hit_list':gain_hit_list}
 
 api.add_resource(GainHits, '/api/gain_hit')
 
+loss_hit_info = {
+    'mir_id':fields.String,
+    'snp_id':fields.String,
+    'gene_symbol':fields.String,
+    'gene_acc':fields.String,
+    'enst_id':fields.String,
+    'utr3_pos':fields.String,
+    'site_count':fields.Integer,
+    'predict_info':fields.List(fields.Nested(site_info)),
+    'effect':fields.String,
+    'experiment_valid':fields.String,
+    'gene_correlation':fields.String
+}
+loss_hit_list = {
+    'loss_hit_list':fields.List(fields.Nested(loss_hit_info))
+}
 
 class LossHits(Resource):
-    @marshal_with(hit_list)
+    @marshal_with(loss_hit_list)
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids', type=str)
         args = parser.parse_args()
+        loss_hit_list = [{'mir_id': 'tmir', 'snp_id': 'tsnp', 'utr3_pos': 'tutr', 'effect': 'tloss'}]
         if args['search_ids'] is None:
             return {'hit_list': None}
         if args['search_ids'].lower().startswith('hsa'):
             mir_id = args['search_ids']
-            loss_hit = mongo.db.target_loss_test.find_one({'mir_id': mir_id})
+            loss_hit_list = mongo.db.loss_hit.find({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('mir'):
             mir_id = 'hsa' + args['search_ids']
-            loss_hit = mongo.db.target_loss_test.find_one({'mir_id': mir_id})
+            loss_hit_list = mongo.db.loss_hit.find({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('rs'):
             snp_id = args['search_ids']
-            loss_hit = mongo.db.target_loss_test.find_one({'snp_id': snp_id})
-        else:
-            loss_hit = [{'mir_id': 'tmir', 'snp_id': 'tsnp', 'utr3_pos': 'tutr', 'query': 'tquery', 'score': 'tscore','energy': 'tenergy', 'effect': 'tloss'},
-                        {'mir_id': 'let-7a-3p-o', 'snp_id': 'rs779353569','utr3_pos': 'chr1:3457-9876(-)','query': 'ACGT-atgc', 'score': '147.0', 'energy': '51.9', 'effect': 'loss'}]
-        return {'hit_list': list(loss_hit)}
+            loss_hit_list = mongo.db.loss_hit.find({'snp_id': snp_id})
+
+        return {'loss_hit_list': list(loss_hit_list)}
         #return hit_list
 api.add_resource(LossHits,'/api/loss_hit')
 
-mir_ifo = {
+browse_ifo = {
     'mir_id':fields.String,
     'mir_acc':fields.String,
     'mir_chr':fields.String,
@@ -87,7 +113,7 @@ mir_ifo = {
 }
 
 browse_list = {
-    'browse_list':fields.List(fields.Nested(mir_ifo))
+    'browse_list':fields.List(fields.Nested(browse_ifo))
 }
 
 class BrowseMir(Resource):
@@ -102,7 +128,7 @@ class BrowseMir(Resource):
         if args['chr']:
             chrome = args['chr']
          #   for chrome in args['chr']:
-            browse_list_temp = mongo.db.browserY.find({'mir_chr':chrome})
+            browse_list_temp = mongo.db.browseY.find({'mir_chr':chrome})
             browse_list.extend(browse_list_temp)
         else:
             browse_list = [{'mir_id':'hsa-mir-3690','mir_acc':'MI0023561','mir_chr':'chrY','mir_start':'1293918','mir_end':'1293992',
@@ -117,13 +143,18 @@ api.add_resource(BrowseMir,'/api/browsemir')
 mirinfo_line = {
     'mir_id':fields.String,
     'mir_acc':fields.String,
-    'mir_pos':fields.String,
-    'mir_type':fields.String,
-    'mature_seq':fields.String,
-    'precusor':fields.String,
-    'express_profile':{'LIHC':fields.Integer,
-                       'BRCA':fields.Integer},
-    'mir_structure':fields.String
+    'mir_chr':fields.String,
+    'mir_start':fields.String,
+    'mir_end':fields.String,
+    'mir_strand':fields.String,
+    'matureSeq':fields.String,
+    'pre_id':fields.String,
+    'pre_acc':fields.String,
+    'pre_chr':fields.String,
+    'pre_start':fields.String,
+    'pre_end':fields.String,
+    'pre_strand':fields.String,
+    'harpin_seq':fields.String,
 }
 
 mirinfo = {
@@ -138,7 +169,7 @@ class SearchMir(Resource):
         args = parser.parse_args()
         mirinfo = {'mir_id':'init_id'}
         if args['search_ids']:
-            mirinfo = mongo.db.mirna.find_one({'mir_id':args['search_ids']})
+            mirinfo = mongo.db.mirinfo.find_one({'mir_id':args['search_ids']})
         else:
             mirinfo = {'mir_id':'no_id'}
 
@@ -146,7 +177,39 @@ class SearchMir(Resource):
 
 api.add_resource(SearchMir,'/api/mirinfo')
 
+snpinfo_line = {
+    'snp_id':fields.String,
+    'snp_chr':fields.String,
+    'snp_coordinate':fields.String,
+    'ref':fields.String,
+    'alt':fields.String,
+    'freqence':fields.String,
+    'gwas_tag':fields.String,
+    'loc_in_ld':fields.String,
+    'relate_clinvar':fields.String,
+    'relate_cosmic':fields.String
+}
 
+snpinfo = {
+    'snpinfo':fields.Nested(snpinfo_line)
+}
+
+class SnpInfo(Resource):
+    @marshal_with(snpinfo)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        print(args['search_ids'])
+        snpinfo = {'snp_id': args['search_ids']}
+        if args['search_ids']:
+            snpinfo = mongo.db.snpinfo.find_one({'snp_id': args['search_ids']})
+        else:
+            mirinfo = {'snp_id': 'no_id'}
+
+        return {'snpinfo': snpinfo}
+
+api.add_resource(SnpInfo,'/api/snpinfo')
 '''
 test_fields = {
     'fields1': fields.String,
