@@ -62,3 +62,6 @@ typings/
 
 settings.py
 settings.pyc
+package-lock.json
+bootstrap-select.nuspec
+
