@@ -43,9 +43,13 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/mutation.html",
                 controller:"MutationController"
             })
-            .when("/search_doc",{
-                templateUrl:"/static/miRNASNP3/pages/search_doc.html",
-                controller:"SearchdocController"
+            .when("/snp",{
+                templateUrl:"/static/miRNASNP3/pages/snp.html",
+                controller:"SnpController"
+        })
+            .when("/mir",{
+                templateUrl:"/static/miRNASNP3/pages/mir.html",
+                controller:"MirController"
             })
             .when("/browser",{
                 templateUrl:"/static/miRNASNP3/pages/browser.html",
