@@ -5,7 +5,7 @@ from miRNASNP3 import app
 def runserver(myport):
     myport = myport
     port = int(os.environ.get('PORT', myport))
-    app.run(host='211.67.31.244', port=port)
+    app.run(host='211.67.31.242', port=port)
     app.run()
 
 

@@ -66,12 +66,58 @@
                     <td>{$ v.enst_id $}</td>
                     <td>{$ v.utr3_pos$}</td>
                     <td>{$ v.site_count $}</td>
-                    <td>Predict</td>
+                    <td>
+                        <button class="btn btn-default" data-toggle="modal" data-target="#myModal" ng-click="string2list(v.predict_info)">Predict Detail</button>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        Sites Details
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Site start</th>
+                                                <th>Site end</th>
+                                                <th>G_duplex(Kcal/mol)</th>
+                                                <th>G_binding(Kcal/mol)</th>
+                                                <th>G_open(Kcal/mol)</th>
+                                                <th>AU_content</th>
+                                                <th>3p pair </th>
+                                                <th>Targetscan score</th>
+                                                <th>Exact probility</th>
+                                                <th>Binomal probility </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="site in site_info">
+                                                <td>{$ $index+1 $}</td>
+                                                <td>{$ site.site_start$}</td>
+                                                <td>{$ site.site_end$}</td>
+                                                <td>{$ site.g_duplex$}</td>
+                                                <td>{$ site.g_binding$}</td>
+                                                <td>{$ site.g_open$}</td>
+                                                <td>{$ site.au_content$}</td>
+                                                <td>{$ site.pair3p$}</td>
+                                                <td>{$ site.tgs_score$}</td>
+                                                <td>{$ site.pro_exac$}</td>
+                                                <td>{$ site.pro_bino$}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td>{$ v.effect $}</td>
 				</tr>
             </tbody>
             </table>
             <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+            <p>总条目:{$records_count$}</p>
             <ul class="pagination pull-right">
 			<li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
 			<li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
@@ -106,7 +152,52 @@
                     <td>{$ v.enst_id $}</td>
                     <td>{$ v.utr3_pos $}</td>
                     <td>{$ v.site_count $}</td>
-                    <td>Predict Details</td>
+                    <td>
+                        <button class="btn btn-default" data-toggle="modal" data-target="#myModal" ng-click="string2list(v.predict_info)">Predict Detail</button>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        Sites Details
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Site start</th>
+                                                <th>Site end</th>
+                                                <th>G_duplex(Kcal/mol)</th>
+                                                <th>G_binding(Kcal/mol)</th>
+                                                <th>G_open(Kcal/mol)</th>
+                                                <th>AU_content</th>
+                                                <th>3p pair </th>
+                                                <th>Targetscan score</th>
+                                                <th>Exact probility</th>
+                                                <th>Binomal probility </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="site in site_info">
+                                                <td>{$ $index+1 $}</td>
+                                                <td>{$ site.site_start$}</td>
+                                                <td>{$ site.site_end$}</td>
+                                                <td>{$ site.g_duplex$}</td>
+                                                <td>{$ site.g_binding$}</td>
+                                                <td>{$ site.g_open$}</td>
+                                                <td>{$ site.au_content$}</td>
+                                                <td>{$ site.pair3p$}</td>
+                                                <td>{$ site.tgs_score$}</td>
+                                                <td>{$ site.pro_exac$}</td>
+                                                <td>{$ site.pro_bino$}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td>{$ v.experiment_valid $}</td>
                     <td>{$ v.gene_correlation$}</td>
                     <td>{$ v.effect $}</td>
@@ -115,6 +206,7 @@
             </tbody>
             </table>
             <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+          <p>总条目:{$records_count$}</p>
             <ul class="pagination pull-right">
                 <li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
                 <li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>

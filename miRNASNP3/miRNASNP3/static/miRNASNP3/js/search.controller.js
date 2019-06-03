@@ -11,17 +11,23 @@ function getPages(currentpage,firstPage,endPage,pageNum){
 				}
 				console.log(pages);
 				return pages;
-			};
+			}
+
+
+
 function SearchController($scope,$http,$filter,$rootScope) {
     console.log("SearchController loaded");
-    $scope.search_ids = $rootScope.search_ids
+    $scope.search_ids = $rootScope.search_ids;
    // $('#mirseed a').click(function ($scope) {
         //e.preventDefault()
      //   $scope.showchar = "you see"
        // $scope.search_gain()
         //$(this).tab('show')
    // })
-    $scope.showchar = "mirinfo"
+    $scope.string2list = function(predict_info){
+        $scope.site_info = eval(predict_info)
+    }
+
     $http({
         url:'/api/mirinfo',
         method:'GET',
@@ -97,6 +103,7 @@ function SearchController($scope,$http,$filter,$rootScope) {
                     tableD.push(showData[s]);
                 }
                 $scope.data_gain = tableD;
+                $scope.records_count = size
             }
             $scope.getPages(1);
         });
@@ -156,6 +163,7 @@ function SearchController($scope,$http,$filter,$rootScope) {
                     tableD.push(showData[s]);
                 }
                 $scope.data_loss = tableD;
+                $scope.records_count = size;
             }
             $scope.getPages(1);
         });

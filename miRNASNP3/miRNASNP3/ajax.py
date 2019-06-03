@@ -9,14 +9,14 @@ from flask_restful import Resource, fields, marshal_with, reqparse, marshal
 site_info = {
     'site_start':fields.String,
     'site_end':fields.String,
-    'g_duplex':fields.Integer,
-    'g_binding':fields.Integer,
-    'g_open':fields.Integer,
-    'au_content':fields.Integer,
-    'pair3p':fields.Integer,
-    'tgs_score':fields.Integer,
-    'pro_exac':fields.Integer,
-    'pro_bino':fields.Integer
+    'g_duplex':fields.String,
+    'g_binding':fields.String,
+    'g_open':fields.String,
+    'au_content':fields.String,
+    'pair3p':fields.String,
+    'tgs_score':fields.String,
+    'pro_exac':fields.String,
+    'pro_bino':fields.String
 }
 gain_hit_info = {
     'mir_id':fields.String,
@@ -43,18 +43,17 @@ class GainHits(Resource):
             return {'hit_list':None}
         if args['search_ids'].lower().startswith('hsa'):
             mir_id = args['search_ids']
-            gain_hit_list = mongo.db.gain_hit.find_one({'mir_id': mir_id})
+            gain_hit_list = mongo.db.gain_snpseed_03.find({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('mir'):
             mir_id = 'hsa'+args['search_ids']
-            gain_hit_list = mongo.db.gain_hit.find_one({'mir_id': mir_id})
+            gain_hit_list = mongo.db.gain_snpseed_03.find({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('rs'):
             snp_id = args['search_ids']
-            gain_hit_list = mongo.db.gain_hit.find_one({'snp_id': snp_id})
+            gain_hit_list = mongo.db.gain_snpseed_03.find({'snp_id': snp_id})
         else:
             gain_hit_list ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
-        app.logger.debug("gain_hit={}".format(gain_hit_list))
 
-        return {'gain_hit_list':gain_hit_list}
+        return {'gain_hit_list':list(gain_hit_list)}
 
 api.add_resource(GainHits, '/api/gain_hit')
 
@@ -86,13 +85,13 @@ class LossHits(Resource):
             return {'hit_list': None}
         if args['search_ids'].lower().startswith('hsa'):
             mir_id = args['search_ids']
-            loss_hit_list = mongo.db.loss_hit.find({'mir_id': mir_id})
+            loss_hit_list = mongo.db.loss_snpseed_03.find({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('mir'):
             mir_id = 'hsa' + args['search_ids']
-            loss_hit_list = mongo.db.loss_hit.find({'mir_id': mir_id})
+            loss_hit_list = mongo.db.loss_snpseed_03.find({'mir_id': mir_id})
         elif args['search_ids'].lower().startswith('rs'):
             snp_id = args['search_ids']
-            loss_hit_list = mongo.db.loss_hit.find({'snp_id': snp_id})
+            loss_hit_list = mongo.db.loss_snpseed_03.find({'snp_id': snp_id})
 
         return {'loss_hit_list': list(loss_hit_list)}
         #return hit_list
@@ -177,12 +176,47 @@ class SearchMir(Resource):
 
 api.add_resource(SearchMir,'/api/mirinfo')
 
+mir_summary = {
+    'mir_id':fields.String,
+    'target_gene_count':fields.String,
+    'snp_count':fields.String,
+    'mutation_count':fields.String,
+    'mir_info':fields.Nested(mirinfo_line)
+}
+
+mir_summary_list = {
+    'mir_summary_list':fields.Nested(mir_summary)
+}
+
+class MirSummary(Resource):
+    @marshal_with(mir_summary_list)
+    def get(self):
+        lookup = {
+            '$lookup':{
+                'from': 'mirinfo',
+                'localField': 'mir_id',
+                'foreignField': 'mir_id',
+                'as': 'mir_info'
+            }}
+        match = {
+            '$match':{
+                'mir_id':'hsa-miR-1914-3p'
+            }
+        }
+        pipline = [lookup,match]
+        mir_summary_list = mongo.db.mir_summary.aggregate(pipline)
+        return {'mir_summary_list':list(mir_summary_list)}
+
+api.add_resource(MirSummary,'/api/mir')
+
 snpinfo_line = {
     'snp_id':fields.String,
     'snp_chr':fields.String,
     'snp_coordinate':fields.String,
     'ref':fields.String,
     'alt':fields.String,
+    'ref_freq':fields.String,
+    'alt_freq':fields.String,
     'freqence':fields.String,
     'gwas_tag':fields.String,
     'loc_in_ld':fields.String,
@@ -210,6 +244,39 @@ class SnpInfo(Resource):
         return {'snpinfo': snpinfo}
 
 api.add_resource(SnpInfo,'/api/snpinfo')
+
+snp_summary = {
+    'snp_id':fields.String,
+    'locate':fields.String,
+    'identifier':fields.String,
+    'target_gain':fields.Integer,
+    'target_loss':fields.Integer,
+    'snp_info':fields.Nested(snpinfo_line)
+}
+
+snp_summary_list = {
+    'snp_summary_list':fields.Nested(snp_summary)
+}
+
+class SnpSummary(Resource):
+    @marshal_with(snp_summary_list)
+    def get(self):
+        lookup = {'$lookup':{
+            'from':'snpinfo',
+            'localField':'snp_id',
+            'foreignField':'snp_id',
+            'as':'snp_info'
+        }}
+        match = {'$match':{
+            'snp_id':'rs1034533798'
+        }}
+        pipline = [lookup,match]
+        snp_summary_list = mongo.db.snp_summary.aggregate(pipline)
+
+        return {'snp_summary_list':list(snp_summary_list)}
+
+api.add_resource(SnpSummary,'/api/snp')
+
 '''
 test_fields = {
     'fields1': fields.String,
