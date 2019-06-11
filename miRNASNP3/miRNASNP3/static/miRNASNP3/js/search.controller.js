@@ -1,220 +1,123 @@
 'use strict';
 
 angular.module('miRNASNP3')
-    .controller('SearchController', SearchController);
-
-function getPages(currentpage,firstPage,endPage,pageNum){
-				var pages = [];
-				console.log("f:"+firstPage);console.log("e:"+endPage);
-				for(var i=firstPage;i<=endPage;i++){
-					pages.push(i);
-				}
-				console.log(pages);
-				return pages;
-			}
-
-
+    .controller('SearchController', SearchController)
+.directive('ngX1',function () {
+    return function (scope, elem, attrs) {
+        attrs.$observe('ngX1',function(x1){
+            elem.attr('x1',x1);
+        });
+    };
+})
+.directive('ngX2',function () {
+    return function (scope, elem, attrs) {
+        attrs.$observe('ngX2',function(x2){
+            elem.attr('x2',x2);
+        });
+    };
+});
 
 function SearchController($scope,$http,$filter,$rootScope) {
     console.log("SearchController loaded");
     $scope.search_ids = $rootScope.search_ids;
-   // $('#mirseed a').click(function ($scope) {
-        //e.preventDefault()
-     //   $scope.showchar = "you see"
-       // $scope.search_gain()
-        //$(this).tab('show')
-   // })
-    $scope.string2list = function(predict_info){
+    var page = 1;
+
+    $scope.string2list = function (predict_info) {
         $scope.site_info = eval(predict_info)
+    };
+    if ($scope.search_ids){
+        $http({
+            url: '/api/snpinfo',
+            method: 'GET',
+            params: {search_ids: $scope.search_ids}
+        }).then(
+            function (response) {
+                console.log(response);
+                $scope.snpinfo_list = response.data.snpinfo
+                $scope.snpinfo = $scope.snpinfo_list[0]
+            }
+        );
+    $http({
+            url: '/api/mirinfo',
+            method: 'GET',
+            params: {search_ids: $scope.search_ids}
+        }).then(
+            function (response) {
+                console.log(response);
+                $scope.mirinfo = response.data.mirinfo
+            })
     }
 
-    $http({
-        url:'/api/mirinfo',
-        method:'GET',
-        params:{search_ids:$scope.search_ids}
-    }).then(
-        function (response) {
-            console.log(response);
-            $scope.mirinfo = response.data.mirinfo
+    $scope.search_target_gain = function (page) {
+            $scope.$watch($scope.page,function (newValue,oldValue) {
+                page = newValue;
+                $http({
+                url: '/api/gain_hit',
+                method: 'GET',
+                params: {search_ids: $scope.search_ids, page: page, per_page: 30}
+            }).then(
+                function (response) {
+                    console.log(response);
+                    $scope.gain_hit_list = response.data.gain_hit_list;
+                    $scope.record_count = response.data.data_lenth;
+                })
+            })
+
+    };
+    $scope.search_target_loss = function (page) {
+        $scope.$watch($scope.page,function(newValue,oldValue){
+            page = newValue;
+            $http({
+            url: '/api/loss_hit',
+            method: 'GET',
+            params: {search_ids: $scope.search_ids,page: $scope.page, per_page: 30}
+        }).then(
+            function (response) {
+                console.log(response);
+                $scope.loss_hit_list = response.data.loss_hit_list;
+                $scope.record_count = $scope.data_lenth
+            });
         })
-    $http({
-        url:'/api/snpinfo',
-        method:'GET',
-        params:{search_ids:$scope.search_ids}
-    }).then(
-        function(response){
-            console.log(response);
-            $scope.snpinfo = response.data.snpinfo
-        }
-    )
-    $scope.search_target_gain = function () {
-        $scope.showchar = "you see!"
+
+    };
+    $scope.search_ld = function(){
         $http({
-        url: '/api/gain_hit',
-        method: 'GET',
-        params: {search_ids: $scope.search_ids}
-    }).then(
-        function (response) {
-            console.log(response);
-            $scope.hit_list_array = response.data.gain_hit_list;
-            $scope.pagenum = 5
-            var showData = $scope.hit_list_array;
-            $scope.$watch('search_ids', function (n, o) {
-                if (n == '') {
-                    showData = $scope.hit_list_array;
-                } else {
-                    showData = $filter('filter')($scope.hit_list_array, n);
-                }
-                $scope.getPages(1);
-            });
-
-            $scope.$watch('pagenum', function (n, o) {
-                $scope.getPages(1);
-            });
-
-            $scope.getPages = function (page) {
-                var size = showData.length;
-                console.log($scope.hit_list_array);
-                $scope.totalPages = size % $scope.pagenum == 0 ? (size / $scope.pagenum) : Math.ceil(size / $scope.pagenum);
-                var firspage = 0, endpage = 0;
-                if (page < 5) {
-                    console.log('第一项');
-                    firspage = 1;
-                    endpage = 5 > $scope.totalPages ? $scope.totalPages : 5;
-                } else {
-                    var index = $scope.totalPages - page;
-                    if (index < (4)) {
-                        console.log('第二项');
-                        firspage = $scope.totalPages - 4;
-                        endpage = $scope.totalPages;
-                    } else {
-                        console.log('第三项');
-                        firspage = page - 2;
-                        endpage = page + 2;
+            url:'/api/ldinfo',
+            method:'GET',
+            params:{search_ids:$scope.search_ids}
+        }).then(
+            function (response) {
+                console.log(response);
+                $scope.ld_list = response.data.ld_list;
+                $scope.tag = $scope.ld_list[0]._id.is_tag;
+                if ($scope.ld_list[0]._id.is_tag == '1'){
+                    var ld_region_all = $scope.ld_list[0].tag_info;
+                    var ld_array = [];
+                    var ld_array_line = {};
+                    var min_end = Number($scope.ld_list[0]._id.snp_position) - 250000;
+                    if(min_end <0){min_end = 0}
+                    var max_start = Number($scope.ld_list[0]._id.snp_position )+ 250000;
+                    for (var p=0;p<ld_region_all.length;p++){
+                        ld_array_line = {};
+                        ld_array_line['id'] = p;
+                        ld_array_line['population'] = ld_region_all[p].population;
+                        ld_array_line['start'] = ld_region_all[p].ld_start;
+                        if(ld_array_line['start']>max_start){ld_array_line['start']=max_start}
+                        ld_array_line['end'] = ld_region_all[p].ld_end;
+                        if (ld_array_line['end']<min_end){ld_array_line['end']=min_end}
+                        ld_array_line['width'] = (Number(ld_region_all[p].ld_start)-Number(ld_region_all[p].ld_end))/500;
+                        ld_array_line['text_y'] =20+30*p;
+                        ld_array_line['rect_x'] = (Number(ld_array_line['end'])-Number(min_end))/500-20;
+                        ld_array_line['rect_y'] = 8+30*p;
+                        ld_array.push(ld_array_line)
                     }
+                    $scope.ld_array = ld_array;
                 }
-                $scope.pages = getPages(0, firspage, endpage, 5);
-                $scope.page = page;
-                var indexS = ($scope.page - 1) * $scope.pagenum;
-                var indexE = parseInt(indexS) + parseInt($scope.pagenum);
-                var indexEnd = indexE > showData.length ? showData.length : indexE;
-                var tableD = []
-                for (var s = indexS; s < indexEnd; s++) {
-                    tableD.push(showData[s]);
-                }
-                $scope.data_gain = tableD;
-                $scope.records_count = size
-            }
-            $scope.getPages(1);
-        });
-    }
-    $scope.search_target_loss = function () {
-        $http({
-        url: '/api/loss_hit',
-        method: 'GET',
-        params: {search_ids: $scope.search_ids}
-    }).then(
-        function (response) {
-            console.log(response);
-            $scope.hit_list_array = response.data.loss_hit_list;
-            $scope.pagenum = 5
-            var showData = $scope.hit_list_array;
-            $scope.$watch('search_ids', function (n, o) {
-                if (n == '') {
-                    showData = $scope.hit_list_array;
-                } else {
-                    showData = $filter('filter')($scope.hit_list_array, n);
-                }
-                $scope.getPages(1);
-            });
+                else{
 
-            $scope.$watch('pagenum', function (n, o) {
-                $scope.getPages(1);
-            });
+                }
 
-            $scope.getPages = function (page) {
-                var size = showData.length;
-                console.log($scope.hit_list_array);
-                $scope.totalPages = size % $scope.pagenum == 0 ? (size / $scope.pagenum) : Math.ceil(size / $scope.pagenum);
-                var firspage = 0, endpage = 0;
-                if (page < 5) {
-                    console.log('第一项');
-                    firspage = 1;
-                    endpage = 5 > $scope.totalPages ? $scope.totalPages : 5;
-                } else {
-                    var index = $scope.totalPages - page;
-                    if (index < (4)) {
-                        console.log('第二项');
-                        firspage = $scope.totalPages - 4;
-                        endpage = $scope.totalPages;
-                    } else {
-                        console.log('第三项');
-                        firspage = page - 2;
-                        endpage = page + 2;
-                    }
-                }
-                $scope.pages = getPages(0, firspage, endpage, 5);
-                $scope.page = page;
-                var indexS = ($scope.page - 1) * $scope.pagenum;
-                var indexE = parseInt(indexS) + parseInt($scope.pagenum);
-                var indexEnd = indexE > showData.length ? showData.length : indexE;
-                var tableD = []
-                for (var s = indexS; s < indexEnd; s++) {
-                    tableD.push(showData[s]);
-                }
-                $scope.data_loss = tableD;
-                $scope.records_count = size;
-            }
-            $scope.getPages(1);
-        });
+            })
     }
 }
 
-
-function butClick (){
-  var obt=document.getElementById("d");
-  var odiv=document.getElementById("div");
-    if(odiv.style.display=="none"){
-       odiv.style.display="block";
-      obt.value="-Advance";}
-    else{
-     odiv.style.display="none";
-      obt.value="+Advance";}
-}
-function butClick1 (){
-  var obt1=document.getElementById("d1");
-  var odiv1=document.getElementById("div1");
-    if(odiv1.style.display=="none"){
-       odiv1.style.display="block";
-      obt1.value="-variant";}
-    else{
-     odiv1.style.display="none";
-      obt1.value="+variant";}
-}function butClick2 (){
-  var obt2=document.getElementById("d2");
-  var odiv2=document.getElementById("div2");
-    if(odiv2.style.display=="none"){
-       odiv2.style.display="block";
-      obt2.value="-effect";}
-    else{
-     odiv2.style.display="none";
-      obt2.value="+effect";}
-}function butClick3 (){
-  var obt3=document.getElementById("d3");
-  var odiv3=document.getElementById("div3");
-    if(odiv3.style.display=="none"){
-       odiv3.style.display="block";
-      obt3.value="-expression";}
-    else{
-     odiv3.style.display="none";
-      obt3.value="+expression";}
-}function butClick4 (){
-  var obt4=document.getElementById("d4");
-  var odiv4=document.getElementById("div4");
-    if(odiv4.style.display=="none"){
-       odiv4.style.display="block";
-      obt4.value="-other Attribute";}
-    else{
-     odiv4.style.display="none";
-      obt4.value="+other Attribute";}
-}

@@ -9,7 +9,7 @@
                                  ng-click="search_target_loss()">miR:snp_in_seed(Target Loss)</a></li>
     <li role="presentation"><a href="#!/search_summary#geneutr" aria-controls="geneutr" role="tab" data-toggle="tab">Gene:snp_in_utr3</a></li>
     <li role="presentation"><a href="#!/search_summary#mutation" aria-controls="mutation" role="tab" data-toggle="tab">mutation:Related</a></li>
-      <li role="presentation"><a href="#!/search_summary#ld" aria-controls="ld" role="tab" data-toggle="tab" >LD</a></li>
+      <li role="presentation"><a href="#!/search_summary#ld" aria-controls="ld" role="tab" data-toggle="tab" ng-click="search_ld()">LD</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -25,17 +25,11 @@
                 <dt>SNP Coordinate</dt>
                 <dd class="ng-binding">{$ snpinfo.snp_chr$}:{$snpinfo.snp_coordinate$}</dd>
                 <dt>REF/ALT</dt>
-                <dd class="ng-binidng">{$snpinfo.ref$}/{$snpinfo.alt$}</dd>
-                <dt>Frequency</dt>
-                <dd class="ng-binding">{$snpinfo.freqence$}</dd>
+                <dd class="ng-binidng">{$snpinfo.ref$}({$snpinfo.ref_freq$})/{$snpinfo.alt$}({$snpinfo.alt_freq$})</dd>
                 <dt>GWAS Tag</dt>
                 <dd class="ng-binidng">{$snpinfo.gwas_tag$}</dd>
                 <dt>Located in LD region</dt>
                 <dd class="ng-binding">{$snpinfo.loc_in_ld$}</dd>
-                <dt>Clinvar Relation</dt>
-                <dd class="ng-binding">{$snpinfo.relate_clinvar$}</dd>
-                <dt>COSMIC Relation</dt>
-                <dd class="ng-binding">{$snpinfo.relate_cosmic$}</dd>
             </dl>
             <dt></dt>
         </div>
@@ -57,7 +51,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="v in data_gain">
+                <tr ng-repeat="v in gain_hit_list">
                     <td>{$ $index+1 $}</td>
                     <td>{$v.mir_id$}</td>
                     <td>{$ v.snp_id $}</td>
@@ -116,13 +110,8 @@
 				</tr>
             </tbody>
             </table>
-            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
-            <p>总条目:{$records_count$}</p>
-            <ul class="pagination pull-right">
-			<li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
-			<li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
-			<li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
-            </ul>
+            <p>Page: <input type="text" ng-model="page" /></p>
+            <p>每页展示30条，总条数{$record_count$}</p>
       </div>
       <div role="tabpanel" class="tab-pane" id="mirseed_loss">
           <table class="table table-bordered">
@@ -143,7 +132,7 @@
                 </tr>
                 </thead>
             <tbody>
-                <tr ng-repeat="v in data_loss">
+                <tr ng-repeat="v in loss_hit_list">
                     <td>{$ $index+1 $}</td>
                     <td>{$v.mir_id$}</td>
                     <td>{$ v.snp_id $}</td>
@@ -205,18 +194,47 @@
 				</tr>
             </tbody>
             </table>
-            <p>每页显示<input type="text" ng-model="pagenum" />条数</p>
+            <p>Page:<input type="text" ng-model="page" /></p>
           <p>总条目:{$records_count$}</p>
-            <ul class="pagination pull-right">
-                <li ng-class="{disabled:1==page}"><a ng-click="getPages(page-1<1?1:page-1)">&laquo;</a></li>
-                <li ng-repeat="item in pages" ng-class="{active:item==page}"><a ng-click="getPages(item)" >{$ item $}</a></li>
-                <li ng-class="{disabled:totalPages==page}"><a ng-click="getPages(page+1>totalPages?totalPages:page+1)">&raquo;</a></li>
-            </ul>
+
       </div>
       <div role="tabpanel" class="tab-pane" id="geneutr">gene:snp in utr</div>
       <div role="tabpanel" class="tab-pane" id="mutation">mutation</div>
-      <div role="tabpanel" class="tab-pane" id="ld">LD</div>
-  </div>
+      <div role="tabpanel" class="tab-pane" id="ld">
+          <div class="panel panel-default">
+              <div class="panel-heading" style="background-color: #c4e3f3">
+                  <strong style="color: black">{$ search_ids $}in GWAS LD regions</strong>
+              </div>
+              <div class="panel-body">
+                  <div class="col-lg-9">
+                      <div class="grid" style="width: 850px;height: 405px">
+                          <svg width="800" height="400">
+                              <svg width="800" height="800" ng-repeat="ld in ld_array">
+                                  <text x="0" y="{$ ld.text_y $}" style="stroke: black">{$ ld.population $}</text>
+                                  <rect x="{$ ld.rect_x $}" y="{$ ld.rect_y $}" height="17" width="{$ ld.width $}" fill="blue"></rect>
+                              </svg>
+                              <line ng-x1='250' y1='10' ng-x2='250' y2='400' style="stroke: red;stroke-width: 2;stroke-dasharray: 2;"></line>
+                          </svg>
 
+                      </div>
+                  </div>
+                  <div class="col-lg-3">
+                      <table id="ld_region" class="table table-bordered" align="right">
+                          <tr>
+                              <th style=" vertical-align: middle">population</th>
+                              <th class="text-center">Start</th>
+                              <th class="text-center">End</th>
+                          </tr>
+                          <tr ng-repeat="ld in ld_array">
+                              <td>{$ ld.population $}</td>
+                              <td>{$ ld.start $}</td>
+                              <td>{$ ld.end $}</td>
+                          </tr>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 

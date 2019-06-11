@@ -30,7 +30,8 @@ gain_hit_info = {
     'effect':fields.String
 }
 gain_hit_list = {
-    'gain_hit_list':fields.List(fields.Nested(gain_hit_info))
+    'gain_hit_list':fields.List(fields.Nested(gain_hit_info)),
+    'data_lenth':fields.String
 }
 
 class GainHits(Resource):
@@ -38,22 +39,26 @@ class GainHits(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids',type = str)
+        parser.add_argument('page', type = int, default = 1)
+        parser.add_argument('per_page',type = int,default = 30)
         args = parser.parse_args()
+        page = args['page']
+        per_page = args['per_page']
+        search_ids = args['search_ids']
+        record_skip = (page-1)*per_page
+        condition = {}
         if args['search_ids'] is None:
             return {'hit_list':None}
         if args['search_ids'].lower().startswith('hsa'):
-            mir_id = args['search_ids']
-            gain_hit_list = mongo.db.gain_snpseed_03.find({'mir_id': mir_id})
+            condition = {'mir_id': search_ids}
         elif args['search_ids'].lower().startswith('mir'):
-            mir_id = 'hsa'+args['search_ids']
-            gain_hit_list = mongo.db.gain_snpseed_03.find({'mir_id': mir_id})
+            mir_id = 'hsa'+search_ids
+            condition = {'mir_id': mir_id}
         elif args['search_ids'].lower().startswith('rs'):
-            snp_id = args['search_ids']
-            gain_hit_list = mongo.db.gain_snpseed_03.find({'snp_id': snp_id})
-        else:
-            gain_hit_list ={'mir_id':'tmir','snp_id':'tsnp','utr3_pos':'tutr','query':'tquery','score':'tscore','energy':'tenergy','effect':'tgian'}
-
-        return {'gain_hit_list':list(gain_hit_list)}
+            condition = {'snp_id': search_ids}
+        gain_hit_list = mongo.db.gain_snpseed_03.find(condition).skip(record_skip).limit(per_page)
+        data_lenth = mongo.db.gain_snpseed_03.find(condition).count()
+        return {'gain_hit_list':list(gain_hit_list),'data_lenth':data_lenth}
 
 api.add_resource(GainHits, '/api/gain_hit')
 
@@ -71,7 +76,8 @@ loss_hit_info = {
     'gene_correlation':fields.String
 }
 loss_hit_list = {
-    'loss_hit_list':fields.List(fields.Nested(loss_hit_info))
+    'loss_hit_list':fields.List(fields.Nested(loss_hit_info)),
+    'data_lenth': fields.String
 }
 
 class LossHits(Resource):
@@ -79,25 +85,30 @@ class LossHits(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids', type=str)
+        parser.add_argument('page', type=int, default=1)
+        parser.add_argument('per_page', type=int, default=30)
         args = parser.parse_args()
-        loss_hit_list = [{'mir_id': 'tmir', 'snp_id': 'tsnp', 'utr3_pos': 'tutr', 'effect': 'tloss'}]
+        page = args['page']
+        per_page = args['per_page']
+        search_ids = args['search_ids']
+        record_skip = (page - 1) * per_page
+        condition = {}
         if args['search_ids'] is None:
             return {'hit_list': None}
-        if args['search_ids'].lower().startswith('hsa'):
-            mir_id = args['search_ids']
-            loss_hit_list = mongo.db.loss_snpseed_03.find({'mir_id': mir_id})
-        elif args['search_ids'].lower().startswith('mir'):
-            mir_id = 'hsa' + args['search_ids']
-            loss_hit_list = mongo.db.loss_snpseed_03.find({'mir_id': mir_id})
-        elif args['search_ids'].lower().startswith('rs'):
-            snp_id = args['search_ids']
-            loss_hit_list = mongo.db.loss_snpseed_03.find({'snp_id': snp_id})
-
-        return {'loss_hit_list': list(loss_hit_list)}
+        if search_ids.lower().startswith('hsa'):
+            condition = {'mir_id':search_ids}
+        elif search_ids.lower().startswith('mir'):
+            mir_id = 'hsa-' + search_ids
+            condition = {'mir_id': mir_id}
+        elif search_ids.lower().startswith('rs'):
+            condition = {'snp_id':search_ids}
+        loss_hit_list = mongo.db.loss_snpseed_03.find(condition).skip(record_skip).limit(per_page)
+        data_lenth = mongo.db.loss_snpseed_03.find(condition).count()
+        return {'loss_hit_list': list(loss_hit_list),'data_lenth':data_lenth}
         #return hit_list
 api.add_resource(LossHits,'/api/loss_hit')
 
-browse_ifo = {
+browse_info = {
     'mir_id':fields.String,
     'mir_acc':fields.String,
     'mir_chr':fields.String,
@@ -112,7 +123,7 @@ browse_ifo = {
 }
 
 browse_list = {
-    'browse_list':fields.List(fields.Nested(browse_ifo))
+    'browse_list':fields.List(fields.Nested(browse_info))
 }
 
 class BrowseMir(Resource):
@@ -120,19 +131,18 @@ class BrowseMir(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('chr',type=str)
-        #parser.add_argument('vtype',type=list)
-        #parser.add_argument('loc_region',type=list)
+        parser.add_argument('page', type=int, default=1)
+        parser.add_argument('per_page', type=int, default=30)
         args = parser.parse_args()
+        page = args['page']
+        per_page = args['per_page']
+        chrome = args['chr']
+        record_skip = (page - 1) * per_page
+        condition = {}
         browse_list = []
-        if args['chr']:
-            chrome = args['chr']
-         #   for chrome in args['chr']:
-            browse_list_temp = mongo.db.browseY.find({'mir_chr':chrome})
-            browse_list.extend(browse_list_temp)
-        else:
-            browse_list = [{'mir_id':'hsa-mir-3690','mir_acc':'MI0023561','mir_chr':'chrY','mir_start':'1293918','mir_end':'1293992',
-                        'mir_strand':'+','location':'Premir','count_snp':20,'snp_info':['rs1198477790','rs1281005500','rs765405423'],
-                        'count_mutation':0,'mutation_info':['no_count']}]
+        if chrome:
+            condition = {'mir_chr':chrome}
+        browse_list = mongo.db.browseY.find(condition).skip(record_skip).limit(per_page)
         return {'browse_list':list(browse_list)}
 
 api.add_resource(BrowseMir,'/api/browsemir')
@@ -166,12 +176,11 @@ class SearchMir(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids', type=str)
         args = parser.parse_args()
-        mirinfo = {'mir_id':'init_id'}
-        if args['search_ids']:
-            mirinfo = mongo.db.mirinfo.find_one({'mir_id':args['search_ids']})
-        else:
-            mirinfo = {'mir_id':'no_id'}
-
+        search_ids = args['search_ids']
+        condition = {}
+        if search_ids:
+            condition = {'mir_id':search_ids}
+        mirinfo = mongo.db.mirinfo.find_one(condition)
         return {'mirinfo':mirinfo}
 
 api.add_resource(SearchMir,'/api/mirinfo')
@@ -217,11 +226,9 @@ snpinfo_line = {
     'alt':fields.String,
     'ref_freq':fields.String,
     'alt_freq':fields.String,
-    'freqence':fields.String,
-    'gwas_tag':fields.String,
-    'loc_in_ld':fields.String,
-    'relate_clinvar':fields.String,
-    'relate_cosmic':fields.String
+    'location':fields.String,
+    'identifier':fields.String,
+    'vtype':fields.String
 }
 
 snpinfo = {
@@ -234,16 +241,91 @@ class SnpInfo(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids', type=str)
         args = parser.parse_args()
-        print(args['search_ids'])
-        snpinfo = {'snp_id': args['search_ids']}
-        if args['search_ids']:
-            snpinfo = mongo.db.snpinfo.find_one({'snp_id': args['search_ids']})
-        else:
-            mirinfo = {'snp_id': 'no_id'}
-
-        return {'snpinfo': snpinfo}
+        search_ids = args['search_ids']
+        condition = {}
+        if search_ids:
+            condition = {'snp_id':search_ids}
+        snpinfo = mongo.db.snpinfo.find(condition)
+        print(search_ids)
+        return {'snpinfo': list(snpinfo)}
 
 api.add_resource(SnpInfo,'/api/snpinfo')
+
+tag_info = {
+    'population':fields.String,
+    'ld_start':fields.String,
+    'ld_end':fields.String,
+}
+relate_tag_info = {
+    'population':fields.String,
+    'relate_tag_chr':fields.String,
+    'relate_tag_pos':fields.String,
+    'relate_tag_ld_start':fields.String,
+    'relate_tag_ld_end':fields.String,
+    'd_prime':fields.String,
+    'r2':fields.String
+}
+ld_info_id = {
+'snp_id':fields.String,
+    'snp_chr':fields.String,
+    'snp_position':fields.String,
+    'is_tag':fields.String,
+    'is_ld':fields.String,
+    'location':fields.String,
+    'rela_tag':fields.String,
+}
+ld_info = {
+    '_id':fields.Nested(ld_info_id),
+    'tag_info':fields.Nested(tag_info),
+    'relate_tag_info':fields.Nested(relate_tag_info)
+}
+ld_info_list = {
+    'ld_list':fields.Nested(ld_info),
+    'ld_item_lenth':fields.String
+}
+class LDinfo(Resource):
+    @marshal_with(ld_info_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        search_ids = args['search_ids']
+        print(search_ids)
+        #condition = {}
+        match = {'$match':{
+            'snp_id':search_ids,
+            'is_tag':'1'}}
+        group = {'$group':{
+            '_id':{'snp_id':'$snp_id',
+                   'snp_chr':'$snp_chr',
+                   'snp_position':'$snp_position',
+                   'is_tag':'$is_tag',
+                   'is_ld':'$is_ld',
+                   'location':'$location',
+                   'rela_tag':'$rela_tag'},
+            'tag_info':{'$push':{
+                'population':'$population',
+                'ld_start':'$ld_start',
+                'ld_end':'$ld_end'
+            }},
+            'relate_tag_info':{'$push':{
+                'population':'$population',
+                'relate_tag_chr':'$relate_tag_chr',
+                'relate_tag_pos':'$relate_tag_pos',
+                'relate_tag_ld_start':'$relate_tag_ld_start',
+                'relate_tag_ld_end':'$relate_tag_ld_end',
+                'd_prime':'$d_prime',
+                'r2':'$r2'
+            }}
+        }}
+        pipline = [match,group]
+        ld_list = mongo.db.ld.aggregate(pipline)
+        ld_item_lenth = mongo.db.ld.find({'snp_id':search_ids}).count()
+        return {'ld_list':list(ld_list),'ld_item_lenth':ld_item_lenth}
+
+api.add_resource(LDinfo,'/api/ldinfo')
+
+
 
 snp_summary = {
     'snp_id':fields.String,
