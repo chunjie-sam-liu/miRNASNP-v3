@@ -31,7 +31,7 @@ gain_hit_info = {
 }
 gain_hit_list = {
     'gain_hit_list':fields.List(fields.Nested(gain_hit_info)),
-    'data_lenth':fields.String
+    'data_lenth':fields.Integer
 }
 
 class GainHits(Resource):
@@ -39,23 +39,24 @@ class GainHits(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids',type = str)
-        parser.add_argument('page', type = int, default = 1)
-        parser.add_argument('per_page',type = int,default = 30)
+        #parser.add_argument('page', type = int, default = 1)
+        #parser.add_argument('per_page',type = int,default = 30)
         args = parser.parse_args()
-        page = args['page']
-        per_page = args['per_page']
+        #page = args['page']
+        #per_page = args['per_page']
         search_ids = args['search_ids']
+        page=1
+        per_page=30
         record_skip = (page-1)*per_page
         condition = {}
-        if args['search_ids'] is None:
-            return {'hit_list':None}
-        if args['search_ids'].lower().startswith('hsa'):
-            condition = {'mir_id': search_ids}
-        elif args['search_ids'].lower().startswith('mir'):
-            mir_id = 'hsa'+search_ids
-            condition = {'mir_id': mir_id}
-        elif args['search_ids'].lower().startswith('rs'):
-            condition = {'snp_id': search_ids}
+        if search_ids:
+            if search_ids.lower().startswith('hsa'):
+                condition = {'mir_id': search_ids}
+            elif args['search_ids'].lower().startswith('mir'):
+                mir_id = 'hsa'+search_ids
+                condition = {'mir_id': mir_id}
+            elif args['search_ids'].lower().startswith('rs'):
+                condition = {'snp_id': search_ids}
         gain_hit_list = mongo.db.gain_snpseed_03.find(condition).skip(record_skip).limit(per_page)
         data_lenth = mongo.db.gain_snpseed_03.find(condition).count()
         return {'gain_hit_list':list(gain_hit_list),'data_lenth':data_lenth}
@@ -77,7 +78,7 @@ loss_hit_info = {
 }
 loss_hit_list = {
     'loss_hit_list':fields.List(fields.Nested(loss_hit_info)),
-    'data_lenth': fields.String
+    'data_lenth': fields.Integer
 }
 
 class LossHits(Resource):
@@ -85,12 +86,14 @@ class LossHits(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('search_ids', type=str)
-        parser.add_argument('page', type=int, default=1)
-        parser.add_argument('per_page', type=int, default=30)
+        #parser.add_argument('page', type=int, default=1)
+        #parser.add_argument('per_page', type=int, default=30)
         args = parser.parse_args()
-        page = args['page']
-        per_page = args['per_page']
+        #page = args['page']
+        #per_page = args['per_page']
         search_ids = args['search_ids']
+        page=1
+        per_page=30
         record_skip = (page - 1) * per_page
         condition = {}
         if args['search_ids'] is None:
@@ -239,14 +242,13 @@ class SnpInfo(Resource):
     @marshal_with(snpinfo)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
+        parser.add_argument('query_snp', type=str)
         args = parser.parse_args()
-        search_ids = args['search_ids']
+        query_snp = args['query_snp']
         condition = {}
-        if search_ids:
-            condition = {'snp_id':search_ids}
+        if query_snp:
+            condition = {'snp_id':query_snp}
         snpinfo = mongo.db.snpinfo.find(condition)
-        print(search_ids)
         return {'snpinfo': list(snpinfo)}
 
 api.add_resource(SnpInfo,'/api/snpinfo')
@@ -281,7 +283,7 @@ ld_info = {
 }
 ld_info_list = {
     'ld_list':fields.Nested(ld_info),
-    'ld_item_lenth':fields.String
+    'ld_item_lenth':fields.Integer
 }
 class LDinfo(Resource):
     @marshal_with(ld_info_list)

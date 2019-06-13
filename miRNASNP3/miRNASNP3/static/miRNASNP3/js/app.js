@@ -19,12 +19,12 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/search.html",
                 controller:"SearchController"
             })
-            .when("/search_summary",{
-                templateUrl:"/static/miRNASNP3/pages/search_summary.html",
-                controller:"SearchController"
+            .when("/snp",{
+                templateUrl:"/static/miRNASNP3/pages/snp.html",
+                controller:"SnpController"
             })
-            .when("/search_summary_mir",{
-                templateUrl:"/static/miRNASNP3/pages/search_summary_mir.html",
+            .when("/mirna",{
+                templateUrl:"/static/miRNASNP3/pages/mir.html",
                 controller:"SearchController"
             })
             .when("/download", {
@@ -47,9 +47,9 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/snp.html",
                 controller:"SnpController"
         })
-            .when("/mir",{
-                templateUrl:"/static/miRNASNP3/pages/mir.html",
-                controller:"MirController"
+            .when("/mirna",{
+                templateUrl:"/static/miRNASNP3/pages/mirna.html",
+                controller:"MirnaController"
             })
             .when("/browser",{
                 templateUrl:"/static/miRNASNP3/pages/browser.html",
@@ -66,4 +66,9 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
     .config(function ($interpolateProvider) {
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');
-    });
+    })
+.service('miRNASNP3Service',function(){
+    this.getAPIBaseUrl=function () {
+        return "/miRNASNP"
+    }
+});
