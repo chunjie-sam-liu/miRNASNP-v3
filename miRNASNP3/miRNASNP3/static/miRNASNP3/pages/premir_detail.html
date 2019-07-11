@@ -1,0 +1,131 @@
+<div class="page-header">
+    <h3>Premir:{$premir_info.pre_id$}</h3>
+</div>
+
+<div class="content">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>premir information</h4>
+        </div>
+        <div class="panel-body">
+            <table id="pre" class="table table-condensed" style="word-break:break-all; word-wrap:break-all;">
+                <tbody>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>ID:</strong>
+                    </td>
+                    <td>{$premir_info.pre_id$}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>Accession:</strong>
+                    </td>
+                    <td>{$premir_info.mirinfo[0].pre_acc$}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>Chr Position:</strong>
+                    </td>
+                    <td>
+                        {$premir_info.mirinfo[0].pre_chr$}:{$premir_info.mirinfo[0].pre_start$}-{$premir_info.mirinfo[0].pre_end$}({$premir_info.mirinfo[0].pre_strand$})
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>Host Gene:</strong>
+                    </td>
+                    <td>{$premir_info.resouce$}:{$premir_info.host_gene$}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>Cluster:</strong>
+                    </td>
+                    <td>10kb:
+                        <span ng-repeat="v in premir_info.cluster10k">{$v.pre_id$}, </span><br>
+                        5kb:
+                        <span ng-repeat="v in premir_info.cluster5k">{$v.pre_id$},</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>SNP in Pri:</strong>
+                    </td>
+                    <td>
+                        <span ng-repeat="v in premir_info.snv">{$v$},</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>Cosmic Mut in Pri:</strong>
+                    </td>
+                    <td>
+                        <span ng-repeat="v in premir_info.cosmic">{$ v$},</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;" width="200px">
+                        <strong>Clinvar Mut in Pri:</strong>
+                    </td>
+                    <td>
+                        <span ng-repeat="v in premir_info.clinvar">{$v$},</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-info table-bordered">
+        <div class="panel-heading">Primary miRNA Structure information</div>
+        <div class="panel-body">
+            <div style=";width: 50%; float:left; display:inline">
+            <table class="table table-condensed " style="word-break:break-all; word-wrap:break-all;">
+                <tbody>
+                <tr>
+                    <td colspan="2" class="success" style="text-align: left;font-weight: bold;font-size: 18px">
+                        <span>Primary RNA basic information </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Premir ID</td>
+                    <td>{$premir_info.pre_id$}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Harpin seq</td>
+                    <td>{$premir_info.sequence$}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Pot fold</td>
+                    <td>{$premir_info.dotfold$}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Miniman Free Energy</td>
+                    <td>{$premir_info.mfe$}kCal/mol</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            <div style="width: 50%; float:right; display:inline">
+                <div class="panel-heading">
+                    <h4>Variations Effection on Premir structure </h4>
+                    <div class="panel-body">
+                        <div id='rna_ss'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--link rel='stylesheet' type='text/css' href='/static/miRNASNP3/lib/fornac/app/styles/fornac.css' />
+<script type='text/javascript' src='/static/miRNASNP3/lib/fornac/dist/scripts/fornac.js'></script>
+<script type='text/javascript'>
+        var container = new FornaContainer("#rna_ss", {'applyForce': false});
+        var options = {'structure': '((..((....)).(((....))).))',
+                        'sequence': 'CGCUUCAUAUAAUCCUAAUGACCUAU'
+        };
+
+        container.addRNA(options.structure, options);
+</script-->

@@ -1,0 +1,55 @@
+<div class="panel panel-default" >
+    <div class="panel-heading" >
+        <strong>Clinvar variation summary information</strong>
+    </div>
+    <div paging
+             page="currentPage"
+             page-size=30
+             total="clinvar_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_clinvar_summary(page)"
+        ></div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Chrom</th>
+            <th>Position</th>
+            <th>Clinvar ID</th>
+            <th>Ref</th>
+            <th>Alt</th>
+            <th>location</th>
+            <th>Disease</th>
+            <th>Ralate SNP</th>
+            <th>SNP detail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in clinvar_list">
+            <td>{$ $index+1 $}</td>
+            <td>chr{$ v.chrome$}</td>
+            <td>{$ v.position $}</td>
+            <td>{$ v.clinvar_id$})</td>
+            <td>{$ v.ref$}</td>
+            <td>{$ v.alt $}</td>
+            <td>{$ v.location $}</td>
+            <td>{$ v.disease$}</td>
+            <th>{$ v.snp_rela$}</th>
+            <th>{$v.snp_id$}</th>
+        </tr>
+        </tbody>
+    </table>
+</div>

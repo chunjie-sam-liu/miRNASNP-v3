@@ -1,0 +1,106 @@
+<div class="well"><p>Mature miRNA summery information</p>
+    <p>
+        There are 1913 primary RNAs collected from mirbase v22.43923 SNVs are identified  on orimary RNAs.
+        As for muations,5389 Cosmic mutaions and 75 Clinvar variations are identified on primary RNAs.
+    </p>
+    <form method="get" id="mirna-summary-form" class="form form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-1">Chrome</label>
+            <div class="col-lg-3">
+            <select id="chr" class="selectpicker" data-live-search="true">
+                <option>ALL</option>
+                <option>chr1</option>
+                <option>chr2</option>
+                <option>chr3</option>
+                <option>chr4</option>
+                <option>chr5</option>
+                <option>chr6</option>
+                <option>chr7</option>
+                <option>chr8</option>
+                <option>chr9</option>
+                <option>chr10</option>
+                <option>chr11</option>
+                <option>chr12</option>
+                <option>chr13</option>
+                <option>chr14</option>
+                <option>chr15</option>
+                <option>chr16</option>
+                <option>chr17</option>
+                <option>chr18</option>
+                <option>chr19</option>
+                <option>chr20</option>
+                <option>chr21</option>
+                <option>chr22</option>
+                <option>chrX</option>
+                <option>chrY</option>
+            </select>
+        </div>
+        </div>
+        <div class="form-group" >
+            <label class="control-label col-lg-1">Search</label>
+            <div class="col-lg-3">
+                <input type="text" class="form-control" id="query_mirna_summary" ng-model="query_mirna_summary">
+            </div>
+            <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-mir-6859-1/MI0022705</span>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="search_button" type="button"  ng-click="fetch_primir_summary()" >
+							Submit
+                </button>
+            </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-default" >
+    <div class="panel-heading" >
+        <strong>primir summary information</strong>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>miRNA</th>
+            <th>Accession</th>
+            <th>Position</th>
+            <th>SNPs Count</th>
+            <th>Mutation count</th>
+            <th>Mature miRNAs</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in primir_summary_list">
+            <td><a href="#!/premir_detail?search_ids={$v.mir_info[0].pre_id$}">{$ v.mir_info[0].pre_id$}</a></td>
+            <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.mir_info[0].pre_acc$}" >{$ v.mir_info[0].pre_acc $}</a></td>
+            <td>{$ v.mir_info[0].pre_chr$}:{$v.mir_info[0].pre_start$}-{$v.mir_info[0].pre_end$}({$v.mir_info[0].mir_strand$})</td>
+            <td>{$ v.snp_in_pri$}</td>
+            <td>{$ v.cosmic_in_pri $},{$v.clinvar_in_pri$}</td>
+            <td>
+                <span ng-repeat="m in v.mir_info"><a href="#!/mirna?mirna_id={$m.mir_id$}">{$ m.mir_id$}</a>,</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div paging
+             page="currentPage"
+             page-size=15
+             total="primir_summary_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_primir_summary(page)"
+        ></div>
