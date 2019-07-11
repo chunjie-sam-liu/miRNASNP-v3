@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', 'ui.bootstrap-slider', 'bw.paging'])
+angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', 'ui.bootstrap-slider', 'bw.paging','tableSort'])
     .config(function ($routeProvider) {
         $routeProvider
             .when("/", {
@@ -46,10 +46,30 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
             .when("/snp",{
                 templateUrl:"/static/miRNASNP3/pages/snp.html",
                 controller:"SnpController"
-        })
+            })
             .when("/mirna",{
                 templateUrl:"/static/miRNASNP3/pages/mirna.html",
                 controller:"MirnaController"
+            })
+            .when("/mirna_summary",{
+                templateUrl:"/static/miRNASNP3/pages/mirna_summary.html",
+                controller:"MirSummaryController"
+            })
+            .when("/primir_summary",{
+                templateUrl:"/static/miRNASNP3/pages/primir_summary.html",
+                controller:'PrimirSummaryController'
+            })
+            .when("/premir_detail",{
+                templateUrl:"/static/miRNASNP3/pages/premir_detail.html",
+                controller:'PremirDetailController'
+            })
+            .when("/cosmic_summary",{
+                templateUrl:"/static/miRNASNP3/pages/cosmic_summary.html",
+                controller:"CosmicSummaryController"
+            })
+            .when("/clinvar_summary",{
+                templateUrl:"/static/miRNASNP3/pages/clinvar_summary.html",
+                controller:"ClinvarSummaryController"
             })
             .when("/browser",{
                 templateUrl:"/static/miRNASNP3/pages/browser.html",
@@ -58,6 +78,9 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
             .when("/browserY",{
                 templateUrl:"/static/miRNASNP3/pages/browserY.html",
                 controller:"BrowserController"
+            })
+            .when("/test",{
+                templateUrl:"/static/miRNASNP3/lib/fornac/dist/test.html",
             })
             .otherwise({
                 redirectTo: "/404.html"

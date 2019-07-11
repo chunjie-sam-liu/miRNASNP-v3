@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" >
     <nav class="navbar navbar-default">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
@@ -10,9 +10,21 @@
         </div>
         <div class="collapse navbar-collapse" id="navigation">
             <ul class="nav navbar-nav">
-                <li><a href="#!/mir">miRNA</a> </li>
-                <li><a href="#!/snp">SNP</a> </li>
-                <li><a href="#!/mutation">Mutation</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown"><strong>miRNA</strong><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#!/mirna_summary">mature miRNA</a> </li>
+                        <li><a href="#!/primir_summary">primary miRNA</a></li>
+                    </ul>
+                </li>
+                <li><a href="#!/snp_summary">SNP</a> </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown"><strong>mutation</strong><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#!/cosmic_summary">Cosmic Mutation</a> </li>
+                        <li><a href="#!/clinvar_summary">Clinvar Mutation</a></li>
+                    </ul>
+                </li>
                 <li><a href="#!/search">Search</a></li>
                 <li><a href="#!/tools">AnalysiTools</a></li>
                 <li><a href="#!/download">Download</a> </li>

@@ -64,6 +64,7 @@ function SearchController($scope,$http,$filter,$rootScope) {
             })
 
     };
+
     $scope.search_target_loss = function (page) {
         $scope.$watch($scope.page,function(newValue,oldValue){
             page = newValue;
