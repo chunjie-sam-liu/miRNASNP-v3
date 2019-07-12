@@ -1,14 +1,3 @@
-<div >
-    <h3>Welcome!</h3>
-    <p>Micrornas with SNP on the seed region may targets variate Genes compared with wild type </p>
-    <p>Mirnasnp is an online resource where you can  explor:</p>
-    <ul>
-        <li><a href="#!/search">Target Gain/Loss of microRNA caused by SNP on miR-seed region</a> </li>
-        <li><a href="#!/search">Target Gain/Loss of microRNA caused by SNP on Gene UTR3</a> </li>
-        <li><a href="#!/tools">Predict your own sequence</a> </li>
-    </ul>
-</div>
-
 <div style="padding: 20px 100px 10px" class="ng-scope">
     <div class="input-group">
         <input ng-model="query_item" type="text"  class="form-control" style="border-color: #81C2D6" data-provide="typeahead"
@@ -21,21 +10,111 @@
     </div><!-- /input-group -->
 </div>
 
+<!--div class="alert alert-danger alert-dismissible" ng-show="alert_show" id="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Sorry, your query item is not exist</strong>
+</div-->
 
-
-<div>
-    <a href="#!/mutation">
-        <img src="static/miRNASNP3/img/mutaion.PNG">
-    </a>
-    <a href="#!/snp">
-        <img src="static/miRNASNP3/img/SNP.PNG">
-    </a>
-    <a href="#!/mir">
-        <img src="static/miRNASNP3/img/Tool.PNG"-->
-    </a>
-    <a href="#!/browser">
-    <img src="static/miRNASNP3/img/broswer.PNG">
-    </a>
+<div class="row" style="margin-top: 20px">
+    <div class="col-xs-6 col-sm-6">
+        <div class="panel" style="height: 280px;border-color: #5bc0de">
+            <div class="panel-heading" style="background-color: #A4D3EE">
+                <span>
+                    Welcome to the miRNASNP3 database
+                </span>
+            </div>
+            <div class="panel-body">
+                <span>
+                MicroRNAs(miRNAs) are studied as key factors in the regulation of gene expression involved in different disease.
+                    <span class="badge alert-info">MiRNASNP</span> is a database providing comprehensive resources of single nucleotide polymorphisms (SNPs) in miRNA and genes that may impact miRNA biogenesis and/or miRNA target binding.
+                </span>
+                <!--br>
+                <br>
+                In <span class="badge alert-success">MiRNASNP3</span>, numbers of human lncRNAs and SNPs on them were updated to 141,353 and 10,205,295. Furthermore, we identified 859,534
+                <span class="badge alert-danger">
+                        Cosmic Noncoding Variations
+                    </span>
+                and 315,234
+                <span class="badge alert-danger">
+                        TCGA cancer mutations
+                    </span>
+                based on GRCh38 in these lncRNAs.<-->
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+        <div class="panel" style="height:280px;border-color: #5bc0de">
+            <div class="panel-heading" style="background-color: #A4D3EE">
+                <span>
+                    Updation in MiRNASNP3
+                </span>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><p>Potential functional SNPs increase to 6440089 compared to 365994 in MiRNASNP2</p></li>
+                    <li><p>Mutations from Cosmic and Clinvar are involed </p></li>
+                    <li><p>Disease information from GWAS catalog ,Clinvar,Cosmic are instegramed with SNPs</p></li>
+                    <li><p>Enrichment Analysis of gain/Loss target gene sets are carried out </p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+    <div class="panel panel-info">
+        <div class="panel-body" style = "margin: 10px 0px">
+            <div class="col-md-1"><strong>Citation:</strong></div>
+            <div class="col-md-11">
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4397995/" target="_blank"><strong>An update of miRNASNP database for better SNP selection by GWAS data, miRNA expression and online tools</strong></a><br />
+                <span>Jing Gong<sup>&dagger;</sup>Chunjie Liu, Yuliang Wu,Zhaowu Ma,Hu Chen,and An-Yuan Guo. Database published online April 15,2015</span>
+            </div>
+            <div class="col-md-11">
+            <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/humu.21641" target="_blank"><strong>Genome‐wide identification of SNPs in microRNA genes and the SNP effects on microRNA target binding and biogenesis</strong></a><br />
+            <span>Jing Gong,Y Tong,HM Zhang,K wang,T Hu,G Shan,J Sun*, An-Yuan Guo*. Human Mutation 2011;DOI:10.1002/humu.21641</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!--div class="row">
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+            <img src="static/miRNASNP3/img/miRNA_clink.PNG" style="height: 100px;width:152px">
+            <!--div class="caption" style="text-align: center">
+                <span style="font-size: x-large;" class="center" ><a href="#!/mirna_summary">lncRNA</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+            <img src="static/miRNASNP3/img/SNP_clink.PNG" style="height: 100px;width:152px">
+            <!--div class="caption" style="text-align: center">
+                <span style="font-size: x-large;" class="center" ><a href="#!/snp_summary">lncRNA</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+            <img src="static/miRNASNP3/img/mutation_clink.PNG" style="height: 100px;width:152px">
+            <!--div class="caption" style="text-align: center">
+                <span style="font-size: x-large;" class="center" ><a href="#!/cosmic_summary">lncRNA</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+            <img src="static/miRNASNP3/img/browser_clink.PNG" style="height: 100px;width:152px">
+            <!--div class="caption" style="text-align: center">
+                <span style="font-size: x-large;" class="center" ><a href="#!/browserY">lncRNA</a></span>
+            </div>
+        </div>
+    </div>
+</div-->
+
 
 

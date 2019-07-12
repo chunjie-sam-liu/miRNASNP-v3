@@ -1,0 +1,521 @@
+<div ng-show="error">
+    <div class="alert alert-info" role="alert">
+        Sorry,No item found
+    </div>
+</div>
+
+
+
+<ul class="nav nav-tabs"  ng-show="snpinfo.snp_chr">
+    <li id="one" ng-click="show_one('one')" ng-show="snpinfo.snp_chr" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>SNP Details</strong></a> </li>
+    <li id="two" ng-click="show_one('two')" ng-show="gain_count" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>Gain Target with Snp in Seed</strong></a> </li>
+    <li id="three" ng-click="show_one('three')" ng-show="loss_count" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>Loss Target with Snp in seed</strong></a> </li>
+    <li id="four" ng-click="show_one('four')" ng-show="snv_utr_loss_count" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>Gain Mir with Snp in UTR</strong></a> </li>
+    <li id="five" ng-click="show_one('five')" ng-show="snp.utrloss" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>Loss Mir with Snp in UTR</strong></a> </li>
+    <li id="six" ng-click="show_one('six')" ng-show="ld_list_lenth" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>SNP in LD Region</strong></a> </li>
+    <li id="seven" ng-click="show_one('seven')" ng-show="rcosmic_count||rclinvar_count" style="background-color:white;margin-right: 3px "
+        class="active" ><a data-toggle="tab"><strong>SNP Ralate Mutation</strong></a> </li>
+</ul>
+
+<div ng-show="snpinfo.snp_chr">
+    <div class="panel panel-info" ng-show="one" id="section-1">
+        <div class="panel-heading" >
+            <strong>Basic Information of snp : {$ query_snp $}</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>SNP ID</dt>
+                <dd class="ng-binding">{$ snpinfo.snp_id$}</dd>
+                <dt>SNP Coordinate</dt>
+                <dd class="ng-binding">{$ snpinfo.snp_chr$}:{$snpinfo.snp_coordinate$}</dd>
+                <dt>REF/ALT</dt>
+                <dd class="ng-binidng">{$snpinfo.ref$}({$snpinfo.ref_freq$})/{$snpinfo.alt$}({$snpinfo.alt_freq$})</dd>
+                <dt>Locattion</dt>
+                <dd class="ng-binding">{$ snpinfo.location $}</dd>
+                <dt>Identifier</dt>
+                <dd class="ng-binding">{$ snpinfo.identifier $}</dd>
+                <dt>GWAS Tag</dt>
+                <dd>
+                    <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="tag"></span>
+                    <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!tag"></span>
+                </dd>
+                <dt>Located in LD region</dt>
+                <dd>
+                    <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="ld"></span>
+                    <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!ld"></span>
+                </dd>
+                <dt>Relate Mutation</dt>
+                <dd>
+                    <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="rcosmic_count||rclinvar_count"></span>
+                    <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!rcosmic_count && !rclinvar_count"></span>
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" ng-show="two" id="section-2">
+    <div class="panel-heading" >
+        <strong>{$ query_snp $} in mirna seed region result in target gain</strong>
+    </div>
+    <div paging
+             page="currentPage"
+             page-size=30
+             total="gain_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_target_gain(page)"
+        ></div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>miRNA</th>
+            <th>SNP</th>
+            <th>Gene</th>
+            <th>Gene ACC</th>
+            <th>Transript ID</th>
+            <th>UTR3 Coodinate</th>
+            <th>Site Counts</th>
+            <th>Predict Detail</th>
+            <th>Effect</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in gain_target_list">
+            <td>{$ $index+1 $}</td>
+            <td>{$ v._id.mirna_id$}</td>
+            <td>{$ v._id.snp_id $}</td>
+            <td>{$ v._id.gene$}</td>
+            <td>{$ v._id.acc $}</td>
+            <td>{$ v._id.enst_id $}</td>
+            <td>{$ v._id.utr_chr$}:{$ v._id.utr_start$}-{$v._id.utr_end$}({$ v._id.utr_strand$})</td>
+            <td>{$ v.site_num $}</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
+                        ng-click="modal_gain_site(v.site_info)">Predict Detail
+                </button>
+            </td>
+            <td>Gain</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="panel panel-default" ng-show="three" id="section-3">
+    <div paging
+             page="currentPage"
+             page-size=30
+             total="loss_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_target_loss(page)"
+        ></div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>miRNA</th>
+            <th>SNP</th>
+            <th>Gene</th>
+            <th>Gene ACC</th>
+            <th>Transcript ID</th>
+            <th>UTR3 Coordinate</th>
+            <th>Site counts</th>
+            <th>Predict Detail</th>
+            <th>Experiment Validation</th>
+            <th>Gene Expression Correlation</th>
+            <th>Effect</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in loss_target_list">
+            <td>{$ $index+1 $}</td>
+            <td>{$v._id.mirna_id$}</td>
+            <td>{$ v._id.snp_id $}</td>
+            <td>{$v._id.gene$}</td>
+            <td>{$v._id.acc $}</td>
+            <td>{$ v._id.enst_id $}</td>
+            <td>{$ v._id.utr_chr$}:{$ v._id.utr_start$}-{$v._id.utr_end$}({$ v._id.utr_strand$})</td>
+            <td>{$ v.site_num $}</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
+                        ng-click="modal_loss_site(v.site_info)">Predict Detail
+                </button>
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v._id.experiment_valid"></span>
+                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v._id.experiment_valid"></span>
+            </td>
+            <td>{$ v._id.expression_corelation$}</td>
+            <td>Loss</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="panel panel-default" ng-show="four" id="section-4">
+    <div paging
+             page="currentPage"
+             page-size=30
+             total="snv_utr_loss_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_snvutr_loss(page)"
+        ></div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>miRNA</th>
+            <th>SNP</th>
+            <th>Gene</th>
+            <th>Gene ACC</th>
+            <th>Transcript ID</th>
+            <th>UTR3 Coordinate</th>
+            <th>Site Detail</th>
+            <th>Experiment Validation</th>
+            <th>Gene Expression Correlation</th>
+            <th>Effect</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in snv_utr_loss_list">
+            <td>{$ $index+1 $}</td>
+            <td>{$v.mirna_id$}</td>
+            <td>{$ v.snp_id $}</td>
+            <td>{$v.gene_symbol$}</td>
+            <td>{$v.utr_info.acc $}</td>
+            <td>{$ v.utr_info.enst_id $}</td>
+            <td>{$ v.utr_info.position$}</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
+                        ng-click="modal_loss_site(v)">Predict Detail
+                </button>
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
+                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
+            </td>
+            <td>
+                <span ng-if="v.expr_corelation">{$ v.expr_corelation$}</span>
+                <span ng-if="!v.expr_corelation">-</span>
+            </td>
+            <td>Loss</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="panel panel-default" ng-show="five" id="section-5">
+
+</div>
+
+<div class="panel panel-default" ng-show="six" id="section-6">
+    <div class="panel-heading" style="background-color: #c4e3f3">
+        <strong style="color: black">{$ query_snp $}in GWAS LD regions</strong>
+    </div>
+    <div class="panel-body">
+        <div class="col-lg-9">
+            <div class="grid" style="width: 850px;height: 405px">
+                <svg width="800" height="800">
+                    <svg width="800" height="800" ng-repeat="ld in ld_array">
+                        <text x="0" y="{$ ld.text_y $}" style="stroke: black">{$ ld.population $}</text>
+                        <rect x="{$ ld.rect_x $}" y="{$ ld.rect_y $}" height="17" width="{$ ld.width $}"
+                              fill="blue"></rect>
+                    </svg>
+                    <line ng-x1='{$ snp_line$}' y1='10' ng-x2='{$ snp_line $}' y2='800'
+                          style="stroke: red;stroke-width: 2;stroke-dasharray: 2;"></line>
+                </svg>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <table id="ld_region" class="table table-bordered" align="right">
+                <tr>
+                    <th style=" vertical-align: middle">population</th>
+                    <th class="text-center">Start</th>
+                    <th class="text-center">End</th>
+                </tr>
+                <tr ng-repeat="ld in ld_array">
+                    <td>{$ ld.population $}</td>
+                    <td>{$ ld.start $}</td>
+                    <td>{$ ld.end $}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="row"></div>
+        <div class="col-lg-9">
+            <br>
+            <p> Red vertical line points out GWAS tagSNP</p>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+        <div class="scrollable">
+            <div class="pre-scrollable">
+                <table class="table table-bordered table-condensed table-hover table-striped">
+                    <tr>
+                        <th>Tag SNP</th>
+                        <th>Pubmed</th>
+                        <th>Risk Allele</th>
+                        <th>Risk Allele Frequency</th>
+                        <th>Disease/Trait</th>
+                        <th>Reported Genes</th>
+                        <th>p-value</th>
+                        <th>OR or Beta</th>
+                        <th>95% CI</th>
+                    </tr>
+                    <tbody>
+                    <tr ng-repeat="item in catalog_list">
+                        <td>{$item.snp_id$}</td>
+                        <td>{$ item.pubmed_id $}</td>
+                        <td>{$item.risk_allele $}</td>
+                        <td>{$ item.risk_allele_fre$}</td>
+                        <td>{$ item.disease $}</td>
+                        <td>{$item.reported_gene$}</td>
+                        <td>{$ item.p_value$}</td>
+                        <td>{$item.or_beta$}</td>
+                        <td>{$ item.ci95$}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<div class="panel panel-default" ng-show="seven" id="section-7">
+    <div class="panel panel-default" ng-show="rcosmic_count">
+        <div class="panel-heading" >
+        <strong> {$rcosmic_count$}mutation in cosmic relate with {$ query_snp $}</strong>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>CosmicID</th>
+            <th>Chrome</th>
+            <th>Position</th>
+            <th>Ref</th>
+            <th>Alt</th>
+            <th>RelateSnp</th>
+            <th>Primary site</th>
+            <th>Primary histology</th>
+            <th>PubmedID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat=" line in rcosmic_list">
+            <td>{$ $index +1$}</td>
+            <td>{$ line.ID_NCV $}</td>
+            <td>{$ line.chrome$}</td>
+            <td>{$ line.position $}</td>
+            <td>{$ line.ref$}</td>
+            <td>{$ line.alt$}</td>
+            <td>{$ line.snp_id$}</td>
+            <td>{$ line.Primary_site$}</td>
+            <td>{$ line.Primary_histology $}</td>
+            <td>{$ line.PUBMED_PMID$}</td>
+        </tr>
+        </tbody>
+    </table>
+        <div class="panel panel-default" ng-show="rclinvar_count">
+            <div class="panel-heading">
+                <strong> {$rclinvar_count$} mutation in clinvar relate with {$ query_snp $}</strong>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ClinvarID</th>
+                    <th>Chrome</th>
+                    <th>Position</th>
+                    <th>Ref</th>
+                    <th>Alt</th>
+                    <th>RelateSnp</th>
+                    <th>Disease</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat=" line in rclinvar_list">
+                    <td>{$ $index +1$}</td>
+                    <td>{$ line.clinvar_id $}</td>
+                    <td>{$ line.chrome$}</td>
+                    <td>{$ line.position $}</td>
+                    <td>{$ line.ref$}</td>
+                    <td>{$ line.alt$}</td>
+                    <td>{$ line.snp_id$}</td>
+                    <td>{$ line.disease $}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="fade" tabindex="-1">
+    <div class="dialog">
+        <div class="content"></div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {$ modal_header $}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-condensed">
+                    <tr>
+                        <th>miRNA</th>
+                        <td colspan="2">{$modal_site.mirna_id$}</td>
+                    </tr>
+                    <tr>
+                        <th>SNP</th>
+                        <td colspan="2">{$modal_site.snp_info.snp_id$}:{$modal_site.snp_info.position$}({$modal_site.snp_info.ref$}/{$modal_site.snp_info.alt$})</td>
+                    </tr>
+                    <tr>
+                        <th>Gene</th>
+                        <td colspan="2">{$modal_site.gene_symbol$}({$modal_site.site_info.truncate_start$}-{$modal_site.site_info.truncate_end$})</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">TargetScan</th>
+                        <th class="success" style="width: 50%">start</th>
+                        <th class="success" style="width: 50%">end</th>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px">{$modal_site.site_info.tgs_start$}</td>
+                        <td style="width: 100px">{$modal_site.site_info.tgs_end$}</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5">mirMap</th>
+                        <th class="success" style="width: 50%">start</th>
+                        <th class="success" style="width: 50%">end</th>
+                     </tr>
+                    <tr>
+                        <td style="width: 100px">{$modal_site.site_info.mm_start$}</td>
+                        <td style="width: 100px">{$modal_site.site_info.mm_end$}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><Strong>dg_duplex:</Strong>
+                            {$modal_site.site_info.dg_duplex$}kCal/mol
+                        <strong>dg_binding:</strong>
+                            {$modal_site.site_info.dg_binding$}kCal/mol
+                        <strong>dg_open</strong>
+                            {$modal_site.site_info.dg_open$}kCal/mol</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><Strong>TargetScan Score(From mirMap):</Strong>
+                            {$modal_site.site_info.tgs_score$}
+                        <strong>AU content:</strong>
+                            {$modal_site.site_info.tgs_au$}
+                        <strong>Exact Probility:</strong>
+                            {$modal_site.site_info.prob_exac$}</td>
+                    </tr>
+                    <tr>
+                        <td class="warning" colspan="4">
+                            <pre>{$modal_site.site_info.align_1$}<br>{$modal_site.site_info.align_2$}<br>{$modal_site.site_info.align_3$}<br>{$modal_site.site_info.align_4$}<br>{$modal_site.site_info.align_5$}</pre>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+                 <!--div class="pre-scrollable" >
+                    <table class="table table-bordered"  ts-wrapper>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Site start</th>
+                        <th>Site end</th>
+                        <th>G_duplex(Kcal/mol)</th>
+                        <th>G_binding(Kcal/mol)</th>
+                        <th>G_open(Kcal/mol)</th>
+                        <th>AU_content</th>
+                        <th>3p pair</th>
+                        <th>Targetscan score</th>
+                        <th>Exact probility</th>
+                        <th>Align</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="site in modal_site_list">
+                        <td>{$ $index+1 $}</td>
+                        <td>{$ site.site_end-site.seed_length$}</td>
+                        <td>{$ site.site_end$}</td>
+                        <td>{$ site.dg_duplex$}</td>
+                        <td>{$ site.dg_binding$}</td>
+                        <td>{$ site.dg_open$}</td>
+                        <td>{$ site.tgs_au$}</td>
+                        <td>{$ site.tgs_pairing3p$}</td>
+                        <td>{$ site.tgs_score$}</td>
+                        <td>{$ site.prob_exac$}</td>
+                        <td>
+                            <pre>{$ site.align[0] $}<br>{$site.align[1]$}<br>{$site.align[2]$}<br>{$site.align[3]$}<br>{$site.align[4]$}</pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div-->
+
+
+
+
+
+

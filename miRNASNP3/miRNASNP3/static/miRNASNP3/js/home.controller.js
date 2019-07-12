@@ -45,7 +45,7 @@ function HomeController($scope,$http,$routeParams,$window) {
             window.open("#!/enst?enst=" + query_enst, "_self")
         };
         $scope.filter_mirna = function (query_mirna) {
-            window.open("#!/mirna?mir_id=" + query_mirna, "_self")
+            window.open("#!/mirna?mirna_id=" + query_mirna, "_self")
         };
         $scope.filter_cosmic = function (query_cosmic) {
             window.open("#!/cosmic?cosmic_id=" + query_cosmic, "_self")
