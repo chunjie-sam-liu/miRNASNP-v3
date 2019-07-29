@@ -1,6 +1,6 @@
 import os
 
-with open("/home/fux/fux/miRNASNP3/predict_result/altmir/tgs_altmir_t03_547.res") as infile:
+with open(sys.argv[1]) as infile:
     for line in infile:
         if line.startswith('chr'):
             nline=line.strip().split()
