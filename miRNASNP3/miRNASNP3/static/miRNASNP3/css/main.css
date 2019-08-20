@@ -1,0 +1,145 @@
+.cursor-hand {
+    cursor: pointer; cursor: hand;
+}
+
+.mirna-profile {
+    width: 10px;
+    height: 25px;
+    border: 1px solid;
+    margin: 0 1px 0 1px;
+    display: inline-block;
+}
+
+.lncrna-profile {
+    width: 10px;
+    height: 25px;
+    margin: 0 0 0 0;
+    display: inline-block;
+}
+
+.mirna-profile:hover {
+    border: 2px solid;
+}
+
+.tcga-profile {
+    width: 25px;
+    height: 25px;
+    border: 1px solid;
+    margin: 0 0 0 0;
+    display: inline-block;
+}
+#mirna-binding-div {
+    overflow-y:auto;
+    overflow-x:auto;
+    width: 100%;
+    float:left;
+    min-height:100px;
+    text-align: center;
+}
+
+ul#targets-binding-legend {
+  position: relative;
+  top: -10px;
+  right: -18px;
+  float: right;
+  margin-bottom: -80px;
+  background-color: white;
+  z-index: 1;
+}
+
+ul#targets-binding-legend li img {
+  width: 280px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+
+
+
+.themes{
+    padding: 0px;
+    border: dashed 1px darkblue;
+}
+
+
+.grid{
+    background:
+            -webkit-linear-gradient(top,
+            transparent
+            6px,
+            darkgray
+            7px),
+            -webkit-linear-gradient(left,
+            transparent
+            6px,
+            darkgray
+            7px)
+;
+    background-size:
+            7px
+            7px;
+}
+.dot{border-right:1px dashed red; height:80px;width:10px}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  background-color: lightskyblue;
+
+  margin: 100px auto;
+  -webkit-animation: rotateplane 1.2s infinite ease-in-out;
+  animation: rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+  } 50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+  } 100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+
+.box {
+    width: 355px;
+    height: 500px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+.list {
+    position: absolute;
+}
+
+.navbar-inner {
+    background-color: #473C8B;
+}
+
+
+ul li{
+list-style-type:none;
+}
+
+.nav {
+            list-style-type: none;
+            display: flex;
+        }
+.tabs-process {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            width: 200px;
+            height: 200px;
+        }

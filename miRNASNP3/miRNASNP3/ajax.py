@@ -1,513 +1,359 @@
 import flask_restful
 
-
+import re
 from miRNASNP3 import app, api
 from miRNASNP3.core import mongo
 
 from flask_restful import Resource, fields, marshal_with, reqparse, marshal
 
-'''
-site_info = {
-    'site_start':fields.String,
-    'site_end':fields.String,
-    'g_duplex':fields.String,
-    'g_binding':fields.String,
-    'g_open':fields.String,
-    'au_content':fields.String,
-    'pair3p':fields.String,
-    'tgs_score':fields.String,
-    'pro_exac':fields.String,
-    'pro_bino':fields.String
+mirna_exp_df={
+    'ACC':fields.String,
+    'DLBC':fields.String,
+    'READ':fields.String,
+    'GBM':fields.String,
+    'LGG':fields.String,
+    'THCA':fields.String,
+    'STAD':fields.String,
+    'UCEC':fields.String,
+    'PCPG':fields.String,
+    'CESC':fields.String,
+    'UCS':fields.String,
+    'TGCT':fields.String,
+    'LIHC':fields.String,
+    'CHOL':fields.String,
+    'HNSC':fields.String,
+    'UVM':fields.String,
+    'SKCM':fields.String,
+    'COAD':fields.String,
+    'PAAD':fields.String,
+    'THYM':fields.String,
+    'LUSC':fields.String,
+    'MESO':fields.String,
+    'OV':fields.String,
+    'ESCA':fields.String,
+    'SARC':fields.String,
+    'KIRP':fields.String,
+    'BLCA':fields.String,
+    'PRAD':fields.String,
+    'LUAD':fields.String,
+    'BRCA':fields.String,
+    'KIRC':fields.String,
+    'KICH':fields.String
 }
-gain_hit_info = {
-    'mir_id':fields.String,
-    'snp_id':fields.String,
-    'gene_symbol':fields.String,
-    'gene_acc':fields.String,
-    'enst_id':fields.String,
-    'utr3_pos':fields.String,
-    'site_count':fields.Integer,
-    'predict_info':fields.List(fields.Nested(site_info)),
-    'effect':fields.String
+mirna_expression={
+    'exp_df':fields.Nested(mirna_exp_df),
+    'exp_mean':fields.String,
+    'mir_id':fields.String
 }
-gain_hit_list = {
-    'gain_hit_list':fields.List(fields.Nested(gain_hit_info)),
-    'data_lenth':fields.Integer
+mirna_expression_list={
+    'mirna_expression_list':fields.Nested(mirna_expression),
+    'mirna_expression_count':fields.Integer
 }
 
-class GainHits(Resource):
-    @marshal_with(gain_hit_list)
+class MirExpression(Resource):
+    @marshal_with(mirna_expression_list)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids',type = str)
-        parser.add_argument('page', type = int, default = 1)
-        #parser.add_argument('per_page',type = int,default = 30)
+        parser.add_argument('mirna_id', type=str)
         args = parser.parse_args()
-        #page = args['page']
-        #per_page = args['per_page']
-        search_ids = args['search_ids']
-        page=args['page']
-        per_page=30
-        record_skip = (page-1)*per_page
+        mirna_id = args['mirna_id']
         condition = {}
-        if search_ids:
-            if search_ids.lower().startswith('hsa'):
-                condition = {'mir_id': search_ids}
-            elif args['search_ids'].lower().startswith('mir'):
-                mir_id = 'hsa'+search_ids
-                condition = {'mir_id': mir_id}
-            elif args['search_ids'].lower().startswith('rs'):
-                condition = {'snp_id': search_ids}
-        gain_hit_list = mongo.db.gain_snpseed_03.find(condition).skip(record_skip).limit(per_page)
-        data_lenth = mongo.db.gain_snpseed_03.find(condition).count()
-        return {'gain_hit_list':list(gain_hit_list),'data_lenth':data_lenth}
+        if mirna_id:
+            condition['mir_id']=mirna_id
+            mirna_expression_list=mongo.db.mirna_expression.find(condition)
+            mirna_expression_count=mongo.db.mirna_expression.find(condition).count()
+        else:
+            mirna_expression_list={}
+            mirna_expression_count=0
+        return{'mirna_expression_list':list(mirna_expression_list),'mirna_expression_count':mirna_expression_count}
+api.add_resource(MirExpression,'/api/mirna_expression')
 
-api.add_resource(GainHits, '/api/gain_hit')
-
-loss_hit_info = {
-    'mir_id':fields.String,
-    'snp_id':fields.String,
-    'gene_symbol':fields.String,
-    'gene_acc':fields.String,
-    'enst_id':fields.String,
-    'utr3_pos':fields.String,
-    'site_count':fields.Integer,
-    'predict_info':fields.List(fields.Nested(site_info)),
-    'effect':fields.String,
-    'experiment_valid':fields.String,
-    'gene_correlation':fields.String
-}
-loss_hit_list = {
-    'loss_hit_list':fields.List(fields.Nested(loss_hit_info)),
-    'data_lenth': fields.Integer
-}
-
-class LossHits(Resource):
-    @marshal_with(loss_hit_list)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
-        parser.add_argument('page', type=int, default=1)
-        #parser.add_argument('per_page', type=int, default=30)
-        args = parser.parse_args()
-        #page = args['page']
-        #per_page = args['per_page']
-        search_ids = args['search_ids']
-        page=args['page']
-        per_page=30
-        record_skip = (page - 1) * per_page
-        condition = {}
-        if args['search_ids'] is None:
-            return {'hit_list': None}
-        if search_ids.lower().startswith('hsa'):
-            condition = {'mir_id':search_ids}
-        elif search_ids.lower().startswith('mir'):
-            mir_id = 'hsa-' + search_ids
-            condition = {'mir_id': mir_id}
-        elif search_ids.lower().startswith('rs'):
-            condition = {'snp_id':search_ids}
-        loss_hit_list = mongo.db.loss_snpseed_03.find(condition).skip(record_skip).limit(per_page)
-        data_lenth = mongo.db.loss_snpseed_03.find(condition).count()
-        return {'loss_hit_list': list(loss_hit_list),'data_lenth':data_lenth}
-        #return hit_list
-api.add_resource(LossHits,'/api/loss_hit')
-'''
 site_info={
-    'seed_length':fields.String,
-    'site_end':fields.String,
+    'align_1':fields.String,
+    'align_2':fields.String,
+    'align_3':fields.String,
+    'align_4':fields.String,
+    'align_5':fields.String,
+    'mm_start':fields.String,
+    'mm_end':fields.String,
+    'tgs_start':fields.String,
+    'tgs_end':fields.String,
+    'tgs_score':fields.String,
     'dg_duplex':fields.String,
     'dg_binding':fields.String,
     'dg_open':fields.String,
     'tgs_au':fields.String,
-    'tgs_pairing3p':fields.String,
-    'tgs_score':fields.String,
-    'prob_exac':fields.String,
-    'prob_binomal':fields.String,
-    'align':fields.String,
+    'prob_exac':fields.String(attribute='prob_exxac'),
+    'chrome':fields.String,
+    'curalt':fields.String,
 }
-
-gainsite_id_info={
-        'mirna_id':fields.String,
-        'snp_id':fields.String,
-        'gene':fields.String,
-        'utr_chr':fields.String,
-        'utr_start':fields.String,
-        'utr_end':fields.String,
-        'utr_strand':fields.String,
-        'utr_length':fields.String,
-        'enst_id':fields.String,
-        'acc':fields.String,
+snp_info={
+    'distance':fields.String,
+    'chr':fields.String,
+    'position':fields.String,
+    'snp_id':fields.String,
+    'alt':fields.String,
+    'ref':fields.String
 }
-gain_target={
+gene_exp_df={
+    'ACC':fields.String,
+    'DLBC':fields.String,
+    'READ':fields.String,
+    'GBM':fields.String,
+    'LGG':fields.String,
+    'THCA':fields.String,
+    'STAD':fields.String,
+    'UCEC':fields.String,
+    'PCPG':fields.String,
+    'CESC':fields.String,
+    'UCS':fields.String,
+    'TGCT':fields.String,
+    'LIHC':fields.String,
+    'CHOL':fields.String,
+    'HNSC':fields.String,
+    'UVM':fields.String,
+    'SKCM':fields.String,
+    'COAD':fields.String,
+    'PAAD':fields.String,
+    'THYM':fields.String,
+    'LUSC':fields.String,
+    'MESO':fields.String,
+    'OV':fields.String,
+    'ESCA':fields.String,
+    'SARC':fields.String,
+    'KIRP':fields.String,
+    'BLCA':fields.String,
+    'PRAD':fields.String,
+    'LUAD':fields.String,
+    'BRCA':fields.String,
+    'KIRC':fields.String,
+    'KICH':fields.String
+}
+gene_expression={
+    'exp_df':fields.Nested(gene_exp_df),
+    'exp_mean':fields.String,
+    'symbol':fields.String
+}
+utr_info={
+    'acc':fields.String,
+    'position':fields.String,
+    'enst_id':fields.String,
+    'gene_symbol':fields.String
+}
+gainsite_info={
+    'snp_id':fields.String,
+    'mir_seedstart':fields.String,
+    'strand':fields.String,
+    'mir_seedchr':fields.String,
+    'mir_seedend':fields.String,
+    'mirna_id':fields.String,
+    'gene_symbol':fields.String,
+    'snp_info':fields.Nested(snp_info),
     'site_info':fields.Nested(site_info),
-    '_id':fields.Nested(gainsite_id_info),
-    'site_num':fields.Integer,
+    'utr_info':fields.Nested(utr_info),
+    'gene_expression':fields.Nested(gene_expression),
+    'mirna_expression':fields.Nested(mirna_expression)
+}
+snp_seed_gain={
+   'snp_seed_gain_list':fields.Nested(gainsite_info),
+    'snp_seed_gain_count':fields.Integer
 }
 
-count_info={
-    '_id':fields.String,
-    'count':fields.String,
-}
-
-gain_targte_list={
-    'gain_target_list':fields.Nested(gain_target),
-    'gain_target_count':fields.Nested(count_info)
-}
-
-class GainTargets_Seed(Resource):
-    @marshal_with(gain_targte_list)
+class SnpSeedGain(Resource):
+    @marshal_with(snp_seed_gain)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('mirna_id')
+        parser.add_argument('gene')
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
-        search_ids = args['search_ids']
+        print(args['mirna_id'])
         page = args['page']
-        per_page = 30
+        per_page = 15
         record_skip = (page - 1) * per_page
         condition = {}
-        print(search_ids)
-        if args['search_ids'] is None:
-            return {'hit_list': None}
-        if search_ids.lower().startswith('hsa'):
-            condition = {'mirna_id': search_ids}
-        elif search_ids.lower().startswith('mir'):
-            mir_id = 'hsa-' + search_ids
-            condition = {'mirna_id': mir_id}
-        elif search_ids.lower().startswith('rs'):
-            condition = {'snp_id': search_ids}
+        pipline=[]
+        print(args['mirna_id'])
+        if args['snp_id']:
+            condition['snp_id']=args['snp_id']
+        if args['mirna_id']:
+            condition['mirna_id']=args['mirna_id']
+        if args['gene']:
+            condition['gene_symbol']=args['gene']
+        lookup_gene={'$lookup':{
+            'from':'gene_expression',
+            'localField':'gene_symbol',
+            'foreignField':'symbol',
+            'as':'gene_expression'
+        }}
+        lookup_mirna={'$lookup':{
+            'from':'mirna_expression',
+            'localField':'mirna_id',
+            'foreignField':'mir_id',
+            'as':'mirna_expression'
+
+        }}
         match={'$match':condition}
-        group={
-            '$group':{
-                '_id':{
-                    'snp_id':'$snp_id',
-                    'mirna_id':'$mirna_id',
-                    'gene':'$gene',
-                    'utr_chr':'$utr_chr',
-                    'utr_start':'$utr_start',
-                    'utr_end':'$utr_end',
-                    'utr_strand':'$utr_strand',
-                    'utr_length':'$utr_length',
-                    'enst_id':'$enst_id',
-                    'acc':'$acc',
-                },
-                'site_num':{'$sum':1 },
-                'site_info':{
-                    '$push':{
-                        'site_end':'$site_end',
-                        'seed_length':'$seed_length',
-                        'dg_duplex':'$dg_duplex',
-                        'dg_binding':'$dg_binding',
-                        'dg_open':'$dg_open',
-                        'tgs_au':'$tgs_au',
-                        'tgs_pairing3p':'$tgs_pairing3p',
-                        'tgs_score':'$tgs_score',
-                        'prob_exac':'$prob_exac',
-                        'align':'$align'
-                    }
-                }
-            }
-        }
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
-        count={'$group':{
-            '_id':'null',
-            'count':{'$sum':1}
-        }}
-        pipline=[match,group,skip,limit]
-        pipline_count=[match,group,count]
-        gain_target_list=mongo.db.snvseed_gain_target_siteinfo.aggregate(pipline)
-        gain_target_count=mongo.db.snvseed_gain_target_siteinfo.aggregate(pipline_count)
-        return {'gain_target_list':list(gain_target_list),
-                'gain_target_count':list(gain_target_count)}
+        pipline=[match,skip,limit,lookup_gene,lookup_mirna]
+        snp_seed_gain_list=mongo.db.snv_seed_gain.aggregate(pipline)
+        snp_seed_gain_count=mongo.db.snv_seed_gain.find(condition).count()
+        return {'snp_seed_gain_list':list(snp_seed_gain_list),
+                'snp_seed_gain_count':snp_seed_gain_count}
 
-api.add_resource(GainTargets_Seed,'/api/gain_target_seed')
+api.add_resource(SnpSeedGain,'/api/snp_seed_gain')
 
-gain_site_mut_id_info={
-        'mirna_id':fields.String,
-        'mut_id':fields.String(attribute='cosmic_id'),
-        'gene':fields.String,
-        'utr_chr':fields.String,
-        'utr_start':fields.String,
-        'utr_end':fields.String,
-        'utr_strand':fields.String,
-        'utr_length':fields.String,
-        'enst_id':fields.String,
-        'acc':fields.String,
-}
-gain_target_mut={
-    'site_info':fields.Nested(site_info),
-    '_id':fields.Nested(gain_site_mut_id_info),
-    'site_num':fields.Integer,
+snp_seed_loss_list={
+    'snp_seed_loss_list':fields.Nested(gainsite_info),
+    'snp_seed_loss_count':fields.Integer,
 }
 
-gain_targte_list_mut={
-    'gain_target_list_mut':fields.Nested(gain_target_mut),
-    'gain_target_count_mut':fields.Nested(count_info)
-}
-
-class GainTargets_Seed_Mut(Resource):
-    @marshal_with(gain_targte_list_mut)
+class SnpSeedLoss(Resource):
+    @marshal_with(snp_seed_loss_list)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('mirna_id')
+        parser.add_argument('gene')
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
-        search_ids = args['search_ids']
         page = args['page']
-        per_page = 30
+        per_page = 15
         record_skip = (page - 1) * per_page
         condition = {}
-        print(search_ids)
-        if args['search_ids'] is None:
-            return {'hit_list': None}
-        if search_ids.lower().startswith('hsa'):
-            condition = {'mirna_id': search_ids}
-        elif search_ids.lower().startswith('mir'):
-            mir_id = 'hsa-' + search_ids
-            condition = {'mirna_id': mir_id}
-        match={'$match':condition}
-        group={
-            '$group':{
-                '_id':{
-                    'cosmic_id':'$cosmic_id',
-                    'mirna_id':'$mirna_id',
-                    'gene':'$gene',
-                    'utr_chr':'$utr_chr',
-                    'utr_start':'$utr_start',
-                    'utr_end':'$utr_end',
-                    'utr_strand':'$utr_strand',
-                    'utr_length':'$utr_length',
-                    'enst_id':'$enst_id',
-                    'acc':'$acc',
-                },
-                'site_num':{'$sum':1 },
-                'site_info':{
-                    '$push':{
-                        'site_end':'$site_end',
-                        'seed_length':'$seed_length',
-                        'dg_duplex':'$dg_duplex',
-                        'dg_binding':'$dg_binding',
-                        'dg_open':'$dg_open',
-                        'tgs_au':'$tgs_au',
-                        'tgs_pairing3p':'$tgs_pairing3p',
-                        'tgs_score':'$tgs_score',
-                        'prob_exac':'$prob_exac',
-                        'align':'$align'
-                    }
-                }
-            }
-        }
-        skip={'$skip':record_skip}
-        limit={'$limit':per_page}
-        count={'$group':{
-            '_id':'null',
-            'count':{'$sum':1}
+        print(args['mirna_id'])
+        if args['snp_id']:
+            condition['snp_id']=args['snp_id']
+        if args['mirna_id']:
+            condition['mirna_id']=args['mirna_id']
+        if args['gene']:
+            condition['gene_symbol']=args['gene']
+        lookup_gene = {'$lookup': {
+            'from': 'gene_expression',
+            'localField': 'gene_symbol',
+            'foreignField': 'symbol',
+            'as': 'gene_expression'
         }}
-        pipline=[match,group,skip,limit]
-        pipline_count=[match,group,count]
-        gain_target_list_mut=mongo.db.cosmic_seed_gain_target_siteinfo.aggregate(pipline)
-        gain_target_count_mut=mongo.db.cosmic_seed_gain_target_siteinfo.aggregate(pipline_count)
-        return {'gain_target_list_mut':list(gain_target_list_mut),
-                'gain_target_count_mut':list(gain_target_count_mut)}
+        lookup_mirna = {'$lookup': {
+            'from': 'mirna_expression',
+            'localField': 'mirna_id',
+            'foreignField': 'mir_id',
+            'as': 'mirna_expression'
 
-api.add_resource(GainTargets_Seed_Mut,'/api/gain_target_seed_mut')
+        }}
+        match = {'$match': condition}
+        skip = {'$skip': record_skip}
+        limit = {'$limit': per_page}
+        pipline = [match, skip, limit, lookup_gene,lookup_mirna]
+        snp_seed_loss_list = mongo.db.snv_seed_loss.aggregate(pipline)
+        snp_seed_loss_count = mongo.db.snv_seed_loss.find(condition).count()
+        return {'snp_seed_loss_list': list(snp_seed_loss_list),
+                'snp_seed_loss_count': snp_seed_loss_count}
 
+api.add_resource(SnpSeedLoss,'/api/snp_seed_loss')
 
-
-losssite_id_info={
-        'mirna_id':fields.String,
-        'snp_id':fields.String,
-        'gene':fields.String,
-        'utr_chr':fields.String,
-        'utr_start':fields.String,
-        'utr_end':fields.String,
-        'utr_strand':fields.String,
-        'utr_length':fields.String,
-        'enst_id':fields.String,
-        'acc':fields.String,
-        'experiment_valid':fields.String,
-        'expression_corelation':fields.String,
-
+mut_info={
+    'distance':fields.String,
+    'chr':fields.String,
+    'position':fields.String,
+    'mut_id':fields.String,
+    'alt':fields.String,
+    'ref':fields.String,
+    'cutalt':fields.String
 }
-loss_target={
+
+mut_gainsite_info={
+    'mut_id':fields.String,
+    'mir_seedstart':fields.String,
+    'strand':fields.String,
+    'mir_seedchr':fields.String,
+    'mir_seedend':fields.String,
+    'mirna_id':fields.String,
+    'gene_symbol':fields.String,
+    'mut_info':fields.Nested(mut_info),
     'site_info':fields.Nested(site_info),
-    '_id':fields.Nested(losssite_id_info),
-    'site_num':fields.Integer,
+    'utr_info':fields.Nested(utr_info),
+    'gene_expression':fields.Nested(gene_expression)
+}
+mut_seed_gain_list={
+    'mut_seed_gain_list':fields.Nested(mut_gainsite_info),
+    'mut_seed_gain_count':fields.Integer,
 }
 
-loss_targte_list={
-    'loss_target_list':fields.Nested(loss_target),
-    'loss_target_count':fields.Nested(count_info)
-}
-
-class LossTargets_Seed(Resource):
-    @marshal_with(loss_targte_list)
+class MutSeedGain(Resource):
+    @marshal_with(mut_seed_gain_list)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
+        parser.add_argument('mirna_id', type=str)
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
-        search_ids = args['search_ids']
+        mirna_id = args['mirna_id']
         page = args['page']
-        per_page = 30
+        per_page = 15
         record_skip = (page - 1) * per_page
         condition = {}
-        print(search_ids)
-        if args['search_ids'] is None:
-            return {'hit_list': None}
-        if search_ids.lower().startswith('hsa'):
-            condition = {'mirna_id': search_ids}
-        elif search_ids.lower().startswith('mir'):
-            mir_id = 'hsa-' + search_ids
-            condition = {'mirna_id': mir_id}
-        elif search_ids.lower().startswith('rs'):
-            condition = {'snp_id': search_ids}
+        if args['mirna_id']:
+            condition['mirna_id']=mirna_id;
         match={'$match':condition}
-        group={
-            '$group':{
-                '_id':{
-                    'snp_id':'$snp_id',
-                    'mirna_id':'$mirna_id',
-                    'gene':'$gene',
-                    'utr_chr':'$utr_chr',
-                    'utr_start':'$utr_start',
-                    'utr_end':'$utr_end',
-                    'utr_strand':'$utr_strand',
-                    'utr_length':'$utr_length',
-                    'enst_id':'$enst_id',
-                    'acc':'$acc',
-                    'experiment_valid':'$experiment_valid',
-                    'expression_corelation':'$expression_corelation'
-                },
-                'site_num':{'$sum':1 },
-                'site_info':{
-                    '$push':{
-                        'site_end':'$site_end',
-                        'seed_length':'$seed_length',
-                        'dg_duplex':'$dg_duplex',
-                        'dg_binding':'$dg_binding',
-                        'dg_open':'$dg_open',
-                        'tgs_au':'$tgs_au',
-                        'tgs_pairing3p':'$tgs_pairing3p',
-                        'tgs_score':'$tgs_score',
-                        'prob_exac':'$prob_exac',
-                        'align':'$align'
-                    }
-                }
-            }
-        }
+        print(condition)
+        lookup = {'$lookup': {
+            'from': 'gene_expression',
+            'localField': 'gene_symbol',
+            'foreignField': 'symbol',
+            'as': 'gene_expression'
+        }}
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
-        count={'$group':{
-            '_id':'null',
-            'count':{'$sum':1}
-        }}
-        pipline=[match,group,skip,limit]
-        pipline_count=[match,group,count]
-        loss_target_list=mongo.db.snvseed_loss_target_siteinfo.aggregate(pipline)
-        loss_target_count=mongo.db.snvseed_loss_target_siteinfo.aggregate(pipline_count)
-        return {'loss_target_list':list(loss_target_list),
-                'loss_target_count':list(loss_target_count)}
 
-api.add_resource(LossTargets_Seed,'/api/loss_target_seed')
+        pipline=[match,skip,limit,lookup]
+        mut_seed_gain_list=mongo.db.cosmic_seed_gain.aggregate(pipline)
+        mut_seed_gain_count=mongo.db.cosmic_seed_gain.find(condition).count()
+        return {'mut_seed_gain_list':list(mut_seed_gain_list),
+                'mut_seed_gain_count':mut_seed_gain_count}
 
-loss_site_mut_id_info={
-        'mirna_id':fields.String,
-        'mut_id':fields.String(attribute='cosmic_id'),
-        'gene':fields.String,
-        'utr_chr':fields.String,
-        'utr_start':fields.String,
-        'utr_end':fields.String,
-        'utr_strand':fields.String,
-        'utr_length':fields.String,
-        'enst_id':fields.String,
-        'acc':fields.String,
-        'experiment_valid':fields.String,
-        'expression_corelation':fields.String,
+api.add_resource(MutSeedGain,'/api/mut_seed_gain')
 
-}
-loss_target_mut={
-    'site_info':fields.Nested(site_info),
-    '_id':fields.Nested(loss_site_mut_id_info),
-    'site_num':fields.Integer,
+mut_seed_loss_list={
+    'mut_seed_loss_list':fields.Nested(mut_gainsite_info),
+    'mut_seed_loss_count':fields.Integer,
 }
 
-loss_targte_list_mut={
-    'loss_target_list_mut':fields.Nested(loss_target_mut),
-    'loss_target_count_mut':fields.Nested(count_info)
-}
-
-class LossTargets_Seed_Mut(Resource):
-    @marshal_with(loss_targte_list_mut)
+class MutSeedLoss(Resource):
+    @marshal_with(mut_seed_loss_list)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
+        parser.add_argument('mirna_id', type=str)
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
-        search_ids = args['search_ids']
+        mirna_id = args['mirna_id']
         page = args['page']
-        per_page = 30
+        per_page = 15
         record_skip = (page - 1) * per_page
         condition = {}
-        print(search_ids)
-        if args['search_ids'] is None:
-            return {'hit_list': None}
-        if search_ids.lower().startswith('hsa'):
-            condition = {'mirna_id': search_ids}
-        elif search_ids.lower().startswith('mir'):
-            mir_id = 'hsa-' + search_ids
-            condition = {'mirna_id': mir_id}
+        if args['mirna_id']:
+            condition['mirna_id']=mirna_id;
         match={'$match':condition}
-        group={
-            '$group':{
-                '_id':{
-                    'cosmic_id':'$cosmic_id',
-                    'mirna_id':'$mirna_id',
-                    'gene':'$gene',
-                    'utr_chr':'$utr_chr',
-                    'utr_start':'$utr_start',
-                    'utr_end':'$utr_end',
-                    'utr_strand':'$utr_strand',
-                    'utr_length':'$utr_length',
-                    'enst_id':'$enst_id',
-                    'acc':'$acc',
-                    'experiment_valid':'$experiment_valid',
-                    'expression_corelation':'$expression_corelation'
-                },
-                'site_num':{'$sum':1 },
-                'site_info':{
-                    '$push':{
-                        'site_end':'$site_end',
-                        'seed_length':'$seed_length',
-                        'dg_duplex':'$dg_duplex',
-                        'dg_binding':'$dg_binding',
-                        'dg_open':'$dg_open',
-                        'tgs_au':'$tgs_au',
-                        'tgs_pairing3p':'$tgs_pairing3p',
-                        'tgs_score':'$tgs_score',
-                        'prob_exac':'$prob_exac',
-                        'align':'$align'
-                    }
-                }
-            }
-        }
+        print(condition)
+        lookup = {'$lookup': {
+            'from': 'gene_expression',
+            'localField': 'gene_symbol',
+            'foreignField': 'symbol',
+            'as': 'gene_expression'
+        }}
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
-        count={'$group':{
-            '_id':'null',
-            'count':{'$sum':1}
-        }}
-        pipline=[match,group,skip,limit]
-        pipline_count=[match,group,count]
-        loss_target_list_mut=mongo.db.cosmic_seed_loss_target_siteinfo.aggregate(pipline)
-        loss_target_count_mut=mongo.db.cosmic_seed_loss_target_siteinfo.aggregate(pipline_count)
-        return {'loss_target_list_mut':list(loss_target_list_mut),
-                'loss_target_count_mut':list(loss_target_count_mut)}
 
-api.add_resource(LossTargets_Seed_Mut,'/api/loss_target_seed_mut')
+        pipline=[match,skip,limit,lookup]
+        mut_seed_loss_list=mongo.db.cosmic_seed_loss.aggregate(pipline)
+        mut_seed_loss_count=mongo.db.cosmic_seed_loss.find(condition).count()
+        return {'mut_seed_loss_list':list(mut_seed_loss_list),
+                'mut_seed_loss_count':mut_seed_loss_count}
 
-site_info_line={
+api.add_resource(MutSeedLoss,'/api/mut_seed_loss')
+
+utr_site_info={
     'chrome':fields.String,
     'mm_start':fields.String,
     'mm_end':fields.String,
@@ -550,9 +396,10 @@ snv_utr_loss={
     'expr_corelation':fields.String,
     'snp_info':fields.Nested(snp_info_line),
     'utr_info':fields.Nested(utr_info_line),
-    'site_info':fields.Nested(site_info_line)
+    'site_info':fields.Nested(utr_site_info),
+    'gene_expression': fields.Nested(gene_expression),
+    'mirna_expression': fields.Nested(mirna_expression)
 }
-
 snv_utr_loss_list={
     'snv_utr_loss_list':fields.Nested(snv_utr_loss),
     'snv_utr_loss_count':fields.Integer
@@ -562,25 +409,80 @@ class SnvUtrLoss(Resource):
     @marshal_with(snv_utr_loss_list)
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
+        parser.add_argument('snp_id', type=str)
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
-        search_ids = args['search_ids']
+        snp_id = args['snp_id']
         page = args['page']
-        per_page = 30
+        per_page = 15
         record_skip = (page - 1) * per_page
         condition = {}
-        print(search_ids)
-        if search_ids:
-            condition={'snp_id':search_ids}
-            snv_utr_loss_list=mongo.db.snvutr_loss.find(condition).skip(record_skip).limit(per_page)
-            snv_utr_loss_count=mongo.db.snvutr_loss.find(condition).count()
-        else:
-            snv_utr_loss_list={}
-            snv_utr_loss_count=0
+        if snp_id:
+            condition['snp_id']=snp_id
+        lookup_gene = {'$lookup': {
+                'from': 'gene_expression',
+                'localField': 'gene_symbol',
+                'foreignField': 'symbol',
+                'as': 'gene_expression'
+            }}
+        lookup_mirna = {'$lookup': {
+                'from': 'mirna_expression',
+                'localField': 'mirna_id',
+                'foreignField': 'mir_id',
+                'as': 'mirna_expression'
+            }}
+        print(condition)
+        match = {'$match': condition}
+        skip = {'$skip': record_skip}
+        limit = {'$limit': per_page}
+        pipline = [match, skip, limit, lookup_gene, lookup_mirna]
+        snv_utr_loss_list=mongo.db.snv_utr_loss.aggregate(pipline)
+        snv_utr_loss_count=mongo.db.snv_utr_loss.find(condition).count()
         return {'snv_utr_loss_list':list(snv_utr_loss_list),'snv_utr_loss_count':snv_utr_loss_count}
 
-api.add_resource(SnvUtrLoss,'/api/snvutr_loss')
+api.add_resource(SnvUtrLoss,'/api/snv_utr_loss')
+
+snv_utr_gain_list={
+    'snv_utr_gain_list':fields.Nested(snv_utr_loss),
+    'snv_utr_gain_count':fields.Integer
+}
+
+class SnvUtrGain(Resource):
+    @marshal_with(snv_utr_gain_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('page', type=int, default=1)
+        args = parser.parse_args()
+        snp_id = args['snp_id']
+        page = args['page']
+        per_page = 15
+        record_skip = (page - 1) * per_page
+        condition = {}
+        if snp_id:
+            condition['snp_id']=snp_id
+        lookup_gene = {'$lookup': {
+                'from': 'gene_expression',
+                'localField': 'gene_symbol',
+                'foreignField': 'symbol',
+                'as': 'gene_expression'
+            }}
+        lookup_mirna = {'$lookup': {
+                'from': 'mirna_expression',
+                'localField': 'mirna_id',
+                'foreignField': 'mir_id',
+                'as': 'mirna_expression'
+            }}
+        match = {'$match': condition}
+        skip = {'$skip': record_skip}
+        limit = {'$limit': per_page}
+        print(condition)
+        pipline = [match, skip, limit, lookup_gene, lookup_mirna]
+        snv_utr_gain_list=mongo.db.snv_utr_gain.aggregate(pipline)
+        snv_utr_gain_count=mongo.db.snv_utr_gain.find(condition).count()
+        return {'snv_utr_gain_list':list(snv_utr_gain_list),'snv_utr_gain_count':snv_utr_gain_count}
+
+api.add_resource(SnvUtrGain,'/api/snv_utr_gain')
 
 browse_info = {
     'mir_id':fields.String,
@@ -621,9 +523,7 @@ class BrowseMir(Resource):
 
 api.add_resource(BrowseMir,'/api/browsemir')
 
-
-
-mirinfo_line = {
+mir_summary = {
     'mir_id':fields.String,
     'mir_acc':fields.String,
     'mir_chr':fields.String,
@@ -636,120 +536,17 @@ mirinfo_line = {
     'pre_chr':fields.String,
     'pre_start':fields.String,
     'pre_end':fields.String,
-    'pre_strand':fields.String,
     'harpin_seq':fields.String,
-    'snp_detail':fields.List(fields.String)
-}
-
-mirinfo = {
-    'mirinfo':fields.Nested(mirinfo_line)
-}
-
-class SearchMir(Resource):
-    @marshal_with(mirinfo)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
-        args = parser.parse_args()
-        search_ids = args['search_ids']
-        condition = {}
-        if search_ids:
-            condition = {'mir_id':search_ids}
-        mirinfo = mongo.db.mirinfo.find_one(condition)
-        return {'mirinfo':mirinfo}
-
-api.add_resource(SearchMir,'/api/mirinfo')
-
-class SearchPremir(Resource):
-    @marshal_with(mirinfo)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
-        args = parser.parse_args()
-        search_ids = args['search_ids']
-        condition = {}
-        if search_ids:
-            condition = {'pre_id': search_ids}
-        mirinfo = mongo.db.mirinfo.find_one(condition)
-        return {'mirinfo': mirinfo}
-api.add_resource(SearchPremir,'/api/premirinfo')
-
-mir_cluster5k={
-    'pre_id':fields.String,
-    'cluster5k_id':fields.String
-}
-mir_cluster10k={
-    'pre_id':fields.String,
-    'cluster10k_id':fields.String,
-}
-premir_info={
-    'pre_id':fields.String,
-    'cluster10k_id':fields.String,
-    'cluster5k_id':fields.String,
-    'sequence':fields.String,
-    'dotfold':fields.String,
-    'cosmic':fields.List(fields.String),
-    'clinvar':fields.List(fields.String),
-    'snv':fields.List(fields.String),
-    'resouce':fields.String,
-    'mfe':fields.String,
-    'host_gene':fields.String,
-    'cluster10k':fields.Nested(mir_cluster10k),
-    'cluster5k':fields.Nested(mir_cluster5k),
-    'mirinfo':fields.Nested(mirinfo_line)
-}
-premir_info_list={
-    'premir_info':fields.Nested(premir_info)
-}
-
-class PremirInfo(Resource):
-    @marshal_with(premir_info_list)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
-        args = parser.parse_args()
-        search_ids = args['search_ids']
-        condition = {}
-        print(search_ids)
-        if search_ids:
-            match={'$match':{
-                'pre_id':search_ids
-            }}
-            lookup_cluster10k={'$lookup':{
-                'from':'premir_cluster',
-                'localField':'cluster10k_id',
-                'foreignField':'cluster10k_id',
-                'as':'cluster10k'
-            }}
-            lookup_cluster5k={'$lookup':{
-                'from':'premir_cluster',
-                'localField':'cluster5k_id',
-                'foreignField':'cluster5k_id',
-                'as':'cluster5k'
-            }}
-            lookup_mirinfo={'$lookup':{
-                'from':'mirinfo',
-                'localField':'pre_id',
-                'foreignField':'pre_id',
-                'as':'mirinfo'
-            }}
-            pipline=[match,lookup_cluster5k,lookup_cluster10k,lookup_mirinfo]
-            premir_info=mongo.db.premir_info.aggregate(pipline)
-        else:
-            premir_info={}
-        return {'premir_info':list(premir_info)}
-
-api.add_resource(PremirInfo,'/api/premir_info')
-
-mir_summary = {
-    'mirna_id':fields.String,
     'snp_in_seed':fields.String,
     'snp_in_matue':fields.String,
     'cosmic_in_seed':fields.String,
     'cosmic_in_matue':fields.String,
     'clinvar_in_seed':fields.String,
     'clinvar_in_matue':fields.String,
-    'mir_info':fields.Nested(mirinfo_line)
+    'snv_in_pri':fields.String,
+    'cosmic_in_pri':fields.String,
+    'clinvar_in_pri':fields.String,
+    'pre_strand':fields.String,
 }
 
 mirna_summary_list = {
@@ -770,51 +567,89 @@ class MirSummary(Resource):
         mirna_id=args['mirna_id']
         per_page=15
         record_skip = (page - 1) * per_page
-        #print(mirna_id)
-        pipline=[]
+        print(mirna_id)
         condition={}
-        '''
-        if chrome=="ALL":
-            match_chr={}
-        else:
-            match_chr={'$match':{
-                
-            }}
-            '''
+        if chrome!="All":
+            condition['mir_chr']=chrome
         if mirna_id:
-            match_mir={'$match':{
-                'mirna_id':mirna_id
-            }}
-            pipline.append(match_mir)
-            condition['mirna_id']=mirna_id
-        lookup = {
-            '$lookup':{
-                'from': 'mirinfo',
-                'localField': 'mirna_id',
-                'foreignField': 'mir_id',
-                'as': 'mir_info'
-            }}
-        limit={'$limit':per_page}
-        skip={'$skip':record_skip}
-        pipline = pipline+[lookup,skip,limit]
-        mirna_summary_list = mongo.db.mature_snp_mut_count.aggregate(pipline)
-        mirna_summary_count=mongo.db.mature_snp_mut_count.find(condition).count()
+            condition['mir_id']=mirna_id
+        mirna_summary_list = mongo.db.mirna_summary.find(condition).skip(record_skip).limit(per_page)
+        mirna_summary_count=mongo.db.mirna_summary.find(condition).count()
         return {'mirna_summary_list':list(mirna_summary_list),
                 'mirna_summary_count':mirna_summary_count}
 
 api.add_resource(MirSummary,'/api/mirna_summary')
 
-primir_summary={
-    'primir_id':fields.String,
-    'snp_in_pri':fields.String,
-    'cosmic_in_pri':fields.String,
-    'clinvar_in_pri':fields.String,
-    'mir_info':fields.Nested(mirinfo_line)
+class MirInfo(Resource):
+    @marshal_with(mirna_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        search_ids = args['search_ids']
+        condition = {}
+        print(search_ids)
+        if search_ids:
+            condition = {'mir_id':search_ids}
+            mirna_summary_list = mongo.db.pri_mir_summary.find(condition)
+            mirna_summary_count=mongo.db.pri_mir_summary.find(condition).count()
+        else:
+            mirna_summary_list={}
+            mirna_summary_count=0
+        return {'mirna_summary_list':list(mirna_summary_list),
+                'mirna_summary_count':mirna_summary_count}
+
+api.add_resource(MirInfo,'/api/mirinfo')
+
+mirna_key_list={
+    'mirna_key_list':fields.Nested(mir_summary)
 }
 
+class MirnaKey(Resource):
+    @marshal_with(mirna_key_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mirna_id', type=str)
+        args = parser.parse_args()
+        mirna_id = args['mirna_id']
+        condition = {}
+        if mirna_id:
+            condition['mir_id']={'$regex':mirna_id,'$options':'$i'}
+            print(condition)
+            mirna_key_list = mongo.db.pri_mir_summary.find(condition)
+        else:
+            mirna_key_list = {}
+        return {'mirna_key_list':list(mirna_key_list)}
+api.add_resource(MirnaKey,'/api/mirna_key')
+
+pri_id={
+    'pre_id':fields.String,
+    'pre_chr':fields.String,
+    'pre_acc':fields.String,
+    'pre_start':fields.String,
+    'pre_end':fields.String,
+    'pre_strand':fields.String,
+    'snv_in_pri':fields.String,
+    'cosmic_in_pri':fields.String,
+    'clinvar_in_pri':fields.String,
+}
+
+mature_info={
+    'mir_id':fields.String,
+    'mir_acc':fields.String
+}
+pri_count={
+    '_id':fields.String,
+    'count':fields.String
+}
+
+primir_summary={
+    '_id':fields.Nested(pri_id),
+    'mature_info':fields.Nested(mature_info)
+}
 primir_summary_list={
     'primir_summary_list':fields.Nested(primir_summary),
-    'primir_summary_count':fields.Integer
+    'primir_summary_count':fields.Nested(pri_count)
 }
 
 class PrimirSummary(Resource):
@@ -823,46 +658,229 @@ class PrimirSummary(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('page', type=int, default=1)
         parser.add_argument('chrome', type=str)
-        parser.add_argument('mirna_id')
+        parser.add_argument('pre_id')
         args = parser.parse_args()
         page = args['page']
         chrome = args['chrome']
-        mirna_id = args['mirna_id']
+        pre_id = args['pre_id']
         per_page = 15
         record_skip = (page - 1) * per_page
         print(page)
         pipline = []
-        condition = {}
-        '''
-        if chrome=="ALL":
-            match_chr={}
-        else:
+        if chrome!="All":
             match_chr={'$match':{
-
+                'pre_chr':chrome
             }}
-            '''
-        if mirna_id:
+            pipline.append(match_chr)
+        if pre_id:
             match_mir = {'$match': {
-                'primir_id': mirna_id
+                'pre_id': pre_id
             }}
             pipline.append(match_mir)
-            condition['mirna_id'] = mirna_id
-        lookup = {
-            '$lookup': {
-                'from': 'mirinfo',
-                'localField': 'primir_id',
-                'foreignField': 'pre_id',
-                'as': 'mir_info'
-            }}
+        group={'$group':{
+            '_id':{
+                'pre_id':'$pre_id',
+                'pre_acc':'$pre_acc',
+                'pre_chr':'$pre_chr',
+                'pre_start':'$pre_start',
+                'pre_end':'$pre_end',
+                'pre_strand':'$pre_strand',
+                'snv_in_pri':'$snv_in_pri',
+                'cosmic_in_pri':'$cosmic_in_pri',
+                'clinvar_in_pri':'$clinvar_in_pri'
+            },
+            'mature_info':{'$push':{
+                'mir_id':'$mir_id',
+                'mir_acc':'$mir_acc',
+            }},
+        }}
+        group_sum={'$group':{
+            '_id':'null',
+            'count':{'$sum':1}
+        }}
         limit = {'$limit': per_page}
         skip = {'$skip': record_skip}
-        pipline = pipline+[lookup, skip, limit]
-        primir_summary_list = mongo.db.primir_snp_mut_count.aggregate(pipline)
-        primir_summary_count = mongo.db.primir_snp_mut_count.find(condition).count()
-        return {'primir_summary_list': list(primir_summary_list),
-                'primir_summary_count': primir_summary_count}
+        piplines = pipline+[group, skip, limit]
+        pip_sum=pipline+[group,group_sum]
+        primir_summary_list = mongo.db.pri_mir_summary.aggregate(piplines)
+        primir_summary_count = mongo.db.pri_mir_summary.aggregate(pip_sum)
+        #print(pip_sum)
+        #print(pipline)
+        return {'primir_summary_list': list(primir_summary_list),'primir_summary_count':list(primir_summary_count)}
 
 api.add_resource(PrimirSummary, '/api/primir_summary')
+
+premir_genome={
+    'start':fields.String,
+    'end':fields.String,
+    'stand':fields.String,
+    'chromosome':fields.String
+}
+
+mir_cluster5k={
+    'id':fields.String,
+    'confidence':fields.String,
+    'cluster5k_id':fields.String,
+    'accession':fields.String,
+    'genome':fields.List(fields.Nested(premir_genome)),
+    'rpm':fields.String
+}
+mir_cluster10k={
+    'id':fields.String,
+    'confidence':fields.String,
+    'cluster10k_id':fields.String,
+    'accession':fields.String,
+    'genome':fields.List(fields.Nested(premir_genome)),
+    'rpm':fields.String
+}
+
+premir_info={
+    'pre_id':fields.String,
+    'cluster10k_id':fields.String,
+    'cluster5k_id':fields.String,
+    'sequence':fields.String,
+    'dotfold':fields.String,
+    'cosmic':fields.List(fields.String),
+    'clinvar':fields.List(fields.String),
+    'snv':fields.List(fields.String),
+    'resouce':fields.String,
+    'mfe':fields.String,
+    'host_gene':fields.String,
+    'cluster10k':fields.Nested(mir_cluster10k),
+    'cluster5k':fields.Nested(mir_cluster5k),
+    'mirinfo':fields.Nested(mir_summary),
+    'mature_position':fields.List(fields.List(fields.String))
+}
+premir_info_list={
+    'premir_info':fields.Nested(premir_info)
+}
+
+class PremirInfo(Resource):
+    @marshal_with(premir_info_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        search_ids = args['search_ids']
+        condition = {}
+        print(search_ids)
+        if search_ids:
+            match={'$match':{
+                'pre_id':search_ids
+            }}
+            lookup_cluster10k={'$lookup':{
+                'from':'primir_cluster_advanced',
+                'localField':'cluster10k_id',
+                'foreignField':'cluster10k_id',
+                'as':'cluster10k'
+            }}
+            lookup_cluster5k={'$lookup':{
+                'from':'primir_cluster_advanced',
+                'localField':'cluster5k_id',
+                'foreignField':'cluster5k_id',
+                'as':'cluster5k'
+            }}
+            lookup_mirinfo={'$lookup':{
+                'from':'pri_mir_summary',
+                'localField':'pre_id',
+                'foreignField':'pre_id',
+                'as':'mirinfo'
+            }}
+            pipline=[match,lookup_cluster5k,lookup_cluster10k,lookup_mirinfo]
+            premir_info=mongo.db.premir_info.aggregate(pipline)
+        else:
+            premir_info={}
+        return {'premir_info':list(premir_info)}
+
+api.add_resource(PremirInfo,'/api/premir_info')
+
+pri_alt={
+    'pre_id':fields.String,
+    'pre_start':fields.String,
+    'pre_end':fields.String,
+    'snp_id':fields.String,
+    'snp_chr':fields.String,
+    'snp_position':fields.String,
+    'ref':fields.String,
+    'snp_ref_freq':fields.String,
+    'alt':fields.String(attribute='snp_alt'),
+    'snp_alt_freq':fields.String,
+    'curalt':fields.String,
+    'pre_altseq':fields.String,
+    'dotfold':fields.String,
+    'mfe':fields.String,
+    'pre_strand':fields.String,
+    'pre_acc':fields.String,
+    'rela_loc':fields.String
+}
+
+primir_alt_list={
+    'primir_alt_list':fields.Nested(pri_alt),
+    'primir_alt_count':fields.Integer
+}
+
+class PrimirAlt(Resource):
+    @marshal_with(primir_alt_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        search_ids = args['search_ids']
+        condition = {}
+        print(search_ids)
+        if search_ids:
+            condition['snp_id']=search_ids
+            primir_alt_list=mongo.db.primary_altseq.find(condition)
+            primir_alt_count=mongo.db.primary_altseq.find(condition).count()
+        else:
+            primir_alt_list={}
+            primit_alt_count=0
+
+        return{'primir_alt_list':list(primir_alt_list),'primir_alt_count':primir_alt_count}
+api.add_resource(PrimirAlt,'/api/primir_altseq')
+
+primir_mut={
+    'pre_id':fields.String,
+    'pre_start':fields.String,
+    'pre_end':fields.String,
+    'mut_id':fields.String,
+    'mut_chr':fields.String,
+    'mut_position':fields.String,
+    'ref':fields.String,
+    'alt':fields.String,
+    'pre_altseq':fields.String,
+    'dotfold':fields.String,
+    'mfe':fields.String,
+    'pre_strand':fields.String,
+    'pre_acc':fields.String,
+    'rela_loc':fields.String,
+    'resource':fields.String
+}
+
+primir_mut_list={
+    'primir_mut_list':fields.Nested(primir_mut),
+    'primir_mut_count':fields.Integer
+}
+
+class PrimirMut(Resource):
+    @marshal_with(primir_mut_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mut_id', type=str)
+        args = parser.parse_args()
+        mut_id = args['mut_id']
+        condition = {}
+        if mut_id:
+            condition['mut_id']=mut_id;
+            primir_mut_list=mongo.db.primir_altseq_mut.find(condition)
+            primir_mut_count=mongo.db.primir_altseq_mut.find(condition).count()
+        else:
+            primir_mut_count=0;
+            primir_mut_list={};
+        return{'primir_mut_list':list(primir_mut_list),'primir_mut_count':primir_mut_count}
+
+api.add_resource(PrimirMut,'/api/primir_altseq_mut')
+
 
 snpinfo_line = {
     'snp_id':fields.String,
@@ -874,11 +892,15 @@ snpinfo_line = {
     'alt_freq':fields.String,
     'location':fields.String,
     'identifier':fields.String,
-    'vtype':fields.String
+    'ldsnp':fields.Integer,
+    'mutation_rela':fields.Integer,
+    'gain_count':fields.String,
+    'loss_count':fields.String
 }
 
 snpinfo = {
-    'snpinfo':fields.Nested(snpinfo_line)
+    'snpinfo':fields.Nested(snpinfo_line),
+    'snpinfo_count':fields.Integer
 }
 
 class SnpInfo(Resource):
@@ -886,89 +908,26 @@ class SnpInfo(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('query_snp', type=str)
+        parser.add_argument('page')
         args = parser.parse_args()
+        page=args['page']
         query_snp = args['query_snp']
+        per_page=15
+        record_skip = (int(page) - 1) * int(per_page)
         condition = {}
-        if query_snp:
+        if query_snp=="summary":
+            snpinfo=mongo.db.snp_summary.find().skip(record_skip).limit(per_page)
+            snpinfo_count=mongo.db.snp_summary.find().count()
+        elif query_snp.startswith('rs'):
             condition = {'snp_id':query_snp}
-        snpinfo = mongo.db.snpinfo.find(condition)
-        return {'snpinfo': list(snpinfo)}
+            snpinfo = mongo.db.snp_summary.find(condition)
+            snpinfo_count=mongo.db.snp_summary.find(condition).count()
+        else:
+            snpinfo={}
+            snpinfo_count=0
+        return {'snpinfo': list(snpinfo),'snpinfo_count':snpinfo_count}
 
 api.add_resource(SnpInfo,'/api/snpinfo')
-
-tag_info = {
-    'population':fields.String,
-    'ld_start':fields.String,
-    'ld_end':fields.String,
-}
-relate_tag_info = {
-    'population':fields.String,
-    'relate_tag_chr':fields.String,
-    'relate_tag_pos':fields.String,
-    'relate_tag_ld_start':fields.String,
-    'relate_tag_ld_end':fields.String,
-    'd_prime':fields.String,
-    'r2':fields.String
-}
-ld_info_id = {
-'snp_id':fields.String,
-    'snp_chr':fields.String(attribute='chrome'),
-    'snp_position':fields.String(attribute='position'),
-    'is_tag':fields.String,
-    'is_ld':fields.String,
-    'location':fields.String,
-    'rela_tag':fields.String,
-}
-ld_info = {
-    '_id':fields.Nested(ld_info_id),
-    'tag_info':fields.Nested(tag_info),
-    'relate_tag_info':fields.Nested(relate_tag_info)
-}
-ld_info_list = {
-    'ld_list':fields.Nested(ld_info),
-    'ld_item_lenth':fields.Integer
-}
-class LDinfo(Resource):
-    @marshal_with(ld_info_list)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('search_ids', type=str)
-        args = parser.parse_args()
-        search_ids = args['search_ids']
-        print(search_ids)
-        #condition = {}
-        match = {'$match':{
-            'snp_id':search_ids}
-        }
-        group = {'$group':{
-            '_id':{'snp_id':'$snp_id',
-                   'chrome':'$chrome',
-                   'position':'$position',
-                   'is_tag':'$is_tag',
-                   'is_ld':'$is_ld',
-                   'location':'$location',
-                   'rela_tag':'$rela_tag'},
-            'tag_info':{'$push':{
-                'population':'$population',
-                'ld_start':'$ld_start',
-                'ld_end':'$ld_end'
-            }},
-            'relate_tag_info':{'$push':{
-                'population':'$population',
-                'relate_tag_chr':'$relate_tag_chr',
-                'relate_tag_pos':'$relate_tag_pos',
-                'relate_tag_ld_start':'$relate_tag_ld_start',
-                'relate_tag_ld_end':'$relate_tag_ld_end',
-                'd_prime':'$d_prime',
-                'r2':'$r2'
-            }}
-        }}
-        pipline = [match,group]
-        ld_list = mongo.db.ld_region.aggregate(pipline)
-        ld_item_lenth = mongo.db.ld_region.find({'snp_id':search_ids}).count()
-        return {'ld_list':list(ld_list),'ld_item_lenth':ld_item_lenth}
-
-api.add_resource(LDinfo,'/api/ldinfo')
 
 catalog_line={
     'snp_id':fields.String(attribute='SNPS'),
@@ -995,6 +954,7 @@ class GwasCatalog(Resource):
         parser.add_argument('search_ids', type=str)
         args = parser.parse_args()
         search_ids = args['search_ids']
+        print(search_ids)
         if search_ids:
             condition={'SNPS':search_ids}
             catalog_list = mongo.db.gwas_catalog_alternative.find(condition)
@@ -1006,37 +966,212 @@ class GwasCatalog(Resource):
 
 api.add_resource(GwasCatalog,'/api/gwas_catalog')
 
-snp_summary = {
+tag_info = {
+    'population':fields.String,
+    'ld_start':fields.String,
+    'ld_end':fields.String,
+}
+relate_tag_info = {
+    'population':fields.String,
+    'relate_tag_chr':fields.String,
+    'relate_tag_ld_start':fields.String,
+    'relate_tag_ld_end':fields.String,
+    'd_prime':fields.String,
+    'r2':fields.String
+}
+ld_info_id = {
     'snp_id':fields.String,
-    'locate':fields.String,
-    'identifier':fields.String,
-    'target_gain':fields.Integer,
-    'target_loss':fields.Integer,
-    'snp_info':fields.Nested(snpinfo_line)
+    'snp_chr':fields.String(attribute='chrome'),
+    'snp_position':fields.String(attribute='position'),
+    'is_tag':fields.String,
+    'is_ld':fields.String,
+    'location':fields.String,
+    'rela_tag':fields.String,
+    'relate_tag_pos': fields.String,
 }
 
-snp_summary_list = {
-    'snp_summary_list':fields.Nested(snp_summary)
+ld_info = {
+    '_id':fields.Nested(ld_info_id),
+    'tag_info':fields.Nested(tag_info),
+    'relate_tag_info':fields.Nested(relate_tag_info),
+    'catalog_info':fields.Nested(catalog_line)
+}
+ld_info_list = {
+    'ld_list':fields.Nested(ld_info),
+    'ld_item_lenth':fields.Integer
+}
+class LDinfo(Resource):
+    @marshal_with(ld_info_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('search_ids', type=str)
+        args = parser.parse_args()
+        search_ids = args['search_ids']
+        print(search_ids)
+        #condition = {}
+        match = {'$match':{
+            'snp_id':search_ids}
+        }
+        group = {'$group':{
+            '_id':{'snp_id':'$snp_id',
+                   'chrome':'$chrome',
+                   'position':'$position',
+                   'is_tag':'$is_tag',
+                   'is_ld':'$is_ld',
+                   'location':'$location',
+                   'rela_tag':'$rela_tag',
+                   'relate_tag_pos':'$relate_tag_pos'},
+            'tag_info':{'$push':{
+                'population':'$population',
+                'ld_start':'$ld_start',
+                'ld_end':'$ld_end'
+            }},
+            'relate_tag_info':{'$push':{
+                'population':'$population',
+                'relate_tag_chr':'$relate_tag_chr',
+                'relate_tag_ld_start':'$relate_tag_ld_start',
+                'relate_tag_ld_end':'$relate_tag_ld_end',
+                'd_prime':'$d_prime',
+                'r2':'$r2'
+            }}
+        }}
+        lookup={'$lookup':{
+            'from':'gwas_catalog_alternative',
+            'localField':'_id.rela_tag',
+            'foreignField':'SNPS',
+            'as':'catalog_info'
+        }}
+        pipline = [match,group,lookup]
+        ld_list = mongo.db.ld_region.aggregate(pipline)
+        ld_item_lenth = mongo.db.ld_region.find({'snp_id':search_ids}).count()
+        return {'ld_list':list(ld_list),'ld_item_lenth':ld_item_lenth}
+
+api.add_resource(LDinfo,'/api/ldinfo')
+
+mutation_line={
+    'chrome':fields.String,
+    'position':fields.String,
+    'mut_id':fields.String,
+    'ref':fields.String,
+    'alt':fields.String,
+    'pathology':fields.String,
+    'snp_rela':fields.Integer,
+    'snp_id':fields.String,
+    'location':fields.String,
+    'resource':fields.String,
+    'pubmed_id':fields.String
+}
+mutation_summary={
+    'mutation_summary_list':fields.Nested(mutation_line),
+    'mutation_summary_count':fields.Integer
+}
+
+class MutationSummary(Resource):
+    @marshal_with(mutation_summary)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mut_id', type=str)
+        parser.add_argument('page')
+        parser.add_argument('chrome')
+        parser.add_argument('location')
+        parser.add_argument('resource')
+        parser.add_argument('snp_rela')
+        parser.add_argument('pubmed_id')
+        args = parser.parse_args()
+        print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (page - 1) * per_page
+        condition = {}
+        pipline=[]
+        if args['page']:
+            page=args['page']
+        if args['chrome']!='All':
+            condition['chrome']=args['chrome']
+        if args['location'] != 'All':
+            condition['location']=args['location']
+        if args['resource']!='All':
+            condition['resource']=args['resource'].lower()
+        if args['mut_id']:
+            mut_id=args['mut_id']
+            if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
+                condition['mut_id']=args['mut_id']
+        if args['snp_rela']:
+            condition['snp_rela']=args['snp_rela']
+        if args['pubmed_id']:
+            condition['pubmed_id']={'$exists':True}
+        print(condition)
+        mutation_summary_list=mongo.db.mutation_summary.find(condition).skip(record_skip).limit(per_page)
+        mutation_summary_count=mongo.db.mutation_summary.find(condition).count()
+        print(str(mutation_summary_count))
+        return{'mutation_summary_list':list(mutation_summary_list),'mutation_summary_count':mutation_summary_count}
+
+api.add_resource(MutationSummary,'/api/mutation_summary')
+
+snp_line={
+    'snp_id':fields.String,
+    'snp_chr':fields.String,
+    'snp_coordinate':fields.String,
+    'ref':fields.String,
+    'alt':fields.String,
+    'ref_freq':fields.String,
+    'alt_freq':fields.String,
+    'location':fields.String,
+    'identifier':fields.String,
+    'ldsnp':fields.Integer,
+    'mutation_rela':fields.Integer,
+    'gain_count':fields.String,
+    'loss_count':fields.String
+}
+
+snp_summary_list={
+    'snp_summary_list':fields.Nested(snp_line),
+    'snp_summary_count':fields.Integer
 }
 
 class SnpSummary(Resource):
     @marshal_with(snp_summary_list)
     def get(self):
-        lookup = {'$lookup':{
-            'from':'snpinfo',
-            'localField':'snp_id',
-            'foreignField':'snp_id',
-            'as':'snp_info'
-        }}
-        match = {'$match':{
-            'snp_id':'rs1034533798'
-        }}
-        pipline = [lookup,match]
-        snp_summary_list = mongo.db.snp_summary.aggregate(pipline)
+        parser = reqparse.RequestParser()
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('page')
+        parser.add_argument('chrome')
+        parser.add_argument('location')
+        parser.add_argument('identifier')
+        parser.add_argument('gmaf')
+        parser.add_argument('ldsnp')
+        parser.add_argument('mutation_rela')
+        args = parser.parse_args()
+        print(args['chrome'])
+        page = 1
+        per_page = 15
+        record_skip = (page - 1) * per_page
+        condition = {}
+        pipline = []
+        if args['page']:
+            page = args['page']
+        if args['chrome'] != 'All':
+            condition['snp_chr'] = args['chrome']
+        if args['snp_id']:
+            condition['snp_id']=args['snp_id']
+        if args['identifier']:
+            condition['identifier']=args['identifier']
+        if args['location']!='All':
+            condition['location']=args['location']
+        if args['ldsnp']:
+            condition['ldsnp']=args['ldsnp']
+        if args['mutation_rela']:
+            condition['mutation_rela']=args['mutation_rela']
+        if args['gmaf'] !='All':
+            condition['alt_freq']={'$gt':args['gmaf'][1:]}
+        print(condition)
+        snp_summary_list = mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)
+        snp_summary_count = mongo.db.snp_summary.find(condition).count()
+        print(str(snp_summary_count))
+        return {'snp_summary_list':list(snp_summary_list),'snp_summary_count':snp_summary_count}
 
-        return {'snp_summary_list':list(snp_summary_list)}
+api.add_resource(SnpSummary,'/api/snp_summary')
 
-api.add_resource(SnpSummary,'/api/snp')
 
 cosmic_line = {
     'ID_NCV':fields.String,
@@ -1162,7 +1297,7 @@ class EnrichResult(Resource):
         return {'enrich_result_list':list(enrich_result_list),'enrich_result_count':enrich_result_count}
 
 api.add_resource(EnrichResult,'/api/enrich_result')
-
+'''
 expression_line={
     'mirna_id':fields.String(attribute='name'),
     'normal':fields.String,
@@ -1194,72 +1329,4 @@ class mirExpression(Resource):
         return {'mir_expr_list': list(mir_expr_list), 'mir_expr_count': mir_expr_count}
 
 api.add_resource(mirExpression,'/api/mir_expression')
-'''
-test_fields = {
-    'fields1': fields.String,
-    'fields2': fields.Integer,
-    'fieldsx': fields.String(attribute='fields3'),
-}
-
-
-class FuzzyFoo(Resource):
-    @marshal_with(test_fields)
-    def get(self):
-        a = {'fields1': 'abc', 'fields2': 1, 'fields3': 'ABC'}
-        return a
-
-api.add_resource(FuzzyFoo, '/api/test')
-
-
-lncrna_snp_fields = {
-    'chromosome': fields.String(attribute='chr'),
-    'start': fields.Integer,
-    'end': fields.Integer,
-    'strand': fields.String,
-    'lnc': fields.String,
-    'snp': fields.String(attribute='dbsnp'),
-    'ID': fields.Integer,
-}
-
-class LncRNASNP(Resource):
-    @marshal_with(lncrna_snp_fields)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('ID', type=int)
-        args = parser.parse_args()
-        if args['ID']:
-            lncrna_snp = mongo.db.SNP_lnc_relate.find_one({'ID': args['ID']})
-        else:
-            lncrna_snp = mongo.db.SNP_lnc_relate.find_one()
-        app.logger.debug("lncrna_snp={}".format(lncrna_snp))
-        return lncrna_snp
-
-api.add_resource(LncRNASNP, '/api/lncrna_snp')
-
-
-lncrna_snp_list_fields = {
-    'lncrna_snp_list':  fields.List(fields.Nested(lncrna_snp_fields)),
-    'records_number': fields.Integer
-}
-
-class LncRNASNPList(Resource):
-    @marshal_with(lncrna_snp_list_fields)
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('page', type=int, default=1)
-        parser.add_argument('per_page', type=int, default=30)
-        parser.add_argument('lncrna')
-        args = parser.parse_args()
-        page = args['page']
-        per_page = args['per_page']
-        record_skip = (page - 1) * per_page
-        condition = {}
-        if args['lncrna']:
-            condition = {"lnc": args['lncrna']}
-        lncrna_snp_list = mongo.db.SNP_lnc_relate.find(condition).skip(record_skip).limit(per_page)
-        records_number = mongo.db.SNP_lnc_relate.find().count()
-        print("test")
-        print(records_number)
-        return {"lncrna_snp_sfs": 1,"records_number":records_number}
-api.add_resource(LncRNASNPList, '/api/lncrna_snp_list')
 '''

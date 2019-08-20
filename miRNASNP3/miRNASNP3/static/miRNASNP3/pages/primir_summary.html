@@ -1,4 +1,4 @@
-<div class="well"><p>Mature miRNA summery information</p>
+<div class="well"><p>Precursor miRNA summery information</p>
     <p>
         There are 1913 primary RNAs collected from mirbase v22.43923 SNVs are identified  on orimary RNAs.
         As for muations,5389 Cosmic mutaions and 75 Clinvar variations are identified on primary RNAs.
@@ -7,8 +7,8 @@
         <div class="form-group">
             <label class="control-label col-lg-1">Chrome</label>
             <div class="col-lg-3">
-            <select id="chr" class="selectpicker" data-live-search="true">
-                <option>ALL</option>
+            <select id="chr" class="selectpicker" data-control='{liveSearch:true,size:10}'>
+                <option>All</option>
                 <option>chr1</option>
                 <option>chr2</option>
                 <option>chr3</option>
@@ -65,20 +65,25 @@
             <th>miRNA</th>
             <th>Accession</th>
             <th>Position</th>
-            <th>SNPs Count</th>
-            <th>Mutation count</th>
+            <th>SNPs Count
+                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNVs in this primary RNA.">
+                </span>
+            </th>
+            <th>Mutation count
+                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of Mutationas in this primary RNA.1)Number of Cosmic Mutations;2)Number of Clinvar variations;"></span>
+            </th>
             <th>Mature miRNAs</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="v in primir_summary_list">
-            <td><a href="#!/premir_detail?search_ids={$v.mir_info[0].pre_id$}">{$ v.mir_info[0].pre_id$}</a></td>
-            <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.mir_info[0].pre_acc$}" >{$ v.mir_info[0].pre_acc $}</a></td>
-            <td>{$ v.mir_info[0].pre_chr$}:{$v.mir_info[0].pre_start$}-{$v.mir_info[0].pre_end$}({$v.mir_info[0].mir_strand$})</td>
-            <td>{$ v.snp_in_pri$}</td>
-            <td>{$ v.cosmic_in_pri $},{$v.clinvar_in_pri$}</td>
+            <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$ v._id.pre_id$}</a></td>
+            <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}" >{$ v._id.pre_acc $}</a></td>
+            <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
+            <td>{$ v._id.snv_in_pri$}</td>
+            <td>{$ v._id.cosmic_in_pri $},{$v._id.clinvar_in_pri$}</td>
             <td>
-                <span ng-repeat="m in v.mir_info"><a href="#!/mirna?mirna_id={$m.mir_id$}">{$ m.mir_id$}</a>,</span>
+                <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}" style="color:#FF0000">{$ m.mir_id$}</a>,</span>
             </td>
         </tr>
         </tbody>

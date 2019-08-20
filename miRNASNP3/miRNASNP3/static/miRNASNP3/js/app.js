@@ -15,10 +15,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl: "/static/miRNASNP3/pages/contact.html",
                 controller: "ContactController"
             })
-            .when("/search",{
-                templateUrl:"/static/miRNASNP3/pages/search.html",
-                controller:"SearchController"
-            })
+           // .when("/search",{
+            //    templateUrl:"/static/miRNASNP3/pages/search.html",
+            //    controller:"SearchController"
+            //})
             .when("/snp",{
                 templateUrl:"/static/miRNASNP3/pages/snp.html",
                 controller:"SnpController"
@@ -39,6 +39,18 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl: "/static/miRNASNP3/pages/tools.html",
                 controller: "ToolsController"
             })
+            .when("/predict_result_utr",{
+                templateUrl:"/static/miRNASNP3/pages/predict_result.html",
+                controller:"Predict_UTR_ResultController"
+            })
+            .when("/predict_result_mir",{
+                templateUrl:"/static/miRNASNP3/pages/predict_mir_result.html",
+                controller:"Predict_MIR_ResultController"
+            })
+            .when("/predict_structure",{
+                templateUrl:"/static/miRNASNP3/pages/predict_structure.html",
+                controller:"PredictStructureController"
+            })
             .when("/mutation",{
                 templateUrl:"/static/miRNASNP3/pages/mutation.html",
                 controller:"MutationController"
@@ -55,6 +67,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/mirna_summary.html",
                 controller:"MirSummaryController"
             })
+            .when("/key",{
+                templateUrl:'/static/miRNASNP3/pages/mirna_key.html',
+                controller:'KeyController'
+            })
             .when("/primir_summary",{
                 templateUrl:"/static/miRNASNP3/pages/primir_summary.html",
                 controller:'PrimirSummaryController'
@@ -63,13 +79,21 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/premir_detail.html",
                 controller:'PremirDetailController'
             })
-            .when("/cosmic_summary",{
+           /* .when("/cosmic_summary",{
                 templateUrl:"/static/miRNASNP3/pages/cosmic_summary.html",
                 controller:"CosmicSummaryController"
             })
             .when("/clinvar_summary",{
                 templateUrl:"/static/miRNASNP3/pages/clinvar_summary.html",
                 controller:"ClinvarSummaryController"
+            })*/
+            .when("/mutation_summary",{
+                templateUrl:"/static/miRNASNP3/pages/mutation_summary.html",
+                controller:"MutationSummaryController"
+            })
+            .when("/snp_summary",{
+                templateUrl:"/static/miRNASNP3/pages/snp_summary.html",
+                controller:"SnpSummaryController"
             })
             .when("/browser",{
                 templateUrl:"/static/miRNASNP3/pages/browser.html",

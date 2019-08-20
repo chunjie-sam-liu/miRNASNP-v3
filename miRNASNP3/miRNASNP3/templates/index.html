@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="/static/miRNASNP3/lib/bootstrap-slider/css/bootstrap-slider.css">
     <link rel="stylesheet" href="/static/miRNASNP3/css/main.css">
     <link rel="stylesheet" href="/static/miRNASNP3/lib/bootstrap-select/dist/css/bootstrap-select.css">
-
+    <link rel="stylesheet" href="static/miRNASNP3/lib/angular-tablesort/tablesort.css">
+    <!--link rel='stylesheet' href="/static/miRNASNP3/lib/fornac/app/styles/fornac.css"-->
 
     <script src="/static/miRNASNP3/lib/angular/angular.js"></script>
     <script src="/static/miRNASNP3/lib/angular/angular-route.js"></script>
@@ -27,6 +28,12 @@
     <script src="/static/miRNASNP3/lib/bootstrap-slider/bootstrap-slider.js"></script>
     <script src="/static/miRNASNP3/lib/bootstrap-slider/angular-bootstrap-slider.js"></script>
     <script src="/static/miRNASNP3/lib/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="/static/miRNASNP3/lib/echarts/echarts.min.js"></script>
+    <script src="/static/miRNASNP3/lib/angular-tablesort/angular-tablesort.js"></script>
+
+    <script src="/static/miRNASNP3/lib/fornac/dist/scripts/fornac.js"></script>
+    <!--script src="/static/miRNASNP3/lib/rnautils/dist/scripts/rnautils.js"></script>
+    <script src="/static/miRNASNP3/lib/d3/d3.js"></script-->
 
     <script src="/static/miRNASNP3/js/app.js"></script>
     <script src="/static/miRNASNP3/js/home.controller.js"></script>
@@ -34,21 +41,26 @@
     <script src="/static/miRNASNP3/js/tools.controller.js"></script>
     <script src="/static/miRNASNP3/js/snp.controller.js"></script>
     <script src="/static/miRNASNP3/js/mirna.controller.js"></script>
+    <script src="/static/miRNASNP3/js/mirna_summary.controller.js"></script>
+    <script src="/static/miRNASNP3/js/key.controller.js"></script>
+    <script src="/static/miRNASNP3/js/mutation_summary.controller.js"></script>
+    <script src="/static/miRNASNP3/js/premir_detail.controller.js"></script>
     <script src="/static/miRNASNP3/js/mutation.controller.js"></script>
     <script src="/static/miRNASNP3/js/search.controller.js"></script>
-    <script src="/static/miRNASNP3/js/search_doc.controller.js"></script>
+    <script src="/static/miRNASNP3/js/snp_summary.controller.js"></script>
     <script src="/static/miRNASNP3/js/browser.controller.js"></script>
     <script src="/static/miRNASNP3/js/test.js"></script>
 
 </head>
-<body>
-<a href="#!/">
-    <img src="/static/miRNASNP3/img/miRNASNP2.0_logo.PNG" >
+<body style="background-color: #c4e3f3">
+<!--a href="#!/">
+    <img src="/static/miRNASNP3/img/miRNASNP2.0_logo.PNG" align="middle">
 </a>
-<img src="/static/miRNASNP3/img/miRNASNP3_title.PNG">
-<div ng-include="'/static/miRNASNP3/partials/navigation.html'"></div>
+<img src="/static/miRNASNP3/img/miRNASNP3_title.PNG" align="middle"-->
+<div ng-include="'/static/miRNASNP3/partials/navigation.html'" class="ng-scope">
 
-<div class="container">
+</div>
+<div class="container" style="background-color: floralwhite">
     <div ng-view></div>
 </div>
 

@@ -1,4 +1,8 @@
-<div class="container" >
+<div class="container" style="background-color: floralwhite" ng-controller="NavController">
+    <a href="#!/">
+        <img src="/static/miRNASNP3/img/miRNASNP2.0_logo.PNG" style="width: 150px;height: 100px">
+    </a>
+    <img src="/static/miRNASNP3/img/miRNASNP3_title.PNG" style="width: 900px;height: 100px">
     <nav class="navbar navbar-default">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
@@ -18,19 +22,19 @@
                     </ul>
                 </li>
                 <li><a href="#!/snp_summary">SNP</a> </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown"><strong>mutation</strong><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#!/cosmic_summary">Cosmic Mutation</a> </li>
-                        <li><a href="#!/clinvar_summary">Clinvar Mutation</a></li>
-                    </ul>
-                </li>
-                <li><a href="#!/search">Search</a></li>
-                <li><a href="#!/tools">AnalysiTools</a></li>
+                <li><a href="#!/mutation_summary">Mutation</a></li>
+                <!--li><a href="#!/search">Search</a></li-->
+                <li><a href="#!/tools">Tools</a></li>
                 <li><a href="#!/download">Download</a> </li>
                 <li><a href="#!/document">Document</a></li>
                 <li><a href="#!/contact">Contact</a> </li>
             </ul>
-        </div>
+           <form class="navbar-form navbar-left">
+               <div class="form-group">
+                   <input type="text" class="form-control" placeholder="search" id="nav_search">
+               </div>
+               <button type="submit" class="btn btn-default" ng-click="search_nav_query()">Submit</button>
+           </form>
+    </div>
     </nav>
 </div>
