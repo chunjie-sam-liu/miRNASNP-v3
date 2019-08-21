@@ -1,0 +1,145 @@
+<div class="well"><p>Mutation summery information</p>
+    <p>
+        227225 mutations from COSMIC and 44819 variations from Clinvar are collected in miRNASNP3,some of these muttaions share the same coodinates with SNPs.
+    </p>
+    <form method="get" id="mutation-summary-form" class="form form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-1">Chrome</label>
+            <div class="col-lg-3">
+            <select id="chr" class="selectpicker" data-control='{liveSearch:true,size:10}'>
+                <option>All</option>
+                <option>chr1</option>
+                <option>chr2</option>
+                <option>chr3</option>
+                <option>chr4</option>
+                <option>chr5</option>
+                <option>chr6</option>
+                <option>chr7</option>
+                <option>chr8</option>
+                <option>chr9</option>
+                <option>chr10</option>
+                <option>chr11</option>
+                <option>chr12</option>
+                <option>chr13</option>
+                <option>chr14</option>
+                <option>chr15</option>
+                <option>chr16</option>
+                <option>chr17</option>
+                <option>chr18</option>
+                <option>chr19</option>
+                <option>chr20</option>
+                <option>chr21</option>
+                <option>chr22</option>
+                <option>chrX</option>
+                <option>chrY</option>
+            </select>
+            </div>
+            <label class="control-label col-lg-1">Location</label>
+            <div class="col-lg-3">
+                <select id="location" class="selectpicker" data-live-search="true">
+                    <option>UTR3</option>
+                    <option>miRseed</option>
+                    <option>All</option>
+                </select>
+            </div>
+            <label class="control-label col-lg-1">Resource</label>
+            <div class="col-lg-3">
+                <select id="resource" class="selectpicker" data-live-search="true">
+                    <option>COSMIC</option>
+                    <option>Clinvar</option>
+                    <option>All</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-1">Search</label>
+            <div class="col-lg-3">
+                <input type="text" class="form-control" id="query_mutation_summary" ng-model="query_mutation_summary">
+            </div>
+            <span class="help-block">Input a  COSMIC/Clinvar ID,such as </span>
+            <div class="col-lg-9">
+                <label class="control-label checkbox-inline">
+                    <input type="checkbox" id="snp_rela">
+                    <strong id="snp_rela_1">Relate with SNP</strong>
+                </label>
+                <label class="control-label checkbox-inline">
+                    <!--input type="checkbox"  id="target" ng-click="miRNA_effect = !miRNA_effect"-->
+                    <input type="checkbox" id="is_pubmed">
+                    <strong id="is_pubmed_1">With Pubmend ID</strong>
+              </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="search_button" type="button" ng-click="fetch_mutation_summary(page)" >
+							Submit
+                </button>
+            </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-default" >
+    <div class="panel-heading" >
+        <strong>Cosmic mutation summary information</strong>
+    </div>
+
+    <table class="table table-bordered" style="table-layout: fixed">
+        <thead>
+        <tr>
+            <th>Chrome</th>
+            <th>Position</th>
+            <th>Mutation ID</th>
+            <th>Ref/Alt</th>
+            <th>Pathology</th>
+            <th>Location</th>
+            <th>Ralate SNP</th>
+            <th>Pubmed ID</th>
+            <th>Resource</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in mutation_summary_list">
+            <!--td>{$ $index+1 $}</td-->
+            <td>{$ v.chrome$}</td>
+            <td>{$ v.position $}</td>
+            <td>{$ v.mut_id$}</td>
+            <td>{$ v.ref$}/{$v.alt$}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology$}">{$ v.pathology$}</td>
+            <td>{$v.location $}</td>
+            <td align="center">
+                <span ng-if="v.snp_id">{$ v.snp_id $}</span>
+                <span ng-if="!v.snp_id">-</span>
+            </td>
+            <td align="center">
+                <span ng-if="v.pubmed_id">{$ v.pubmed_id$}</span>
+                <span ng-if="!v.pubmed_id">-</span>
+            </td>
+            <td>{$v.resource$}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div paging
+             page="currentPage"
+             page-size=15
+             total="mutation_summary_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_mutation_summary(page)"
+        ></div>

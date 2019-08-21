@@ -1,0 +1,20 @@
+<div ng-show="option_key">
+    <div class="well">Your query item is {$query_mirna$}</div>
+    <div class="well">
+        <table width="100%" border="0" cellpadding="0" style="table-layout: fixed">
+            <tbody>
+            <tr ng-repeat="mir in mirna_keys" style="display: inline">
+                <td><a href="#!/mirna?mirna_id={$mir$}">
+                    <span style="margin-right: 20px">{$mir$}</span>
+                </a> </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div ng-show="error">
+    <div class="alert alert-info" role="alert">
+        Sorry,your query item is not exists in our database
+    </div>
+</div>

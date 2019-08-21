@@ -1,0 +1,168 @@
+<div class="well"><p>SNPs summery information</p>
+    <p>
+        4666 SNVs in microRNA seed region and 6435423 SNVs in UTR3 are indentified in miRNASNP3.
+    </p>
+    <form method="get" id="snp-summary-form" class="form form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-1">Chrome</label>
+            <div class="col-lg-3">
+            <select id="chr" class="selectpicker" data-live-search="true">
+                <option>All</option>
+                <option>chr1</option>
+                <option>chr2</option>
+                <option>chr3</option>
+                <option>chr4</option>
+                <option>chr5</option>
+                <option>chr6</option>
+                <option>chr7</option>
+                <option>chr8</option>
+                <option>chr9</option>
+                <option>chr10</option>
+                <option>chr11</option>
+                <option>chr12</option>
+                <option>chr13</option>
+                <option>chr14</option>
+                <option>chr15</option>
+                <option>chr16</option>
+                <option>chr17</option>
+                <option>chr18</option>
+                <option>chr19</option>
+                <option>chr20</option>
+                <option>chr21</option>
+                <option>chr22</option>
+                <option>chrX</option>
+                <option>chrY</option>
+            </select>
+            </div>
+            <label class="control-label col-lg-1">Location</label>
+            <div class="col-lg-3">
+                <select id="location" class="selectpicker" data-live-search="true">
+                    <option>UTR3</option>
+                    <option>mirseed</option>
+                    <option>All</option>
+                </select>
+            </div>
+            <label class="control-label col-lg-1">GMAF</label>
+            <div class="col-lg-3">
+                <select id="gmaf" class="selectpicker" data-live-search="true">
+                    <option>&gt;0.05</option>
+                    <option>&gt;0.01</option>
+                    <option>All</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-1">SNP</label>
+            <div class="col-lg-3">
+                <input type="text" class="form-control" id="query_snp_summary" ng-model="query_snp_summary">
+            </div>
+            <span class="help-block">Input a  SNP ID,such as rs1079033</span>
+            <label class="control-label col-lg-1">Identifier</label>
+            <div class="col-lg-3">
+                <input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary">
+            </div>
+            <span class="help-block">Input a  Gene/miRNA,such as hsa-miR-9985</span>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-9">
+                <label class="control-label checkbox-inline">
+                    <input type="checkbox" id="ldsnp">
+                    <strong id="ldsnp_1">LD SNP</strong>
+                </label>
+                <label class="control-label checkbox-inline">
+                    <!--input type="checkbox"  id="target" ng-click="miRNA_effect = !miRNA_effect"-->
+                    <input type="checkbox" id="mutation_rela">
+                    <strong id="mutation_rela_1">Relate with mutation</strong>
+              </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="search_button" type="button" ng-click="fetch_snp_summary(page)" >
+							Submit
+                </button>
+            </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-default" >
+    <div class="panel-heading" >
+        <strong>SNPs summary information</strong>
+    </div>
+
+    <table class="table table-bordered" style="table-layout: fixed">
+        <thead>
+        <tr>
+            <th width="5%">Chrome</th>
+            <th width="7%">Position</th>
+            <th width="8%">SNP ID</th>
+            <th width="5%">Ref/Alt</th>
+            <th width="8%">Ref frequency</th>
+            <th width="10%">Alt frequency</th>
+            <th width="7%">Location</th>
+            <th width="10%">Identifier
+            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="The SNV locate in the gene/miRNA"></span></th>
+            <th width="5%">LD SNP
+            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Weather the SNV is a tagSNP or locate in the linkage disequilibrium of another tagSNP"></span></th>
+            <th width="8%">Mutation Related
+            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Weather the SNV share coordinate with a mutation from Cosmic/Clinvar"></span></th>
+            <th width="5%">Gain
+            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of gain targets with the SNV "></span></th>
+            <th width="5%">Loss
+            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of loss targets with the SNV"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in snp_summary_list">
+            <td >{$v.snp_chr$}</td>
+            <td >{$v.snp_coordinate$}</td>
+            <td >{$v.snp_id$}</td>
+            <td >{$v.ref$}/{$v.alt$}</td>
+            <td align="center">
+                <span ng-if="!v.ref_freq">-</span>
+                <span ng-if="v.ref_freq">{$v.ref_freq$}</span>
+            </td>
+            <td align="center">
+                <span ng-if="!v.alt_freq">-</span>
+                <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+            </td>
+            <td>{$v.location$}</td>
+            <td>{$v.identifier$}</td>
+            <td>
+                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
+                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
+                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
+            </td>
+            <td>{$v.gain_count$}</td>
+            <td>{$v.loss_count$}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div paging
+             page="currentPage"
+             page-size=15
+             total="snp_summary_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_snp_summary(page)"
+        ></div>

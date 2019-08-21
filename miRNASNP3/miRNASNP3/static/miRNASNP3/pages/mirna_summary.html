@@ -1,0 +1,147 @@
+
+<div class="well"><p>Mature miRNA summery information</p>
+    <p>
+        There are 2652 mature miRNA derived from 1913 primary RNA.17316 SNVs are identified  on mature miRNA,while 4666 SNVs on the seed region.
+        As for muations,2114 Cosmic mutaions and 41 Clinvar variations are identified on mature miRNA,while 522 Cosmic mutations and 11 Clinvar variations are on the seed region
+    </p>
+    <form method="get" id="mirna-summary-form" class="form form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-1">Chrome</label>
+            <div class="col-lg-3">
+            <select id="chr" class="selectpicker" data-control='{liveSearch:true,size:10}'>
+                <option>All</option>
+                <option>chr1</option>
+                <option>chr2</option>
+                <option>chr3</option>
+                <option>chr4</option>
+                <option>chr5</option>
+                <option>chr6</option>
+                <option>chr7</option>
+                <option>chr8</option>
+                <option>chr9</option>
+                <option>chr10</option>
+                <option>chr11</option>
+                <option>chr12</option>
+                <option>chr13</option>
+                <option>chr14</option>
+                <option>chr15</option>
+                <option>chr16</option>
+                <option>chr17</option>
+                <option>chr18</option>
+                <option>chr19</option>
+                <option>chr20</option>
+                <option>chr21</option>
+                <option>chr22</option>
+                <option>chrX</option>
+                <option>chrY</option>
+            </select>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <label class="control-label col-lg-1">Search</label>
+            <div class="col-lg-3">
+                <input type="text" class="form-control" id="query_mirna_summary" ng-model="query_mirna_summary">
+            </div>
+            <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-let-7a-3p/MIMAT0010195</span>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="search_button" type="button" ng-click="fetch_mirna_summary()" >
+							Submit
+                </button>
+            </span>
+            </div>
+        </div>
+        <!--div class="form-group form-inline">
+            <label class="control-label col-lg-1">miRNA Name</label>
+            <div class="col-lg-2">
+                <select class="form-control" id="gmaf">
+                    <option>ALL</option>
+                    <option>>0.05</option>
+                    <option>>0.01</option>
+                </select>
+            </div>
+            <div class="col-lg-9">
+                <label class="control-label checkbox-inline">
+                    <input type="checkbox" id="ld">
+                    <strong id="gwas_ld">in GWAS LD regions</strong>
+                </label>
+                <label class="control-label checkbox-inline" >
+                    <input type="checkbox"  id="target" ng-click="miRNA_effect = !miRNA_effect">
+                    <strong id="mirna_lncrna"><span ng-click="miRNA_effect = !miRNA_effect" class="cursor-hand">impact miRNA:lncRNA<span></span></strong>
+                </label>
+                <label class="control-label checkbox-inline">
+                    <input type="checkbox" id="effect">
+                    <strong id="structure">impact lncRNA structure</strong>
+                </label>
+            </div>
+            <div ng-show="miRNA_effect">
+                <label class="control-label">
+                    <input type="checkbox" id="exp">
+                    <strong>miRNA:lncRNA interaction experimentally supported</strong>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-offset-1 col-lg-3">
+                <button class="btn btn-success" type="submit" ng-click="search_click(position_query,gmaf)">Search</button>
+                <button class="btn btn-danger" type="reset" ng-click="cancel_click()">Cancel</button>
+            </div>
+        </div-->
+    </form>
+</div>
+
+<div class="panel panel-default" >
+    <div class="panel-heading" >
+        <strong>Mirna summary information</strong>
+    </div>
+
+    <table class="table table-bordered" ts-wrapper>
+        <thead>
+        <tr>
+            <th ts-criteria="mir_id" style="width: 14%">miRNA</th>
+            <th ts-criteria="mir_acc"style="width: 14%">Accession</th>
+            <th ts-criteria="mir_start" style="width: 24%">Position</th>
+            <th ts-criteria="snp_in_seed" style="width: 12%">SNVs Count
+                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNPs in this miRNA.1)Number of SNPs in seed region;2)Number of SNPs in mature miRNA;"></span></th>
+            <th ts-criteria="cosmic_in_seed" style="width: 12%">Mutation count
+                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of mutations in this miRNA.1)Number of Cosmic mutation in the seed region;2)Number of Cosmic mutaions in mature miRNA;3)Number of Clinvar variations in the seed region;4)Number of Clinvar variation in mature miRNA;"></span></th>
+            <th ts-criteria="pre_id|parseFloat" style="width: 14%">Primary MiRNA</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in mirna_summary_list" ts-repeat>
+            <td><a href="#!/mirna?mirna_id={$v.mir_id$}" style="color:#FF0000">{$ v.mir_id$}</a></td>
+            <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.mir_acc$}">{$ v.mir_acc $}</a></td>
+            <td>{$ v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
+            <td>{$ v.snp_in_seed$},{$v.snp_in_matue$}</td>
+            <!--td>{$v.snp_in_matue$}</td-->
+            <td>{$ v.cosmic_in_seed $},{$ v.cosmic_in_matue$},{$v.clinvar_in_seed$},{$v.clinvar_in_matue$}</td>
+            <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color:#FF0000">{$ v.pre_id$}</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div paging
+             page="currentPage"
+             page-size=15
+             total="mirna_summary_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_mirna_summary(page)"
+        ></div>

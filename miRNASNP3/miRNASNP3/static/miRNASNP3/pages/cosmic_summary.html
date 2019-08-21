@@ -1,0 +1,58 @@
+<div class="panel panel-default" >
+    <div class="panel-heading" >
+        <strong>Cosmic mutation summary information</strong>
+    </div>
+
+    <table class="table table-bordered" style="table-layout: fixed">
+        <thead>
+        <tr>
+            <th>Chrome</th>
+            <th>Position</th>
+            <th>Cosmic ID</th>
+            <th>Ref/Alt</th>
+            <th>Location</th>
+            <th>Primary Histology</th>
+            <th>Primary Site</th>
+            <th>Pubmed ID</th>
+            <!--th>Ralate SNP</th-->
+            <th>SNP detail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="v in cosmic_list">
+            <!--td>{$ $index+1 $}</td-->
+            <td>chr{$ v.chrome$}</td>
+            <td>{$ v.position $}</td>
+            <td>{$ v.ID_NCV$}</td>
+            <td>{$ v.ref$}/{$v.alt$}</td>
+            <td>{$ v.location $}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.Primary_histology$}">{$ v.Primary_histology$}</td>
+            <th style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.Primary_site$}">{$ v.Primary_site$}</th>
+            <th>{$ v.PUBMED_PMID$}</th>
+            <!--th>{$ v.snp_rela$}</th-->
+            <th><a href="#!/snp?snp_id={$v.snp_id$}">{$v.snp_id$}</a></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div paging
+             page="currentPage"
+             page-size=30
+             total="cosmic_count"
+             scroll-top="true"
+             hide-if-empty="true"
+             show-prev-next="true"
+             show-first-last="true"
+             text-title-page="Page {page} Hover Over"
+             text-title-first="First hover"
+             text-title-last="Last hover"
+             text-title-next="Next hover"
+             text-title-prev="Prev hover"
+             show-prev-next="true"
+             show-first-last="true"
+             ul-class="pagination"
+             active-class="active"
+             disabled-class="disabled"
+             paging-action="fetch_cosmic_summary(page)"
+        ></div>

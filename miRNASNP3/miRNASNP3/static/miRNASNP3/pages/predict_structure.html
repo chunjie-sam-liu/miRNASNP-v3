@@ -1,0 +1,74 @@
+<p>Predict result of SNP in primary miRNA impact on primary miRNA structure </p>
+
+<div class="text-center" ng-show="loading">
+    <img src="/static/miRNASNP3/graph/loading.gif" alt="loading...">
+</div>
+
+<div ng-show="no_result">
+    <p style="color: red">No targets found of query sequence.</p>
+</div>
+
+<div class="panel panel-default" ng-show="result_structure.result_wild.length">
+    <div class="panel-heading">Wild query sequence predicted result:</div>
+    <div class="panel-body">
+    <div style=";width: 50%; float:left; display:inline">
+        <div id="snps_structure_pri" class="panel-collapse collapse in">
+            <div class="pre-scrollable">
+                <table id="wild_table" ts-wrapper
+                       class="table table-bordered table-condensed table-hover table-striped">
+                    <thread>
+                        <tr>
+                            <th class="text-center">Query</th>
+                            <th class="text-center">Wild MFE</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    <tr ng-repeat="s in result_structure.result_wild">
+                        <td style="text-align: center;vertical-align: middle">{$s.query$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$s.mfe$}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div style="width: 50%; float:right; display:inline">
+        <div class="panel-body">
+            <div id='rna_wild'></div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="panel panel-default" ng-show="result_structure.result_alt.length">
+    <div class="panel-heading">SNPs sequence predicted result:</div>
+    <div class="panel-body">
+    <div style=";width: 50%; float:left; display:inline">
+        <div id="snps_structure_pri_alt" class="panel-collapse collapse in">
+            <div class="pre-scrollable">
+                <table id="alt_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
+                    <thread>
+                        <tr>
+                            <th class="text-center">SNPs</th>
+                            <th class="text-center">MFE</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    <tr ng-repeat="s in result_structure.result_alt">
+                        <td style="text-align: center;vertical-align: middle">
+                            <button ng-click="snps_structure(s.query)">{$s.query$}</button>
+                        </td>
+                        <td style="text-align: center;vertical-align: middle">{$s.mfe$}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div style="width: 50%; float:right; display:inline">
+        <div class="panel-body">
+            <div id='rna_alt'></div>
+        </div>
+    </div>
+    </div>
+</div>
