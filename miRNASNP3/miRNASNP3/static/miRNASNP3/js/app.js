@@ -114,8 +114,16 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');
     })
+    .config( [
+        '$compileProvider',
+        function( $compileProvider )
+        {
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|sms):/);
+            // Angular v1.2 之前使用 $compileProvider.urlSanitizationWhitelist(...)
+        }
+    ])
 .service('miRNASNP3Service',function(){
     this.getAPIBaseUrl=function () {
-        return "/miRNASNP"
+        return "/miRNASNP3"
     }
 });

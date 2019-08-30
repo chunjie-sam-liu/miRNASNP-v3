@@ -6,7 +6,7 @@ angular.module('miRNASNP3')
     .controller('PredictStructureController',PredictStructureController);
 
 
-function ToolsController($scope,$http,$routeParams,$window) {
+function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     console.log("ToolsController loaded");
     $scope.flash_message=false;
     $scope.flash_message1=false;
@@ -65,8 +65,10 @@ function ToolsController($scope,$http,$routeParams,$window) {
     }
 }
 
-function Predict_UTR_ResultController($scope,$http,$routeParams,$window){
+function Predict_UTR_ResultController($scope,$http,$routeParams,$window,miRNASNP3Service){
     console.log("PredictionResultController loaded");
+    var base_url = miRNASNP3Service.getAPIBaseUrl();
+
     $scope.loading=1;
     console.log($scope.loading);
     $("[data-toggle='popover']").popover();
@@ -79,7 +81,8 @@ function Predict_UTR_ResultController($scope,$http,$routeParams,$window){
         condition['alt_seq']=$routeParams.snp_seq
     }
     $http({
-        url:'/api/prediction',
+        url:base_url+'/api/prediction',
+        //url:'/api/prediction',
         method:'POST',
         data:condition
     }).then(function (response) {
@@ -92,8 +95,10 @@ function Predict_UTR_ResultController($scope,$http,$routeParams,$window){
     })
 }
 
-function Predict_MIR_ResultController($scope,$http,$routeParams,$window){
+function Predict_MIR_ResultController($scope,$http,$routeParams,$window,miRNASNP3Service){
     console.log("PredictionResultController loaded");
+    var base_url = miRNASNP3Service.getAPIBaseUrl();
+
     $("[data-toggle='popover']").popover();
     var condition={};
     $scope.loading=1;
@@ -105,7 +110,8 @@ function Predict_MIR_ResultController($scope,$http,$routeParams,$window){
         condition['alt_seq']=$routeParams.snp_seq
     }
     $http({
-        url:'/api/prediction_altmir',
+        url:base_url+'/api/prediction_altmir',
+        //url:'/api/prediction_altmir',
         method:'POST',
         data:condition
     }).then(function (response) {
@@ -118,8 +124,10 @@ function Predict_MIR_ResultController($scope,$http,$routeParams,$window){
     })
 }
 
-function PredictStructureController($scope,$http,$routeParams,$window){
+function PredictStructureController($scope,$http,$routeParams,$window,miRNASNP3Service){
     console.log("PredictStructureController loaded");
+    var base_url = miRNASNP3Service.getAPIBaseUrl();
+
     $("[data-toggle='popover']").popover();
     var condition={};
     $scope.loading=1;
@@ -131,7 +139,7 @@ function PredictStructureController($scope,$http,$routeParams,$window){
         condition['snps']=$routeParams.snps
     }
     $http({
-        url:'/api/prediction_structure',
+        url:base_url+'/api/prediction_structure',
         method:'POST',
         data:condition
     }).then(function (response) {

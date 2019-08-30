@@ -7,7 +7,7 @@
             <label class="control-label col-lg-1">Chrome</label>
             <div class="col-lg-3">
             <select id="chr" class="selectpicker" data-live-search="true">
-                <option>All</option>
+                <option value="All">All</option>
                 <option>chr1</option>
                 <option>chr2</option>
                 <option>chr3</option>
@@ -39,7 +39,7 @@
                 <select id="location" class="selectpicker" data-live-search="true">
                     <option>UTR3</option>
                     <option>mirseed</option>
-                    <option>All</option>
+                    <option value="All">All</option>
                 </select>
             </div>
             <label class="control-label col-lg-1">GMAF</label>
@@ -47,7 +47,7 @@
                 <select id="gmaf" class="selectpicker" data-live-search="true">
                     <option>&gt;0.05</option>
                     <option>&gt;0.01</option>
-                    <option>All</option>
+                    <option value="All">All</option>
                 </select>
             </div>
         </div>
@@ -85,10 +85,19 @@
             </span>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" id="reset_query" type="button" ng-click="reset_query()" >
+							Reset
+                </button>
+            </span>
+            </div>
+        </div>
     </form>
 </div>
 
-<div class="panel panel-default" >
+<div class="panel panel-warning" >
     <div class="panel-heading" >
         <strong>SNPs summary information</strong>
     </div>

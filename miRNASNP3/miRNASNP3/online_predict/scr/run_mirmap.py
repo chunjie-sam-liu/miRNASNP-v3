@@ -1,4 +1,7 @@
 import sys,json
+
+sys.path.append('/home/fux/tools/miRmap-1.1/src')
+
 import mirmap
 import mirmap.library_link
 
@@ -18,7 +21,7 @@ def outPut(outfile):
 
 def getTargetseq():
     seq_target_dict = {}
-    with open("/home/fux/pro-fu/db-mir-snp/web/miRNASNP3/miRNASNP3/miRNASNP3/online_predict/local_file/total_grch38_over6.autosome.longest.json") as infile:
+    with open("/home/fux/refdata/miRNASNP3/total_grch38_over6.autosome.longest.json") as infile:
         seq_target_dict = json.load(infile)
         return seq_target_dict
 
@@ -33,8 +36,8 @@ def mirmapredict(seq_mirna,seq_target):
         mim.eval_tgs_position(with_correction=False)
         mim.eval_tgs_score(with_correction=False)
 #mim.eval_score()
-        mim.libs = mirmap.library_link.LibraryLink('/home/fux/pro-fu/db-mir-snp/miRmap-1.1/libs/lib-archlinux-x86_64')
-        mim.exe_path = '/home/fux/pro-fu/db-mir-snp/miRmap-1.1/libs/exe-archlinux-x86_64'
+        mim.libs = mirmap.library_link.LibraryLink('/home/fux/tools/miRmap-1.1/libs/lib-archlinux-x86_64')
+        mim.exe_path = '/home/fux/tools/miRmap-1.1/libs/exe-archlinux-x86_64'
         mim.dg_duplex
         mim.dg_open
         mim.dg_binding

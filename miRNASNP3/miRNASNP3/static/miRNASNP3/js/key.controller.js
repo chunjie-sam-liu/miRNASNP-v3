@@ -3,13 +3,15 @@
 angular.module('miRNASNP3')
     .controller('KeyController', KeyController);
 
-function KeyController($scope,$routeParams,$http,$filter,$window) {
+function KeyController($scope,$routeParams,$http,$filter,$window,miRNASNP3Service) {
     console.log("KeyController loaded");
+    var base_url = miRNASNP3Service.getAPIBaseUrl();
     $scope.query_mirna = $routeParams.mirna_id;
     $scope.fetch_mirna_list=function(){
         $http({
-            url:'/api/mirna_key',
-            method:'Get',
+            url:base_url+'/api/mirna_key',
+            //url:'/api/mirna_key',
+            method:'GET',
             params:{mirna_id:$scope.query_mirna}
         }).then(function (response) {
             console.log(response);

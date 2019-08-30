@@ -6,7 +6,7 @@
         <div class="form-group">
             <label class="control-label col-lg-1">Chrome</label>
             <div class="col-lg-3">
-            <select id="chr" class="selectpicker" data-control='{liveSearch:true,size:10}'>
+            <select id="chr" class="form-control">
                 <option>All</option>
                 <option>chr1</option>
                 <option>chr2</option>
@@ -36,27 +36,122 @@
             </div>
             <label class="control-label col-lg-1">Location</label>
             <div class="col-lg-3">
-                <select id="location" class="selectpicker" data-live-search="true">
-                    <option>UTR3</option>
-                    <option>miRseed</option>
+                <select id="location" class="form-control">
                     <option>All</option>
+                    <option>UTR3</option>
+                    <option>mirSeed</option>
                 </select>
             </div>
             <label class="control-label col-lg-1">Resource</label>
             <div class="col-lg-3">
-                <select id="resource" class="selectpicker" data-live-search="true">
+                <select id="resource" class="form-control">
+                    <option>All</option>
                     <option>COSMIC</option>
                     <option>Clinvar</option>
-                    <option>All</option>
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-lg-1">Search</label>
+                <label class="control-label col-lg-1">Histology</label>
+                <div class="col-lg-3">
+                    <select id="histology" class="selectpicker" data-live-search="true">
+                        <option value="All">All</option>
+                        <option>adrenal_gland</option>
+                        <option>autonomic_ganglia</option>
+                        <option>biliary</option>
+                        <option>bone</option>
+                        <option>breast</option>
+                        <option>central_nervous_system</option>
+                        <option>cervix</option>
+                        <option>endometrium</option>
+                        <option>eye</option>
+                        <option>haematopoietic</option>
+                        <option>lymphoid</option>
+                        <option>kidney</option>
+                        <option>large_intestine</option>
+                        <option>liver</option>
+                        <option>lung</option>
+                        <option>oesophagus</option>
+                        <option>ovary</option>
+                        <option>pancreas</option>
+                        <option>parathyroid</option>
+                        <option>peritoneum</option>
+                        <option>prostate</option>
+                        <option>salivary_gland</option>
+                        <option>skin</option>
+                        <option>small_intestine</option>
+                        <option>soft_tissue</option>
+                        <option>stomach</option>
+                        <option>testis</option>
+                        <option>thymus</option>
+                        <option>thyroid</option>
+                        <option>upper_aerodigestive</option>
+                        <option>urinary</option>
+                    </select>
+                    </div>
+            <label class="control-label col-lg-1">Pathology</label>
+            <div class="col-lg-3">
+                <select id="pathology" class="selectpicker" data-live-search="true">
+                    <option value="All">All</option>
+                    <option>carcinoma</option>
+                    <option>tumor</option>
+                    <option>neoplasm</option>
+                    <option>Congenital_disorder_of_glycosylation</option>
+                    <option>Charcot-Marie-Tooth_disease</option>
+                    <option>Retinitis_Pigmentosa</option>
+                    <option>Zellweger_syndrome</option>
+                    <option>Spastic_paraplegia</option>
+                    <option>Ciliary_dyskinesia</option>
+                    <option>Pseudohypoaldosteronism</option>
+                    <option>Brugada_syndrome</option>
+                    <option>Fanconi_anemia</option>
+                    <option>Neuronal_Ceroid-Lipofuscinosis</option>
+                    <option>Non-syndromic_X-linked_intellectual_disability</option>
+                    <option>Congenital_hypothyroidism</option>
+                    <option>Pheochromocytoma</option>
+                    <option>Disorders_of_Intracellular_Cobalamin_Metabolism</option>
+                    <option>Joubert_syndrome</option>
+                    <option>Epilepsy</option>
+                    <option>Heterotaxia</option>
+                    <option>Primary_pulmonary_hypertension</option>
+                    <option>Cryptophthalmos_syndrome</option>
+                    <option>Progressive_myoclonic_epilepsy</option>
+                    <option>Nonsyndromic_Hearing_Loss</option>
+                    <option>Tuberous_sclerosis_syndrome</option>
+                    <option>dysplasia</option>
+                    <option>Osteogenesis_Imperfecta</option>
+                    <option>Hereditary_cancer-predisposing_syndrome</option>
+                    <option>Hermansky-Pudlak_syndrome</option>
+                    <option>Noonan-Like_Syndrome_Disorder</option>
+                    <option>Skeletal_dysplasia</option>
+                    <option>Larsen_syndrome</option>
+                    <option>3-Methylglutaconic_aciduria</option>
+                    <option>Combined_oxidative_phosphorylation_deficiency</option>
+                    <option>Benign_familial_neonatal_seizures</option>
+                    <option>Maple_syrup_urine_disease</option>
+                    <option>Dilated_Cardiomyopathy</option>
+                    <option>Holoprosencephaly_sequence</option>
+                    <option>Congenital_Myasthenic_Syndrome</option>
+                    <option>Weill-Marchesani-like_syndrome</option>
+                    <option>Familial_Candidiasis</option>
+                    <option>Delta-sarcoglycanopathy</option>
+                    <option>Dilated_Cardiomyopathy</option>
+                    <option>Limb-Girdle_Muscular_Dystrophy</option>
+                    <option>Xeroderma_pigmentosum</option>
+                    <option>Nail-patella_syndrome</option>
+                    <option>Brugada_syndrome</option>
+                    <option>Timothy_syndrome</option>
+                    <option>Arrhythmogenic_right_ventricular_cardiomyopathy</option>
+                    <option>Osteopetrosis</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <!--label class="control-label col-lg-1">Search</label>
             <div class="col-lg-3">
                 <input type="text" class="form-control" id="query_mutation_summary" ng-model="query_mutation_summary">
             </div>
-            <span class="help-block">Input a  COSMIC/Clinvar ID,such as </span>
+            <span class="help-block">Input a  COSMIC/Clinvar ID,such as </span-->
             <div class="col-lg-9">
                 <label class="control-label checkbox-inline">
                     <input type="checkbox" id="snp_rela">
@@ -67,13 +162,26 @@
                     <input type="checkbox" id="is_pubmed">
                     <strong id="is_pubmed_1">With Pubmend ID</strong>
               </label>
+              <label class="control-label checkbox-inline">
+                    <input type="checkbox" id="target_effection">
+                    <strong>Target Effection</strong>
+                </label>
             </div>
         </div>
         <div class="form-group">
             <div class="col-lg-3">
             <span class="input-group-btn">
-                <button class="btn btn-primary" id="search_button" type="button" ng-click="fetch_mutation_summary(page)" >
+                <button class="btn btn-primary" id="search_button" type="submit" ng-click="fetch_mutation_summary(page)" >
 							Submit
+                </button>
+            </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" id="reset_query" type="reset" ng-click=reset()>
+							Reset
                 </button>
             </span>
             </div>
@@ -81,25 +189,26 @@
     </form>
 </div>
 
-<div class="panel panel-default" >
-    <div class="panel-heading" >
-        <strong>Cosmic mutation summary information</strong>
-    </div>
+<div ng-show="total_summary">
+    <div class="panel panel-default" >
+        <div class="panel-heading" >
+            <strong>Cosmic mutation summary information</strong>
+        </div>
 
-    <table class="table table-bordered" style="table-layout: fixed">
-        <thead>
-        <tr>
-            <th>Chrome</th>
-            <th>Position</th>
-            <th>Mutation ID</th>
-            <th>Ref/Alt</th>
-            <th>Pathology</th>
-            <th>Location</th>
-            <th>Ralate SNP</th>
-            <th>Pubmed ID</th>
-            <th>Resource</th>
-        </tr>
-        </thead>
+        <table class="table table-bordered" style="table-layout: fixed">
+            <thead>
+            <tr>
+                <th>Chrome</th>
+                <th>Position</th>
+                <th>Mutation ID</th>
+                <th>Ref/Alt</th>
+                <th>Pathology</th>
+                <th>Location</th>
+                <th>Ralate SNP</th>
+                <th>Pubmed ID</th>
+                <th>Resource</th>
+            </tr>
+            </thead>
         <tbody>
         <tr ng-repeat="v in mutation_summary_list">
             <!--td>{$ $index+1 $}</td-->
@@ -143,3 +252,72 @@
              disabled-class="disabled"
              paging-action="fetch_mutation_summary(page)"
         ></div>
+</div>
+
+<div ng-show="target_effection">
+    <div class="panel panel-primary" >
+    <div class="panel-heading" >
+        <strong>Cosmic mutation summary information</strong>
+    </div>
+        
+    <table class="table table-bordered" style="table-layout: fixed">
+        <thead>
+            <tr>
+                <th>Chrome</th>
+                <th>Position</th>
+                <th style="width: 13%">Mutation ID</th>
+                <th>Ref/Alt</th>
+                <th>Pathology</th>
+                <th>Location</th>
+                <th>Ralate SNP</th>
+                <th>Pubmed ID</th>
+                <th>Resource</th>
+                <th>Gain</th>
+                <th>Loss</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="v in mutation_summary_list">
+                    <!--td>{$ $index+1 $}</td-->
+                <td>{$ v.chrome$}</td>
+                <td>{$ v.position $}</td>
+                <td>{$ v.mut_id$}</td>
+                <td>{$ v.ref$}/{$v.alt$}</td>
+                <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology$}">{$ v.pathology$}</td>
+                <td>{$v.location $}</td>
+                <td align="center">
+                    <span ng-if="v.snp_id">{$ v.snp_id $}</span>
+                    <span ng-if="!v.snp_id">-</span>
+                </td>
+                <td align="center">
+                    <span ng-if="v.pubmed_id">{$ v.pubmed_id$}</span>
+                    <span ng-if="!v.pubmed_id">-</span>
+                </td>
+                <td>{$v.resource$}</td>
+                <td>{$v.gain_count$}</td>
+                <td>{$v.loss_count$}</td>
+            </tr>
+        </tbody>
+    </table> 
+    </div> 
+    <div paging
+                     page="currentPage"
+                     page-size=15
+                     total="mutation_summary_count"
+                     scroll-top="true"
+                     hide-if-empty="true"
+                     show-prev-next="true"
+                     show-first-last="true"
+                     text-title-page="Page {page} Hover Over"
+                     text-title-first="First hover"
+                     text-title-last="Last hover"
+                     text-title-next="Next hover"
+                     text-title-prev="Prev hover"
+                     show-prev-next="true"
+                     show-first-last="true"
+                     ul-class="pagination"
+                     active-class="active"
+                     disabled-class="disabled"
+                     paging-action="fetch_mutation_summary(page)"
+                ></div>
+    </div>

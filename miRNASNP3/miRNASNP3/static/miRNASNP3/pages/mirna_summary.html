@@ -1,5 +1,5 @@
 
-<div class="well"><p>Mature miRNA summery information</p>
+<div class="well"><p><strong style="color: blue">Mature miRNA </strong>summery information</p>
     <p>
         There are 2652 mature miRNA derived from 1913 primary RNA.17316 SNVs are identified  on mature miRNA,while 4666 SNVs on the seed region.
         As for muations,2114 Cosmic mutaions and 41 Clinvar variations are identified on mature miRNA,while 522 Cosmic mutations and 11 Clinvar variations are on the seed region
@@ -8,7 +8,7 @@
         <div class="form-group">
             <label class="control-label col-lg-1">Chrome</label>
             <div class="col-lg-3">
-            <select id="chr" class="selectpicker" data-control='{liveSearch:true,size:10}'>
+            <select id="chr" class="form-control">
                 <option>All</option>
                 <option>chr1</option>
                 <option>chr2</option>
@@ -54,6 +54,15 @@
             </span>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" id="reset_button" type="button" ng-click="reset_query()" >
+							Reset
+                </button>
+            </span>
+            </div>
+        </div>
         <!--div class="form-group form-inline">
             <label class="control-label col-lg-1">miRNA Name</label>
             <div class="col-lg-2">
@@ -93,7 +102,7 @@
     </form>
 </div>
 
-<div class="panel panel-default" >
+<div class="panel panel-info" >
     <div class="panel-heading" >
         <strong>Mirna summary information</strong>
     </div>

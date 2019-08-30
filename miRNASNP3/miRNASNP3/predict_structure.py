@@ -41,7 +41,7 @@ def predict_structure_wild(seq,seq_prefix):
     seq_fold_file=get_tempfile_name()
     seq_fold_result=get_tempfile_name()
     rnafold_format(seq,seq_prefix,seq_fold_file)
-    cmd_rnafold="RNAfold <"+seq_fold_file+">"+seq_fold_result
+    cmd_rnafold="/home/fux/tools/ViennaRNA-2.4.13/src/bin/RNAfold <"+seq_fold_file+">"+seq_fold_result
     os.popen(cmd_rnafold)
     result_list=result_parser_wild(seq_fold_result)
     print(result_list)
@@ -88,7 +88,7 @@ def predict_structure_alt(snps,seq):
         seq_fold_file=get_tempfile_name()
         seq_fold_result=get_tempfile_name()
         rnafold_format(newseq,s,seq_fold_file)
-        cmd_rnafold="RNAfold <"+seq_fold_file+">"+seq_fold_result
+        cmd_rnafold="/home/fux/tools/ViennaRNA-2.4.13/src/bin/RNAfold <"+seq_fold_file+">"+seq_fold_result
         os.popen(cmd_rnafold)
         result_list=result_list+result_parser_alt(seq_fold_result)
     print(result_list)

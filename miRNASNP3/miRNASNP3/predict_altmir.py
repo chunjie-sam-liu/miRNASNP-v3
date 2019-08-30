@@ -1,4 +1,8 @@
 from miRNASNP3 import app, api
+
+import sys
+sys.path.append('/home/fux/tools/miRmap-1.1/src')
+
 import os,re
 import subprocess
 import string
@@ -7,6 +11,7 @@ import shlex
 from flask_restful import Resource, fields, marshal_with, reqparse, marshal
 import multiprocessing
 import mirmap
+
 
 #altutr prediction
 
@@ -28,14 +33,14 @@ def command_excute(command):
 
 def targetscan_predict(seq_file,result_file):
     print("tgs predict...")
-    t_utr_file = "/home/fux/pro-fu/db-mir-snp/web/miRNASNP3/miRNASNP3/miRNASNP3/online_predict/local_file/total_grch38_over6.autosome.longest.tgs.txt"
-    command = "/home/fux/pro-fu/db-mir-snp/TargetScan/targetscan_70.pl {t_querymir_file} {t_utr_file} {result_file}".format(t_querymir_file=seq_file, t_utr_file = t_utr_file, result_file = result_file)
+    t_utr_file = "/home/fux/refdata/miRNASNP3/total_grch38_over6.autosome.longest.tgs.txt"
+    command = "/home/fux/tools/TargetScan/targetscan_70.pl {t_querymir_file} {t_utr_file} {result_file}".format(t_querymir_file=seq_file, t_utr_file = t_utr_file, result_file = result_file)
     command_excute(command)
     
 
 def mirmap_predict(mirseq,result_file):
     print("mirmap predict ...")
-    conmand="python2 /home/fux/pro-fu/db-mir-snp/web/miRNASNP3/miRNASNP3/miRNASNP3/online_predict/scr/run_mirmap.py {mirseq} {result_file}".format(mirseq=mirseq,result_file=result_file)
+    conmand="python2 /home/fux/web/miRNASNP3/miRNASNP3/miRNASNP3/online_predict/scr/run_mirmap.py {mirseq} {result_file}".format(mirseq=mirseq,result_file=result_file)
     #print(conmand)
     command_excute(conmand)
 
@@ -126,7 +131,7 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
     #bed file
     
     wm_bed_sort=get_tempfile_name()
-    sort_cmd="bedtools sort -i "+wm_bed_file+" >"+wm_bed_sort
+    sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+wm_bed_file+" >"+wm_bed_sort
     os.popen(sort_cmd)
     os.remove(wm_bed_file)
 
@@ -149,7 +154,7 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
     #gene_mir_list
     #bed file
     wt_bed_sort=get_tempfile_name()
-    sort_cmd="bedtools sort -i "+wt_bed_file+" >"+wt_bed_sort
+    sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+wt_bed_file+" >"+wt_bed_sort
     os.popen(sort_cmd)
     os.remove(wt_bed_file)
 
@@ -163,7 +168,7 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
     print(t.readline())
     t.close()
 
-    insec_cmd="bedtools intersect -sorted -f 0.5 -a "+wm_bed_sort+" -b "+wt_bed_sort+" -u >"+w_insect_file
+    insec_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools intersect -sorted -f 0.5 -a "+wm_bed_sort+" -b "+wt_bed_sort+" -u >"+w_insect_file
     #print(insec_cmd)
     os.popen(insec_cmd)
     wif=open(w_insect_file)
@@ -247,7 +252,7 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
     #gene/mir list
     #bed file
     sm_bed_sort=get_tempfile_name()
-    sort_cmd="bedtools sort -i "+sm_bed_file+" >"+sm_bed_sort
+    sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+sm_bed_file+" >"+sm_bed_sort
     os.popen(sort_cmd)
     os.remove(sm_bed_file)
 
@@ -265,13 +270,13 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
     #gene_mir_list
     #bed file
     st_bed_sort=get_tempfile_name()
-    sort_cmd="bedtools sort -i "+st_bed_file+" >"+st_bed_sort
+    sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+st_bed_file+" >"+st_bed_sort
     os.popen(sort_cmd)
     os.remove(st_bed_file)
 
     print("s intersect ...")
     s_insect_file=get_tempfile_name()
-    insec_cmd="bedtools intersect -sorted -f 0.5 -a "+sm_bed_sort+" -b "+st_bed_sort+" -u >"+s_insect_file
+    insec_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools intersect -sorted -f 0.5 -a "+sm_bed_sort+" -b "+st_bed_sort+" -u >"+s_insect_file
     os.popen(insec_cmd)
     sif=open(s_insect_file)
     print(sif.readline())
@@ -427,7 +432,7 @@ def result_parser_wild(wm_result,wt_result,sm_result,st_result):
     #bed file
     
     wm_bed_sort=get_tempfile_name()
-    sort_cmd="bedtools sort -i "+wm_bed_file+" >"+wm_bed_sort
+    sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+wm_bed_file+" >"+wm_bed_sort
     os.popen(sort_cmd)
     os.remove(wm_bed_file)
 
@@ -450,7 +455,7 @@ def result_parser_wild(wm_result,wt_result,sm_result,st_result):
     #gene_mir_list
     #bed file
     wt_bed_sort=get_tempfile_name()
-    sort_cmd="bedtools sort -i "+wt_bed_file+" >"+wt_bed_sort
+    sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+wt_bed_file+" >"+wt_bed_sort
     os.popen(sort_cmd)
     os.remove(wt_bed_file)
 
@@ -464,7 +469,7 @@ def result_parser_wild(wm_result,wt_result,sm_result,st_result):
     print(t.readline())
     t.close()
 
-    insec_cmd="bedtools intersect -sorted -f 0.5 -a "+wm_bed_sort+" -b "+wt_bed_sort+" -u >"+w_insect_file
+    insec_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools intersect -sorted -f 0.5 -a "+wm_bed_sort+" -b "+wt_bed_sort+" -u >"+w_insect_file
     os.popen(insec_cmd)
 
     wild_result=[]

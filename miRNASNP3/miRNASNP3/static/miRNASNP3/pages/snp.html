@@ -81,11 +81,13 @@
                 <td>{$v.snp_chr$}:{$v.snp_coordinate$}</td>
                 <td>{$v.ref$}/{$v.alt$}</td>
                 <td align="center">
-                    <span ng-if="v.ref_freq">{$v.ref_freq$}/{$v.alt_freq$}</span>
-                    <span ng-if="!v.ref_freq">-</span>
+                    <span ng-if="v.ref_freq">{$v.ref_freq$}</span>
+                    <span ng-if="!v.ref_freq">-</span>/
+                    <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+                    <span ng-if="!v.alt_freq">-</span>
                 </td>
                 <td>{$v.location$}</td>
-                <td>{$v.identifier$})</td>
+                <td>{$v.identifier$}</td>
             </tr>
             </tbody>
             </table>
@@ -107,7 +109,8 @@
     <table class="table table-bordered">
             <thead>
             <tr>
-                <th>SNP in miRNA</th>
+                <th>SNP</th>
+                <th>miRNA</th>
                 <th>miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                 </span>
@@ -119,16 +122,13 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                 </span>
                 </th>
-                <th>ΔΔG
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Energy change(kCal/mol)">
-                </span>
-                </th>
                 <th>Predict Detail</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="v in snp_seed_gain_list">
-                <td align="center">{$ v.snp_id$}<br>{$v.mirna_id$}</td>
+                <td align="center">{$ v.snp_id$}</td>
+                <td align="center">{$v.mirna_id$}</td>
                 <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -146,7 +146,6 @@
                     </span>
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
-                <td align="center">-</td>
                 <td>
                     <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
                             ng-click="modal_gain_site(v)">Predict Detail
@@ -191,7 +190,8 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th style="width: 13%">SNP in miRNA</th>
+            <th style="width: 10%">SNP</th>
+            <th style="width: 10%">miRNA</th>
             <th style="width: 10%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                 </span>
@@ -202,10 +202,6 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
                 </span>
                 </th>
-                <th style="width: 10%;">ΔΔG
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Energy change(kCal/mol)">
-                </span>
-                </th>
             <th style="width: 10%">Experiment Validation</th>
             <th style="width: 10%">Gene Expression Correlation</th>
             <th style="width: 10%">Predict Detail</th>
@@ -213,7 +209,8 @@
         <tbody>
         <tr ng-repeat="v in snp_seed_loss_list">
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center">{$ v.snp_id$}<br>{$v.mirna_id$}</td>
+                <td align="center">{$ v.snp_id$}</td>
+                <td align="center">{$v.mirna_id$}</td>
                 <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -231,12 +228,16 @@
                     </span>
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
-            <td align="center">-</td>
             <td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
             </td>
-            <td align="center">-</td>
+            <td align="center">
+                    <span ng-if="v.corelation_detail[0]">
+                        <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                    </span>
+                    <span ng-if="!v.corelation_detail[0]">-</span>
+                </td>
             <td>
                 <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
                         ng-click="modal_loss_site(v)">Predict Detail
@@ -276,7 +277,8 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>SNP in Gene-3'utr</th>
+            <th>SNP</th>
+            <th>Gene</th>
             <th>miRNA</th>
             <th>miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
@@ -291,8 +293,9 @@
         </thead>
         <tbody>
         <tr ng-repeat="v in snv_utr_gain_list">
-            <td align="center">{$v.snp_id$}<br>{$v.gene_symbol$}</td>
-            <td>{$v.mirna_id$}</td>
+            <td align="center">{$v.snp_id$}</td>
+            <td align="center">{$v.gene_symbol$}</td>
+            <td align="center">{$v.mirna_id$}</td>
             <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -310,8 +313,8 @@
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
             <td>
-                <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
-                        ng-click="modal_gain_site(v)">Predict Detail
+                <button class="btn btn-success" data-toggle="modal" data-target="#myModal_utr"
+                        ng-click="modal_gain_site_utr(v)">Predict Detail
                 </button>
             </td>
         </tr>
@@ -348,7 +351,8 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>SNP in Gene-3'utr</th>
+            <th>SNP</th>
+            <th>Gene</th>
             <th>miRNA</th>
             <th>miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
@@ -365,8 +369,9 @@
         </thead>
         <tbody>
         <tr ng-repeat="v in snv_utr_loss_list">
-            <td align="center">{$v.snp_id$}<br>{$v.gene_symbol$}</td>
-            <td>{$v.mirna_id$}</td>
+            <td align="center">{$v.snp_id$}</td>
+            <td align="center">{$v.gene_symbol$}</td>
+            <td align="center">{$v.mirna_id$}</td>
             <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -383,14 +388,19 @@
                     </span>
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
-            <td align="center">-</td>
+                <td align="center">
+                        <span ng-if="v.corelation_detail[0]">
+                            <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                        </span>
+                        <span ng-if="!v.corelation_detail[0]">-</span>
+                    </td>
             <td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
             </td>
             <td>
-                <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
-                        ng-click="modal_gain_site(v)">Predict Detail
+                <button class="btn btn-success" data-toggle="modal" data-target="#myModal_utr"
+                        ng-click="modal_loss_site_utr(v)">Predict Detail
                 </button>
             </td>
         </tr>
@@ -621,7 +631,7 @@
                     </tr>
                     <tr>
                         <th>SNP</th>
-                        <td colspan="2">{$modal_site.snp_info.snp_id$}:({$modal_site.snp_info.ref$}/{$modal_site.site_info.curalt$})</td>
+                        <td colspan="2">{$modal_site.snp_info.snp_id$}:({$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$})</td>
                         <td colspan="3">{$modal_site.snp_info.chr$}:{$modal_site.snp_info.position$}</td>
                     </tr>
                     <tr>
@@ -668,14 +678,90 @@
                     <tr>
                         <th>Align</th>
                         <td class="warning" colspan="3">
-                            <pre>{$modal_site.site_info.align_1$}<br>{$modal_site.site_info.align_2$}<br>{$modal_site.site_info.align_3$}<br>{$modal_site.site_info.align_4$}<br>{$align_5_pre$}<span style="color: red"><strong>{$align_5_letter$}</strong></span>{$align_5_later$} </pre>
-                        </td>
+                                <pre>{$modal_site.site_info.align6$}<br>{$modal_site.site_info.align7$}<br>{$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                            </td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="myModal_utr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        {$ modal_header $}
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-hover table-condensed">
+                        <tr>
+                            <th align="center">miRNA</th>
+                            <td colspan="2" align="center">{$modal_site.mirna_id$}</td>
+                            <td colspan="3" align="center">-</td>
+                        </tr>
+                        <tr>
+                            <th align="center">SNP</th>
+                            <td colspan="2" align="center">{$modal_site.snp_info.snp_id$}({$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$})</td>
+                            <td colspan="3" align="center">{$modal_site.snp_info.chr$}:{$modal_site.snp_info.position$}</td>
+                        </tr>
+                        <tr>
+                            <th align="center">Gene</th>
+                            <td colspan="2" align="center">{$modal_site.gene_symbol$}</td>
+                            <td colspan="3" align="center">{$modal_site.utr_info.chr$}:{$modal_site.utr_info.start$}-{$modal_site.utr_info.end$}[{$modal_site.utr_info.strand$}]({$modal_site.site_info.truncate_start$}-{$modal_site.site_info.truncate_end$})</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" align="center">Site Position</th>
+                            <th class="success" colspan="2" align="center">TargetScan</th>
+                            <th class="success" colspan="3" align="center">miRmap</th>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px" colspan="2" align="center">{$modal_site.site_info.tgs_start$}-{$modal_site.site_info.tgs_end$}</td>
+                            <td style="width: 100px"colspan="3" align="center">{$modal_site.site_info.mm_start$}-{$modal_site.site_info.mm_end$}</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="7" align="center">Site detail</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">ΔG duplex(kCal/mol)</td>
+                            <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">ΔG binding(kCal/mol)</td>
+                            <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">ΔG open(kCal/mol)</td>
+                            <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">TargetScan Score</td>
+                            <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">AU content</td>
+                            <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">Exact Probility</td>
+                            <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
+                        </tr>
+                        <tr>
+                            <th align="center">Align</th>
+                            <td class="warning" colspan="3">
+                                    <pre>{$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$}<br>{$modal_site.site_info.align7$}<br>{$modal_site.site_info.align8$}</pre>
+                                </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <div id="exp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width:1000px;margin-top:7%;">
@@ -695,6 +781,24 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div id="corelation_detail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+        <div class="modal-dialog" style="width: 1000px;margin-top:7%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{$gene_mir$}</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="mirna-profile cursor-hand"
+                    title="cancer={$c.cancer_type$}; correlation_coefficient={$ c.corelation $}"
+                    style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+        </div>
+    </div>
 
 
 

@@ -1,6 +1,6 @@
-<div class="well"><p>Precursor miRNA summery information</p>
+<div class="well"><p><strong style="color: #FF0000">Precursor miRNA </strong>summery information</p>
     <p>
-        There are 1913 primary RNAs collected from mirbase v22.43923 SNVs are identified  on orimary RNAs.
+        There are 1913 primary RNAs collected from mirbase v22. 43923 SNVs are identified  on primary RNAs.
         As for muations,5389 Cosmic mutaions and 75 Clinvar variations are identified on primary RNAs.
     </p>
     <form method="get" id="mirna-summary-form" class="form form-horizontal">
@@ -52,10 +52,19 @@
             </span>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-lg-3">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" id="reset_query" type="button"  ng-click="reset_query()" >
+							Reset
+                </button>
+            </span>
+            </div>
+        </div>
     </form>
 </div>
 
-<div class="panel panel-default" >
+<div class="panel panel-danger" >
     <div class="panel-heading" >
         <strong>primir summary information</strong>
     </div>

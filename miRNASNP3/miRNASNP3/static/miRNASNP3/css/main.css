@@ -1,5 +1,14 @@
+
 .cursor-hand {
     cursor: pointer; cursor: hand;
+}
+
+.corelation-cursor{
+  width: 20px;
+  height: 50px;
+  border: 1px solid;
+  margin: 0 2px 0 2px;
+  display: inline-block;
 }
 
 .mirna-profile {

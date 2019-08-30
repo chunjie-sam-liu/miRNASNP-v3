@@ -1,3 +1,5 @@
+//abandon
+
 'use strict';
 
 angular.module('miRNASNP3')
