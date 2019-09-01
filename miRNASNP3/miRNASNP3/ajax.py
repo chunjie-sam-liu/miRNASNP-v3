@@ -184,7 +184,7 @@ class SnpSeedGain(Resource):
         if args['mirna_id']:
             condition['mirna_id']=args['mirna_id']
         if args['gene']:
-            condition['gene_symbol']=args['gene']
+            condition['gene_symbol']={'$regex':args['gene'],'$options':'$i'}
         lookup_gene={'$lookup':{
             'from':'gene_expression',
             'localField':'gene_symbol',
@@ -292,7 +292,7 @@ class SnpSeedLoss(Resource):
         if args['mirna_id']:
             condition['mirna_id']=args['mirna_id']
         if args['gene']:
-            condition['gene_symbol']=args['gene']
+            condition['gene_symbol']={'$regex':args['gene'],'$options':'$i'}
         lookup_gene = {'$lookup': {
             'from': 'gene_expression',
             'localField': 'gene_symbol',
@@ -697,7 +697,7 @@ class MirSummary(Resource):
         if chrome!="All":
             condition['mir_chr']=chrome
         if mirna_id:
-            condition['mir_id']=mirna_id
+            condition['mir_id']={'$regex':mirna_id,'$options':'$1'}
         mirna_summary_list = mongo.db.mirna_summary.find(condition).skip(record_skip).limit(per_page)
         mirna_summary_count=mongo.db.mirna_summary.find(condition).count()
         return {'mirna_summary_list':list(mirna_summary_list),
@@ -799,7 +799,7 @@ class PrimirSummary(Resource):
             pipline.append(match_chr)
         if pre_id:
             match_mir = {'$match': {
-                'pre_id': pre_id
+                'pre_id': {'$regex':pre_id,'$options':'$1'}
             }}
             pipline.append(match_mir)
         group={'$group':{
@@ -1329,22 +1329,23 @@ class SnpSummary(Resource):
         pipline = []
         print(args['page'])
         print(record_skip)
+        print(args)
         if args['page']:
             page=args['page']
             record_skip = (int(page)-1)*per_page
         if args['chrome'] != 'All':
             condition['snp_chr'] = args['chrome']
         if args['snp_id']:
-            condition['snp_id']=args['snp_id']
+            condition['snp_id']={'$regex':args['snp_id'],'$options':'$1'}
         if args['identifier']:
-            condition['identifier']=args['identifier']
-        if args['location']!='All':
+            condition['identifier']={'$regex':args['identifier'],'$options':'$1'}
+        if args['location']!='All' and args['location']:
             condition['location']=args['location']
         if args['ldsnp']:
             condition['ldsnp']=args['ldsnp']
         if args['mutation_rela']:
             condition['mutation_rela']=args['mutation_rela']
-        if args['gmaf'] !='All':
+        if args['gmaf'] !='All' and args['gmaf']:
             condition['alt_freq']={'$gt':args['gmaf'][1:]}
         print(condition)
         snp_summary_list = mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)

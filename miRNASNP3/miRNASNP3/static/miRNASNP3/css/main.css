@@ -1,4 +1,6 @@
-
+.selected{
+  color:#3F96C3;
+}
 .cursor-hand {
     cursor: pointer; cursor: hand;
 }

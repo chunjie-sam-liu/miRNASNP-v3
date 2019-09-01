@@ -12,9 +12,11 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     var page=1;
     var condition={};
     var base_url = miRNASNP3Service.getAPIBaseUrl();
+    $scope.initial=1;
 
     $scope.fetch_mutation_summary=function(page){
 
+        $scope.mutation_summary_count=0;
         $scope.target_effection=0;
         $scope.total_summary=1;
         condition['chrome']='All';
@@ -60,12 +62,13 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         condition['target_effection']=$scope.target_effection;
         console.log(condition)
         $http({
-            url:base_url+'/api/mutation_summary',
-            //url:'/api/mutation_summary',
+            //url:base_url+'/api/mutation_summary',
+            url:'/api/mutation_summary',
             method:'GET',
             params:condition,
         }).then(function (response) {
             console.log(response);
+            $scope.initial=0;
             $scope.mutation_summary_list=response.data.mutation_summary_list;
             $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
         })

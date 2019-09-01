@@ -7,7 +7,7 @@
         <div class="form-group">
             <label class="control-label col-lg-1">Chrome</label>
             <div class="col-lg-3">
-            <select id="chr" class="selectpicker" data-control='{liveSearch:true,size:10}'>
+            <select id="chr" class="form-control">
                 <option>All</option>
                 <option>chr1</option>
                 <option>chr2</option>
@@ -39,7 +39,7 @@
         <div class="form-group" >
             <label class="control-label col-lg-1">Search</label>
             <div class="col-lg-3">
-                <input type="text" class="form-control" id="query_mirna_summary" ng-model="query_mirna_summary">
+                <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary">
             </div>
             <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-mir-6859-1/MI0022705</span>
         </div>
@@ -68,6 +68,13 @@
     <div class="panel-heading" >
         <strong>primir summary information</strong>
     </div>
+    <div ng-show="initial">
+            <div class="flyover" ng-hide="snp_summary_count">
+                    <div class="mask"></div>
+                    <div class="spinner"></div>
+                </div>
+                </div>
+    <div ng-show="primir_summary_count">   
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -92,12 +99,14 @@
             <td>{$ v._id.snv_in_pri$}</td>
             <td>{$ v._id.cosmic_in_pri $},{$v._id.clinvar_in_pri$}</td>
             <td>
-                <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}" style="color:#FF0000">{$ m.mir_id$}</a>,</span>
+                <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}" style="color:#FF0000">{$ m.mir_id$}</a>;&nbsp</span>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+</div>
+<div ng-show="primir_summary_count">
 <div paging
              page="currentPage"
              page-size=15
@@ -118,3 +127,4 @@
              disabled-class="disabled"
              paging-action="fetch_primir_summary(page)"
         ></div>
+        </div>

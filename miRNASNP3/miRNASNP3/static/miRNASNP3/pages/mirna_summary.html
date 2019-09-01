@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class="control-label col-lg-1">Search</label>
             <div class="col-lg-3">
-                <input type="text" class="form-control" id="query_mirna_summary" ng-model="query_mirna_summary">
+                <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary">
             </div>
             <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-let-7a-3p/MIMAT0010195</span>
         </div>
@@ -106,7 +106,13 @@
     <div class="panel-heading" >
         <strong>Mirna summary information</strong>
     </div>
-
+    <div ng-show="initial">
+            <div class="flyover" ng-hide="mirna_summary_count">
+                    <div class="mask"></div>
+                    <div class="spinner"></div>
+                </div>
+                </div>
+    <div ng-show="mirna_summary_count">   
     <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
@@ -117,7 +123,7 @@
                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNPs in this miRNA.1)Number of SNPs in seed region;2)Number of SNPs in mature miRNA;"></span></th>
             <th ts-criteria="cosmic_in_seed" style="width: 12%">Mutation count
                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of mutations in this miRNA.1)Number of Cosmic mutation in the seed region;2)Number of Cosmic mutaions in mature miRNA;3)Number of Clinvar variations in the seed region;4)Number of Clinvar variation in mature miRNA;"></span></th>
-            <th ts-criteria="pre_id|parseFloat" style="width: 14%">Primary MiRNA</th>
+            <th ts-criteria="pre_id|parseFloat" style="width: 14%">Primary miRNA</th>
         </tr>
         </thead>
         <tbody>
@@ -127,13 +133,15 @@
             <td>{$ v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
             <td>{$ v.snp_in_seed$},{$v.snp_in_matue$}</td>
             <!--td>{$v.snp_in_matue$}</td-->
-            <td>{$ v.cosmic_in_seed $},{$ v.cosmic_in_matue$},{$v.clinvar_in_seed$},{$v.clinvar_in_matue$}</td>
+            <td>{$ v.mutation_sum $}</td>
             <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color:#FF0000">{$ v.pre_id$}</a></td>
         </tr>
         </tbody>
     </table>
 </div>
+</div>
 
+<div ng-show="mirna_summary_count">
 <div paging
              page="currentPage"
              page-size=15
@@ -154,3 +162,4 @@
              disabled-class="disabled"
              paging-action="fetch_mirna_summary(page)"
         ></div>
+    </div>

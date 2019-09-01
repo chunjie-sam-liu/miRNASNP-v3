@@ -5,18 +5,18 @@
 </div>
 
 <ul class="nav nav-tabs"  ng-show="mirna_summary_count">
-    <li id="one" ng-click="show_one('one')" ng-show="mirna_summary_count" style="background-color:white;margin-right: 3px "
+    <li id="one" ng-click="show_one('one')" ng-show="mirna_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>miRNA Details</strong></a> </li>
-    <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:white;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>Gain targets with SNPs in seed region</strong></a> </li>
-    <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:white;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>Loss targets with SNPs in seed</strong></a> </li>
-    <li id="four" ng-click="show_one('four')" ng-show="mut_seed_gain_count" style="background-color:white;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>Gain targets with mutations in seed</strong></a> </li>
-    <li id="five" ng-click="show_one('five')" ng-show="mut_seed_loss_count" style="background-color:white;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>Loss targets with mutations in seed</strong></a> </li>
-    <li id="six" ng-click="show_one('six')" ng-show="enrich_result_count"  style="background-color:white;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>Target Genes Enrich Analysis</strong></a> </li>
+    <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNPs in seed region</strong></a> </li>
+    <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_three" ><a data-toggle="tab"><strong>Loss targets with SNPs in seed</strong></a> </li>
+    <li id="four" ng-click="show_one('four')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_four" ><a data-toggle="tab"><strong>Gain targets with mutations in seed</strong></a> </li>
+    <li id="five" ng-click="show_one('five')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_five" ><a data-toggle="tab"><strong>Loss targets with mutations in seed</strong></a> </li>
+    <li id="six" ng-click="show_one('six')" ng-show="enrich_result_count"  style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_six" ><a data-toggle="tab"><strong>Target Genes Enrich Analysis</strong></a> </li>
     <!--li id="six" ng-click="show_one('six')" ng-show="ld_list_lenth" style="background-color:white;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>SNP in LD Region</strong></a> </li-->
 </ul>
@@ -103,13 +103,12 @@
 
 <div ng-show="two">
     <div class="panel panel-default" id="section-2">
-        <div class="panel-heading" style="height: 50px">
-            <strong>{$ query_mirna $} with SNPs in seed region result in target gain</strong>
+        <div class="panel-heading" style="background-color: #3F96C3;height: 50px">
+            <strong style="color: white">{$ query_mirna $} with SNPs in seed region result in target gain</strong>
             <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain">
                </div>
-               <button type="submit" class="btn btn-default" ng-click="fetch_target_gain(page)">Submit</button>
            </form>
         </div>
         <table class="table table-bordered">
@@ -174,13 +173,12 @@
 
 <div ng-show="three">
 <div class="panel panel-default" id="section-3">
-    <div class="panel-heading" style="height: 50px">
-            <strong>{$ query_mirna $} with SNPs in seed region result in target loss</strong>
+    <div class="panel-heading" style="background-color: #3F96C3;height: 50px">
+            <strong style="color: white">{$ query_mirna $} with SNPs in seed region result in target loss</strong>
          <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_loss">
                </div>
-               <button type="submit" class="btn btn-default" ng-click="fetch_target_loss(page)">Submit</button>
            </form>
         </div>
     <table class="table table-bordered">
@@ -257,8 +255,8 @@
 
 <div ng-show="four">
 <div class="panel panel-default"  id="section-4">
-    <div class="panel-heading" >
-        <strong>{$ query_mirna $} with Mutation in seed region result in target gain</strong>
+    <div class="panel-heading" style="background-color: #3F96C3">
+        <strong style="color:white">{$ query_mirna $} with Mutation in seed region result in target gain</strong>
     </div>
     <table class="table table-bordered">
         <thead>
@@ -322,8 +320,8 @@
 
 <div ng-show="five">
 <div class="panel panel-default" ng-show="five" id="section-5">
-    <div class="panel-heading">
-            <strong>{$ query_mirna $} with mutations in seed region result in target loss</strong>
+    <div class="panel-heading" style="background-color: #3F96C3">
+            <strong style="color:white">{$ query_mirna $} with mutations in seed region result in target loss</strong>
         </div>
     <table class="table table-bordered">
         <thead>
@@ -398,8 +396,8 @@
 </div>
 
 <div class="panel panel-default" ng-show="six" id="section-6">
-    <div class="panel-heading">
-        <strong>Target gene enrichment analysis</strong>
+    <div class="panel-heading" style="background-color: #3F96C3">
+        <strong style="color:white">Target gene enrichment analysis</strong>
                 </div>
         <table class="table table-bordered">
             <thead>
@@ -410,9 +408,7 @@
                     <th>Alt</th>
                     <th>Effection</th>
                     <th>Enrichment type</th>
-                    <th>Dot plot</th>
-                    <th>Cnet plot</th>
-                    <th>Emap plot</th>
+                    <th>View plot</th>
                 </tr>
                 </thead>
             <tbody>
@@ -431,20 +427,8 @@
                     <td>{$ e.enrich_type $}</td>
                     <td>
                         <button class="btn btn-success" data-toggle="modal" data-target="#enrichment_plot"
-                            ng-click="enrichment_view(e.dot_file)">View Dot
+                            ng-click="enrichment_view(e)">View Plot
                         </button>
-                    </td>
-                    <td>
-                            <button class="btn btn-success" data-toggle="modal" data-target="#enrichment_plot"
-                                ng-click="enrichment_view(e.chet_file)">View Cnet
-                            </button>
-                    </td>
-                    <td>
-                        <span ng-if="e.emap_file">
-                                <button class="btn btn-success" data-toggle="modal" data-target="#enrichment_plot"
-                                    ng-click="enrichment_view(e.emap_file)">View Emap
-                                </button></span>
-                        <span ng-if="!e.emap_file">-</span>
                     </td>
                 </tr>
             </tbody>
@@ -659,9 +643,44 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Enrichment Plot</h4>
                 </div>
-                <div>
-                    <img src="static/miRNASNP3/img/enrichment/{$enrich_filename$}" width="100%" >
+                <ul class="nav nav-tabs">
+                <li id="enrich_dot" ng-click="show_one('enrich_dot')" ng-show="show_dot" style="background-color:#EBEBEB;margin-right: 3px "
+                    class="class_enrich_dot" ><a data-toggle="tab"><strong>Dot plot</strong></a> </li>
+                <li id="enrich_cnet" ng-click="show_one('enrich_cnet')" ng-show="show_cnet" style="background-color:#EBEBEB;margin-right: 3px "
+                    class="class_enrich_cnet" ><a data-toggle="tab"><strong>Cnet plot</strong></a> </li>
+                <li id="enrich_emap" ng-click="show_one('enrich_emap')" ng-show="show_emap" style="background-color:#EBEBEB;margin-right: 3px "
+                    class="class_enrich_emap" ><a data-toggle="tab"><strong>Emap plot</strong></a> </li>
+                </ul>
+
+                <div ng-show="show_dot">
+                    <div class="panel panel-info" ng-show="enrich_dot" id="section-e7">
+                       
+                        <div class="panel-heading">Go enrichment analysis for Targets {$enrich_item.effection$} caused by {$enrich_item.variate_id$} in {$enrich_item.mirna_id$} </div>
+                    <div>
+                    <img src="static/miRNASNP3/img/enrichment/{$enrich_item.dot_file$}" width="95%" style="margin: auto" >
+                    </div>
+                    <p>In <strong>dot plot </strong>, each point in the figure represents an enriched pathway, the dot color range from blue to red indicating an decreasing of the value of padjust.</p>
                 </div>
+                </div>
+            <div ng-show="enrich_cnet">
+                    <div class="panel panel-info" id="section-e8">
+                            
+                        <div class="panel-heading">Go enrichment analysis for Targets {$enrich_item.effection$} caused by {$enrich_item.variate_id$} in {$enrich_item.mirna_id$}</div>
+                    <div>
+                    <img src="static/miRNASNP3/img/enrichment/{$enrich_item.chet_file$}" width="95%" style="align-content: center">
+                </div>
+                <p>In <strong>cnet plot </strong>, each pathway in the figure represents an enriched pathway, the dot color range from blue to red indicating an decreasing of the value of padjust.</p>
+            </div>
+            </div>
+            <div ng-show="enrich_emap">
+              
+                    <div class="panel panel-info" ng-show="enrich_emap" id="section-e9">
+                        <div class="panel-heading">Go enrichment analysis for Targets {$enrich_item.effection$} caused by {$enrich_item.variate_id$} in {$enrich_item.mirna_id$}</div>
+                    
+                    <div>
+                    <img src="static/miRNASNP3/img/enrichment/{$enrich_item.emap_file$}" width="95%" style="align-content: center">
+                </div>
+            </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

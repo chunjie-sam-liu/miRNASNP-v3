@@ -6,7 +6,7 @@
         <div class="form-group">
             <label class="control-label col-lg-1">Chrome</label>
             <div class="col-lg-3">
-            <select id="chr" class="selectpicker" data-live-search="true">
+            <select id="chr" class="form-control">
                 <option value="All">All</option>
                 <option>chr1</option>
                 <option>chr2</option>
@@ -36,32 +36,34 @@
             </div>
             <label class="control-label col-lg-1">Location</label>
             <div class="col-lg-3">
-                <select id="location" class="selectpicker" data-live-search="true">
-                    <option>UTR3</option>
-                    <option>mirseed</option>
+                <select id="location" class="form-control">
                     <option value="All">All</option>
+                    <option value="UTR3">UTR3</option>
+                    <option value="mirseed">mature miRNA seed</option>
                 </select>
             </div>
             <label class="control-label col-lg-1">GMAF</label>
             <div class="col-lg-3">
-                <select id="gmaf" class="selectpicker" data-live-search="true">
+                <select id="gmaf" class="form-control">
+                    <option value="All">All</option>
                     <option>&gt;0.05</option>
                     <option>&gt;0.01</option>
-                    <option value="All">All</option>
                 </select>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-1">SNP</label>
             <div class="col-lg-3">
-                <input type="text" class="form-control" id="query_snp_summary" ng-model="query_snp_summary">
+                <input type="text" class="form-control input-xs" id="query_snp_summary" ng-model="query_snp_summary">
             </div>
             <span class="help-block">Input a  SNP ID,such as rs1079033</span>
+        </div>
+        <div class="form-group">
             <label class="control-label col-lg-1">Identifier</label>
             <div class="col-lg-3">
-                <input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary">
+                <input type="text" class="form-control input-xs" id="query_iden_summary" ng-model="query_iden_summary">
             </div>
-            <span class="help-block">Input a  Gene/miRNA,such as hsa-miR-9985</span>
+            <span class="help-block">Input a  Gene/miRNA,such as hsa-miR-6761-3p</span>
         </div>
         <div class="form-group">
             <div class="col-lg-9">
@@ -79,7 +81,7 @@
         <div class="form-group">
             <div class="col-lg-3">
             <span class="input-group-btn">
-                <button class="btn btn-primary" id="search_button" type="button" ng-click="fetch_snp_summary(page)" >
+                <button class="btn btn-primary" id="search_button" type="submit" ng-click="fetch_snp_summary(page)" >
 							Submit
                 </button>
             </span>
@@ -88,7 +90,7 @@
         <div class="form-group">
             <div class="col-lg-3">
             <span class="input-group-btn">
-                <button class="btn btn-danger" id="reset_query" type="button" ng-click="reset_query()" >
+                <button class="btn btn-danger" id="reset_query" type="reset" ng-click="reset_query()" >
 							Reset
                 </button>
             </span>
@@ -97,11 +99,18 @@
     </form>
 </div>
 
+
 <div class="panel panel-warning" >
     <div class="panel-heading" >
         <strong>SNPs summary information</strong>
     </div>
-
+    <div ng-show="initial">
+            <div class="flyover" ng-hide="snp_summary_count">
+                    <div class="mask"></div>
+                    <div class="spinner"></div>
+                </div>
+                </div>
+    <div ng-show="snp_summary_count">   
     <table class="table table-bordered" style="table-layout: fixed">
         <thead>
         <tr>
@@ -154,24 +163,26 @@
         </tbody>
     </table>
 </div>
-
-<div paging
-             page="currentPage"
-             page-size=15
-             total="snp_summary_count"
-             scroll-top="true"
-             hide-if-empty="true"
-             show-prev-next="true"
-             show-first-last="true"
-             text-title-page="Page {page} Hover Over"
-             text-title-first="First hover"
-             text-title-last="Last hover"
-             text-title-next="Next hover"
-             text-title-prev="Prev hover"
-             show-prev-next="true"
-             show-first-last="true"
-             ul-class="pagination"
-             active-class="active"
-             disabled-class="disabled"
-             paging-action="fetch_snp_summary(page)"
-        ></div>
+</div>
+<div ng-show="snp_summary_count">
+        <div paging
+        page="currentPage"
+        page-size=15
+        total="snp_summary_count"
+        scroll-top="true"
+        hide-if-empty="true"
+        show-prev-next="true"
+        show-first-last="true"
+        text-title-page="Page {page} Hover Over"
+        text-title-first="First hover"
+        text-title-last="Last hover"
+        text-title-next="Next hover"
+        text-title-prev="Prev hover"
+        show-prev-next="true"
+        show-first-last="true"
+        ul-class="pagination"
+        active-class="active"
+        disabled-class="disabled"
+        paging-action="fetch_snp_summary(page)"
+   ></div>
+        </div>

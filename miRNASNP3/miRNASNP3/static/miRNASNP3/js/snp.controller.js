@@ -82,8 +82,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
     $scope.fetch_snp_details=function(){
         var page=1;
     	$http({
-            url: base_url+'/api/snpinfo',
-            //url:'/api/snpinfo',
+            //url: base_url+'/api/snpinfo',
+            url:'/api/snpinfo',
             method: 'GET',
             params: {query_snp: $scope.query_snp,page:page}
         }).then(
@@ -106,12 +106,11 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 
     $scope.fetch_target_gain = function (page) {
         console.log("fetch_target_gain");
-        var query_gene = $('#search_gene').val();
     	$http({
-            url:base_url+'/api/snp_seed_gain',
-            //url:'/api/snp_seed_gain',
+            //url:base_url+'/api/snp_seed_gain',
+            url:'/api/snp_seed_gain',
 			method: 'GET',
-			params: {snp_id: $scope.query_snp,page:page,gene:query_gene}
+			params: {snp_id: $scope.query_snp,page:page}
             }).then(
                 function (response) {
                     console.log(response);
@@ -132,6 +131,45 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                 })
             };
     $scope.fetch_target_gain(page);
+
+    $(document).ready(function(){
+        var flag=0;
+        $('#search_gene').on('input propertychange', function() {
+            var query_gene_gain = $('#search_gene').val();
+            console.log(query_gene_gain)
+            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
+                alert("Invalid input");
+                flag = 1;
+                history.back();
+            }
+            if(flag==0){
+                console.log(query_gene_gain)
+                $http({
+                    //url:base_url+'/api/snp_seed_gain',
+                    url:'/api/snp_seed_gain',
+                    method: 'GET',
+                    params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
+                    }).then(
+                        function (response) {
+                            console.log(response);
+                            $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
+                            $scope.snp_seed_gain_count=response.data.snp_seed_gain_count+1;
+                            var site_array=$scope.snp_seed_gain_list
+                            for(var i=0;i<site_array.length;i++){
+                                if(site_array[i].expr_corelation){
+                                    site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                }
+                                site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
+                                site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
+                                site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
+                                site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
+                                site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
+                                site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                        }
+                        })
+            }
+        });
+      });
 
     $scope.modal_expression=function(exp,title){
         $scope.expression=exp[0];
@@ -311,12 +349,11 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 
 
     $scope.fetch_target_loss = function (page) {
-        var query_gene_loss = $('#search_gene_loss').val();
     	$http({
-        	url:base_url+'/api/snp_seed_loss',
-        //    url:'/api/snp_seed_loss',
+        	//url:base_url+'/api/snp_seed_loss',
+            url:'/api/snp_seed_loss',
             method: 'GET',
-            params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
+            params: {snp_id: $scope.query_snp,page:page}
         }).then(
             function (response) {
                 console.log(response);
@@ -337,6 +374,45 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
             });
         };
     $scope.fetch_target_loss(page);
+
+    $(document).ready(function(){
+        var flag=0;
+        $('#search_gene_loss').on('input propertychange', function() {
+            var query_gene_loss = $('#search_gene_loss').val();
+            console.log(query_gene_loss)
+            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
+                alert("Invalid input");
+                flag = 1;
+                history.back();
+            }
+            if(flag==0){
+                console.log(query_gene_loss)
+                $http({
+                    //url:base_url+'/api/snp_seed_loss',
+                    url:'/api/snp_seed_loss',
+                    method: 'GET',
+                    params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
+                    }).then(
+                        function (response) {
+                            console.log(response);
+                            $scope.snp_seed_loss_list = response.data.snp_seed_loss_list;
+                            $scope.snp_seed_loss_count=response.data.snp_seed_loss_count+1;
+                            var site_array=$scope.snp_seed_loss_list
+                            for(var i=0;i<site_array.length;i++){
+                                if(site_array[i].expr_corelation){
+                                    site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                }
+                                site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
+                                site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
+                                site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
+                                site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
+                                site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
+                                site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                        }
+                        })
+            }
+        });
+      });
 
     $scope.modal_gain_site_utr=function(site){
 		$scope.modal_header="Target Gain";

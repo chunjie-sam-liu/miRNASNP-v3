@@ -1,6 +1,6 @@
 <div style="padding: 20px 100px 10px" class="ng-scope">
     <div class="input-group">
-        <input ng-model="query_item" type="text"  class="form-control" style="border-color: #81C2D6" data-provide="typeahead"
+        <input ng-model="query_item" type="text"  class="form-control input-xs" style="border-color: #81C2D6" data-provide="typeahead"
                placeholder="rs779353569/hsa-let-7a-3p/" id="search">
         <span class="input-group-btn">
 						<button class="btn btn-default" id="search_button" type="button" style="background-color: #ffbbbc" ng-click="search_query()" >
@@ -10,12 +10,26 @@
     </div><!-- /input-group -->
 </div>
 
-<!--div class="alert alert-danger alert-dismissible" ng-show="alert_show" id="alert">
+<div class="alert alert-danger alert-dismissible" ng-show="alert_nonitem" id="alert_nonitem">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
     <strong>Sorry, your query item is not exist</strong>
-</div-->
+</div>
+
+<div class="alert alert-danger alert-dismissible" ng-show="alert_unrecorgnize" id="alert_unrecorgnize">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Unrecorgnized input !</strong>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible" ng-show="alert_illegal" id="alert_illegal">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>Illegal input !</strong>
+        </div>
 
 <div class="row" style="margin-top: 20px">
     <div class="col-xs-6 col-sm-6">
@@ -28,7 +42,7 @@
             <div class="panel-body">
                 <span>
                 MicroRNAs(miRNAs) are studied as key factors in the regulation of gene expression involved in different disease.
-                    <span class="badge alert-info">miRNASNP</span> is a database providing comprehensive resources of single nucleotide polymorphisms (SNPs) in miRNAs and genes that may impact miRNA biogenesis and/or miRNA target binding.
+                    <span class="badge alert-info">miRNASNP</span> is a database providing comprehensive resources of single nucleotide polymorphisms (SNPs) in miRNA and genes that may impact miRNA biogenesis and/or miRNA target binding.
                 </span>
                 <!--br>
                 <br>
@@ -48,12 +62,12 @@
         <div class="panel" style="height:280px;border-color: #5bc0de">
             <div class="panel-heading" style="background-color: #A4D3EE">
                 <span>
-                    Update in miRNASNP
+                    Update in miRNASNP version 3
                 </span>
             </div>
             <div class="panel-body">
                 <ul>
-                    <li><p>Potential functional SNPs increase to 6440089 compared to 365994 in MiRNASNP2</p></li>
+                    <li><p>Potential functional SNPs increase to 6440089 in version 3 compared to 365994 in version 2</p></li>
                     <li><p>Mutations from Cosmic and Clinvar are involed </p></li>
                     <li><p>Disease information from GWAS catalog ,Clinvar,Cosmic are instegramed with SNPs</p></li>
                     <li><p>Enrichment Analysis of gain/Loss target gene sets are carried out </p></li>

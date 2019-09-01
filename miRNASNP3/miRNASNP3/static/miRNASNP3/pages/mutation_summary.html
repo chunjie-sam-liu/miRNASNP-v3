@@ -194,7 +194,13 @@
         <div class="panel-heading" >
             <strong>Cosmic mutation summary information</strong>
         </div>
-
+        <div ng-show="initial">
+                <div class="flyover" ng-hide="mutation_summary_count">
+                        <div class="mask"></div>
+                        <div class="spinner"></div>
+                    </div>
+                    </div>
+        <div ng-show="mutation_summary_count">   
         <table class="table table-bordered" style="table-layout: fixed">
             <thead>
             <tr>
@@ -231,7 +237,8 @@
         </tbody>
     </table>
 </div>
-
+    </div>
+<div ng-show="mutation_summary_count">
 <div paging
              page="currentPage"
              page-size=15
@@ -253,13 +260,20 @@
              paging-action="fetch_mutation_summary(page)"
         ></div>
 </div>
+</div>
 
 <div ng-show="target_effection">
     <div class="panel panel-primary" >
     <div class="panel-heading" >
         <strong>Cosmic mutation summary information</strong>
     </div>
-        
+    <div ng-show="initial">
+            <div class="flyover" ng-hide="mutation_summary_count">
+                    <div class="mask"></div>
+                    <div class="spinner"></div>
+                </div>
+                </div>
+    <div ng-show="mutation_summary_count">   
     <table class="table table-bordered" style="table-layout: fixed">
         <thead>
             <tr>
@@ -300,6 +314,8 @@
         </tbody>
     </table> 
     </div> 
+    </div>
+    <div ng-show="mutation_summary_count">
     <div paging
                      page="currentPage"
                      page-size=15
@@ -320,4 +336,5 @@
                      disabled-class="disabled"
                      paging-action="fetch_mutation_summary(page)"
                 ></div>
+    </div>
     </div>

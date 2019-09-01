@@ -20,6 +20,9 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $scope.four = 0;
         $scope.five = 0;
         $scope.six = 0;
+        $scope.enrich_dot=0;
+        $scope.enrich_cnet=0;
+        $scope.enrich_emap=0;
     };
     $scope.one = 1;
     $scope.show_one = function (refer) {
@@ -48,6 +51,18 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         if (refer == "six") {
             $scope.six = 1;
             $scope.class_six = "ative";
+        }
+        if(refer=="enrich_dot"){
+            $scope.enrich_dot=1;
+            $scope.class_enrich_dot="active";
+        }
+        if(refer=="enrich_cnet"){
+            $scope.enrich_cnet=1;
+            $scope.class_enrich_cnet="active";
+        }
+        if(refer=="enrich_emap"){
+            $scope.enrich_emap=1;
+            $scope.class_enrich_emap="active";
         }
     };
     $scope.fetch_mirna_details = function () {
@@ -116,33 +131,73 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
 
 
     $scope.fetch_target_gain = function (page) {
-        console.log($scope.query_mirna);
-        var query_gene_gain = $('#search_gene_gain').val();
-    	$http({
-			//url:base_url+'/api/snp_seed_gain',
-            url:'/api/snp_seed_gain',
-			method: 'GET',
-			params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
-            }).then(
-                function (response) {
-                    console.log(response);
-                    $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
-                    $scope.snp_seed_gain_count=response.data.snp_seed_gain_count;
-                    var site_array=$scope.snp_seed_gain_list
-                    for(var i=0;i<site_array.length;i++){
-                        if(site_array[i].expr_corelation){
-                            site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
-                        }
-                        site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
-                        site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
-                        site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
-                        site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
-                        site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
-                        site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                }
-                })
-            };
+        //console.log($scope.query_mirna);
+            $http({
+                //url:base_url+'/api/snp_seed_gain',
+                url:'/api/snp_seed_gain',
+                method: 'GET',
+                params: {mirna_id: $scope.query_mirna,page:page}
+                }).then(
+                    function (response) {
+                        console.log(response);
+                        $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
+                        $scope.snp_seed_gain_count=response.data.snp_seed_gain_count;
+                        var site_array=$scope.snp_seed_gain_list
+                        for(var i=0;i<site_array.length;i++){
+                            if(site_array[i].expr_corelation){
+                                site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                            }
+                            site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
+                            site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
+                            site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
+                            site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
+                            site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
+                            site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                    }
+                    })
+        }
     $scope.fetch_target_gain(page);
+
+    
+        //console.log(query_item);
+        $(document).ready(function(){
+            var flag=0;
+            $('#search_gene_gain').on('input propertychange', function() {
+                var query_gene_gain = $('#search_gene_gain').val();
+                console.log(query_gene_gain)
+                if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
+                    alert("Invalid input");
+                    flag = 1;
+                    history.back();
+                }
+                if(flag==0){
+                    console.log(query_gene_gain)
+                    $http({
+                        //url:base_url+'/api/snp_seed_gain',
+                        url:'/api/snp_seed_gain',
+                        method: 'GET',
+                        params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
+                        }).then(
+                            function (response) {
+                                console.log(response);
+                                $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
+                                $scope.snp_seed_gain_count=response.data.snp_seed_gain_count+1;
+                                var site_array=$scope.snp_seed_gain_list
+                                for(var i=0;i<site_array.length;i++){
+                                    if(site_array[i].expr_corelation){
+                                        site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                    }
+                                    site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
+                                    site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
+                                    site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
+                                    site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
+                                    site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
+                                    site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                            }
+                            })
+                }
+            });
+          });
 
     $scope.modal_gene_expression=function(exp){
         $scope.gene_expression=exp[0];
@@ -280,32 +335,70 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         }
 
    $scope.fetch_target_loss = function (page) {
-        var query_gene_loss = $('#search_gene_loss').val();
-    	$http({
-            //url:base_url+'/api/snp_seed_loss',
-            url:'/api/snp_seed_loss',
-            method: 'GET',
-            params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
-        }).then(
-            function (response) {
-                console.log(response);
-                $scope.snp_seed_loss_list = response.data.snp_seed_loss_list;
-                $scope.snp_seed_loss_count = response.data.snp_seed_loss_count;
-                var site_array=$scope.snp_seed_loss_list
-                for(var i=0;i<site_array.length;i++){
-                    if(site_array[i].expr_corelation){
-                        site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+            $http({
+                //url:base_url+'/api/snp_seed_loss',
+                url:'/api/snp_seed_loss',
+                method: 'GET',
+                params: {mirna_id: $scope.query_mirna,page:page}
+            }).then(
+                function (response) {
+                    console.log(response);
+                    $scope.snp_seed_loss_list = response.data.snp_seed_loss_list;
+                    $scope.snp_seed_loss_count = response.data.snp_seed_loss_count;
+                    var site_array=$scope.snp_seed_loss_list
+                    for(var i=0;i<site_array.length;i++){
+                        if(site_array[i].expr_corelation){
+                            site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                        }
+                        site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
+                        site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
+                        site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
+                        site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
+                        site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
+                        site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
                     }
-                    site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
-                    site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
-                    site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
-                    site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
-                    site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
-                    site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                }
-            });
-        };
+                });
+        }
+       
     $scope.fetch_target_loss(page);
+
+    $(document).ready(function(){
+        var flag=0;
+        $('#search_gene_loss').on('input propertychange', function() {
+            var query_gene_loss = $('#search_gene_loss').val();
+            console.log(query_gene_loss)
+            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
+                alert("Invalid input");
+                flag = 1;
+                history.back();
+            }
+            if(flag==0){
+                $http({
+                    //url:base_url+'/api/snp_seed_loss',
+                    url:'/api/snp_seed_loss',
+                    method: 'GET',
+                    params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
+                }).then(
+                    function (response) {
+                        console.log(response);
+                        $scope.snp_seed_loss_list = response.data.snp_seed_loss_list;
+                        $scope.snp_seed_loss_count = response.data.snp_seed_loss_count+1;
+                        var site_array=$scope.snp_seed_loss_list
+                        for(var i=0;i<site_array.length;i++){
+                            if(site_array[i].expr_corelation){
+                                site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                            }
+                            site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
+                            site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
+                            site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
+                            site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
+                            site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
+                            site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                        }
+                    });
+            }
+        });
+      });
 
     $scope.modal_corelation_detail=function(cor){
         var cancer_count=0;
@@ -464,9 +557,15 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     };
     $scope.fetch_enrich_result();
 
-    $scope.enrichment_view=function(filename){
-        $scope.enrich_filename=filename;
-        console.log($scope.enrich_filename)
+    $scope.enrichment_view=function(e){
+        $scope.enrich_item=e
+        $scope.show_dot=0;
+        $scope.show_cnet=0;
+        $scope.show_emap=0;
+        if(e.dot_file){$scope.show_dot=1}
+        if(e.chet_file){$scope.show_cnet=1}
+        if(e.emap_file){$scope.show_emap=1}
+        //console.log($scope.enrich_filename)
     }
 
 
