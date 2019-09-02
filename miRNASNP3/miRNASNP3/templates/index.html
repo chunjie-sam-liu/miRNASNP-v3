@@ -1,26 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="miRNASNP3">
+
 <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1,user-scalable=no">
 
-    <meta charset="utf-8">
-    <title>miRNASNP3</title>
-
-    <link rel="icon" href="/static/miRNASNP3/img/miRNASNP2.0_logo.PNG">
-
-
+    <!-- loading css -->
     <link rel="stylesheet" href="/static/miRNASNP3/css/bootstrap.css">
     <link rel="stylesheet" href="/static/miRNASNP3/lib/bootstrap-slider/css/bootstrap-slider.css">
-    <link rel="stylesheet" href="/static/miRNASNP3/css/main.css">
     <link rel="stylesheet" href="/static/miRNASNP3/lib/bootstrap-select/dist/css/bootstrap-select.css">
     <link rel="stylesheet" href="static/miRNASNP3/lib/angular-tablesort/tablesort.css">
-    <!--link rel='stylesheet' href="/static/miRNASNP3/lib/fornac/app/styles/fornac.css"-->
+    <!-- miRNASNP3 css -->
+    <link rel="stylesheet" href="/static/miRNASNP3/css/main.css">
 
+    <!-- loading javascripts -->
     <script src="/static/miRNASNP3/lib/angular/angular.js"></script>
     <script src="/static/miRNASNP3/lib/angular/angular-route.js"></script>
     <script src="/static/miRNASNP3/lib/angular/angular-resource.js"></script>
     <script src="/static/miRNASNP3/lib/angular-paging/paging.js"></script>
     <script src="/static/miRNASNP3/lib/angular-pageslide-directive/angular-pageslide-directive.js"></script>
-
     <script src="/static/miRNASNP3/lib/jquery/jquery-3.1.1.min.js"></script>
     <script src="/static/miRNASNP3/lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     <script src="/static/miRNASNP3/lib/bootstrap/bootstrap.js"></script>
@@ -30,11 +29,9 @@
     <script src="/static/miRNASNP3/lib/bootstrap-select/js/bootstrap-select.js"></script>
     <script src="/static/miRNASNP3/lib/echarts/echarts.min.js"></script>
     <script src="/static/miRNASNP3/lib/angular-tablesort/angular-tablesort.js"></script>
-
     <script src="/static/miRNASNP3/lib/fornac/dist/scripts/fornac.js"></script>
-    <!--script src="/static/miRNASNP3/lib/rnautils/dist/scripts/rnautils.js"></script>
-    <script src="/static/miRNASNP3/lib/d3/d3.js"></script-->
 
+    <!-- miRNASNP3 javascripts -->
     <script src="/static/miRNASNP3/js/app.js"></script>
     <script src="/static/miRNASNP3/js/home.controller.js"></script>
     <script src="/static/miRNASNP3/js/document.controller.js"></script>
@@ -51,20 +48,27 @@
     <script src="/static/miRNASNP3/js/download.controller.js"></script>
     <script src="/static/miRNASNP3/js/test.js"></script>
 
+    <!-- for icon -->
+    <link rel="icon" href="/static/miRNASNP3/img/miRNASNP2.0_logo.PNG">
+    <title>miRNASNP3</title>
+
 </head>
-<body style="background-color: #c4e3f3">
-<!--a href="#!/">
-    <img src="/static/miRNASNP3/img/miRNASNP2.0_logo.PNG" align="middle">
-</a>
-<img src="/static/miRNASNP3/img/miRNASNP3_title.PNG" align="middle"-->
-<div ng-include="'/static/miRNASNP3/partials/navigation.html'" class="ng-scope">
 
-</div>
-<div class="container" style="background-color: floralwhite">
-    <div ng-view></div>
-</div>
-
-<div ng-include="'/static/miRNASNP3/partials/footer.html'"></div>
-
+<body style="background-color: aliceblue;">
+    <!-- website logo -->
+    <div class="container">
+        <a href="#!/">
+            <img src="/static/miRNASNP3/img/miRNASNP3_title.PNG" alt="miRANSNP3" id="logo-banner" width="100%">
+        </a>
+    </div>
+    <!-- navigation -->
+    <div ng-include="'/static/miRNASNP3/partials/navigation.html'"></div>
+    <!-- main container -->
+    <div class="container" style="background-color: floralwhite">
+        <div ng-view></div>
+    </div>
+    <!-- footer -->
+    <div ng-include="'/static/miRNASNP3/partials/footer.html'"></div>
 </body>
+
 </html>
