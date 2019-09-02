@@ -72,3 +72,4 @@ enrichment/
 download/
 go_loss_fix_02/
 .vscode/
+package.json
