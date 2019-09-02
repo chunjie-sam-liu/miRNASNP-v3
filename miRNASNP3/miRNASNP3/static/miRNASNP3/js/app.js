@@ -31,6 +31,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/gene.html",
                 controller:"GeneController"
             })
+            .when("/mutation",{
+                templateUrl:"/static/miRNASNP3/pages/mutation.html",
+                controller:"MutationController"
+            })
             .when("/download", {
                 templateUrl: "/static/miRNASNP3/pages/download.html",
                 controller: "DownloadController"

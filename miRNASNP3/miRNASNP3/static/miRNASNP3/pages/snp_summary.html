@@ -111,33 +111,33 @@
                 </div>
                 </div>
     <div ng-show="snp_summary_count">   
-    <table class="table table-bordered" style="table-layout: fixed">
+    <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
         <thead>
         <tr>
-            <th width="5%">Chrome</th>
-            <th width="7%">Position</th>
-            <th width="8%">SNP ID</th>
+            <th ts-criteria="snp_chr" width="5%">Chrome</th>
+            <th ts-criteria="snp_coordinate" width="7%">Position</th>
+            <th ts-criteria="snp_id" width="8%">SNP ID</th>
             <th width="5%">Ref/Alt</th>
-            <th width="8%">Ref frequency</th>
-            <th width="10%">Alt frequency</th>
+            <th ts-criteria="ref_freq" width="8%">Ref frequency</th>
+            <th ts-criteria="alt_freq" width="10%">Alt frequency</th>
             <th width="7%">Location</th>
-            <th width="10%">Identifier
+            <th ts-criteria="identifier" width="10%">Identifier
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="The SNV locate in the gene/miRNA"></span></th>
-            <th width="5%">LD SNP
+            <th ts-criteria="ldsnp" width="5%">LD SNP
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Weather the SNV is a tagSNP or locate in the linkage disequilibrium of another tagSNP"></span></th>
-            <th width="8%">Mutation Related
+            <th ts-criteria="mutation_rela" width="8%">Mutation Related
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Weather the SNV share coordinate with a mutation from Cosmic/Clinvar"></span></th>
-            <th width="5%">Gain
+            <th ts-criteria="gain_count|parseInt" width="5%">Gain
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of gain targets with the SNV "></span></th>
-            <th width="5%">Loss
+            <th ts-criteria="loss_count|parseInt" width="5%">Loss
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of loss targets with the SNV"></span></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="v in snp_summary_list">
+        <tr ng-repeat="v in snp_summary_list" ts-repeat>
             <td >{$v.snp_chr$}</td>
             <td >{$v.snp_coordinate$}</td>
-            <td >{$v.snp_id$}</td>
+            <td ><a href="/#!/snp?snp_id={$v.snp_id$}">{$v.snp_id$}</a></td>
             <td >{$v.ref$}/{$v.alt$}</td>
             <td align="center">
                 <span ng-if="!v.ref_freq">-</span>
@@ -148,7 +148,7 @@
                 <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
             </td>
             <td>{$v.location$}</td>
-            <td>{$v.identifier$}</td>
+            <td><a href="/#!/mirna?mirna_id={$$v.identifier}">{$v.identifier$}</td>
             <td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>

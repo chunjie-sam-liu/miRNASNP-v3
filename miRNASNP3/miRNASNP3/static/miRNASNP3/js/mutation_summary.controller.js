@@ -12,6 +12,8 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     var page=1;
     var condition={};
     var base_url = miRNASNP3Service.getAPIBaseUrl();
+    var gene=$routeParams.gene
+    $scope.target_effection=$routeParams.target_effection
     $scope.initial=1;
 
     $scope.fetch_mutation_summary=function(page){
@@ -26,11 +28,16 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         condition['pubmed_id']='';
         condition['page']=page
 
+        $scope.target_effection=$routeParams.target_effection
+
+        if (gene){
+            condition['gene']=gene
+        }
         var chr = $("#chr option:selected").text();
         if (chr!="All"){
             condition["chrome"]=chr
         }
-        var location=$("#location option:selected").text();
+        var location=$("#location option:selected").val();
         if(location!="All"){
             condition['location']=location
         }
@@ -54,7 +61,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         if ($("#is_pubmed").is(":checked")){
             condition['pubmed_id']=1
         }
-        if ($("#target_effection").is(":checked")){
+        if ($("#target_effection").is(":checked")||$scope.target_effection==1){
             $scope.target_effection=1;
             $scope.total_summary=0;
         }
@@ -71,6 +78,10 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             $scope.initial=0;
             $scope.mutation_summary_list=response.data.mutation_summary_list;
             $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
+            var data_list=$scope.mutation_summary_list
+            for(var i=0;i<data_list.length;i++){
+                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+            }
         })
     };
     $scope.fetch_mutation_summary(page)

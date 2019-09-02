@@ -36,6 +36,7 @@
                 <dd>{$ mirna_summary_alias.mir_chr $}:{$ mirna_summary_alias.mir_start $}-{$ mirna_summary_alias.mir_end$}({$ mirna_summary_alias.mir_strand $})</dd>
                 <dt>Mature Sequence</dt>
                 <dd>{$ mirna_summary_alias.matureSeq $}</dd>
+                <span ng-if="mirna_expression_show">
                 <dt>Average expression
                     <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                           data-trigger="hover"
@@ -56,6 +57,7 @@
                              style="background-color: {$c.color$}" ng-repeat="c in mirna_profile"></div>
                     </div>
                 </dd>
+                </span>
                 <dt>Precursor</dt>
                 <dd>{$ mirna_summary_alias.pre_id $}</dd>
                 <dt>Precursor Accession</dt>
@@ -255,8 +257,13 @@
 
 <div ng-show="four">
 <div class="panel panel-default"  id="section-4">
-    <div class="panel-heading" style="background-color: #3F96C3">
+    <div class="panel-heading" style="background-color: #3F96C3;height: 50px">
         <strong style="color:white">{$ query_mirna $} with Mutation in seed region result in target gain</strong>
+        <form class="form-inline pull-right">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain_mut">
+                </div>
+            </form>
     </div>
     <table class="table table-bordered">
         <thead>
@@ -320,8 +327,13 @@
 
 <div ng-show="five">
 <div class="panel panel-default" ng-show="five" id="section-5">
-    <div class="panel-heading" style="background-color: #3F96C3">
+    <div class="panel-heading" style="background-color: #3F96C3;height: 50px">
             <strong style="color:white">{$ query_mirna $} with mutations in seed region result in target loss</strong>
+            <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_mut">
+                    </div>
+                </form>
         </div>
     <table class="table table-bordered">
         <thead>
@@ -342,7 +354,8 @@
         <tbody>
         <tr ng-repeat="v in mut_seed_loss_list">
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center">{$ v.mut_id$}<br>{$v.mirna_id$}</td>
+                <td align="center">{$v.mirna_id$}</td>
+                <td align="center">{$ v.mut_id$}</td>
                 <td align="center">{$ v.gene_symbol$}</td>
                 <td align="center">{$v.utr_info.acc$}</td>
                 <td align="center">{$v.utr_info.enst_id$}</td>
@@ -396,7 +409,7 @@
 </div>
 
 <div class="panel panel-default" ng-show="six" id="section-6">
-    <div class="panel-heading" style="background-color: #3F96C3">
+    <div class="panel-heading" style="background-color: #3F96C3;height: 50px">
         <strong style="color:white">Target gene enrichment analysis</strong>
                 </div>
         <table class="table table-bordered">

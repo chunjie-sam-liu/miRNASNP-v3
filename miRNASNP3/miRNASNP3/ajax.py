@@ -356,6 +356,8 @@ class MutSeedGain(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('mirna_id', type=str)
+        parser.add_argument('mut_id')
+        parser.add_argument('gene')
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
         mirna_id = args['mirna_id']
@@ -365,6 +367,10 @@ class MutSeedGain(Resource):
         condition = {}
         if args['mirna_id']:
             condition['mirna_id']=mirna_id
+        if args['mut_id']:
+            condition['mut_id']=args['mut_id']
+        if args['gene']:
+            condition['gene_symbol']={'$regex':args['gene'],'$options':'$i'}
         match={'$match':condition}
         print("mut_seed_gain")
         print(condition)
@@ -416,6 +422,8 @@ class MutSeedLoss(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('mirna_id', type=str)
+        parser.add_argument('mut_id')
+        parser.add_argument('gene')
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
         mirna_id = args['mirna_id']
@@ -425,6 +433,10 @@ class MutSeedLoss(Resource):
         condition = {}
         if args['mirna_id']:
             condition['mirna_id']=mirna_id
+        if args['mut_id']:
+            condition['mut_id']=args['mut_id']
+        if args['gene']:
+            condition['gene_symbol']={'$regex':args['gene'],'$options':'$i'}
         match={'$match':condition}
         print("mut_seed_loss")
         print(condition)
@@ -433,6 +445,13 @@ class MutSeedLoss(Resource):
             'localField': 'gene_symbol',
             'foreignField': 'symbol',
             'as': 'gene_expression'
+        }}
+        lookup_mirna = {'$lookup': {
+            'from': 'mirna_expression',
+            'localField': 'mirna_id',
+            'foreignField': 'mir_id',
+            'as': 'mirna_expression'
+
         }}
         lookup_corelation= {'$lookup':{
             'from':'corelation_cancer_detail',
@@ -443,7 +462,7 @@ class MutSeedLoss(Resource):
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
 
-        pipline=[match,skip,limit,lookup_gene,lookup_corelation]
+        pipline=[match,skip,limit,lookup_mirna,lookup_gene,lookup_corelation]
         mut_seed_loss_list=mongo.db.seed_cosmic_loss.aggregate(pipline)
         mut_seed_loss_count=mongo.db.seed_cosmic_loss.find(condition).count()
         print(mut_seed_loss_count)
@@ -566,7 +585,7 @@ snv_utr_gain={
     'gene_expression': fields.Nested(gene_expression),
     'mirna_expression': fields.Nested(mirna_expression)
 }
-
+    
 snv_utr_gain_list={
     'snv_utr_gain_list':fields.Nested(snv_utr_gain),
     'snv_utr_gain_count':fields.Integer
@@ -608,6 +627,106 @@ class SnvUtrGain(Resource):
         return {'snv_utr_gain_list':list(snv_utr_gain_list),'snv_utr_gain_count':snv_utr_gain_count}
 
 api.add_resource(SnvUtrGain,'/api/snv_utr_gain')
+
+mut_utr_gain={
+    'mut_utr_gain_list':fields.Nested(mut_gainsite_info),
+    'mut_utr_gain_count':fields.Integer
+}
+
+class MutUtrGain(Resource):
+    @marshal_with(mut_utr_gain)
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('mut_id')
+        parser.add_argument('page')
+        args = parser.parse_args()
+        page=1
+        per_page=15
+        record_skip = (page - 1) * per_page
+        condition={}
+        if args['page']:
+            condition['page']=args['page']
+        if args['mut_id']:
+            condition['mut_id']=args['mut_id']
+        lookup_gene = {'$lookup': {
+                'from': 'gene_expression',
+                'localField': 'gene_symbol',
+                'foreignField': 'symbol',
+                'as': 'gene_expression'
+            }}
+        lookup_mirna = {'$lookup': {
+                'from': 'mirna_expression',
+                'localField': 'mirna_id',
+                'foreignField': 'mir_id',
+                'as': 'mirna_expression'
+            }}
+        match = {'$match': condition}
+        skip = {'$skip': record_skip}
+        limit = {'$limit': per_page}
+        print(condition)
+        pipline = [match, skip, limit, lookup_gene, lookup_mirna]
+        if args['mut_id'].lower().startswith('cos'):
+            mut_utr_gain_list=mongo.db.utr_cosmic_gain.aggregate(pipline)
+            mut_utr_gain_count=mongo.db.utr_cosmic_gain.find(condition).count()
+        else:
+            mut_utr_gain_list=mongo.db.utr_clinvar_gain.aggregate(pipline)
+            mut_utr_gain_count=mongo.db.utr_clinvar_gain.find(condition).count()
+        return {'mut_utr_gain_list':list(mut_utr_gain_list),'mut_utr_gain_count':mut_utr_gain_count}
+
+api.add_resource(MutUtrGain,'/api/mut_utr_gain')
+
+mut_utr_loss={
+    'mut_utr_loss_list':fields.Nested(mut_losssite_info),
+    'mut_utr_loss_count':fields.Integer
+}
+
+class MutUtrLoss(Resource):
+    @marshal_with(mut_utr_loss)
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('mut_id')
+        parser.add_argument('page')
+        args = parser.parse_args()
+        page=1
+        per_page=15
+        record_skip = (page - 1) * per_page
+        condition={}
+        if args['page']:
+            condition['page']=args['page']
+        if args['mut_id']:
+            condition['mut_id']=args['mut_id']
+        lookup_gene = {'$lookup': {
+                'from': 'gene_expression',
+                'localField': 'gene_symbol',
+                'foreignField': 'symbol',
+                'as': 'gene_expression'
+            }}
+        lookup_mirna = {'$lookup': {
+                'from': 'mirna_expression',
+                'localField': 'mirna_id',
+                'foreignField': 'mir_id',
+                'as': 'mirna_expression'
+            }}
+        lookup_corelation= {'$lookup':{
+            'from':'corelation_cancer_detail',
+            'localField':'cor_key',
+            'foreignField':'mir_gene',
+            'as':'corelation_detail'
+        }}
+        print(condition)
+        match = {'$match': condition}
+        skip = {'$skip': record_skip}
+        limit = {'$limit': per_page}
+        pipline = [match, skip, limit, lookup_gene, lookup_mirna,lookup_corelation]
+        if args['mut_id'].lower().startswith('cos'):
+            mut_utr_loss_list=mongo.db.utr_cosmic_loss.aggregate(pipline)
+            mut_utr_loss_count=mongo.db.utr_cosmic_loss.find(condition).count()
+        else:
+            mut_utr_loss_list=mongo.db.utr_clinvar_loss.aggregate(pipline)
+            mut_utr_loss_count=mongo.db.utr_clinvar_loss.find(condition).count()
+        return {'mut_utr_loss_list':list(mut_utr_loss_list),'mut_utr_loss_count':mut_utr_loss_count}
+
+api.add_resource(MutUtrLoss,'/api/mut_utr_loss')
 
 browse_info = {
     'mir_id':fields.String,
@@ -1186,7 +1305,8 @@ mutation_line={
     'resource':fields.String,
     'pubmed_id':fields.String,
     'gain_count':fields.String,
-    'loss_count':fields.String
+    'loss_count':fields.String,
+    'identifier':fields.String
 }
 
 count_group={
@@ -1229,7 +1349,7 @@ class MutationSummary(Resource):
             page=args['page']
             record_skip = (int(page) - 1) * per_page
         if args['gene']:
-            condition['identifier']={'$regex':args['gene'],'$options':'$i'}
+            condition['identifier_lower']=args['gene']
         if args['chrome']!='All' and args['chrome']:
             condition['chrome']=args['chrome']
         if args['location'] != 'All'and args['location']:
@@ -1260,7 +1380,7 @@ class MutationSummary(Resource):
             pipline.append(match_histology)
         if pathology_dict:
             pipline.append(match_pathology)
-
+        
         pipline_count=pipline+[count_group]
         pipline.append(skip)
         pipline.append(limit)
@@ -1338,7 +1458,7 @@ class SnpSummary(Resource):
             page=args['page']
             record_skip = (int(page)-1)*per_page
         if args['gene']:
-            condition['identifier']={'$regex':args['gene'],'$options':'$i'}
+            condition['identifier_lower']=args['gene']
         if args['chrome'] != 'All' and args['chrome']:
             condition['snp_chr'] = args['chrome']
         if args['snp_id']:

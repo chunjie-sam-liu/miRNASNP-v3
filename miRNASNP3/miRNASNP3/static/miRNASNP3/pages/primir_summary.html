@@ -75,24 +75,24 @@
                 </div>
                 </div>
     <div ng-show="primir_summary_count">   
-    <table class="table table-bordered">
+    <table class="table table-bordered " ts-wrapper>
         <thead>
         <tr>
-            <th>miRNA</th>
-            <th>Accession</th>
-            <th>Position</th>
-            <th>SNPs Count
+            <th ts-criteria="pre_id" style="width: 14%">miRNA</th>
+            <th ts-criteria="pre_acc" style="width: 14%">Accession</th>
+            <th ts-criteria="pre_start" style="width: 24%">Position</th>
+            <th ts-criteria="snv_in_pri" style="width: 12%">SNP Number
                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNVs in this primary RNA.">
                 </span>
             </th>
-            <th>Mutation count
+            <th ts-criteria="cosmic_in_pri" style="width: 12%">Mutation Number
                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of Mutationas in this primary RNA.1)Number of Cosmic Mutations;2)Number of Clinvar variations;"></span>
             </th>
             <th>Mature miRNAs</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="v in primir_summary_list">
+        <tr ng-repeat="v in primir_summary_list" ts-repeat>
             <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$ v._id.pre_id$}</a></td>
             <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}" >{$ v._id.pre_acc $}</a></td>
             <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
