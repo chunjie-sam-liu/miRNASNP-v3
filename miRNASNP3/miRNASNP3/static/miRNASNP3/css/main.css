@@ -259,7 +259,7 @@ li a {
 
 /* add by chunjie */
 
-.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+.navbar-default .navbar-collapse {
   border-color: #ffffff;
   background-color: #fff;
 }
