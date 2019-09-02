@@ -566,7 +566,7 @@ snv_utr_gain={
     'gene_expression': fields.Nested(gene_expression),
     'mirna_expression': fields.Nested(mirna_expression)
 }
-    
+
 snv_utr_gain_list={
     'snv_utr_gain_list':fields.Nested(snv_utr_gain),
     'snv_utr_gain_count':fields.Integer
@@ -1229,11 +1229,7 @@ class MutationSummary(Resource):
             page=args['page']
             record_skip = (int(page) - 1) * per_page
         if args['gene']:
-<<<<<<< HEAD
             condition['identifier']={'$regex':args['gene'],'$options':'$i'}
-=======
-            condition['identifier']=args['gene']
->>>>>>> a1162d9988c9d2ec73981727759b3fd8fa40fac3
         if args['chrome']!='All' and args['chrome']:
             condition['chrome']=args['chrome']
         if args['location'] != 'All'and args['location']:
@@ -1264,7 +1260,7 @@ class MutationSummary(Resource):
             pipline.append(match_histology)
         if pathology_dict:
             pipline.append(match_pathology)
-        
+
         pipline_count=pipline+[count_group]
         pipline.append(skip)
         pipline.append(limit)
@@ -1342,11 +1338,7 @@ class SnpSummary(Resource):
             page=args['page']
             record_skip = (int(page)-1)*per_page
         if args['gene']:
-<<<<<<< HEAD
             condition['identifier']={'$regex':args['gene'],'$options':'$i'}
-=======
-            condition['identifier']=args['gene']
->>>>>>> a1162d9988c9d2ec73981727759b3fd8fa40fac3
         if args['chrome'] != 'All' and args['chrome']:
             condition['snp_chr'] = args['chrome']
         if args['snp_id']:
