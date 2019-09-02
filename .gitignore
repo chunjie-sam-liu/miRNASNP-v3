@@ -65,3 +65,10 @@ settings.pyc
 package-lock.json
 bootstrap-select.nuspec
 
+.command
+*.pyc
+*.ps
+enrichment/
+download/
+go_loss_fix_02/
+.vscode/

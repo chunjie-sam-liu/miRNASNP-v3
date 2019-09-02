@@ -44,22 +44,65 @@ function HomeController($scope,$http,$routeParams,$window) {
             //if (cosmic_pattern.test(query_item)) {
              //   $scope.filter_cosmic(query_item)
             //}
-            if (query_item.indexOf('hsa')==0||query_item.indexOf("miR")==0||query_item.indexOf("let")==0||query_item.indexOf("mir")) {
+            if (query_item.indexOf('hsa')==0||query_item.indexOf("miR")==0||query_item.indexOf("let")==0||query_item.indexOf("mir")==0) {
                 console.log("a mir")
                 $scope.filter_mirna(query_item)
             }
             //if (query_item.indexOf("ENST") == 0) {
             //    $scope.filter_transcript(query_item)
            // }
-            if(!(query_item.indexOf("rs")==0)&&!(query_item.indexOf("hsa")==0 || query_item.indexOf("miR")==0|| query_item.indexOf("let")==0||query_item.indexOf("mir"))){
+            if(!(query_item.indexOf("rs")==0)&&!(query_item.indexOf("hsa")==0 || query_item.indexOf("miR")==0|| query_item.indexOf("let")==0||query_item.indexOf("mir")==0)){
                 console.log('unknown')
                 $scope.filter_alias(query_item)
             }
         }
     };
         $scope.filter_alias = function (query_item) {
-            $scope.alert_unrecorgnize=1;
-            $('#alert_unrecorgize').show()
+            /*$scope.alert_unrecorgnize=1;
+            //$('#alert_unrecorgize').show()
+            $http({
+                url:'/api/snp_summary',
+                method:'GET',
+                params:{gene:query_item}
+            }).then(function(response){
+                console.log(response)
+                $scope.snp_summary_list=response.data.snp_summary_list;
+                $scope.snp_summary_count=response.data.snp_summary_count;
+            })
+            $http({
+                url:'/api/mutation_summary',
+                method:'GET',
+                params:{gene:query_item,target_effection:1}
+            }).then(function(response){
+                console.log(response)
+                $scope.mutation_summary_list=response.data.mutation_summary_list;
+                $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
+            })
+            $http({
+                url:'/api/snp_seed_gain',
+                method:'GET',
+                params:{gene:query_item}
+            }).then(function(response){
+                console.log(response)
+                $scope.snp_seed_gain_list=response.data.snp_seed_gain_list;
+                $scope.snp_seed_gain_count=response.data.snp_seed_gain_count;
+            })
+            $http({
+                url:'/api/snp_seed_loss',
+                method:'GET',
+                params:{gene:query_item}
+            }).then(function(response){
+                console.log(response)
+                $scope.snp_seed_loss_list=response.data.snp_seed_loss_list
+                $scope.snp_seed_loss_count=response.data.snp_seed_loss_count
+            })
+            if(Number($scope.snp_summary_count)==0 && Number($scope.mutation_summary_count)==0 && Number($scope.snp_seed_gain_count)==0 && Number($scope.snp_seed_loss_count)==0){
+                console.log('noitem!')
+                $scope.alert_nonitem=1;
+                $('#alert_nonitem').show()
+            }else{*/
+                window.open("#!/gene?query_gene="+query_item,"_self");
+            //}
         };
         $scope.filter_snp = function (query_snp) {
             $http({
