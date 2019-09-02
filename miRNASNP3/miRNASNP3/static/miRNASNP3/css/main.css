@@ -196,11 +196,7 @@ li a {
   padding-top:50px;
   margin-top:-50px;
 }
-.container {
-  width: 500px;
-  height: 50px;
-  margin: 100px auto;
-}
+
 
 .parent {
   width: 100%;
@@ -260,3 +256,16 @@ li a {
   margin: 30px 10px 10px;
   padding: 25px 0px 20px 25px;
       }
+
+/* add by chunjie */
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+  border-color: #ffffff;
+  background-color: #fff;
+}
+
+div#navigation ul.navbar-nav li {
+  font-size: 18px;
+  font-weight: 500;
+  color: #563d7c;
+}
