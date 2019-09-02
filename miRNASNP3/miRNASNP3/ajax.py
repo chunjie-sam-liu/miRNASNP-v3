@@ -1229,7 +1229,11 @@ class MutationSummary(Resource):
             page=args['page']
             record_skip = (int(page) - 1) * per_page
         if args['gene']:
+<<<<<<< HEAD
             condition['identifier']={'$regex':args['gene'],'$options':'$i'}
+=======
+            condition['identifier']=args['gene']
+>>>>>>> a1162d9988c9d2ec73981727759b3fd8fa40fac3
         if args['chrome']!='All' and args['chrome']:
             condition['chrome']=args['chrome']
         if args['location'] != 'All'and args['location']:
@@ -1338,7 +1342,11 @@ class SnpSummary(Resource):
             page=args['page']
             record_skip = (int(page)-1)*per_page
         if args['gene']:
+<<<<<<< HEAD
             condition['identifier']={'$regex':args['gene'],'$options':'$i'}
+=======
+            condition['identifier']=args['gene']
+>>>>>>> a1162d9988c9d2ec73981727759b3fd8fa40fac3
         if args['chrome'] != 'All' and args['chrome']:
             condition['snp_chr'] = args['chrome']
         if args['snp_id']:
