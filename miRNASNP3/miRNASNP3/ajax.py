@@ -1213,6 +1213,7 @@ class MutationSummary(Resource):
         parser.add_argument('histology')
         parser.add_argument('pathology')
         parser.add_argument('target_effection')
+        parser.add_argument('gene')
         args = parser.parse_args()
         #print(args['chrome'])
         page=1
@@ -1227,11 +1228,13 @@ class MutationSummary(Resource):
         if args['page']:
             page=args['page']
             record_skip = (int(page) - 1) * per_page
-        if args['chrome']!='All':
+        if args['gene']:
+            condition['identifier']={'$regex':args['gene'],'$options':'$i'}
+        if args['chrome']!='All' and args['chrome']:
             condition['chrome']=args['chrome']
-        if args['location'] != 'All':
+        if args['location'] != 'All'and args['location']:
             condition['location']=args['location']
-        if args['resource']!='All':
+        if args['resource']!='All' and args['resource']:
             condition['resource']=args['resource'].lower()
         if args['histology'] and args['histology'] != 'All':
             histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
@@ -1320,6 +1323,7 @@ class SnpSummary(Resource):
         parser.add_argument('gmaf')
         parser.add_argument('ldsnp')
         parser.add_argument('mutation_rela')
+        parser.add_argument('gene')
         args = parser.parse_args()
         #print(args['chrome'])
         page=1
@@ -1333,12 +1337,14 @@ class SnpSummary(Resource):
         if args['page']:
             page=args['page']
             record_skip = (int(page)-1)*per_page
-        if args['chrome'] != 'All':
+        if args['gene']:
+            condition['identifier']={'$regex':args['gene'],'$options':'$i'}
+        if args['chrome'] != 'All' and args['chrome']:
             condition['snp_chr'] = args['chrome']
         if args['snp_id']:
             condition['snp_id']={'$regex':args['snp_id'],'$options':'$1'}
         if args['identifier']:
-            condition['identifier']={'$regex':args['identifier'],'$options':'$1'}
+            condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
         if args['location']!='All' and args['location']:
             condition['location']=args['location']
         if args['ldsnp']:

@@ -283,6 +283,7 @@
                 <th>Ref/Alt</th>
                 <th>Pathology</th>
                 <th>Location</th>
+                <th>Identifier</th>
                 <th>Ralate SNP</th>
                 <th>Pubmed ID</th>
                 <th>Resource</th>
@@ -299,6 +300,7 @@
                 <td>{$ v.ref$}/{$v.alt$}</td>
                 <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology$}">{$ v.pathology$}</td>
                 <td>{$v.location $}</td>
+                <td>{$v.identifier$}</td>
                 <td align="center">
                     <span ng-if="v.snp_id">{$ v.snp_id $}</span>
                     <span ng-if="!v.snp_id">-</span>

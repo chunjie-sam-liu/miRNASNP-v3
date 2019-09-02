@@ -17,6 +17,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     var base_url = miRNASNP3Service.getAPIBaseUrl();
     $scope.initial=1;
     var page=1;
+    var gene=$routeParams.gene
+    console.log('gene')
     /*$scope.reset_query=function(){
         condition['chrome']='All';
         $("#chr").selectpicker('val','All');
@@ -65,6 +67,9 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         console.log($scope.initial)
         console.log($scope.snp_summary_count)
         $scope.snp_summary_count=0;
+        if(gene){
+            condition['gene']=gene
+        }
         var chr = $("#chr option:selected").text();
         if (chr!="All"){
             condition["chrome"]=chr
