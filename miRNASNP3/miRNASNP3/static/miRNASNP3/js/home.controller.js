@@ -5,7 +5,7 @@ angular.module('miRNASNP3')
 
 function HomeController($scope,$http,$routeParams,$window) {
     console.log("HomeController loaded");
-    $(".alert").alert();    
+    $(".alert").alert();
 
     $(document).keyup(function(event){
         if(event.keyCode ==13){
