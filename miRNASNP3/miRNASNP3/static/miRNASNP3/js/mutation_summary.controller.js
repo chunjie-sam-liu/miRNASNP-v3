@@ -81,6 +81,9 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             var data_list=$scope.mutation_summary_list
             for(var i=0;i<data_list.length;i++){
                 data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                if(data_list[i].resource=="clinvar"){data_list[i].resource="ClinVar"}
+                if(data_list[i].resource=="cosmic"){data_list[i].resource="COSMIC"}
+                if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
             }
         })
     };

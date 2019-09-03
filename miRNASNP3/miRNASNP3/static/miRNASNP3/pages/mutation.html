@@ -81,14 +81,14 @@
                             <tr>
                                 <th>Mutation</th>
                                 <th>miRNA</th>
-                                <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
+                                <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                                 </span>
                                 </th>
                                 <th>Gene</th>
                                 <th>Accession</th>
                                 <th>Transcript</th>
-                                <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                                <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                                 </span>
                                 </th>
@@ -96,7 +96,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="v in mut_seed_gain_list">
+                            <tr ng-repeat="v in mut_seed_gain_list" ts-repeat>
                                 <td align="center">{$ v.mut_id$}</td>
                                 <td align="center">{$v.mirna_id$}</td>
                                 <td align="center">
@@ -161,25 +161,25 @@
                                 <tr>
                                     <th style="width: 10%">Muation</th>
                                     <th style="width: 10%">miRNA</th>
-                                    <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
+                                    <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
                                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                                         </span>
                                     <th style="width: 10%">Gene</th>
                                     <th style="width: 10%;">Gene ACC</th>
                                     <th style="width: 10%">Transcript ID</th>
-                                    <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                                    <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
                                         </span>
                                         </th>
                                     <th style="width: 10%">Experiment Validation</th>
-                                    <th ts-criteria="expr_corelation" style="width: 10%">Exp. Cor.
+                                    <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. Cor.
                                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                                                 </span>
                                     </th>
                                     <th style="width: 10%">Predict Detail</th>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="v in mut_seed_loss_list">
+                                <tr ng-repeat="v in mut_seed_loss_list" ts-repeat>
                                         <!--td>{$ $index+1 $}</td-->
                                         <td align="center">{$ v.mut_id$}</td>
                                         <td align="center">{$v.mirna_id$}</td>
@@ -252,19 +252,19 @@
                                             <th>Mutation</th>
                                             <th>Gene</th>
                                             <th>miRNA</th>
-                                            <th ts-criteria="mirna_expression[0].exp_mean">miRNA exp.
+                                            <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
                                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                                                 </span>
                                             <th>Accession</th>
                                             <th>Transcript</th>
-                                            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                                            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
                                                 </span>
                                                 </th>
                                             <th style="width: 10%">Predict Detail</th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="v in snv_utr_gain_list">
+                                        <tr ng-repeat="v in mut_utr_gain_list">
                                             <td align="center">{$v.mut_id$}</td>
                                             <td align="center">{$v.gene_symbol$}</td>
                                             <td align="center">{$v.mirna_id$}</td>
@@ -326,16 +326,16 @@
                                             <th>Mutation</th>
                                             <th>Gene</th>
                                             <th>miRNA</th>
-                                            <th ts-criteria="mirna_expression[0].exp_mean">miRNA exp.
+                                            <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
                                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                                                 </span>
                                             <th>Accession</th>
                                             <th>Transcript</th>
-                                            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                                            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
                                                 </span>
                                                 </th>
-                                                <th ts-criteria="expr_corelation" style="width: 10%">Exp. Cor.
+                                                <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. Cor.
                                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                                                             </span>
                                                 </th>
@@ -343,7 +343,7 @@
                                             <th style="width: 10%">Predict Detail</th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="v in snv_utr_loss_list">
+                                        <tr ng-repeat="v in mut_utr_loss_list">
                                             <td align="center">{$v.mut_id$}</td>
                                             <td align="center">{$v.gene_symbol$}</td>
                                             <td align="center">{$v.mirna_id$}</td>

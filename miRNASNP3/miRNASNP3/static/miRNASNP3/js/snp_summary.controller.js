@@ -124,8 +124,10 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 $scope.snp_summary_count=response.data.snp_summary_count;
                 var data_list=$scope.snp_summary_list
                 for(var i=0;i<data_list.length;i++){
+                    data_list[i].identi_gene=0
                     if(data_list[i].ref_freq=='novalue'){data_list[i].ref_freq=0}
                     if(Number(data_list[i].alt_freq)==0.0){data_list[i].alt_freq=0}
+                    if(data_list[i].location=='UTR3'){data_list[i].location="3'UTR";data_list[i].identi_gene=1}
                 }
                 $scope.snp_summary_list=data_list
             })

@@ -5,7 +5,7 @@ angular.module('miRNASNP3')
 
 function HomeController($scope,$http,$routeParams,$window) {
     console.log("HomeController loaded");
-    $(".alert").alert();
+    $(".alert").alert();    
 
     $(document).keyup(function(event){
         if(event.keyCode ==13){
@@ -33,7 +33,7 @@ function HomeController($scope,$http,$routeParams,$window) {
             //$scope.alert_illegal=1;
             //$('#alert_illegal').show()
             alert("invalid input !")
-            history.back();
+            //history.back();
         }
         if (flag == 0) {
             console.log("flag==0");
@@ -109,7 +109,7 @@ function HomeController($scope,$http,$routeParams,$window) {
                 //url:base_url+ip_address,
                 url:'/api/snp_summary',
                 method:'GET',
-                params:{snp_id:query_snp},
+                params:{spe_snp_id:query_snp},
             }).then(function(response){
                 console.log(response);
                 $scope.snp_summary_list=response.data.snp_summary_list;

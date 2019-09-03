@@ -38,7 +38,7 @@
             <div class="col-lg-3">
                 <select id="location" class="form-control">
                     <option value="All">All</option>
-                    <option value="UTR3">UTR3</option>
+                    <option value="UTR3">3'UTR</option>
                     <option value="mirseed">mature miRNA seed</option>
                 </select>
             </div>
@@ -147,8 +147,13 @@
                 <span ng-if="!v.alt_freq">-</span>
                 <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
             </td>
-            <td>{$v.location$}</td>
-            <td><a href="/#!/mirna?mirna_id={$$v.identifier}">{$v.identifier$}</td>
+            <td>{$v.location$}:{$v.identi_gene$}</td>
+            <span ng-if="!v.identi_gene">
+                <td><a href="/#!/mirna?mirna_id={$v.identifier$}">{$v.identifier$}</td>
+                    </span>
+            <span ng-if="v.identi_gene">
+                    <td><a href="/#!/gene?query_gene={$v.identifier$}">{$v.identifier$}</td>
+            </span>
             <td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
