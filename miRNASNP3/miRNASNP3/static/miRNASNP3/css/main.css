@@ -285,3 +285,6 @@ div#home-description div.panel {
 div#home-description div.panel-heading {
   background-color: #A4D3EE
 }
+ul.list-unstyled li>p>.badge {
+  float: right;
+}
