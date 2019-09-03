@@ -1,130 +1,125 @@
-<div class="well"><p><strong style="color: #FF0000">Precursor miRNA </strong>summery information</p>
+<div class="bs-callout-info">
+    <h4>SNPs in human precursor miRNA</h4>
     <p>
-        There are 1913 primary RNAs collected from mirbase v22. 43923 SNVs are identified  on primary RNAs.
+        There are 1913 primary RNAs collected from mirbase v22. 43923 SNVs are identified on primary RNAs.
         As for muations,5389 Cosmic mutaions and 75 Clinvar variations are identified on primary RNAs.
     </p>
-    <form method="get" id="mirna-summary-form" class="form form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-lg-1">Chrome</label>
-            <div class="col-lg-3">
-            <select id="chr" class="form-control">
-                <option>All</option>
-                <option>chr1</option>
-                <option>chr2</option>
-                <option>chr3</option>
-                <option>chr4</option>
-                <option>chr5</option>
-                <option>chr6</option>
-                <option>chr7</option>
-                <option>chr8</option>
-                <option>chr9</option>
-                <option>chr10</option>
-                <option>chr11</option>
-                <option>chr12</option>
-                <option>chr13</option>
-                <option>chr14</option>
-                <option>chr15</option>
-                <option>chr16</option>
-                <option>chr17</option>
-                <option>chr18</option>
-                <option>chr19</option>
-                <option>chr20</option>
-                <option>chr21</option>
-                <option>chr22</option>
-                <option>chrX</option>
-                <option>chrY</option>
-            </select>
-        </div>
-        </div>
-        <div class="form-group" >
-            <label class="control-label col-lg-1">Search</label>
-            <div class="col-lg-3">
-                <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary">
-            </div>
-            <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-mir-6859-1/MI0022705</span>
-        </div>
-        <div class="form-group">
-            <div class="col-lg-3">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" id="search_button" type="button"  ng-click="fetch_primir_summary()" >
-							Submit
-                </button>
-            </span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-lg-3">
-            <span class="input-group-btn">
-                <button class="btn btn-danger" id="reset_query" type="button"  ng-click="reset_query()" >
-							Reset
-                </button>
-            </span>
-            </div>
-        </div>
-    </form>
 </div>
 
-<div class="panel panel-danger" >
-    <div class="panel-heading" >
-        <strong>primir summary information</strong>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="get" id="mirna-summary-form" class="form form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-lg-2">Chromosome:</label>
+                <div class="col-lg-3">
+                    <select id="chr" class="form-control">
+                        <option>All</option>
+                        <option>chr1</option>
+                        <option>chr2</option>
+                        <option>chr3</option>
+                        <option>chr4</option>
+                        <option>chr5</option>
+                        <option>chr6</option>
+                        <option>chr7</option>
+                        <option>chr8</option>
+                        <option>chr9</option>
+                        <option>chr10</option>
+                        <option>chr11</option>
+                        <option>chr12</option>
+                        <option>chr13</option>
+                        <option>chr14</option>
+                        <option>chr15</option>
+                        <option>chr16</option>
+                        <option>chr17</option>
+                        <option>chr18</option>
+                        <option>chr19</option>
+                        <option>chr20</option>
+                        <option>chr21</option>
+                        <option>chr22</option>
+                        <option>chrX</option>
+                        <option>chrY</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-2">Input:</label>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control input-xs" id="query_mirna_summary"
+                        ng-model="query_mirna_summary">
+                </div>
+                <span class="help-block">Input a miRNA, such as hsa-mir-6859-1/MI0022705</span>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-1 col-lg-offset-5">
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" id="search_button" type="button"
+                            ng-click="fetch_primir_summary()">
+                            Submit
+                        </button>
+                    </span>
+                </div>
+                <div class="col-lg-1">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="reset_query" type="button" ng-click="reset_query()">
+                            Reset
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </form>
     </div>
-    <div ng-show="initial">
-            <div class="flyover" ng-hide="snp_summary_count">
-                    <div class="mask"></div>
-                    <div class="spinner"></div>
-                </div>
-                </div>
-    <div ng-show="primir_summary_count">   
-    <table class="table table-bordered " ts-wrapper>
-        <thead>
-        <tr>
-            <th ts-criteria="pre_id" style="width: 14%">miRNA</th>
-            <th ts-criteria="pre_acc" style="width: 14%">Accession</th>
-            <th ts-criteria="pre_start" style="width: 24%">Position</th>
-            <th ts-criteria="snv_in_pri" style="width: 12%">SNP Number
-                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNVs in this primary RNA.">
-                </span>
-            </th>
-            <th ts-criteria="cosmic_in_pri" style="width: 12%">Mutation Number
-                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of Mutationas in this primary RNA.1)Number of Cosmic Mutations;2)Number of Clinvar variations;"></span>
-            </th>
-            <th>Mature miRNAs</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="v in primir_summary_list" ts-repeat>
-            <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$ v._id.pre_id$}</a></td>
-            <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}" >{$ v._id.pre_acc $}</a></td>
-            <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
-            <td>{$ v._id.snv_in_pri$}</td>
-            <td>{$ v._id.cosmic_in_pri $},{$v._id.clinvar_in_pri$}</td>
-            <td>
-                <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}" style="color:#FF0000">{$ m.mir_id$}</a>;&nbsp</span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>
+
+<div class="div-table">
+    <div ng-show="initial">
+        <div class="flyover" ng-hide="snp_summary_count">
+            <div class="mask"></div>
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <div ng-show="primir_summary_count">
+        <table class="table table-bordered " ts-wrapper>
+            <thead>
+                <tr>
+                    <th ts-criteria="pre_id" style="width: 14%">miRNA</th>
+                    <th ts-criteria="pre_acc" style="width: 14%">Accession</th>
+                    <th ts-criteria="pre_start" style="width: 24%">Position</th>
+                    <th ts-criteria="snv_in_pri" style="width: 12%">SNP Number
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                            data-content="Number of SNVs in this primary RNA.">
+                        </span>
+                    </th>
+                    <th ts-criteria="cosmic_in_pri" style="width: 12%">Mutation Number
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                            data-content="Number of Mutationas in this primary RNA.1)Number of Cosmic Mutations;2)Number of Clinvar variations;"></span>
+                    </th>
+                    <th>Mature miRNAs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="v in primir_summary_list" ts-repeat>
+                    <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$
+                            v._id.pre_id$}</a></td>
+                    <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}">{$ v._id.pre_acc
+                            $}</a></td>
+                    <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
+                    <td>{$ v._id.snv_in_pri$}</td>
+                    <td>{$ v._id.cosmic_in_pri $},{$v._id.clinvar_in_pri$}</td>
+                    <td>
+                        <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}"
+                                style="color:#FF0000">{$ m.mir_id$}</a>;&nbsp</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div ng-show="primir_summary_count">
-<div paging
-             page="currentPage"
-             page-size=15
-             total="primir_summary_count"
-             scroll-top="true"
-             hide-if-empty="true"
-             show-prev-next="true"
-             show-first-last="true"
-             text-title-page="Page {page} Hover Over"
-             text-title-first="First hover"
-             text-title-last="Last hover"
-             text-title-next="Next hover"
-             text-title-prev="Prev hover"
-             show-prev-next="true"
-             show-first-last="true"
-             ul-class="pagination"
-             active-class="active"
-             disabled-class="disabled"
-             paging-action="fetch_primir_summary(page)"
-        ></div>
-        </div>
+    <div paging page="currentPage" page-size=15 total="primir_summary_count" scroll-top="true" hide-if-empty="true"
+        show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
+        text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
+        text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
+        active-class="active" disabled-class="disabled" paging-action="fetch_primir_summary(page)"></div>
+</div>
