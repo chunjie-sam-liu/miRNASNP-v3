@@ -9,12 +9,39 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
     $scope.initial = 1;
     var page=1;
     var base_url = miRNASNP3Service.getAPIBaseUrl();
-    $scope.gene_search_count=0;
-    console.log($scope.gene_search_count)
+    var gene_search_count=0;
 
     $("[data-toggle='popover']").popover();
     $scope.query_gene = $routeParams.query_gene;
     console.log($routeParams.query_gene);
+
+    $scope.check_result=function(gene_search_count){
+        if(gene_search_count==0){
+            console.log("noitem")
+            $scope.alert_nonitem=1;
+            $('#alert_nonitem').show()
+        }else{
+            console.log(gene_search_count)
+        }
+    }
+
+    $scope.fetch_item=function(){
+    $http({
+        url:'/api/mutation_summary',
+        method:'GET',
+        params:{gene:$scope.query_gene,target_effection:1}
+    }).then(function(response){
+        $scope.initial=0;
+        console.log(response)
+        $scope.mutation_summary_list=response.data.mutation_summary_list;
+        if(response.data.mutation_summary_count[0].count){
+            $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
+        }else{
+            $scope.mutation_summary_count=0
+        }
+        gene_search_count+=$scope.mutation_summary_count
+        console.log(gene_search_count)
+    })
     $http({
         url:'/api/snp_summary',
         method:'GET',
@@ -24,18 +51,12 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
         console.log(response)
         $scope.snp_summary_list=response.data.snp_summary_list;
         $scope.snp_summary_count=response.data.snp_summary_count;
+        gene_search_count+=$scope.snp_summary_count
+        console.log(gene_search_count)
+        $scope.check_result(gene_search_count)
     })
-    $http({
-        url:'/api/mutation_summary',
-        method:'GET',
-        params:{gene:$scope.query_gene,target_effection:1}
-    }).then(function(response){
-        $scope.initial=0;
-        console.log(response)
-        $scope.mutation_summary_list=response.data.mutation_summary_list;
-        $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
-        $scope.mutation_summary_check=response.data.mutation_summary_count.length
-    })
+    }
+    $scope.fetch_item()
     /*$http({
         url:'/api/snp_seed_gain',
         method:'GET',
@@ -54,14 +75,7 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
     })
     */
     
-    if($scope.snp_summary_count==0 && $scope.mutation_summary_check==0){
-        console.log("noitem")
-        $scope.alert_nonitem=1;
-        $('#alert_nonitem').show()
-    }else{
-        $scope.gene_search_count=$scope.snp_summary_count+$scope.mutation_summary_count
-        console.log($scope.gene_search_count)
-    }
+    
     /*$scope.snp_in_gene=function(gene){
         alert("snp summary")
     }

@@ -465,8 +465,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 
     $scope.fetch_snv_utr_loss=function(page){
         $http({
-            url:base_url+'/api/snv_utr_loss',
-           // url:'/api/snv_utr_loss',
+           // url:base_url+'/api/snv_utr_loss',
+            url:'/api/snv_utr_loss',
             method:'Get',
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
@@ -491,8 +491,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 
     $scope.fetch_snv_utr_gain=function(page){
         $http({
-            url:base_url+'/api/snv_utr_gain',
-            //url:'/api/snv_utr_gain',
+            //url:base_url+'/api/snv_utr_gain',
+            url:'/api/snv_utr_gain',
             method:'GET',
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
@@ -517,8 +517,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 
     $scope.fetch_gwas_catalog=function(snp_id){
     	$http({
-            url:base_url+'/api/gwas_catalog',
-            //url:'/api/gwas_catalog',
+            //url:base_url+'/api/gwas_catalog',
+            url:'/api/gwas_catalog',
 			method:'GET',
 			params:{search_ids:snp_id}
 		}).then(
@@ -532,8 +532,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
     $scope.fetch_gwas_catalog($scope.query_snp);
     $scope.search_ld = function(){
         $http({
-            url:base_url+'/api/ldinfo',
-            //url:'/api/ldinfo',
+            //url:base_url+'/api/ldinfo',
+            url:'/api/ldinfo',
             method:'GET',
             params:{search_ids:$scope.query_snp}
         }).then(
@@ -655,8 +655,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 
     $scope.fetch_relate_cosmic=function(){
     	$http({
-            url:base_url+'/api/cosmicinfo',
-            //url:'/api/cosmicinfo',
+            //url:base_url+'/api/cosmicinfo',
+            url:'/api/cosmicinfo',
             method: 'GET',
             params: {search_ids: $scope.query_snp,page:1}
         }).then(
@@ -664,12 +664,16 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                 console.log(response);
                 $scope.rcosmic_list = response.data.cosmic_list;
                 $scope.rcosmic_count = response.data.data_length
+                var data_list=rcosmic_list
+                for(var i=0;i<data_list.length;i++){
+                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                }
             });
         };
     $scope.fetch_relate_clinvar=function(){
     	$http({
-            url:base_url+'/api/clinvarinfo',
-            //url:'/api/clinvarinfo',
+            //url:base_url+'/api/clinvarinfo',
+            url:'/api/clinvarinfo',
             method: 'GET',
             params: {search_ids: $scope.query_snp,page:1}
         }).then(
@@ -677,7 +681,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                 console.log(response);
                 $scope.rclinvar_list = response.data.clinvar_list;
                 $scope.rclinvar_count = response.data.data_length
-            });
+                var data_list=$scope.rclinvar_list
+                for(var i=0;i<data_list.length;i++){
+                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+            }});
 	};
 	$scope.fetch_relate_cosmic();
 	$scope.fetch_relate_clinvar();

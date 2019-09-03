@@ -105,27 +105,27 @@
                </div>
            </form>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" ts-wrapper>
             <thead>
             <tr>
                 <th>SNP</th>
                 <th>miRNA</th>
-                <th>miRNA exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
-                </span>
+                <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
+                    </span>
                 </th>
                 <th>Gene</th>
                 <th>Accession</th>
                 <th>Transcript</th>
-                <th>Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
-                </span>
-                </th>
+                <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
+                    </span>
+                    </th>
                 <th>Predict Detail</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="v in snp_seed_gain_list">
+            <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
                 <td align="center">{$ v.snp_id$}</td>
                 <td align="center">{$v.mirna_id$}</td>
                 <td align="center">
@@ -185,27 +185,31 @@
                </div>
            </form>
         </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
             <th style="width: 10%">SNP</th>
             <th style="width: 10%">miRNA</th>
-            <th style="width: 10%">miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                 </span>
+            </th>
             <th style="width: 10%">Gene</th>
             <th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th>
-            <th style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
+            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                 </span>
                 </th>
             <th style="width: 10%">Experiment Validation</th>
-            <th style="width: 10%">Gene Expression Correlation</th>
+            <th ts-criteria="expr_corelation" style="width: 10%">Exp. Cor.
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
+                        </span>
+            </th>
             <th style="width: 10%">Predict Detail</th>
         </thead>
         <tbody>
-        <tr ng-repeat="v in snp_seed_loss_list">
+        <tr ng-repeat="v in snp_seed_loss_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
                 <td align="center">{$ v.snp_id$}</td>
                 <td align="center">{$v.mirna_id$}</td>
@@ -272,25 +276,26 @@
     <div class="panel-heading" >
         <strong>{$ query_snp $} in gene 3'utr result in target gain</strong>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
             <th>SNP</th>
             <th>Gene</th>
             <th>miRNA</th>
-            <th>miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                 </span>
+            </th>
             <th>Accession</th>
             <th>Transcript</th>
-            <th style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
+            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                 </span>
                 </th>
             <th style="width: 10%">Predict Detail</th>
         </thead>
         <tbody>
-        <tr ng-repeat="v in snv_utr_gain_list">
+        <tr ng-repeat="v in snv_utr_gain_list" ts-repeat>
             <td align="center">{$v.snp_id$}</td>
             <td align="center">{$v.gene_symbol$}</td>
             <td align="center">{$v.mirna_id$}</td>
@@ -346,27 +351,31 @@
     <div class="panel-heading" >
         <strong>{$ query_snp $} in gene 3'utr result in target loss</strong>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
             <th>SNP</th>
             <th>Gene</th>
             <th>miRNA</th>
-            <th>miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                 </span>
+            </th>
             <th>Accession</th>
             <th>Transcript</th>
-            <th style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
+            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                 </span>
                 </th>
-             <th style="width: 10%">Gene Expression Correlation</th>
+                <th ts-criteria="expr_corelation" style="width: 10%">Exp. Cor.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
+                            </span>
+                </th>
             <th style="width: 10%">Experiment Validation</th>
             <th style="width: 10%">Predict Detail</th>
         </thead>
         <tbody>
-        <tr ng-repeat="v in snv_utr_loss_list">
+        <tr ng-repeat="v in snv_utr_loss_list" ts-repeat>
             <td align="center">{$v.snp_id$}</td>
             <td align="center">{$v.gene_symbol$}</td>
             <td align="center">{$v.mirna_id$}</td>
@@ -538,7 +547,7 @@
     <div class="panel panel-default" ng-show="seven" id="section-7">
     <div class="panel panel-default" ng-show="rcosmic_count">
         <div class="panel-heading" >
-        <strong> {$rcosmic_count$}mutation in cosmic relate with {$ query_snp $}</strong>
+        <strong> {$rcosmic_count$}mutation in COSMIC relate with {$ query_snp $}</strong>
     </div>
     <table class="table table-bordered">
         <thead>
@@ -563,8 +572,8 @@
             <td>{$ line.ref$}</td>
             <td>{$ line.alt$}</td>
             <td>{$ line.snp_id$}</td>
-            <td>{$ line.Primary_site$}</td>
-            <td>{$ line.Primary_histology $}</td>
+            <td style="word-break:break-all">{$ line.Primary_site$}</td>
+            <td style="word-break:break-all">{$ line.Primary_histology $}</td>
             <td>{$ line.PUBMED_PMID$}</td>
         </tr>
         </tbody>
@@ -572,19 +581,19 @@
     </div>
         <div class="panel panel-default" ng-show="rclinvar_count">
             <div class="panel-heading">
-                <strong> {$rclinvar_count$} mutation in clinvar relate with {$ query_snp $}</strong>
+                <strong> {$rclinvar_count$} mutation in ClinVar relate with {$ query_snp $}</strong>
             </div>
 
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>ClinVarID</th>
-                    <th>Chromesome</th>
+                    <th>ClinVar ID</th>
+                    <th>Chromosome</th>
                     <th>Position</th>
                     <th>Ref</th>
                     <th>Alt</th>
                     <th>RelateSnp</th>
-                    <th>Disease</th>
+                    <th style="width: 25%">Disease</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -596,7 +605,7 @@
                     <td>{$ line.ref$}</td>
                     <td>{$ line.alt$}</td>
                     <td>{$ line.snp_id$}</td>
-                    <td>{$ line.disease $}</td>
+                    <td style="word-break:break-all">{$ line.disease $}</td>
                 </tr>
                 </tbody>
             </table>

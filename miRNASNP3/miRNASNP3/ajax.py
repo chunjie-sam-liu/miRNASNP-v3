@@ -645,7 +645,7 @@ class MutUtrGain(Resource):
         record_skip = (page - 1) * per_page
         condition={}
         if args['page']:
-            condition['page']=args['page']
+            record_skip = (int(args['page']) - 1) * per_page
         if args['mut_id']:
             condition['mut_id']=args['mut_id']
         lookup_gene = {'$lookup': {
@@ -663,9 +663,9 @@ class MutUtrGain(Resource):
         match = {'$match': condition}
         skip = {'$skip': record_skip}
         limit = {'$limit': per_page}
-        print(condition)
+        
         pipline = [match, skip, limit, lookup_gene, lookup_mirna]
-        if args['mut_id'].lower().startswith('cos'):
+        if args['mut_id'].lower().startswith('cosn'):
             mut_utr_gain_list=mongo.db.utr_cosmic_gain.aggregate(pipline)
             mut_utr_gain_count=mongo.db.utr_cosmic_gain.find(condition).count()
         else:
@@ -692,7 +692,7 @@ class MutUtrLoss(Resource):
         record_skip = (page - 1) * per_page
         condition={}
         if args['page']:
-            condition['page']=args['page']
+            record_skip = (int(args['page']) - 1) * per_page
         if args['mut_id']:
             condition['mut_id']=args['mut_id']
         lookup_gene = {'$lookup': {
@@ -1349,7 +1349,7 @@ class MutationSummary(Resource):
             page=args['page']
             record_skip = (int(page) - 1) * per_page
         if args['gene']:
-            condition['identifier_lower']=args['gene']
+            condition['identifier_lower']=args['gene'].lower()
         if args['chrome']!='All' and args['chrome']:
             condition['chrome']=args['chrome']
         if args['location'] != 'All'and args['location']:
@@ -1444,6 +1444,7 @@ class SnpSummary(Resource):
         parser.add_argument('ldsnp')
         parser.add_argument('mutation_rela')
         parser.add_argument('gene')
+        parser.add_argument('spe_snp_id')
         args = parser.parse_args()
         #print(args['chrome'])
         page=1
@@ -1458,11 +1459,13 @@ class SnpSummary(Resource):
             page=args['page']
             record_skip = (int(page)-1)*per_page
         if args['gene']:
-            condition['identifier_lower']=args['gene']
+            condition['identifier_lower']=args['gene'].lower()
         if args['chrome'] != 'All' and args['chrome']:
             condition['snp_chr'] = args['chrome']
+        if args['spe_snp_id']:
+            condition['snp_id']=args['spe_snp_id']
         if args['snp_id']:
-            condition['snp_id']={'$regex':args['snp_id'],'$options':'$1'}
+            condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
         if args['identifier']:
             condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
         if args['location']!='All' and args['location']:
