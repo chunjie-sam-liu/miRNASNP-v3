@@ -330,7 +330,8 @@ mut_info={
     'mut_id':fields.String,
     'alt':fields.String,
     'ref':fields.String,
-    'curalt':fields.String(attribute="alt")
+    'curalt':fields.String(attribute="alt"),
+    'distance_align':fields.String
 }
 
 mut_gainsite_info={
@@ -628,8 +629,18 @@ class SnvUtrGain(Resource):
 
 api.add_resource(SnvUtrGain,'/api/snv_utr_gain')
 
+mut_gain_utr_site={
+    'mut_id':fields.String,
+    'mirna_id':fields.String,
+    'gene_symbol':fields.String,
+    'mut_info':fields.Nested(mut_info),
+    'site_info':fields.Nested(utr_site_info),
+    'utr_info':fields.Nested(utr_info_line),
+    'gene_expression':fields.Nested(gene_expression)
+}
+
 mut_utr_gain={
-    'mut_utr_gain_list':fields.Nested(mut_gainsite_info),
+    'mut_utr_gain_list':fields.Nested(mut_gain_utr_site),
     'mut_utr_gain_count':fields.Integer
 }
 
@@ -675,8 +686,22 @@ class MutUtrGain(Resource):
 
 api.add_resource(MutUtrGain,'/api/mut_utr_gain')
 
+mut_loss_utr_site={
+    'mut_id':fields.String,
+    'mirna_id':fields.String,
+    'gene_symbol':fields.String,
+    'experiment_valid':fields.Integer,
+    'expr_corelation':fields.String,
+    'mut_info':fields.Nested(mut_info),
+    'utr_info':fields.Nested(utr_info_line),
+    'site_info':fields.Nested(utr_site_info),
+    'gene_expression': fields.Nested(gene_expression),
+    'mirna_expression': fields.Nested(mirna_expression),
+    'corelation_detail':fields.Nested(corelation_detail)
+}
+
 mut_utr_loss={
-    'mut_utr_loss_list':fields.Nested(mut_losssite_info),
+    'mut_utr_loss_list':fields.Nested(mut_loss_utr_site),
     'mut_utr_loss_count':fields.Integer
 }
 
@@ -1332,7 +1357,6 @@ class MutationSummary(Resource):
         parser.add_argument('pubmed_id')
         parser.add_argument('histology')
         parser.add_argument('pathology')
-        parser.add_argument('target_effection')
         parser.add_argument('gene')
         args = parser.parse_args()
         #print(args['chrome'])
@@ -1390,22 +1414,11 @@ class MutationSummary(Resource):
         print(pathology_dict)
 
         if condition or histology_dict or pathology_dict:
-            if args['target_effection']=="1":
-                mutation_summary_list=mongo.db.mutation_summary_addtarget.aggregate(pipline)
-            else:
-                mutation_summary_list=mongo.db.mutation_summary.aggregate(pipline)
+            mutation_summary_list=mongo.db.mutation_summary_addtarget.aggregate(pipline)
         else:
-            if args['target_effection']=="1":
-                mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)
-            else:
-                mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)
-        if args['target_effection']=="1":
-            mutation_summary_count=mongo.db.mutation_summary_addtarget.aggregate(pipline_count)
-            print(mutation_summary_count)
-        else:
-            mutation_summary_count=mongo.db.mutation_summary.aggregate(pipline_count)
-            #print('empty')
-        #print(str(mutation_summary_count))
+            mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
+        mutation_summary_count=mongo.db.mutation_summary_addtarget.aggregate(pipline_count)
+       
         return{'mutation_summary_list':list(mutation_summary_list),'mutation_summary_count':list(mutation_summary_count)}
 
 api.add_resource(MutationSummary,'/api/mutation_summary')
