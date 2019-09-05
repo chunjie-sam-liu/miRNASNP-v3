@@ -17,6 +17,7 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     var page=1;
     var ip_address='/api/mirna_summary';
     var base_url = miRNASNP3Service.getAPIBaseUrl();
+    //$('#query_mirna_summary').val("hsa-let-7a-3p");
     $scope.initial=1;
     
     $scope.fetch_mirna_summary=function(page){
@@ -82,6 +83,7 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
     var page=1;
     var ip_address='/api/primir_summary';
     var base_url = miRNASNP3Service.getAPIBaseUrl();
+    //$('#query_mirna_summary').val("hsa-mir-6859-1");
 
     /*$scope.reset_query=function(){
         console.log("reset");

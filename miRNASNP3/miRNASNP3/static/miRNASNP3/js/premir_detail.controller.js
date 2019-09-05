@@ -13,7 +13,8 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.fetch_premir=function(){
         $scope.a="letter in fetch_premir";
         $http({
-            url:base_url+'/api/premir_info',
+            //url:base_url+'/api/premir_info',
+            url:'/api/premir_info',
             method:'GET',
             params:{search_ids:$scope.search_ids}
         }).then(function (response) {
@@ -43,7 +44,8 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.structure_effection_snp=function (snp_id,click_alt) {
         $scope.primir_mut_count=0;
         $http({
-            url:base_url+'/api/primir_altseq',
+            //url:base_url+'/api/primir_altseq',
+            url:'/api/primir_altseq',
             method:'GET',
             params:{search_ids:snp_id}
         }).then(function (response) {
@@ -88,7 +90,8 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.structure_effection_mut=function(mut_id){
         $scope.primir_alt_count=0;
       $http({
-          url:base_url+'/api/primir_altseq_mut',
+          //url:base_url+'/api/primir_altseq_mut',
+          url:'/api/primir_altseq_mut',
           method:'Get',
           params:{mut_id:mut_id}
       }).then(function(response){

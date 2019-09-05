@@ -2,7 +2,7 @@
 <div class="bs-callout bs-callout-info">
     <div class="description">
     <h4>Mature miRNA summery information</h4>
-    <p>There are <span class="badge alert-info">2652</span> mature miRNA derived from <span class="badge alert-info">1913</span> primary RNA. <span class="badge alert-success">17316</span> SNPs are identified on mature miRNA, while <span class="badge alert-info">4666</span> SNPs on miRNA seed region. As for muations, <span class="badge alert-second">2114</span> COSMIC mutaions and  <span class="badge alert-second">41</span> Clinvar variations are identified on mature miRNA, while <span class="badge alert-second">522</span> COSMIC mutations and  <span class="badge alert-second">11</span> ClinVar variations are on the seed region</p>
+    <p>There are <span class="badge alert-info">2652</span> mature miRNA derived from <span class="badge alert-info">1913</span> primary RNA. <span class="badge alert-info">17316</span> SNPs are identified on mature miRNA, while <span class="badge alert-info">4666</span> SNPs on miRNA seed region. As for muations, <span class="badge alert-info">2114</span> COSMIC mutaions and  <span class="badge alert-info">41</span> Clinvar variations are identified on mature miRNA, while <span class="badge alert-info">522</span> COSMIC mutations and  <span class="badge alert-info">11</span> ClinVar variations are on the seed region</p>
     </div>
 </div>
 
@@ -46,9 +46,9 @@
             <div class="form-group">
                 <label class="control-label col-lg-1">Search</label>
                 <div class="col-lg-3">
-                    <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary">
+                    <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary" placeholder="hsa-let-7a-3p">
                 </div>
-                <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-let-7a-3p/MIMAT0010195</span>
+                <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-let-7a-3p</span>
             </div>
             <div class="form-group">
                 <div class="col-lg-1 col-lg-offset-5">
@@ -84,7 +84,7 @@
                         <th ts-criteria="mir_id" style="width: 14%">miRNA</th>
                         <th ts-criteria="mir_acc"style="width: 14%">Accession</th>
                         <th ts-criteria="mir_start" style="width: 24%">Position</th>
-                        <th ts-criteria="snp_in_seed" style="width: 12%">SNP Number
+                        <th ts-criteria="snp_in_seed+snp_in_mature|parseInt" style="width: 12%">SNP Number
                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNPs in this miRNA.1)Number of SNPs in seed region;2)Number of SNPs in mature miRNA;"></span></th>
                         <th ts-criteria="cosmic_in_seed" style="width: 12%">Mutation Number 
                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of mutations in this miRNA.1)Number of Cosmic mutation in the seed region;2)Number of Cosmic mutaions in mature miRNA;3)Number of Clinvar variations in the seed region;4)Number of Clinvar variation in mature miRNA;"></span></th>
@@ -96,7 +96,7 @@
                         <td><a href="#!/mirna?mirna_id={$v.mir_id$}" style="color:#FF0000">{$ v.mir_id$}</a></td>
                         <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.mir_acc$}">{$ v.mir_acc $}</a></td>
                         <td>{$ v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
-                        <td>{$ v.snp_in_seed$},{$v.snp_in_matue$}</td>
+                        <td>{$ v.snp_in_seed$}/{$v.snp_in_matue$}</td>
             <!--td>{$v.snp_in_matue$}</td-->
                         <td>{$ v.mutation_sum $}</td>
                         <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color:#FF0000">{$ v.pre_id$}</a></td>

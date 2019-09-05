@@ -229,7 +229,6 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                   
                 }
         })
     }
@@ -255,7 +254,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                    
+                    site_array[i].utr_info.position=site_array[i].utr_info.chr+':'+site_array[i].utr_info.start+'-'+site_array[i].utr_info.end+'('+site_array[i].utr_info.strand+')'
                 }
         })
     }

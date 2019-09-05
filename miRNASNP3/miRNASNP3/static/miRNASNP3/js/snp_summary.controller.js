@@ -19,41 +19,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     var page=1;
     var gene=$routeParams.gene
     console.log('gene')
-    /*$scope.reset_query=function(){
-        condition['chrome']='All';
-        $("#chr").selectpicker('val','All');
-        condition['location']='All';
-        $("#location").selectpicker('val','All');
-        condition['gmaf']='All';
-        $("#gmaf").selectpicker('val','All');
-        condition['page']=page;
-        condition['ldsnp']='';
-        condition['mutation_rela']='';
-        condition['snp_id'] ='';
-        $('#query_snp_summary').val('');
-        condition['identifier']='';
-        $('#query_iden_summary').val('');
-        $http({
-            url:base_url+ip_address,
-            //url:'/api/snp_summary',
-            method:'GET',
-            params:condition,
-        }).then(function(response){
-            console.log(response);
-            $scope.snp_summary_list=response.data.snp_summary_list;
-            $scope.snp_summary_count=response.data.snp_summary_count;
-            var data_list=$scope.snp_summary_list
-            for(var i=0;i<data_list.length;i++){
-                //console.log(data_list[i].ref_freq)
-                if(data_list[i].ref_freq=='novalue'){data_list[i].ref_freq=0}
-                //console.log(data_list[i].ref_freq)
-                if(!Number(data_list[i].alt_freq)){data_list[i].alt_freq=0}
-            }
-            $scope.snp_summary_list=data_list
-        })
-    };
-    $scope.reset_query()
-*/
+   
     $scope.fetch_snp_summary=function(page){
         var flag_snp=0;
         var flag_identifier=0;

@@ -1,7 +1,7 @@
 <div class="bs-callout-success">
     <h4>SNPs summery information</h4>
     <p>
-        <span class="badge alert-info">4666 </span>SNVs in microRNA seed region and <span class="badge alert-info">6435423 </span>SNVs in UTR3 are indentified in miRNASNP3.
+        <span class="badge alert-success">4666 </span>SNPs in microRNA seed region and <span class="badge alert-success">6435423 </span>SNPs in UTR3 are indentified in miRNASNP3.
     </p>
 </div>
 
@@ -59,16 +59,16 @@
         <div class="form-group">
             <label class="control-label col-lg-1">SNP</label>
             <div class="col-lg-3">
-                <input type="text" class="form-control input-xs" id="query_snp_summary" ng-model="query_snp_summary">
+                <input type="text" class="form-control input-xs" id="query_snp_summary" ng-model="query_snp_summary" placeholder="rs1079033">
             </div>
             <span class="help-block">Input a  SNP ID,such as rs1079033</span>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-1">Gene</label>
             <div class="col-lg-3">
-                <input type="text" class="form-control input-xs" id="query_iden_summary" ng-model="query_iden_summary">
+                <input type="text" class="form-control input-xs" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53"> 
             </div>
-            <span class="help-block">Input a  Gene/miRNA,such as hsa-miR-6761-3p</span>
+            <span class="help-block">Input a  Gene/miRNA,such as hsa-miR-6761-3p/tp53</span>
         </div>
         <div class="form-group">
             <div class="col-lg-9">
@@ -119,8 +119,8 @@
     <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
         <thead>
         <tr>
-            <th ts-criteria="snp_coordinate" width="7%">Position</th>
-            <th ts-criteria="snp_id" width="8%">SNP ID</th>
+            <th ts-criteria="snp_coordinate" width="10%">Position</th>
+            <th ts-criteria="snp_id" width="10%">SNP ID</th>
             <th width="5%">Ref/Alt</th>
             <th ts-criteria="alt_freq" width="15%">Ref fre./Alt fre.</th>
             <th width="7%">Location</th>
