@@ -1,10 +1,15 @@
-<div class="well"><p>Mutation summery information</p>
-    <p>
-        227225 mutations from COSMIC and 44819 variations from Clinvar are collected in miRNASNP3,some of these muttaions share the same coodinates with SNPs.
-    </p>
-    <form method="get" id="mutation-summary-form" class="form form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-lg-1">Chrome</label>
+<div class="bs-callout-primary">
+        <h4>Mutation summery information</h4>
+        <p>
+                227225 mutations from COSMIC and 44819 variations from Clinvar are collected in miRNASNP3,some of these muttaions share the same coodinates with SNPs.
+        </p>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <form method="get" id="mutation-summary-form" class="form form-horizontal">
+            <div class="form-group">
+            <label class="control-label col-lg-1">Chromosome</label>
             <div class="col-lg-3">
             <select id="chr" class="form-control">
                 <option>All</option>
@@ -39,7 +44,7 @@
                 <select id="location" class="form-control">
                     <option value="All">All</option>
                     <option value="UTR3">3.UTR</option>
-                    <option value="mirSeed">mature mirRNA Seed</option>
+                    <option value="mirSeed">mature miRNA Seed</option>
                 </select>
             </div>
             <label class="control-label col-lg-1">Resource</label>
@@ -157,28 +162,26 @@
                     <input type="checkbox" id="snp_rela">
                     <strong id="snp_rela_1">Relate with SNP</strong>
                 </label>
-                <label class="control-label checkbox-inline">
-                    <!--input type="checkbox"  id="target" ng-click="miRNA_effect = !miRNA_effect"-->
+                <!--label class="control-label checkbox-inline">
                     <input type="checkbox" id="is_pubmed">
                     <strong id="is_pubmed_1">With Pubmend ID</strong>
               </label>
               <label class="control-label checkbox-inline">
                     <input type="checkbox" id="target_effection">
                     <strong>Target gain/loss information</strong>
-                </label>
+                </label-->
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-3">
+            <div class="col-lg-1 col-lg-offset-5">
             <span class="input-group-btn">
                 <button class="btn btn-primary" id="search_button" type="submit" ng-click="fetch_mutation_summary(page)" >
 							Submit
                 </button>
             </span>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-lg-3">
+        
+            <div class="col-lg-1">
             <span class="input-group-btn">
                 <button class="btn btn-danger" id="reset_query" type="reset" ng-click=reset()>
 							Reset
@@ -188,99 +191,28 @@
         </div>
     </form>
 </div>
-
-<div ng-show="total_summary">
-    <div class="panel panel-default" >
-        <div class="panel-heading" >
-            <strong>Cosmic mutation summary information</strong>
-        </div>
-        <div ng-show="initial">
-                <div class="flyover" ng-hide="mutation_summary_count">
-                        <div class="mask"></div>
-                        <div class="spinner"></div>
-                    </div>
-                    </div>
-        <div ng-show="mutation_summary_count">   
-        <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-            <thead>
-            <tr>
-                <th style="width:10%">Position</th>
-                <th ts-criteria="mut_id" style="width: 12%">Mutation ID</th>
-                <th style="width: 6%">Ref/Alt</th>
-                <th style="width: 30%">Pathology</th>
-                <th style="width: 7%">Location</th>
-                <th ts-criteria="snp_id" style="width: 8%">Ralate SNP</th>
-                <th ts-criteria="pubmed_id" style="width: 8%">PubMed ID</th>
-            </tr>
-            </thead>
-        <tbody>
-        <tr ng-repeat="v in mutation_summary_list" ts-repeat>
-            <!--td>{$ $index+1 $}</td-->
-            <td>{$ v.chrome$}:{$v.position$}</td>
-            <td>{$v.resource$}:{$ v.mut_id$}</td>
-            <td>{$ v.ref$}/{$v.alt$}</td>
-            <td style="word-break:break-all">{$ v.pathology_show$}</td>
-            <td>{$v.location $}</td>
-            <td align="center">
-                <span ng-if="v.snp_id"><a href="/#!/snp?snp_id={$v.snp_id$}">{$ v.snp_id $}</a></span>
-                <span ng-if="!v.snp_id">-</span>
-            </td>
-            <td align="center">
-                <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$ v.pubmed_id$}</a></span>
-                <span ng-if="!v.pubmed_id">-</span>
-            </td>
-            
-        </tr>
-        </tbody>
-    </table>
-</div>
-    </div>
-<div ng-show="mutation_summary_count">
-<div paging
-             page="currentPage"
-             page-size=15
-             total="mutation_summary_count"
-             scroll-top="true"
-             hide-if-empty="true"
-             show-prev-next="true"
-             show-first-last="true"
-             text-title-page="Page {page} Hover Over"
-             text-title-first="First hover"
-             text-title-last="Last hover"
-             text-title-next="Next hover"
-             text-title-prev="Prev hover"
-             show-prev-next="true"
-             show-first-last="true"
-             ul-class="pagination"
-             active-class="active"
-             disabled-class="disabled"
-             paging-action="fetch_mutation_summary(page)"
-        ></div>
-</div>
 </div>
 
-<div ng-show="target_effection">
-    <div class="panel panel-primary" >
-    <div class="panel-heading" >
-        <strong>Cosmic mutation summary information</strong>
-    </div>
+
+
+<div class="div-table" >
     <div ng-show="initial">
             <div class="flyover" ng-hide="mutation_summary_count">
                     <div class="mask"></div>
                     <div class="spinner"></div>
                 </div>
                 </div>
-    <div ng-show="mutation_summary_count">   
+    <div ng-show="mutation_summary_count">
     <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
         <thead>
             <tr>
-                <th style="width: 10%">Position</th>
-                <th ts-criteria="mut_id" style="width: 14%">Mutation ID</th>
+                <th style="width: 11%">Position</th>
+                <th ts-criteria="mut_id" style="width: 16%">Mutation ID</th>
                 <th style="width:6%">Ref/Alt</th>
-                <th style="width: 28%">Pathology</th>
+                <th style="width: 25%">Pathology</th>
                 <th style="width: 7%">Location</th>
                 <th style="width: 8%">Gene</th>
-                <th style="width: 8%"ts-criteria="pubmed_id|parseFloat">Relate SNP</th>
+                <th style="width: 10%"ts-criteria="pubmed_id|parseFloat">Relate SNP</th>
                 <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed ID</th>
                 <th ts-criteria="gain_count|parseInt" style="width: 5%">Gain</th>
                 <th ts-criteria="loss_count|parseInt" style="width: 5%">Loss</th>
@@ -290,27 +222,32 @@
             <tr ng-repeat="v in mutation_summary_list" ts-repeat>
                     <!--td>{$ $index+1 $}</td-->
                 <td>{$ v.chrome$}:{$ v.position $}</td>
-                <td>{$v.resource$}:<a href="/#!/mutation?mut_id={$v.mut_id$}">{$ v.mut_id$}</a></td>
+                <td>{$v.resource$}:<a href="{$v.url$}" >{$ v.mut_id $}</a></td>
                 <td>{$ v.ref$}/{$v.alt$}</td>
                 <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
                 <td style="word-break:break-all">{$ v.pathology_show$}</td>
                 <td>{$v.location $}</td>
                 <td>{$v.identifier$}</td>
                 <td align="center">
-                    <span ng-if="v.snp_id"><a href="/#!/snp?snp_id={$v.snp_id$}">{$ v.snp_id $}</a></span>
+                    <span ng-if="v.snp_id"><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$ v.snp_id $}</span>
                     <span ng-if="!v.snp_id">-</span>
                 </td>
                 <td align="center">
                     <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$ v.pubmed_id$}</a></span>
                     <span ng-if="!v.pubmed_id">-</span>
                 </td>
-                <td>{$v.gain_count$}</td>
-                <td>{$v.loss_count$}</td>
+                <td>
+                    <span ng-if="v.snp_id"><a href="#!/snp?snp_id={$v.snp_id$}" style="color: red">{$v.gain_count$}</a></span>
+                    <span ng-if="!v.snp_id"><a href="#!/mutation?mut_id={$v.mut_id$}" style="color: red">{$v.gain_count$}</a></span>
+                </td>
+                <td>
+                    <span ng-if="v.snp_id"><a href="#!/snp?snp_id={$v.snp_id$}" style="color: red">{$v.loss_count$}</a></span>
+                    <span ng-if="!v.snp_id"><a href="#!/mutation?mut_id={$v.mut_id$}" style="color: red">{$v.loss_count$}</a></span>
+                </td>
             </tr>
         </tbody>
     </table> 
     </div> 
-    </div>
     <div ng-show="mutation_summary_count">
     <div paging
                      page="currentPage"
@@ -333,4 +270,4 @@
                      paging-action="fetch_mutation_summary(page)"
                 ></div>
     </div>
-    </div>
+

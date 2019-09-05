@@ -10,10 +10,31 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     console.log("ToolsController loaded");
     $scope.flash_message=false;
     $scope.flash_message1=false;
+    var flag_altutr=0;
+    var flag_altmir=0;
+    var flag_stru=0;
+
+    $(".input-xs:text").each(function () {
+        jQuery(this).change(function () {
+          jQuery(this).val(jQuery.trim(jQuery(this).val()));
+        })
+      })
+    
     $scope.predict_altutr = function () {
         $scope.loading = true;
         var wildutr_sequence = $("#wildutr_sequence").val();
+        if (/[@#\$%\^&\*<>\.]+/g.test(wildutr_sequence)) {
+            alert("Invalid input");
+            flag_altutr = 1;
+            history.back();
+        }
         var snputr_sequence = $("#snputr_sequence").val();
+        if (/[@#\$%\^&\*<>\.]+/g.test(snputr_sequence)) {
+            alert("Invalid input");
+            flag_altutr = 1;
+            history.back();
+        }
+        if(flag_altutr==0){
         if (!wildutr_sequence) {
             $scope.flash_message = "Please input wild sequence!";
             return;
@@ -21,6 +42,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
             $scope.flash_message = null;
             window.open("#!/predict_result_utr?wild_seq=" + wildutr_sequence + "&snp_seq=" + snputr_sequence, "_self")
         }
+    }
     };
         $scope.load_altutr=function(){
             $("#wildutr_sequence").val("TTCTTTCTATTTTATTATCTGGGACATATTTAAATACAAACATATTCAGA");
@@ -29,7 +51,18 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     $scope.predict_altmir=function(){
         $scope.loading=true;
         var wildmir_sequence = $("#wildmir_sequence").val();
+        if (/[@#\$%\^&\*<>\.]+/g.test(wildmir_sequence)) {
+            alert("Invalid input");
+            flag_altmir = 1;
+            history.back();
+        }
         var snpmir_sequence = $("#snpmir_sequence").val();
+        if (/[@#\$%\^&\*<>\.]+/g.test(snpmir_sequence)) {
+            alert("Invalid input");
+            flag_altmir = 1;
+            history.back();
+        }
+        if(flag_altmir==0){
         if (!wildmir_sequence) {
             $scope.flash_message1 = "Please input wild sequence!";
             return;
@@ -37,6 +70,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
             $scope.flash_message1 = null;
             window.open("#!/predict_result_mir?wild_seq=" + wildmir_sequence + "&snp_seq=" + snpmir_sequence, "_self")
         }
+    }
     };
     $scope.load_altmir=function(){
             $("#wildmir_sequence").val("CCUGCUGGUCAGGAGUGGAUACUG");
@@ -46,10 +80,21 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
         console.log("predic structure");
         $scope.loading=true;
         var wildmir_str_seq=$("#wildmir_str_seq").val();
+        if (/[@#\$%\^&\*<>\.]+/g.test(wildmir_str_seq)) {
+            alert("Invalid input");
+            flag_stru = 1;
+            history.back();
+        }
         console.log(wildmir_str_seq);
         var snp_val=$("#snps").val();
+        if (/[@#\$%\^&\*<>\.]+/g.test(snp_val)) {
+            alert("Invalid input");
+            flag_stru = 1;
+            history.back();
+        }
         var snps=snp_val.replace(/\n/g,'|||');
         console.log(snps);
+        if(flag_stru==0){
         if(!wildmir_str_seq){
             $scope.flash_message2 = "Please input wild sequence";
             return;
@@ -58,6 +103,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
             console.log("open window");
             window.open("#!/predict_structure?wild_seq="+wildmir_str_seq+"&snps="+snps,"_self")
         }
+    }
     };
     $scope.load_structure=function () {
         $("#wildmir_str_seq").val("CCUGCUGGUCAGGAGUGGAUACUG");

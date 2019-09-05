@@ -297,6 +297,30 @@ ul.list-unstyled li>p>.badge {
   border-radius: 3px;
 }
 
+.bs-callout-danger {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #ebcccc;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+
+.bs-callout-success {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #d0e9c6;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+
+.bs-callout-primary {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #2e6da4;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+
 div.div-table {
   margin-top: 30px;
 }
