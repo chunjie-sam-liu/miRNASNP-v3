@@ -1,10 +1,15 @@
-<div class="well"><p>SNPs summery information</p>
+<div class="bs-callout-success">
+    <h4>SNPs summery information</h4>
     <p>
-        4666 SNVs in microRNA seed region and 6435423 SNVs in UTR3 are indentified in miRNASNP3.
+        <span class="badge alert-info">4666 </span>SNVs in microRNA seed region and <span class="badge alert-info">6435423 </span>SNVs in UTR3 are indentified in miRNASNP3.
     </p>
+</div>
+
+<div class="panel panel-success">
+    <div class="panel-body">   
     <form method="get" id="snp-summary-form" class="form form-horizontal">
         <div class="form-group">
-            <label class="control-label col-lg-1">Chrome</label>
+            <label class="control-label col-lg-1">Chromosome</label>
             <div class="col-lg-3">
             <select id="chr" class="form-control">
                 <option value="All">All</option>
@@ -59,7 +64,7 @@
             <span class="help-block">Input a  SNP ID,such as rs1079033</span>
         </div>
         <div class="form-group">
-            <label class="control-label col-lg-1">Identifier</label>
+            <label class="control-label col-lg-1">Gene</label>
             <div class="col-lg-3">
                 <input type="text" class="form-control input-xs" id="query_iden_summary" ng-model="query_iden_summary">
             </div>
@@ -79,18 +84,17 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-3">
+            <div class="col-lg-1 col-lg-offset-5">
             <span class="input-group-btn">
-                <button class="btn btn-primary" id="search_button" type="submit" ng-click="fetch_snp_summary(page)" >
+                <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_snp_summary(page)" >
 							Submit
                 </button>
             </span>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-lg-3">
+        
+            <div class="col-lg-1">
             <span class="input-group-btn">
-                <button class="btn btn-danger" id="reset_query" type="reset" ng-click="reset_query()" >
+                <button class="btn btn-primary" id="reset_query" type="reset" ng-click="reset_query()" >
 							Reset
                 </button>
             </span>
@@ -98,9 +102,10 @@
         </div>
     </form>
 </div>
+</div>
 
 
-<div class="panel panel-warning" >
+<div class="div-table">
     <div class="panel-heading" >
         <strong>SNPs summary information</strong>
     </div>
@@ -114,14 +119,12 @@
     <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
         <thead>
         <tr>
-            <th ts-criteria="snp_chr" width="5%">Chrome</th>
             <th ts-criteria="snp_coordinate" width="7%">Position</th>
             <th ts-criteria="snp_id" width="8%">SNP ID</th>
             <th width="5%">Ref/Alt</th>
-            <th ts-criteria="ref_freq" width="8%">Ref frequency</th>
-            <th ts-criteria="alt_freq" width="10%">Alt frequency</th>
+            <th ts-criteria="alt_freq" width="15%">Ref fre./Alt fre.</th>
             <th width="7%">Location</th>
-            <th ts-criteria="identifier" width="10%">Identifier
+            <th ts-criteria="identifier" width="10%">Gene
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="The SNV locate in the gene/miRNA"></span></th>
             <th ts-criteria="ldsnp" width="5%">LD SNP
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Weather the SNV is a tagSNP or locate in the linkage disequilibrium of another tagSNP"></span></th>
@@ -135,25 +138,17 @@
         </thead>
         <tbody>
         <tr ng-repeat="v in snp_summary_list" ts-repeat>
-            <td >{$v.snp_chr$}</td>
-            <td >{$v.snp_coordinate$}</td>
-            <td ><a href="/#!/snp?snp_id={$v.snp_id$}">{$v.snp_id$}</a></td>
+            <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
+            <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
             <td >{$v.ref$}/{$v.alt$}</td>
             <td align="center">
                 <span ng-if="!v.ref_freq">-</span>
-                <span ng-if="v.ref_freq">{$v.ref_freq$}</span>
-            </td>
-            <td align="center">
+                <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
                 <span ng-if="!v.alt_freq">-</span>
                 <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
             </td>
-            <td>{$v.location$}:{$v.identi_gene$}</td>
-            <span ng-if="!v.identi_gene">
-                <td><a href="/#!/mirna?mirna_id={$v.identifier$}">{$v.identifier$}</td>
-                    </span>
-            <span ng-if="v.identi_gene">
-                    <td><a href="/#!/gene?query_gene={$v.identifier$}">{$v.identifier$}</td>
-            </span>
+            <td>{$v.location$}</td>
+            <td>{$v.identifier$}</td>
             <td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
@@ -162,8 +157,8 @@
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
             </td>
-            <td>{$v.gain_count$}</td>
-            <td>{$v.loss_count$}</td>
+            <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.gain_count$}</a></td>
+            <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.loss_count$}</a></td>
         </tr>
         </tbody>
     </table>
