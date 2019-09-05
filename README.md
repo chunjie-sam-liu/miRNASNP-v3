@@ -1,20 +1,5 @@
 # miRNASNP3
-update miRNA SNP database
 
->move to .4
-
-> fuxins join the team
-
-> chunjie-sam-liu join the team
-
-> huffy join the team
-
-# Data collection
-1. Extend species
-2. update data in /data/data_tmp/miRNASNP3
-
-# miRNASNP3 database construction
-
-1. Use Flask, Angular and MongoDB to construct databases.
-2. Update online tools.
-3. miRNA TF network for mutation in miRNA affects the TF network.
+<p>microRNAs (miRNAs) are endogenous and regulatory non-coding RNAs by targeting mRNAs for cleavage or translational repression. SNPs in pre-miRNAs or target sites will affect miRNA function and be related with diseases or biological processes. <span class="badge alert-info">miRNASNP</span> aims to provide a comprehensive resource of human miRNA-related SNPs, which includes SNPs in pre-miRNAs and target gain and loss by SNPs in miRNA seed regions or 3'UTR of target mRNAs.</p>
+                <p><span class="badge alert-info">miRNASNP<span style="color:red;">-v3</span></span> characterized human <span class="badge alert-danger">6,501,373</span> SNPs on <span class="badge alert-danger">x,xxx</span> miRNA and <span class="badge alert-danger">x,xxx</span> genes' 3'UTR which doubled compared with <span class="badge alert-info">miRNASNP<span style="color:red;">-v2</span></span>. Besides, <span class="badge alert-danger">x,xxx</span> somatic mutations from <span class="badge alert-info"><a href="https://www.ncbi.nlm.nih.gov/clinvar/" target="_blank">ClinVar</a></span> and <span class="badge alert-info"><a href="https://cancer.sanger.ac.uk/cosmic" target="_blank">COSMIC</a></span> were identified on the miRNA and 3'UTR. <span class="badge alert-info">Gene enrichment</span> of targets gain/loss by SNP in miRNA seed region are provided for SNP effect on miRNA.
+                </p>
