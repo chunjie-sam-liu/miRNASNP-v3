@@ -1,8 +1,7 @@
 <div class="bs-callout-danger">
     <h4>SNPs in human precursor miRNA</h4>
     <p>
-        There are <span class="badge alert-info">1913</span> primary RNAs collected from mirbase v22. <span class="badge alert-info">43923</span> SNPs are identified on primary RNAs.
-        As for muations,<span class="badge alert-info">5389</span> Cosmic mutaions and <span class="badge alert-info">75</span> Clinvar variations are identified on primary RNAs.
+        There are <span class="badge alert-info">1,913</span> precursor miRNAs collected from miRBase v22.
     </p>
 </div>
 
@@ -50,20 +49,14 @@
                 <span class="help-block">Input a miRNA, such as hsa-mir-6859-1</span>
             </div>
             <div class="form-group">
-                <div class="col-lg-1 col-lg-offset-5">
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger" id="search_button" type="button"
-                            ng-click="fetch_primir_summary()">
+                    <div class="col-sm-offset-4">
+                        <button class="btn btn-danger" id="search_button" type="button" ng-click="fetch_primir_summary()">
                             Submit
                         </button>
-                    </span>
-                </div>
-                <div class="col-lg-1">
-                    <span class="input-group-btn">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-primary" id="reset_query" type="button" ng-click="reset_query()">
                             Reset
                         </button>
-                    </span>
                 </div>
             </div>
         </form>
@@ -77,23 +70,31 @@
             <div class="spinner"></div>
         </div>
     </div>
+
     <div ng-show="primir_summary_count">
+
+                    <div paging page="currentPage_primir" page-size=15 total="primir_summary_count" scroll-top="true" hide-if-empty="true"
+                        show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
+                        text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
+                        text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
+                        active-class="active" disabled-class="disabled" paging-action="update_page(page)"></div>
+
         <table class="table table-bordered " ts-wrapper>
             <thead>
                 <tr>
-                    <th ts-criteria="pre_id" style="width: 14%">miRNA</th>
-                    <th ts-criteria="pre_acc" style="width: 14%">Accession</th>
-                    <th ts-criteria="pre_start" style="width: 24%">Position</th>
-                    <th ts-criteria="snv_in_pri" style="width: 12%">SNP Number
+                    <th ts-criteria="_id.pre_id" style="width: 14%">miRNA</th>
+                    <th ts-criteria="_id.pre_acc" style="width: 14%">Accession</th>
+                    <th ts-criteria="_id.pre_start" style="width: 24%">Position</th>
+                    <th ts-criteria="_id.snv_in_pri|parseInt" style="width: 12%">SNP Number
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                            data-content="Number of SNVs in this primary RNA.">
+                            data-content="Number of SNP in the pre-miRNA.">
                         </span>
                     </th>
-                    <th ts-criteria="cosmic_in_pri" style="width: 12%">Mutation Number
+                    <th ts-criteria="mutation_sum|parseInt" style="width: 10%">Mutation Number
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                            data-content="Number of Mutationas in this primary RNA.1)Number of Cosmic Mutations;2)Number of Clinvar variations;"></span>
+                            data-content="Number of Mutation in the pre-miRNA, includes COSMIC Mutations and ClinVar variations;"></span>
                     </th>
                     <th>Mature miRNAs</th>
                 </tr>
@@ -106,20 +107,13 @@
                             $}</a></td>
                     <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
                     <td>{$ v._id.snv_in_pri$}</td>
-                    <td>{$ v._id.cosmic_in_pri $},{$v._id.clinvar_in_pri$}</td>
+                    <td>{$ v.mutation_sum $}</td>
                     <td>
                         <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}"
-                                style="color:#FF0000">{$ m.mir_id$}</a>;&nbsp</span>
+                                style="color:#FF0000">{$ m.mir_id$}</a>&nbsp;&nbsp;</span>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-</div>
-<div ng-show="primir_summary_count">
-    <div paging page="currentPage" page-size=15 total="primir_summary_count" scroll-top="true" hide-if-empty="true"
-        show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
-        text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
-        text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
-        active-class="active" disabled-class="disabled" paging-action="fetch_primir_summary(page)"></div>
 </div>

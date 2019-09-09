@@ -1,27 +1,27 @@
 <div class="content">
-    <h2 class="quicksearch">Detail information of {$premir_info.pre_id$}</h2>
-    <div class="panel panel-info">
+    <h3 class="quicksearch">Detail information of {$premir_info.pre_id$}</h3>
+    <div class="panel panel-primary">
         <div class="panel-heading">
-            <h4>Precursor miRNA information</h4>
+          
         </div>
         <div class="panel-body">
             <table id="pre" class="table table-condensed table-bordered" style="word-break:break-all; word-wrap:break-all;">
                 <tbody>
                 <tr>
-                    <td colspan="2" class="success" style="text-align: center">
+                    <td colspan="2" class="default" style="text-align: center">
                     <span style="font-size: 20px">
                         <strong>Precursor miRNA</strong>
                     </span>
                     </td>
                 <tr>
                     <td style="font-size: 18px;" width="200px">
-                        <strong>ID</strong>
+                        <strong>Precursor ID</strong>
                     </td>
                     <td>{$premir_info.pre_id$}
                         <span style="float:right;clear;">
                             <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}"
                                title="miRBase" target="blank">
-                                <img src="image/mirnabase.JPG" border="0">
+                                <img src="/static/miRNASNP3/img/mirbase.png" border="0" style="width:40px;height:30px">
                             </a>
                         </span>
                     </td>
@@ -74,20 +74,20 @@
             <table id="mature" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
-                    <td colspan="2" class="success" style="text-align: center">
+                    <td colspan="2" class="default" style="text-align: center">
                         <span style="font-size: 20px;font-weight: bold">Mature miRNA</span>
                     </td>
                 </tr>
                 <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">ID</td>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA ID</td>
                     <td>{$premir_info.mirinfo[0].mir_id$}</td>
                 </tr>
                     <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">Sequence</td>
+                    <td style="font-size: 18px;font-weight: bold" >Sequence</td>
                         <td><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[0].matureSeq$}</span></td>
                 </tr>
                     <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">Position</td>
+                    <td style="font-size: 18px;font-weight: bold">Position</td>
                         <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}">
                             {$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}({$premir_info.mirinfo[0].mir_strand$})</a></td>
                 </tr>
@@ -98,15 +98,15 @@
             <table id="mature_2" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">ID</td>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA ID</td>
                     <td>{$premir_info.mirinfo[1].mir_id$}</td>
                 </tr>
                     <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">Sequence</td>
+                    <td style="font-size: 18px;font-weight: bold">Sequence</td>
                         <td><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
                 </tr>
                     <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">Position</td>
+                    <td style="font-size: 18px;font-weight: bold">Position</td>
                         <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}">
                             {$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}({$premir_info.mirinfo[1].mir_strand$})</a></td>
                 </tr>
@@ -117,15 +117,15 @@
             <table id="mature_3" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">ID</td>
+                    <td style="font-size: 18px;font-weight: bold">Mature miRNA ID</td>
                     <td>{$premir_info.mirinfo[2].mir_id$}</td>
                 </tr>
                     <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">Sequence</td>
+                    <td style="font-size: 18px;font-weight: bold">Sequence</td>
                         <td><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[2].matureSeq$}</span></td>
                 </tr>
                     <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="100">Position</td>
+                    <td style="font-size: 18px;font-weight: bold">Position</td>
                         <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}">
                             {$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}({$premir_info.mirinfo[2].mir_strand$})</a></td>
                 </tr>
@@ -143,46 +143,46 @@
                 </div>
                 <div class="panel-body">
                 <div ng-show="wild">
-                    <div style=";width: 50%; float:left; display:inline">
+                    <div style="width: 50%; float:left; display:inline">
                         <table class="table table-condensed table-bordered"
                                style="word-break:break-all; word-wrap:break-all;">
                             <tbody>
                             <tr>
-                                <td colspan="2" class="success"
+                                <td colspan="2" class="info"
                                     style="text-align: left;font-weight: bold;font-size: 18px">
                                     <span>Primary RNA basic information </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Premir ID</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Primary miRNA</td>
                                 <td>{$premir_info.pre_id$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Miniman Free Energy</td>
-                                <td>{$premir_info.mfe$}kCal/mol</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Minimum Free Energy</td>
+                                <td>{$premir_info.mfe$} kCal/mol</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">
+                                <td style="font-size: 16px;font-weight: bold" width="200px">
                                   SNPs in Primary miRNA
                                 </td>
                                 <td>
                         <span ng-repeat="v in premir_info.snv">
-                            <button ng-click="structure_effection_snp(v)">{$v$}</button>
+                            <button ng-click="structure_effection_snp(v)">{$v$}&nbsp;</button>
                         </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;" width="200px">
-                                  Mutations in Primary miRNA
+                                <td style="font-size: 16px;font-weight: bold" width="200px">
+                                  Mutations in primary miRNA
                                 </td>
                                 <td>
                                     <span ng-if="premir_info.cosmic.length || premir_info.clinvar.length">
                         <span ng-repeat="v in premir_info.cosmic">
-                            <button ng-click="structure_effection_mut(v)">{$v$}</button></span>
+                            <button ng-click="structure_effection_mut(v)">{$v$}&nbsp;</button></span>
                                     <span ng-repeat="v in premir_info.clinvar">
-                            <button ng-click="structure_effection_mut(v)">{$v$}</button></span>
+                            <button ng-click="structure_effection_mut(v)">{$v$}&nbsp;</button></span>
                                     </span>
-                                    <span ng-if="!premir_info.cosmic.length & !premir_info.clinvar.length">
+                                    <span ng-if="!premir_info.cosmic.length && !premir_info.clinvar.length">
                                         Null
                                     </span>
                                 </td>
@@ -198,37 +198,35 @@
                     </div>
                 </div>
             </div>
-
-            <div class="panel panel-primary">
-                <div ng-show="primir_alt_count">
-                    <div class="panel-heading">Structure information of primary miRNA with SNPs and mutations
-                </div>
-                <div class="panel-body">
-                    <div style=";width: 50%; float:left; display:inline" ng-show="snp_single">
-                        <table class="table table-condensed table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
-                            <tbody>
+            <div ng-show="primir_alt_count">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" style="padding:0 10px;">Structure information of primary miRNA with SNPs and mutations</div>
+                    <div class="panel-body">
+                        <div style="width: 50%; float:left; display:inline" ng-show="snp_single">
+                            <table class="table table-condensed table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
+                                <tbody>
                             <tr>
-                                <td colspan="2" class="success"
+                                <td colspan="2" class="info"
                                     style="text-align: left;font-weight: bold;font-size: 18px">
                                     <span>SNP information </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP ID</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP ID</td>
                                 <td>{$primir_alt_info.snp_id$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Coordinate</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Coordinate</td>
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Loc relative to primary
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to primary
                                     miRNA
                                 </td>
                                 <td>{$primir_alt_info.rela_loc$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Ref/Alt</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Ref/Alt</td>
                                 <td>
                                     {$primir_alt_info.ref$}
                                     <span ng-if="primir_alt_info.snp_ref_freq!='novalue'">({$primir_alt_info.snp_ref_freq$})</span>
@@ -237,37 +235,37 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Miniman Free Energy</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Minimum Free Energy</td>
                                 <td>{$primir_alt_info.mfe$}kCal/mol</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div style=";width: 50%; float:left; display:inline" ng-show="snp_multi">
+                    <div style="width: 50%; float:left; display:inline" ng-show="snp_multi">
                         <table class="table table-condensed table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
                             <tbody>
                             <tr>
-                                <td colspan="2" class="success"
-                                    style="text-align: left;font-weight: bold;font-size: 18px">
+                                <td colspan="2" class="info"
+                                    style="text-align: left;font-weight: bold;font-size: 16px">
                                     <span>SNP information </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP ID</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP ID</td>
                                 <td>{$primir_alt_info.snp_id$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Coordinate</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Coordinate</td>
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Loc relative to primary
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to primary
                                     miRNA
                                 </td>
                                 <td>{$primir_alt_info.rela_loc$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Ref/Alt</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Ref/Alt</td>
                                 <td>
                                     {$primir_alt_info.ref$}
                                     <span ng-if="primir_alt_info.snp_ref_freq!='novalue'">({$primir_alt_info.snp_ref_freq$})</span>
@@ -279,7 +277,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Miniman Free Energy</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Minimum Free Energy</td>
                                 <td>{$primir_alt_info.mfe$}kCal/mol</td>
                             </tr>
                             </tbody>
@@ -292,15 +290,17 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 <div ng-show="primir_mut_count">
+                    <div class="panel panel-primary">
                     <div class="panel-heading" style="padding:0 10px;">Structure information of primary miRNA with SNPs and mutations
                 </div>
                 <div class="panel-body">
-                    <div style=";width: 50%; float:left; display:inline">
+                    <div style="width: 50%; float:left; display:inline">
                         <table class="table table-condensed table-bordered" style="word-break:break-all; word-wrap:break-all;">
                             <tbody>
                             <tr>
-                                <td colspan="2" class="success"
+                                <td colspan="2" class="info"
                                     style="text-align: left;font-weight: bold;font-size: 18px">
                                     <span>Mutation information </span>
                                 </td>
@@ -342,6 +342,6 @@
                             </div>
                     </div>
                 </div>
-        </div>
-</div>
+                </div>
+            </div>
 </div>
