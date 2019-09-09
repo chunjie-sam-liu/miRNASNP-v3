@@ -1,68 +1,64 @@
-<h4>This page provide datas for downloading</h4>
+<h4><strong>Download</strong></h4>
 
 <div class="panel panel-primary">
         <div class="panel-collapse collapse in" id="collapseZero" role="tabpanel" aria-labelledby="headingZero">
             <div class="panel-body">
-                <table class="table table-hover table-bordered">
-                    <tbody>
-                    <tr>
-                        <th>SNPs in mature miRNAs, only single variation type SNPs</th>
-                        <td style="color:red"><a href="/static/miRNASNP3/download/snp_in_mature_mirna.txt" target="_blank">snp_in_mature_mirna.txt</a></td>
-                    </tr>
-                    <tr>
-                        <th>SNPs in primary miRNAs, only single variation type SNPs </th>
-                        <td style="color:red"><a href="/static/miRNASNP3/download/snp_in_primary_mirna.txt" target="_blank">snp_in_primary_mirna.txt</a></td>
-                    </tr>
-                    <tr>
-                        <th>SNPs in miRNA seed region, only single variation type SNPs</th>
-                        <td style="color:red"><a href="/static/miRNASNP3/download/snp_in_seed.txt" target="_blank">snp_in_seed.txt</a></td>
-                    </tr>
-                    <tr>
-                        <th>SNPs in gene 3'UTR region, only single variation type SNPs</th>
-                        <td style="color:red"><a href="/static/miRNASNP3/download/snp_in_utr3.txt" target="_blank">snp_in_utr3.txt</a></td>
-                    </tr>
-                    <tr>
-                        <th>All mutations in miRNA seed region and gene 3'UTR</th>
-                        <td><a href="/static/miRNASNP3/download/mutation_summery.txt" target="_blank">mutation_summery.txt</a></td>
-                    </tr>
-                    <tr>
-                        <th>Mutations,which haven't been identified as SNPs</th>
-                        <td><a href="/static/miRNASNP3/download/mutation_summery.addtarget.txt" target="_blank">mutation_summery.addtarget.txt</a></td>
-                    </tr>
-                    <tr>
-                        <th>Target gain information by SNPs in miRNA seed region</th>
-                        <td><a href="/static/miRNASNP3/download/seed_gain_target_info.tar.gz" target="_blank">seed_gain_target_info.tar.gz</a></td>
-                    </tr>
-                    <tr>
-                            <th>Target loss information by SNPs in miRNA seed region</th>
-                            <td><a href="/static/miRNASNP3/download/seed_loss_target_info.tar.gz" target="_blank">seed_loss_target_info.tar.gz</a></td>
-                        </tr>
-                    <tr>
-                                <th>Target gain information by mutations in miRNA seed region</th>
-                                <td><a href="/static/miRNASNP3/download/cosmic_seed_gain_target_info.tar.gz" target="_blank">cosmic_seed_gain_target_info.tar.gz</a></td>
-                    </tr>
-                    <tr>
-                            <th>Target loss information by mutations in miRNA seed region</th>
-                            <td><a href="/static/miRNASNP3/download/cosmic_seed_loss_target_info.tar.gz" target="_blank">cosmic_seed_loss_target_info.tar.gz</a></td>
-                    </tr>
-                    <tr>
-                            <th>Target gain information by SNPs in gene 3'UTR</th>
-                            <td><a href="/static/miRNASNP3/download/utr_gain_target_info.tar.gz" target="_blank">utr_gain_target_info.tar.gz</a></td>
-                    </tr>
-                    <tr>
-                            <th>Target loss information by SNPs in gene 3'UTR</th>
-                            <td><a href="/static/miRNASNP3/download/utr_loss_target_info.tar.gz" target="_blank">utr_loss_target_info.tar.gz</a></td>
-                    </tr>
-                    <tr>
-                            <th>Target gain information by mutations in gene 3'UTR</th>
-                            <td><a href="/static/miRNASNP3/download/utr_cosmic_gain_target_info.tar.gz" target="_blank">utr_cosmic_gain_target_info.tar.gz</a></td>
-                    </tr>
-                    <tr>
-                            <th>Target loss information by mutations in gene 3'UTR</th>
-                            <td><a href="/static/miRNASNP3/download/utr_cosmic_loss_target_info.tar.gz" target="_blank">utr_cosmic_loss_target_info.tar.gz</a></td>
-                    </tr>
-
-                </tbody></table>
+                <div class="list-group">
+                        <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/snp_in_seed.txt" target="_blank">SNP list includes all the single nucleotide variation in miRNA seed region.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/snp_in_mature_mirna.txt" target="_blank">SNP list includes single nucleotide variation in mature miRNA. </a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/snp_in_primary_mirna.txt" target="_blank">SNP list includes all the single nucleotide variation in primary miRNA.</a>
+                     </li>
+                     <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/snp_in_utr3.txt" target="_blank">SNP list includes all the single nucleotide in gene 3'UTR.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/mutation_summery.txt" target="_blank" class="list-group-item-secondary list-group-item-action active">Mutation list includes all the mutations in miRNA seed region and gene 3'UTR</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">  
+                           
+                            <a href="/static/miRNASNP3/download/seed_gain_target_info.tar.gz" target="_blank">Gain targets information by SNPs in miRNA seed region.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">  
+                           
+                            <a href="/static/miRNASNP3/download/seed_loss_target_info.tar.gz" target="_blank">Loss targets information by SNPs in miRNA seed region.</a>
+                        </li>   
+                        <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/cosmic_seed_gain_target_info.tar.gz" target="_blank">Gain targets information by mutations(240 COSMIC mutation) in miRNA seed region.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">  
+                           
+                            <a href="/static/miRNASNP3/download/cosmic_seed_loss_target_info.tar.gz" target="_blank">Loss targets information by mutations(240 COSMIC mutation) in miRNA seed region.</a>
+                        </li> 
+                        <li class="list-group-item list-group-item-primary">
+                            <a href="/static/miRNASNP3/download/utr_gain_target_info.tar.gz" target="_blank">Gain targets information by SNPs in gene 3'UTR.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary"> 
+                           
+                            <a href="/static/miRNASNP3/download/utr_loss_target_info.tar.gz" target="_blank">Loss targets information by SNPs in gene 3'UTR.</a>
+                            </li>
+                            <li class="list-group-item list-group-item-primary">
+                           
+                            <a href="/static/miRNASNP3/download/utr_cosmic_gain_target_info.tar.gz" target="_blank">Gain targets information by mutations(COSMIC) in gene 3'UTR.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary"> 
+                           
+                            <a href="/static/miRNASNP3/download/utr_cosmic_loss_target_info.tar.gz" target="_blank">Loss targets information by mutations(COSMIC) in gene 3'UTR.</a>
+                        </li>
+                          
+                        <li class="list-group-item list-group-item-primary">   
+                            <a href="/static/miRNASNP3/download/utr_clinvar_gain_target_info.txt" target="_blank">Gain targets information by mutations(ClinVar) in gene 3'UTR.</a>
+                        </li>
+                        <li class="list-group-item list-group-item-primary">                            
+                            <a href="/static/miRNASNP3/download/utr_clinvar_loss_target_info.txt" target="_blank">Loss targets information by mutations(ClinVar) in gene 3'UTR.</a>
+                            
+                        </li>
+                          </div>
             </div>
         </div>
-    </div>
+</div>
+
