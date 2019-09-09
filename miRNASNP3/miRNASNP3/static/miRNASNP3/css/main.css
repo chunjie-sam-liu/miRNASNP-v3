@@ -324,3 +324,9 @@ ul.list-unstyled li>p>.badge {
 div.div-table {
   margin-top: 30px;
 }
+
+/* by fuxin */
+.table th, .table td {
+  text-align: center;
+  vertical-align: middle!important;
+  }
