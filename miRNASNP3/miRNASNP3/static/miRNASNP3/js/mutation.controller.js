@@ -55,7 +55,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
             //url: base_url+'/api/snpinfo',
             url:'/api/mutation_summary',
             method: 'GET',
-            params: {mut_id:$scope.query_mutation,page:page,target_effection:1}
+            params: {mut_id:$scope.query_mutation,page:page}
         }).then(
             function (response) {
                 console.log(response);
