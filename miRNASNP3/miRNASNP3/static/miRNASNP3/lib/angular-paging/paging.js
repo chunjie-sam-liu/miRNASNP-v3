@@ -205,6 +205,7 @@ angular.module('bw.paging', []).directive('paging', function () {
      * @param {Object} scope - The local directive scope object
      * @param {int} page - The current page of interest
      */
+    console.log("paging"+page)
     function internalAction(scope, page) {
 
         // Block clicks we try to load the active page
