@@ -428,6 +428,7 @@ class MutSeedLoss(Resource):
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
         mirna_id = args['mirna_id']
+        page=1
         page = args['page']
         per_page = 15
         record_skip = (page - 1) * per_page
@@ -1589,6 +1590,19 @@ class ClinvarInfo(Resource):
 
 api.add_resource(ClinvarInfo, '/api/clinvarinfo')
 
+csv_table={
+    'ontology':fields.String(attribute='ONTOLOGY'),
+    'id':fields.String(attribute='ID'),
+    'description':fields.String(attribute='Description'),
+    'gene_ratio':fields.String(attribute='GeneRatio'),
+    'bg_ratio':fields.String(attribute='BgRatio'),
+    'pvalue':fields.String,
+    'padjust':fields.String,
+    'qvalue':fields.String,
+    'gene_id':fields.String(attribute='geneID'),
+    'gene_count':fields.String(attribute='Count'),
+    'csv':fields.String
+}
 
 enrich_line={
     'mirna_id':fields.String,
@@ -1600,7 +1614,8 @@ enrich_line={
     'csv_file':fields.String,
     'dot_file':fields.String,
     'chet_file':fields.String,
-    'emap_file':fields.String
+    'emap_file':fields.String,
+    'csv_table':fields.Nested(csv_table),
 }
 
 enrich_result_list={
@@ -1620,11 +1635,22 @@ class EnrichResult(Resource):
         if args['mirna_id']:
             search=1
             condition['mirna_id']=args['mirna_id']
+            match={'$match':{
+                'mirna_id':args['mirna_id']
+            }}
         if args['variate_id']:
             search=1
             condition['variate_id']=args['variate_id']
+            match['$match']['variate_id']=args['variate_id']
+        lookup_csv={'$lookup':{
+                'from':'enrich_csv',
+                'localField':'csv_file',
+                'foreignField':'csv',
+                'as':'csv_table'
+            }}
         if search:
-            enrich_result_list = mongo.db.enrich_summary.find(condition)
+            pipline=[match,lookup_csv]
+            enrich_result_list = mongo.db.enrich_summary.aggregate(pipline)
             enrich_result_count = mongo.db.enrich_summary.find(condition).count()
         else:
             enrich_result_list={}
