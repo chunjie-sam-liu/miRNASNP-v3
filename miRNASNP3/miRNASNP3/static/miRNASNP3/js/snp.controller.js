@@ -16,7 +16,7 @@ angular.module('miRNASNP3')
         });
     };
 });
-function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
+function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     console.log("SnpController loaded");
    // console.log($scope.currentPage);
     var base_url = miRNASNP3Service.getAPIBaseUrl();
@@ -44,27 +44,27 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 		$scope.clear()
 		if (refer=="one"){
 			$scope.one=1;
-			$scope.class_one="ative";
+			$scope.class_one="active";
 		}
 		if (refer=="two"){
 			$scope.two=1;
-			$scope.class_two="ative";
+			$scope.class_two="active";
 		}
 		if (refer=="three"){
 			$scope.three=1;
-			$scope.class_three="ative";
+			$scope.class_three="active";
 		}
 		if (refer=="four"){
 			$scope.four=1;
-			$scope.class_four="ative"
+			$scope.class_four="active"
 		}
 		if (refer=="five"){
 			$scope.five=1;
-			$scope.class_five="ative"
+			$scope.class_five="active"
 		}
 		if (refer=="six") {
 			$scope.six = 1;
-			$scope.class_six = "ative";
+			$scope.class_six = "active";
 		}
 		if (refer=="seven"){
 			$scope.seven = 1;
@@ -525,7 +525,21 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
 			function (response) {
 				console.log(response);
 				$scope.catalog_list=response.data.catalog_list;
-				$scope.catalog_count=response.data.catalog_count;
+                $scope.catalog_count=response.data.catalog_count;
+                if($scope.catalog_count){
+                    var data_list=$scope.catalog_list
+                    var disk_allele_regex=/-([A-Z]|\?)/
+                    var ci_regex=/\[(.*?)\]/
+                    for(var i=0;i<data_list.length;i++){
+                        var risk_allele=disk_allele_regex.exec(data_list[i].risk_allele)
+                        var ci=ci_regex.exec(data_list[i].ci95)
+                        console.log(risk_allele)
+                        console.log(ci)
+                        data_list[i].risk_allele=risk_allele[1]
+                        data_list[i].ci95=ci[0]
+                    }
+                    console.log(data_list)
+                }
 			}
 		)
 	};
@@ -546,6 +560,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                 console.log($scope.tag);
                 console.log($scope.ld);
                 if ($scope.tag == '1'){
+                    console.log("Is a tag snp!")
                     $scope.ld_t=0;
                 	$scope.tag_array=$scope.catalog_list;
                 	$scope.tag_array[0].coordinate=$scope.ld_list[0]._id.snp_chr+':'+$scope.ld_list[0]._id.snp_position;
@@ -571,10 +586,20 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                         ld_array_line['rect_y'] = 8+30*p;
                         ld_array.push(ld_array_line)
                     }
+
+                    //the format of risk allele and ci95 was fixed as getting by 'http'
                     $scope.ld_array = ld_array;
                     $scope.ld_svg=$scope.ld_array;
+                    // fix svg height 
+                   
+                    var h=$scope.ld_svg.length*(850/26)
+                    $("#ld_svg").css({'height':h+'px'});
+                    $("#ld_region").css({'height':h+'px'});
+                    $scope.line_y=h
+    
                 }
                 else {
+                    console.log("Is a ld snp!")
                     var ld_array = []; //table
                     var ld_svg={}; //grid pic
                     var tag_array=[]; //tag table
@@ -626,6 +651,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                     $scope.ld_array = ld_array;
                     $scope.ld_svg=[];
                     var j=0;
+                    var disk_allele_regex=/-([A-Z]|\?)/
+                    var ci_regex=/\[(.*?)\]/
                     for(p in ld_svg){
                         var ld_svg_line={};
                         ld_svg[p]['width'] = (Number(ld_svg[p]['end']) - Number(ld_svg[p]['start'])) / 500;
@@ -638,9 +665,32 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                         console.log(j);
                         j=j+1;
                     };
+                    
+                    // fix format of risk allele and ci95
+                    for (var i=0;i<tag_array.length;i++){
+                        var risk_allele=disk_allele_regex.exec(tag_array[i].risk_allele)
+                        var ci=ci_regex.exec(tag_array[i].ci95)
+                        console.log(risk_allele)
+                        console.log(ci)
+                        if(risk_allele){
+                            tag_array[i].risk_allele=risk_allele[1]
+                        }
+                        /*if(ci){
+                            tag_array[i].ci95=ci[0]
+                        }else{
+                            tag_array[i].ci95="-"
+                        }*/
+                    }
                     $scope.tag_array=tag_array;
                     $scope.tag_line=tag_line;
-                }
+                    // fix svg height
+                    var h=$scope.ld_svg.length*(850/26)
+                    $("#ld_svg").css({'height':h+'px'});
+                    $("#ld_region").css({'height':h+'px'});
+                    $scope.line_y=h
+                    console.log("h")
+                    console.log(h)
+                   
                 console.log("ld_array");
                 console.log($scope.ld_array);
                 console.log("ld_svg");
@@ -649,8 +699,9 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
                 console.log($scope.tag_array);
                 console.log("tag_line");
                 console.log($scope.tag_line);
+                }
             })
-    };
+    }
     $scope.search_ld();
 
     $scope.fetch_relate_cosmic=function(){
