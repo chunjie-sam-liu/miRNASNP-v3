@@ -23,6 +23,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $scope.enrich_dot=0;
         $scope.enrich_cnet=0;
         $scope.enrich_emap=0;
+        $scope.enrich_table=0;
     };
     $scope.one = 1;
     $scope.show_one = function (refer) {
@@ -64,6 +65,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             $scope.enrich_emap=1;
             $scope.class_enrich_emap="active";
         }
+        if(refer=="enrich_table"){
+            $scope.enrich_table=1;
+            $scope.class_enrich_table="active";
+        }
     };
     $scope.fetch_mirna_details = function () {
         $http({
@@ -94,9 +99,12 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             $scope.mirna_expression=response.data.mirna_expression_list[0];
             $scope.mirna_expression_count=response.data.mirna_expression_count;
             $scope.mirna_expression_show=1
-            if(Number($scope.mirna_expression.exp_mean)==0){
+            if($scope.mirna_expression_count==0){
+                $scope.mirna_expression_show=0
+            }else if(Number($scope.mirna_expression.exp_mean)==0){
                 $scope.mirna_expression_show=0
             }
+            console.log($scope.mirna_expression.exp_mean)
             var temp;
             var value;
             var array=[];
@@ -133,6 +141,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
 
 
     $scope.fetch_target_gain = function (page) {
+        console.log("fetch target gain!")
+        console.log(page)
         //console.log($scope.query_mirna);
             $http({
                 //url:base_url+'/api/snp_seed_gain',
@@ -292,24 +302,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
 		$scope.modal_header="Target Gain";
 		$scope.modal_site=site;
 		var align8=site.site_info.align8;
-		//var b=0;
-		//for (var i=0;i<align8.length;i++){
-		 //   if(align8[i]==' '){
-		 //       b=b+1;
-        //    }
-       // }
-		//if(site.strand=='-'){
-           // var distance=Number(site.snp_info.distance)+b+2;
-         //   var distance=align8.length-site.snp_info.distance-1;
-		//    $scope.align8_pre=align8.substring(0,distance);
-        //    $scope.align8_letter=align8[distance];
-        //    $scope.align8_later=align8.substring(distance+1,align8.length);
-        //}
-		//else {
-		    var distance=align8.length-site.snp_info.distance-1;
-		    $scope.align8_pre=align8.substring(0,distance);
-            $scope.align8_letter=align8[distance];
-            $scope.align8_later=align8.substring(distance+1,align8.length);
+		var distance=align8.length-site.snp_info.distance-1;
+		$scope.align8_pre=align8.substring(0,distance);
+        $scope.align8_letter=align8[distance];
+        $scope.align8_later=align8.substring(distance+1,align8.length);
         }
     $scope.modal_loss_site=function(site){
 		$scope.modal_header="Target Loss";
@@ -634,15 +630,26 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             console.log(response);
             $scope.enrich_result_list=response.data.enrich_result_list;
             $scope.enrich_result_count=response.data.enrich_result_count;
+            var data_list=$scope.enrich_result_list
+            for(var j=0;j<data_list.length;j++){
+                for(var i=0;i<data_list[j].csv_table.length;i++){
+                    data_list[j].csv_table[i].pvalue_fix=Number(data_list[j].csv_table[i].pvalue).toExponential(3)
+                    data_list[j].csv_table[i].qvalue_fix=Number(data_list[j].csv_table[i].qvalue).toExponential(3)
+                    data_list[j].csv_table[i].padjust_fix=Number(data_list[j].csv_table[i].padjust).toExponential(3)
+                }
+            }
         })
     };
     $scope.fetch_enrich_result();
 
     $scope.enrichment_view=function(e){
         $scope.enrich_item=e
+        $scope.csv_table=e.csv_table
+        console.log($scope.csv_table)
         $scope.show_dot=0;
         $scope.show_cnet=0;
         $scope.show_emap=0;
+        $scope.show_table=1;
         if(e.dot_file){$scope.show_dot=1}
         if(e.chet_file){$scope.show_cnet=1}
         if(e.emap_file){$scope.show_emap=1}

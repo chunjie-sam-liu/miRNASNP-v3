@@ -1,8 +1,8 @@
 
 <div class="bs-callout bs-callout-info">
     <div class="description">
-    <h4>Mature miRNA summery information</h4>
-    <p>There are <span class="badge alert-info">2652</span> mature miRNA derived from <span class="badge alert-info">1913</span> primary RNA. <span class="badge alert-info">17316</span> SNPs are identified on mature miRNA, while <span class="badge alert-info">4666</span> SNPs on miRNA seed region. As for muations, <span class="badge alert-info">2114</span> COSMIC mutaions and  <span class="badge alert-info">41</span> Clinvar variations are identified on mature miRNA, while <span class="badge alert-info">522</span> COSMIC mutations and  <span class="badge alert-info">11</span> ClinVar variations are on the seed region</p>
+    <h4>SNPs in human mature miRNA</h4>
+    <p>There are <span class="badge alert-info">2,652</span> mature miRNA derived from <span class="badge alert-info">1,913</span> pre-miRNA.</p>
     </div>
 </div>
 
@@ -11,7 +11,7 @@
     <div class="panel-body">
         <form method="get" id="mirna-summary-form" class="form form-horizontal">
             <div class="form-group">
-                <label class="control-label col-lg-1">Chromosome</label>
+                <label class="control-label col-lg-2">Chromosome:</label>
                 <div class="col-lg-3">
                     <select id="chr" class="form-control">
                         <option>All</option>
@@ -42,28 +42,22 @@
                     </select>
                 </div>
             </div>
-            <br>
             <div class="form-group">
-                <label class="control-label col-lg-1">Search</label>
+                <label class="control-label col-lg-2">Input:</label>
                 <div class="col-lg-3">
-                    <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary" placeholder="hsa-let-7a-3p">
+                    <input type="text" class="form-control input-xs" id="query_mirna_summary" ng-model="query_mirna_summary" placeholder="hsa-let-7e-3p">
                 </div>
-                <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-let-7a-3p</span>
+                <span class="help-block">Input a miRNA name/mirbase ID,such as hsa-let-7e-3p</span>
             </div>
             <div class="form-group">
-                <div class="col-lg-1 col-lg-offset-5">
-                    <span class="input-group-btn">
+                    <div class="col-sm-offset-4">
                         <button class="btn btn-danger" id="search_button" type="button" ng-click="fetch_mirna_summary()" >
 							Submit
                         </button>
-                    </span>
-                </div>
-                <div class="col-lg-1">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" id="reset_button" type="botton" ng-click="reset_query()" >
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-primary" id="reset_button" type="bottom" ng-click="reset_query()" >
 							Reset
                         </button>
-                    </span>
                 </div>
             </div>
         </form>
@@ -77,18 +71,43 @@
             <div class="spinner"></div>
         </div>
     </div>
-        <div ng-show="mirna_summary_count">   
+        <div ng-show="mirna_summary_count"> 
+            
+                <div paging
+                page="currentPage_mature"
+                page-size=15
+                total="mirna_summary_count"
+                scroll-top="true"
+                hide-if-empty="true"
+                show-prev-next="true"
+                show-first-last="true"
+                text-title-page="Page {page} Hover Over"
+                text-title-first="First hover"
+                text-title-last="Last hover"
+                text-title-next="Next hover"
+                text-title-prev="Prev hover"
+                show-prev-next="true"
+                show-first-last="true"
+                ul-class="pagination"
+                active-class="active"
+                disabled-class="disabled"
+                paging-action="update_page(page)"
+                ></div>
+
             <table class="table table-bordered" ts-wrapper>
                 <thead>
                     <tr>
-                        <th ts-criteria="mir_id" style="width: 14%">miRNA</th>
-                        <th ts-criteria="mir_acc"style="width: 14%">Accession</th>
-                        <th ts-criteria="mir_start" style="width: 24%">Position</th>
-                        <th ts-criteria="snp_in_seed+snp_in_mature|parseInt" style="width: 12%">SNP Number
-                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNPs in this miRNA.1)Number of SNPs in seed region;2)Number of SNPs in mature miRNA;"></span></th>
-                        <th ts-criteria="cosmic_in_seed" style="width: 12%">Mutation Number 
-                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of mutations in this miRNA.1)Number of Cosmic mutation in the seed region;2)Number of Cosmic mutaions in mature miRNA;3)Number of Clinvar variations in the seed region;4)Number of Clinvar variation in mature miRNA;"></span></th>
-                        <th ts-criteria="pre_id|parseFloat" style="width: 14%">Primary miRNA</th>
+                        <th ts-criteria="mir_id" >miRNA</th>
+                        <th ts-criteria="mir_acc">Accession</th>
+                        <th ts-criteria="mir_start" >Position</th>
+                        <th ts-criteria="snp_in_seed+snp_in_mature|parseInt style="width: 12%">SNP Number
+                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Number of SNP in the miRNA.1)Number of SNP in the seed region;2)Number of SNP in the mature miRNA;"></span></th>
+                        <th ts-criteria="mutation_sum|parseInt">Mutation Number
+                                <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                                data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                                data-content="Number of Mutation in the pre-miRNA, includes COSMIC Mutations and ClinVar variations;"></span>
+                        </th>
+                        <th ts-criteria="pre_id|parseFloat">Pre-miRNA</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,29 +122,5 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <div ng-show="mirna_summary_count">
-        <div paging
-             page="currentPage"
-             page-size=15
-             total="mirna_summary_count"
-             scroll-top="true"
-             hide-if-empty="true"
-             show-prev-next="true"
-             show-first-last="true"
-             text-title-page="Page {page} Hover Over"
-             text-title-first="First hover"
-             text-title-last="Last hover"
-             text-title-next="Next hover"
-             text-title-prev="Prev hover"
-             show-prev-next="true"
-             show-first-last="true"
-             ul-class="pagination"
-             active-class="active"
-             disabled-class="disabled"
-             paging-action="fetch_mirna_summary(page)"
-        >
         </div>
     </div>
