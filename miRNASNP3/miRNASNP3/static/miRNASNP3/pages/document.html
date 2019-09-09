@@ -1,89 +1,78 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>mirnasnp3.0</title>
-<link rel="stylesheet" type="text/css" href="/static/miRNASNP3/css/mynavigation.css">
-
-</head>
-
-<body>
-<div class="row" style="margin:0;padding:0;">
-  <div class="leftcolumn" style="position:sticky;top:50px;left:5%;width:100px;">
-  <ul class="block_navigation" >
-  <li><a href="#!/document#introduction">Introduction </a> </li>
-  <li><a href="#!/document#method">Method</a></li>
-  <li><a href="#!/document#result">Result</a></li>
-  <li><a href="#!/document#download">Download</a></li>
-  <li><a href="#!/document#publication">Publication</a></li>
-  <li><a href="#!/document#contact">Contact</a></li>
-  <li style="float:right"><a href="#!/document">↑ top</a></li>
-  </ul>
-  </div>
-
-
-<div class="rightcolumn">
-<div id="introduction">
-			<div class="panel panel-info" style="max-width:100%; height: auto;border-top:50px;">
-				<div class="panel-heading">
-					<h3 class="panel-title" >Introduction</h3>
-				</div>
-				<div class="panel-body text-justify" style="font-size: 16px">
-					<span class="top" style="width:auto">MicroRNAs (miRNAs) are endogenous and regulatory non-coding RNAs by targeting mRNAs for cleavage or translational repression. SNPs in pre-miRNAs or target sites will affect miRNA function and be related with diseases or biological processes. miRNASNP aims to provide a resource of the miRNA-related SNPs, which includes SNPs in pre-miRNAs of human and other species, and target gain and loss by SNPs in miRNA seed regions or 3'UTR of target mRNAs. </span>
-				</div>
+<div class="panel-body" data-spy="scroll" data-target="#documentspy">
+		<div class="row">
+			<div class="col-lg-2" id="documentspy"> 
+							
+			<div id="navbutton" class="btn-group-vertical" style="position:fixed;text-align:left">
+				<button type="button" class="btn btn-default" id="intro" ng-click="gotoAnchor(1)" style="color: darkred;">Introduction</button>
+				<button type="button" class="btn btn-default" id="qs" ng-click="gotoAnchor(2)" style="color: darkred;">Quick Start</button>
+				<button type="button" class="btn btn-default" id="ds" ng-click="gotoAnchor(3)" style="color: darkred;">Data Summary</button>
 			</div>
-</div>
-<div id="method">
-			<div class="panel panel-info" style="max-width:100%; height: auto;">
-				<div class="panel-heading">
-					<h3 class="panel-title">Method</h3>
-				</div>
-				<div class="panel-body text-justify" style="font-size: 16px">
-				</div>
+				
 			</div>
-</div>
+			
+			
+			<div class="col-lg-10">
+				<div id="anchor1">
+					<span class="glyphicon glyphicon-paperclip" style="display:inline-block"></span>&nbsp;<h2 style="display:inline-block">Introduction</h2>
+					<p>Introduce miRNASNP3</p>
+					<b>Abstract summary</b>
+					<img src="static/miRNASNP3/img/miRNASNP_frame.png" width="90%" class="img-responsive" style="width: 300px;height:300px">
+				</div>
+				
+				
+				<div id="anchor2">
+					<span class="glyphicon glyphicon-import" style="display:inline-block"></span>&nbsp;<h2 style="display:inline-block">Quick Start</h2>
+					<div id="usage">
+						<div id="browseusage">
+							<h3>Browse</h3>
+							<ol>
+								<li><p>Browse miRNASNP3</p></li>
+								
+							</ol>
+						</div>
+						<div id="searchusage">
+							<h3>Search</h3>
+							<ol>
+								<li><p>Search</p></li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				
+				<div id="anchor3">
+					<span style="display:inline-block" class="glyphicon glyphicon-paperclip"></span>&nbsp;<h2 style="display:inline-block">Data Summary</h2>
+					<img src="static/miRNASNP3/img/data_static.png" width="90%" class="img-responsive" style="width: 300px;height:300px">	
+				</div>
+							
+			
+			<div id="anchor4">
+				<span style="display:inline-block" class="glyphicon glyphicon-paperclip"></span>&nbsp;<h2 style="display:inline-block">Contact</h2>
+							<address>
+								<strong>&nbsp;&nbsp;An-Yuan Guo, Ph.D. Professor of Bioinformatics</strong><br />
+								<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+							   <img alt="An-Yuan Guo" src="/static/miRNASNP3/img/guoay_email.png" style="height: 20px">
+							</address>
+							<address>
+								<strong>&nbsp;&nbsp;Xin Fu, M.S. student</strong><br />
+								<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+							   <img alt="Gui-Yan Xie" src="/static/miRNASNP3/img/fuxin_email.png" style="height: 20px">
+							</address>
+							<address>
+								<strong>&nbsp;&nbsp;Chun-Jie Liu, Ph.D. Postdoc Fellow</strong><br/>
+								<strong style="font-size: 18px;margin-top: 1px">&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+								<img alt="Chun-Jie Liu"src="/static/miRNASNP3/img/chunjie_email.png" style="height: 20px">
+							</address>
+					
+						  <div class="address">
+								&nbsp;&nbsp;<a href="http://bioinfo.life.hust.edu.cn/" target=_blank">Hubei Bioinformatics & Molecular Imaging Key Laboratory</a> <br />
+								&nbsp;&nbsp;Department of Bioinformatics and Systems Biology<br />
+								&nbsp;&nbsp;<a href="http://life.hust.edu.cn/" target=_blank">College of Life Science and Technology</a><br />
+								&nbsp;&nbsp;<a href="http://www.hust.edu.cn/" target=_blank">Huazhong University of Science and Technology, Wuhan 430074 P.R. China</a><br />
+							</div>
+				</div>
+		</div>
+	</div>
+		
+					
+	
 
-<div id="result">
-			<div class="panel panel-info" style="max-width:100%; height: auto;">
-				<div class="panel-heading">
-					<h3 class="panel-title">Result</h3>
-				</div>
-				<div class="panel-body text-justify" style="font-size: 16px">
-				</div>
-			</div>
-</div>
-
-<div id="download">
-			<div class="panel panel-info" style="max-width:100%; height: auto;">
-				<div class="panel-heading">
-					<h3 class="panel-title">Download</h3>
-				</div>
-				<div class="panel-body text-justify" style="font-size: 16px">
-
-				</div>
-			</div>
-</div>
-
-<div id="publication">
-			<div class="panel panel-info" style="max-width:100%; height: auto;">
-				<div class="panel-heading">
-					<h3 class="panel-title">Publication</h3>
-				</div>
-				<div class="panel-body text-justify" style="font-size: 13px">
-				<a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=25877638" target=_blank>An update of miRNASNP database for better SNP selection by GWAS data, miRNA expression and online tools</a><br />
-			Jing Gong, Chunjie Liu, Wei Liu, Yuliang Wu, Zhaowu Ma, Hu Chen, and An-Yuan Guo.&nbsp;&nbsp;&nbsp;&nbsp;Database published online April 15, 2015, 2015: bav029<br />
-			<a href="http://www.ncbi.nlm.nih.gov/pubmed/22045659" target=_blank>Genome-Wide Identification of SNPs in MicroRNA Genes and the SNP Effects on MicroRNA Target Binding and Biogenesis</a><br/>
-			J Gong, Y Tong, HM Zhang, K Wang, T Hu, G Shan, J Sun*, and AY Guo*.&nbsp;&nbsp;&nbsp;&nbsp;Human Mutation 2011;DOI: 10.1002/humu.21641
-</span>
-				</div>
-			</div>
-				</div>
-
-</div>
-				</div>
-			</div>
-
-</body>
-</html>
