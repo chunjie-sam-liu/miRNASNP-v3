@@ -35,6 +35,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
                 templateUrl:"/static/miRNASNP3/pages/mutation.html",
                 controller:"MutationController"
             })
+            .when("/snp_relate_mutation",{
+                templateUrl:"/static/miRNASNP3/pages/snp_relate_mutation.html",
+                controller:"SNPMutationController"
+            })
             .when("/download", {
                 templateUrl: "/static/miRNASNP3/pages/download.html",
                 controller: "DownloadController"
@@ -42,6 +46,10 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
             .when("/contact", {
                 templateUrl: "/static/miRNASNP3/pages/contact.html",
                 controller: "ContactController"
+            })
+            .when("/document",{
+                templateUrl:"/static/miRNASNP3/pages/document.html",
+                controller:"DocumentController"
             })
             .when("/tools", {
                 templateUrl: "/static/miRNASNP3/pages/tools.html",
