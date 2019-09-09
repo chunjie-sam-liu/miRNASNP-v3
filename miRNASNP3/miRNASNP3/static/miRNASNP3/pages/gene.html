@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-primary">
     <div class="panel-heading">
         Search {$query_gene$}
     </div>
@@ -12,19 +12,19 @@
         <div class="row" >
             <div class="col-sm-6 col-md-4" ng-show="snp_summary_count">
                 <div class="thumbnail">
-                    <!--img src="..." alt="..."-->
+                        <img src="/static/miRNASNP3/img/snp_stamp.png" alt="#" class="img-round" style="height: 160px;width:252px">
                         <div class="caption">
                             <h3>SNP</h3>
-                                <p><a href="#!/snp_summary?gene={$query_gene$}">{$snp_summary_count$}</a> records found of SNPs in {$query_gene$}</p>
+                                <p><a href="#!/snp_summary?gene={$query_gene$}">{$snp_summary_count$}</a> records of SNPs about {$query_gene$}</p>
                         </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-4" ng-show="mutation_summary_count">
                 <div class="thumbnail">
-                    <!--img src="..." alt="..."-->
+                        <img src="/static/miRNASNP3/img/mutation_stamp.png" alt="#" class="img-round" style="height: 160px;width:252px">
                         <div class="caption">
                             <h3>Mutation</h3>
-                            <p><a href="#!/mutation_summary?gene={$query_gene$}&target_effection=1">{$mutation_summary_count$}</a> records found of mutations in {$query_gene$}</p>
+                            <p><a href="#!/mutation_summary?gene={$query_gene$}&target_effection=1">{$mutation_summary_count$}</a> records of mutations about {$query_gene$}</p>
                         </div>
                 </div>
             </div>
@@ -38,18 +38,3 @@
         </div>
     </div>
 </div>
-        <!--div class="card text-white bg-success mb-3" style="max-width: 20rem;" ng-show="snp_seed_gain_count">
-                    <div class="card-header">miRNA Gain Target</div>
-                    <div class="card-body">
-                      <h5 class="card-title">{$snp_seed_gain_count$}</h5>
-                      <p class="card-text text-white">records found for {$query_gene$} target gain caused by SNPs/mutations in miRNA seed region</p>
-                    </div>
-                  </div>
-        <div class="card text-white bg-danger mb-3" style="max-width: 20rem;" ng-show="snp_seed_loss_count">
-                        <div class="card-header">miRNA Loss Target</div>
-                        <div class="card-body">
-                          <h5 class="card-title" ng-click="mir_loss_gene(query_gene)">{$snp_seed_loss_count$}</h5>
-                          <p class="card-text text-white">records found for {$query_gene$} target loss caused by SNPs/mutations in miRNA seed region</p>
-                        </div>
-                      </div-->
-    
