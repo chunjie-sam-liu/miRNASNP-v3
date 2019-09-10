@@ -3,7 +3,7 @@
 angular.module('miRNASNP3')
     .controller('HomeController', HomeController);
 
-function HomeController($scope,$http,$routeParams,$window) {
+function HomeController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     console.log("HomeController loaded");
     $(".alert").alert();    
 
@@ -13,6 +13,7 @@ function HomeController($scope,$http,$routeParams,$window) {
         }
     });
     
+    var base_url = miRNASNP3Service.getAPIBaseUrl();
 
     $scope.search_query = function () {
         var flag = 0;
@@ -50,8 +51,8 @@ function HomeController($scope,$http,$routeParams,$window) {
         };
         $scope.filter_snp = function (query_snp) {
             $http({
-                //url:base_url+ip_address,
-                url:'/api/snp_summary',
+                url:base_url+'/api/snp_summary',
+                //url:'/api/snp_summary',
                 method:'GET',
                 params:{spe_snp_id:query_snp},
             }).then(function(response){
@@ -68,8 +69,8 @@ function HomeController($scope,$http,$routeParams,$window) {
         })}
         $scope.filter_mirna = function (query_mirna) {
             $http({
-                //url:base_url+'/api/mirna_key',
-                url:'/api/mirna_key',
+                url:base_url+'/api/mirna_key',
+                //url:'/api/mirna_key',
                 method:'GET',
                 params:{mirna_id:query_mirna}
             }).then(function (response) {
