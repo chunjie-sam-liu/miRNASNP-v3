@@ -238,7 +238,7 @@
             </td>
             <td align="center">
                     <span ng-if="v.corelation_detail[0]">
-                        <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                        <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                     </span>
                     <span ng-if="!v.corelation_detail[0]">-</span>
                 </td>
@@ -399,7 +399,7 @@
                 </td>
                 <td align="center">
                         <span ng-if="v.corelation_detail[0]">
-                            <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                            <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                         </span>
                         <span ng-if="!v.corelation_detail[0]">-</span>
                     </td>
@@ -531,7 +531,7 @@
                     </tr>
                     <tbody>
                     <tr ng-repeat="item in tag_array">
-                        <td><a href="https://www.ncbi.nlm.nih.gov/snp/{$item.snp_id$}" target="blank"> {$item.snp_id$}</a></td>
+                        <td><a href="https://www.ebi.ac.uk/gwas/variants/{$item.snp_id$}" target="blank"> {$item.snp_id$}</a></td>
                         <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$item.coordinate$}" target="blank">{$item.coordinate$}</a></td>
                         <td><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$item.pubmed_id$}" target="blank">{$ item.pubmed_id $}</a></td>
                         <td>{$item.risk_allele $}</td>
@@ -662,15 +662,15 @@
                         <th rowspan="7">Site detail</th>
                     </tr>
                     <tr>
-                        <td colspan="2">ΔG duplex (kCal/mol)</td>
+                        <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">ΔG binding (kCal/mol)</td>
+                        <td colspan="2">&Delta;G binding (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">ΔG open (kCal/mol)</td>
+                        <td colspan="2">&Delta;G open (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                     </tr>
                     <tr>
@@ -740,15 +740,15 @@
                             <th rowspan="7">Site detail</th>
                         </tr>
                         <tr>
-                            <td colspan="2">ΔG duplex (kCal/mol)</td>
+                            <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                             <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">ΔG binding (kCal/mol)</td>
+                            <td colspan="2">&Delta;G binding (kCal/mol)</td>
                             <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">ΔG open (kCal/mol)</td>
+                            <td colspan="2">&Delta;G open (kCal/mol)</td>
                             <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                         </tr>
                         <tr>
@@ -801,9 +801,10 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <div class="mirna-profile cursor-hand"
+                    <!--div class="mirna-profile cursor-hand"
                     title="cancer={$c.cancer_type$}; correlation_coefficient={$ c.corelation $}"
-                    style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div>
+                    style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div-->
+                    <div class="col-lg-5" id="correlation" style="height: 300px;width: 800px;border: 0px"></div>
                     </div>
             </div>
             <div class="modal-footer">

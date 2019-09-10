@@ -5,6 +5,8 @@ angular.module('miRNASNP3')
 
 function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Service) {
     console.log("MirnaController loaded");
+
+    function up(x,y){return x[1]-y[1]}
     $scope.error = 0;
 
     var page=1;
@@ -72,8 +74,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     };
     $scope.fetch_mirna_details = function () {
         $http({
-            //url: base_url+'/api/mirinfo',
-            url:'/api/mirinfo',
+            url: base_url+'/api/mirinfo',
+            //url:'/api/mirinfo',
             method: 'GET',
             params: {search_ids: $scope.query_mirna}
         }).then(
@@ -90,8 +92,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $scope.fetch_mirna_expression=function(){
         $scope.mirna_expression_show=1;
         $http({
-            //url:base_url+'/api/mirna_expression',
-            url:'/api/mirna_expression',
+            url:base_url+'/api/mirna_expression',
+            //url:'/api/mirna_expression',
             method:'GET',
             params:{mirna_id:$scope.query_mirna}
         }).then(function (response){
@@ -145,8 +147,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         console.log(page)
         //console.log($scope.query_mirna);
             $http({
-                //url:base_url+'/api/snp_seed_gain',
-                url:'/api/snp_seed_gain',
+                url:base_url+'/api/snp_seed_gain',
+                //url:'/api/snp_seed_gain',
                 method: 'GET',
                 params: {mirna_id: $scope.query_mirna,page:page}
                 }).then(
@@ -175,7 +177,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $(document).ready(function(){
             var flag=0;
             $('#search_gene_gain').on('input propertychange', function() {
-                var query_gene_gain = $('#search_gene_gain').val();
+                var query_gene_gain = $.trim($('#search_gene_gain').val());
                 console.log(query_gene_gain)
                 if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
                     alert("Invalid input");
@@ -185,8 +187,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 if(flag==0){
                     console.log(query_gene_gain)
                     $http({
-                        //url:base_url+'/api/snp_seed_gain',
-                        url:'/api/snp_seed_gain',
+                        url:base_url+'/api/snp_seed_gain',
+                        //url:'/api/snp_seed_gain',
                         method: 'GET',
                         params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
                         }).then(
@@ -211,21 +213,103 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             });
           });
 
+          $scope.echart_correlation=function(cor){
+            $scope.gene_mir=cor.mir_gene;
+            var c=echarts;
+            var cor_echart=c.init(document.getElementById('correlation'));
+            var source_data=[]
+            //var source_data=[["cancer_types", "correlation"]]
+            //cor.cor_df.sort(up)
+            console.log(cor.cor_df)
+            for(var cancer in cor.cor_df){
+                if(cor.cor_df[cancer]){
+                    var item=[cancer,Number(cor.cor_df[cancer])]
+                    source_data.push(item)
+                }
+            }
+            source_data.sort(up)
+            source_data.unshift(["cancer_types", "correlation"])
+            console.log(source_data)
+           
+            var option = {
+                dataset: {
+                    source:source_data
+                },
+               
+                xAxis:{name:'Correlation',
+                nameTextStyle:{
+                    align:'right',
+                    fontSize:12,
+                    fontWeight:'bold',
+                },
+                type:'value',
+                splitLine:{
+                    show:false
+                    　　}
+                },
+                yAxis:{
+                    type:'category',
+                axisLine:{
+                    show:true
+                },
+                
+                /*splitLine:{
+                    show:false
+                    　　}*/},
+                tooltip: {
+                    trigger: 'item',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        //dataView: {show: true, readOnly: false},
+                        //magicType: {show: true, type: ['line', 'bar']},
+                        //restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+            color:'#0000c6',
+            
+           series: [
+            {
+             type: 'bar',
+                encode: {
+                x:'correlation',
+                y:'cancer_types' 
+            },
+        }],
+    };
+            cor_echart.setOption(option)
+        }
+
     $scope.modal_gene_expression=function(exp){
         $scope.gene_expression=exp[0];
         //console.log($scope.gene_expression);
         var gene_expr = $scope.gene_expression.exp_df;
+        var source_data_expr=[]
         var cancer_types=[];
         var expr=[];
         for(var cancer in gene_expr){
-            cancer_types.push(cancer);
-            expr.push(Number(gene_expr[cancer]))
+            source_data_expr.push([cancer,gene_expr[cancer]])
+            //cancer_types.push(cancer);
+            //expr.push(Number(gene_expr[cancer]))
         }
+        source_data_expr.sort(up)
         //barplot
         var a = echarts;
         var myChart = a.init(document.getElementById('gene_expression'));
         myChart.setOption({
-                color: ['#003366'],
+                dataset:{
+                    source:source_data_expr
+                },
+                color: ['#ce0000'],
                 //graph:{
                 //    color:colorPalette
                 //},
@@ -242,9 +326,9 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     top: 'center',
                     feature: {
                         mark: {show: true},
-                        dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
+                        //dataView: {show: true, readOnly: false},
+                        //magicType: {show: true, type: ['line', 'bar']},
+                        //restore: {show: true},
                         saveAsImage: {show: true}
                     }
                 },
@@ -252,14 +336,14 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 xAxis: [
                     {
                         type: 'category',
-                        axisTick: {show: false},
-                        data:cancer_types,
+                       // axisTick: {show: true},
+                       // data:cancer_types,
                         //name:'Cancer Types',
-                        nameTextStyle:{
-                            align:'center',
-                            fontSize:12,
-                            fontWeight:'bold',
-                        },
+                     //   nameTextStyle:{
+                      //      align:'center',
+                       //     fontSize:10,
+                        //    fontWeight:'bold',
+                        //},
                         rotate:45,
                         splitLine:{
 　　　　                    show:false
@@ -286,7 +370,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     {
                         type: 'bar',
                         barGap: 0,
-                        data:expr
+                        //data:expr
                     },
                 ],
               //  title: [
@@ -334,8 +418,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
 
    $scope.fetch_target_loss = function (page) {
             $http({
-                //url:base_url+'/api/snp_seed_loss',
-                url:'/api/snp_seed_loss',
+                url:base_url+'/api/snp_seed_loss',
+                //url:'/api/snp_seed_loss',
                 method: 'GET',
                 params: {mirna_id: $scope.query_mirna,page:page}
             }).then(
@@ -347,6 +431,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     for(var i=0;i<site_array.length;i++){
                         if(site_array[i].expr_corelation){
                             site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                            if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
                         }
                         site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -355,6 +440,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                         site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
                     }
+                    
                 });
         }
        
@@ -363,7 +449,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $(document).ready(function(){
         var flag=0;
         $('#search_gene_loss').on('input propertychange', function() {
-            var query_gene_loss = $('#search_gene_loss').val();
+            var query_gene_loss = $.trim($('#search_gene_loss').val());
             console.log(query_gene_loss)
             if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
@@ -372,8 +458,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             }
             if(flag==0){
                 $http({
-                    //url:base_url+'/api/snp_seed_loss',
-                    url:'/api/snp_seed_loss',
+                    url:base_url+'/api/snp_seed_loss',
+                    //url:'/api/snp_seed_loss',
                     method: 'GET',
                     params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
                 }).then(
@@ -385,6 +471,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         for(var i=0;i<site_array.length;i++){
                             if(site_array[i].expr_corelation){
                                 site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
                             }
                             site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -398,7 +485,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         });
       });
 
-    $scope.modal_corelation_detail=function(cor){
+   /* $scope.modal_corelation_detail=function(cor){
         var cancer_count=0;
         var cor_sum=0;
         for(var cancer in cor.cor_df){
@@ -435,7 +522,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 }
            // console.log(array);
             $scope.corelation_detail = array; 
-    }
+    }*/
 
 
     $scope.modal_gain_site_mut=function(site){
@@ -489,8 +576,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $scope.fetch_target_gain_mut = function (page) {
         console.log($scope.query_mirna);
     	$http({
-            //url:base_url+'/api/mut_seed_gain',
-            url:'/api/mut_seed_gain',
+            url:base_url+'/api/mut_seed_gain',
+            //url:'/api/mut_seed_gain',
 			method: 'GET',
 			params: {mirna_id: $scope.query_mirna,page:page}
             }).then(
@@ -517,7 +604,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $(document).ready(function(){
         var flag=0;
         $('#search_gene_gain_mut').on('input propertychange', function() {
-            var query_gene_gain = $('#search_gene_gain_mut').val();
+            var query_gene_gain = $.trim($('#search_gene_gain_mut').val());
             console.log(query_gene_gain)
             if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
                 alert("Invalid input");
@@ -527,8 +614,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             if(flag==0){
                 console.log(query_gene_gain)
                 $http({
-                    //url:base_url+'/api/snp_seed_gain',
-                    url:'/api/mut_seed_gain',
+                    url:base_url+'/api/snp_seed_gain',
+                    //url:'/api/mut_seed_gain',
                     method: 'GET',
                     params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
                     }).then(
@@ -555,8 +642,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
 
     $scope.fetch_target_loss_mut = function (page) {
     	$http({
-            //url:base_url+'/api/mut_seed_loss',
-            url:'/api/mut_seed_loss',
+            url:base_url+'/api/mut_seed_loss',
+            //url:'/api/mut_seed_loss',
 			method: 'GET',
 			params: {mirna_id: $scope.query_mirna,page:page}
             }).then(
@@ -568,6 +655,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 for(var i=0;i<site_array.length;i++){
                     if(site_array[i].expr_corelation){
                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                        if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
                     }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -583,7 +671,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $(document).ready(function(){
         var flag=0;
         $('#search_gene_loss_mut').on('input propertychange', function() {
-            var query_gene_loss = $('#search_gene_loss_mut').val();
+            var query_gene_loss = $.trim($('#search_gene_loss_mut').val());
             console.log(query_gene_loss)
             if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
@@ -593,8 +681,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             if(flag==0){
                 console.log(query_gene_loss)
                 $http({
-                    //url:base_url+'/api/snp_seed_gain',
-                    url:'/api/mut_seed_loss',
+                    url:base_url+'/api/snp_seed_gain',
+                    //url:'/api/mut_seed_loss',
                     method: 'GET',
                     params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
                     }).then(
@@ -606,6 +694,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             for(var i=0;i<site_array.length;i++){
                                 if(site_array[i].expr_corelation){
                                     site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                    if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
                                 }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -618,12 +707,11 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             }
         });
       });
-
-
+    
     $scope.fetch_enrich_result=function(){
         $http({
-            //url:base_url+'/api/enrich_result',
-            url:'/api/enrich_result',
+            url:base_url+'/api/enrich_result',
+            //url:'/api/enrich_result',
             method:'GET',
             params:{mirna_id:$scope.query_mirna}
         }).then(function (response) {

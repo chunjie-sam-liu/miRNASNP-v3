@@ -20,7 +20,7 @@
             <div class="panel-body">
                 <dl class="dl-horizontal">
                     <dt>Mutation ID</dt>
-                    <dd class="ng-binding">{$ mutation_alias.mut_id$}</dd>
+                    <dd class="ng-binding">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</dd>
                     <dt>SNP Coordinate</dt>
                     <dd class="ng-binding">{$ mutation_alias.chrome$}:{$mutation_alias.position$}</dd>
                     <dt>Ref/Alt</dt>
@@ -55,7 +55,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="v in mutation_summary_list">
-                            <td>{$v.mut_id$}</td>
+                            <td>{$mutation_alias.resource$}:{$v.mut_id$}</td>
                             <td>{$v.chrome$}:{$v.position$}</td>
                             <td>{$v.ref$}/{$v.alt$}</td>
                             <td>{$v.location$}</td>
@@ -99,7 +99,7 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="v in mut_seed_gain_list" ts-repeat>
-                                <td align="center">{$ v.mut_id$}</td>
+                                <td align="center">{$mutation_alias_count.resource$}:{$ v.mut_id$}</td>
                                 <td align="center">{$v.mirna_id$}</td>
                                 <td align="center">
                                     <span ng-if="v.mirna_expression[0]">
@@ -183,7 +183,7 @@
                                 <tbody>
                                 <tr ng-repeat="v in mut_seed_loss_list" ts-repeat>
                                         <!--td>{$ $index+1 $}</td-->
-                                        <td align="center">{$ v.mut_id$}</td>
+                                        <td align="center">{$mutation_alias.resource$}:{$ v.mut_id$}</td>
                                         <td align="center">{$v.mirna_id$}</td>
                                         <td align="center">
                                             <span ng-if="v.mirna_expression[0]">
@@ -208,7 +208,7 @@
                                     </td>
                                     <td align="center">
                                             <span ng-if="v.corelation_detail[0]">
-                                                <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                                                <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                                             </span>
                                             <span ng-if="!v.corelation_detail[0]">-</span>
                                         </td>
@@ -267,7 +267,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="v in mut_utr_gain_list">
-                                            <td align="center">{$v.mut_id$}</td>
+                                            <td align="center">{$mutation_alias.resource$}:{$v.mut_id$}</td>
                                             <td align="center">{$v.gene_symbol$}</td>
                                             <td align="center">{$v.mirna_id$}</td>
                                             <td align="center">
@@ -347,7 +347,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="v in mut_utr_loss_list">
-                                            <td align="center">{$v.mut_id$}</td>
+                                            <td align="center">{$mutation_alias.resource$}:{$v.mut_id$}</td>
                                             <td align="center">{$v.mirna_id$}</td>
                                             <td align="center">
                                                     <span ng-if="v.mirna_expression[0]">
@@ -368,7 +368,7 @@
                                                 </td>
                                                 <td align="center">
                                                         <span ng-if="v.corelation_detail[0]">
-                                                            <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                                                            <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                                                         </span>
                                                         <span ng-if="!v.corelation_detail[0]">-</span>
                                                     </td>
@@ -433,7 +433,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th>Mutation</th>
-                                                            <td colspan="2">{$modal_site.mut_info.mut_id$} ({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
+                                                            <td colspan="2">{$mutation_alias.resource$}:{$modal_site.mut_info.mut_id$} ({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
                                                             <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
                                                         </tr>
                                                         <tr>
@@ -456,15 +456,15 @@
                                                             <th rowspan="7">Site detail</th>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="2">ΔG duplex (kCal/mol)</td>
+                                                            <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                                                             <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="2">ΔG binding (kCal/mol)</td>
+                                                            <td colspan="2">&Delta;G binding (kCal/mol)</td>
                                                             <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="2">ΔG open (kCal/mol)</td>
+                                                            <td colspan="2">&Delta;G open (kCal/mol)</td>
                                                             <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                                                         </tr>
                                                         <tr>
@@ -511,7 +511,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <th>Mutation</th>
-                                                                <td colspan="2">{$modal_site.mut_info.mut_id$}({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
+                                                                <td colspan="2">{$mutation_alias.resource$}:{$modal_site.mut_info.mut_id$}({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
                                                                 <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
                                                             </tr>
                                                             <tr>
@@ -534,15 +534,15 @@
                                                                 <th rowspan="7">Site detail</th>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2">ΔG duplex (kCal/mol)</td>
+                                                                <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                                                                 <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2">ΔG binding (kCal/mol)</td>
+                                                                <td colspan="2">&Delta;G binding (kCal/mol)</td>
                                                                 <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2">ΔG open (kCal/mol)</td>
+                                                                <td colspan="2">&Delta;G open (kCal/mol)</td>
                                                                 <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                                                             </tr>
                                                             <tr>
@@ -595,9 +595,10 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <div>
-                                                        <div class="mirna-profile cursor-hand"
+                                                        <!--div class="mirna-profile cursor-hand"
                                                         title="cancer={$c.cancer_type$}; correlation_coefficient={$ c.corelation $}"
-                                                        style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div>
+                                                        style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div-->
+                                                        <div class="col-lg-5" id="correlation" style="height: 300px;width: 800px;border: 0px"></div>
                                                         </div>
                                                 </div>
                                                 <div class="modal-footer">

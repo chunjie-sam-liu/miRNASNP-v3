@@ -19,6 +19,7 @@ angular.module('miRNASNP3')
 function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     console.log("SnpController loaded");
    // console.log($scope.currentPage);
+   function up(x,y){return x[1]-y[1]}
     var base_url = miRNASNP3Service.getAPIBaseUrl();
 
     $scope.error=0;
@@ -178,15 +179,22 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         var gene_expr = $scope.expression.exp_df;
         var cancer_types=[];
         var expr=[];
+        var source_data_expr=[]
+       // var cancer_types=[];
+       // var expr=[];
         for(var cancer in gene_expr){
-            cancer_types.push(cancer);
-            expr.push(Number(gene_expr[cancer]))
+            source_data_expr.push([cancer,gene_expr[cancer]])
+            //cancer_types.push(cancer);
+            //expr.push(Number(gene_expr[cancer]))
         }
-        //barplot
+        source_data_expr.sort(up)
         var a = echarts;
         var myChart = a.init(document.getElementById('expression'));
         myChart.setOption({
-                color: ['#003366'],
+            dataset:{
+                source:source_data_expr
+            },
+                color: ['#ce0000'],
                 //graph:{
                 //    color:colorPalette
                 //},
@@ -204,8 +212,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     feature: {
                         mark: {show: true},
                         dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
+                       // magicType: {show: true, type: ['line', 'bar']},
+                       // restore: {show: true},
                         saveAsImage: {show: true}
                     }
                 },
@@ -214,7 +222,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     {
                         type: 'category',
                         axisTick: {show: false},
-                        data:cancer_types,
+                       // data:cancer_types,
                         //name:'Cancer Types',
                         nameTextStyle:{
                             align:'center',
@@ -247,7 +255,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     {
                         type: 'bar',
                         barGap: 0,
-                        data:expr
+                      //  data:expr
                     },
                 ],
               //  title: [
@@ -308,7 +316,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         }
 
 
-        $scope.modal_corelation_detail=function(cor){
+        /*$scope.modal_corelation_detail=function(cor){
             var cancer_count=0;
             var cor_sum=0;
             for(var cancer in cor.cor_df){
@@ -345,6 +353,82 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     }
                // console.log(array);
                 $scope.corelation_detail = array; 
+        }*/
+
+          $scope.echart_correlation=function(cor){
+            $scope.gene_mir=cor.mir_gene;
+            var c=echarts;
+            var cor_echart=c.init(document.getElementById('correlation'));
+            var source_data=[]
+            //var source_data=[["cancer_types", "correlation"]]
+            //cor.cor_df.sort(up)
+            console.log(cor.cor_df)
+            for(var cancer in cor.cor_df){
+                if(cor.cor_df[cancer]){
+                    var item=[cancer,Number(cor.cor_df[cancer])]
+                    source_data.push(item)
+                }
+            }
+            source_data.sort(up)
+            source_data.unshift(["cancer_types", "correlation"])
+            console.log(source_data)
+           
+            var option = {
+                dataset: {
+                    source:source_data
+                },
+               
+                xAxis:{name:'Correlation',
+                nameTextStyle:{
+                    align:'right',
+                    fontSize:12,
+                    fontWeight:'bold',
+                },
+                type:'value',
+                splitLine:{
+                    show:false
+                    　　}
+                },
+                yAxis:{
+                    type:'category',
+                axisLine:{
+                    show:true
+                },
+                
+                /*splitLine:{
+                    show:false
+                    　　}*/},
+                tooltip: {
+                    trigger: 'item',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        //dataView: {show: true, readOnly: false},
+                        //magicType: {show: true, type: ['line', 'bar']},
+                        //restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+            color:'#0000c6',
+            
+           series: [
+            {
+             type: 'bar',
+                encode: {
+                x:'correlation',
+                y:'cancer_types' 
+            },
+        }],
+    };
+            cor_echart.setOption(option)
         }
 
 
@@ -535,8 +619,9 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                         var ci=ci_regex.exec(data_list[i].ci95)
                         console.log(risk_allele)
                         console.log(ci)
-                        data_list[i].risk_allele=risk_allele[1]
-                        //data_list[i].ci95=ci[0]
+                        if(risk_allele[1]){data_list[i].risk_allele=risk_allele[1].replace(/\?/g,"").replace(/NR/g,"")}
+                        if(data_list[i].ci95){data_list[i].ci95=data_list[i].ci95.replace(/NR/g,"")}
+                        if(data_list[i].risk_allele_fre){data_list[i].risk_allele_fre=data_list[i].risk_allele_fre.replace(/NR/g,"")}
                     }
                     console.log(data_list)
                     console.log($scope.catalog_list)
@@ -584,7 +669,9 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                                     var ci=ci_regex.exec(data_list[i].ci95)
                                     console.log(risk_allele)
                                     console.log(ci)
-                                    data_list[i].risk_allele=risk_allele[1]
+                                    if(risk_allele[1]){data_list[i].risk_allele=risk_allele[1].replace(/\?/g,"").replace(/NR/g,"")}
+                                    if(data_list[i].ci95){data_list[i].ci95=data_list[i].ci95.replace(/NR/g,"")}
+                                    if(data_list[i].risk_allele_fre){data_list[i].risk_allele_fre=data_list[i].risk_allele_fre.replace(/NR/g,"")}
                                    // data_list[i].ci95=ci[0]
                                 }
                                 console.log(data_list)
@@ -605,8 +692,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                         ld_array_line['population'] = ld_region_all[p].population;
                         ld_array_line['start'] = ld_region_all[p].ld_start;
                         if(ld_array_line['start']<min_start){ld_array_line['start']=min_start}
+                        if(ld_array_line['start']=='Inf'){ld_array_line['start']=''}
                         ld_array_line['end'] = ld_region_all[p].ld_end;
                         if (ld_array_line['end']>max_end){ld_array_line['end']=max_end}
+                        if(ld_array_line['end']=='-Inf'){ld_array_line['end']=''}
                         ld_array_line['width'] = (Number(ld_region_all[p].ld_end)-Number(ld_region_all[p].ld_start))/500;
                         ld_array_line['text_y'] =20+30*p;
                         ld_array_line['rect_x'] = (Number(ld_array_line['start'])-Number(min_start))/500-20;
@@ -702,7 +791,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                         console.log(risk_allele)
                         console.log(ci)
                         if(risk_allele){
-                            tag_array[i].risk_allele=risk_allele[1]
+                            if(risk_allele[1]){tag_array[i].risk_allele=risk_allele[1].replace(/\?/g,"").replace(/NR/g,"")}
+                            if(tag_array[i].ci95){tag_array[i].ci95=tag_array[i].ci95.replace(/NR/g,"")}
+                            if(tag_array[i].risk_allele_fre){tag_array[i].risk_allele_fre=tag_array[i].risk_allele_fre.replace(/NR/g,"")}
+                            
                         }
                         /*if(ci){
                             tag_array[i].ci95=ci[0]

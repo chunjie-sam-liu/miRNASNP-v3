@@ -152,24 +152,24 @@
         </table>
     </div>
     <div paging
-             page="currentPage_gain"
-             page-size=15
-             total="snp_seed_gain_count"
-             scroll-top="true"
-             hide-if-empty="true"
-             show-prev-next="true"
-             show-first-last="true"
-             text-title-page="Page {page} Hover Over"
-             text-title-first="First hover"
-             text-title-last="Last hover"
-             text-title-next="Next hover"
-             text-title-prev="Prev hover"
-             show-prev-next="true"
-             show-first-last="true"
-             ul-class="pagination"
-             active-class="active"
-             disabled-class="disabled"
-             paging-action="fetch_target_gain(page)"></div>
+    page="currentPage_gain"
+    page-size=15
+    total="snp_seed_gain_count"
+    scroll-top="true"
+    hide-if-empty="true"
+    show-prev-next="true"
+    show-first-last="true"
+    text-title-page="Page {page} Hover Over"
+    text-title-first="First hover"
+    text-title-last="Last hover"
+    text-title-next="Next hover"
+    text-title-prev="Prev hover"
+    show-prev-next="true"
+    show-first-last="true"
+    ul-class="pagination"
+    active-class="active"
+    disabled-class="disabled"
+    paging-action="fetch_target_gain(page)"></div>
 </div>
 
 <div ng-show="three">
@@ -222,7 +222,7 @@
             </td>
             <td align="center">
                 <span ng-if="v.corelation_detail[0]">
-                    <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                    <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                 </span>
                 <span ng-if="!v.corelation_detail[0]">-</span>
             </td>
@@ -377,7 +377,7 @@
             </td>
             <td align="center">
                     <span ng-if="v.corelation_detail[0]">
-                        <a data-toggle="modal" data-target="#corelation_detail" ng-click="modal_corelation_detail(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                        <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                     </span>
                     <span ng-if="!v.corelation_detail[0]">-</span>
                 </td>
@@ -500,15 +500,15 @@
                         <th rowspan="7">Site detail</th>
                     </tr>
                     <tr>
-                        <td colspan="2">&#916;G duplex (kCal/mol)</td>
+                        <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">&#916;G binding (kCal/mol)</td>
+                        <td colspan="2">&Delta;G binding (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">&#916;G open (kCal/mol)</td>
+                        <td colspan="2">&Delta;G open (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                     </tr>
                     <tr>
@@ -581,15 +581,15 @@
                             <th rowspan="7">Site detail</th>
                         </tr>
                         <tr>
-                            <td colspan="2">&#916;G duplex (kCal/mol)</td>
+                            <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                             <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">&#916;G binding (kCal/mol)</td>
+                            <td colspan="2">&Delta;G binding (kCal/mol)</td>
                             <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">&#916;G open (kCal/mol)</td>
+                            <td colspan="2">&Delta;G open (kCal/mol)</td>
                             <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                         </tr>
                         <tr>
@@ -628,7 +628,7 @@
                 <h4 class="modal-title">{$gene_expression.symbol$}</h4>
             </div>
             <div class="modal-body">
-                <div class="col-lg-3" id="gene_expression" style="height: 300px;width: 800px;border: 0px"></div>
+                <div class="col-lg-5" id="gene_expression" style="height: 300px;width: 850px;border: 0px"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -644,12 +644,14 @@
                 <h4 class="modal-title">{$gene_mir$}</h4>
             </div>
             <div class="modal-body">
-                <div>
+                <!--div>
                     <div class="corelation-cursor cursor-hand" 
                 title="cancer={$c.cancer_type$}; correlation_coefficient={$ c.corelation $}"
                 style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div>
                 </div>
-            </div>
+            </div-->
+            <div class="col-lg-5" id="correlation" style="height: 300px;width: 850px;border: 0px"></div>
+           
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
