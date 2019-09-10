@@ -22,13 +22,13 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     
     $scope.predict_altutr = function () {
         $scope.loading = true;
-        var wildutr_sequence = $("#wildutr_sequence").val();
+        var wildutr_sequence = $.trim($("#wildutr_sequence").val());
         if (/[@#\$%\^&\*<>\.]+/g.test(wildutr_sequence)) {
             alert("Invalid input");
             flag_altutr = 1;
             history.back();
         }
-        var snputr_sequence = $("#snputr_sequence").val();
+        var snputr_sequence = $.trim($("#snputr_sequence").val());
         if (/[@#\$%\^&\*<>\.]+/g.test(snputr_sequence)) {
             alert("Invalid input");
             flag_altutr = 1;
@@ -50,13 +50,13 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     };
     $scope.predict_altmir=function(){
         $scope.loading=true;
-        var wildmir_sequence = $("#wildmir_sequence").val();
+        var wildmir_sequence = $.trim($("#wildmir_sequence").val());
         if (/[@#\$%\^&\*<>\.]+/g.test(wildmir_sequence)) {
             alert("Invalid input");
             flag_altmir = 1;
             history.back();
         }
-        var snpmir_sequence = $("#snpmir_sequence").val();
+        var snpmir_sequence = $.trim($("#snpmir_sequence").val());
         if (/[@#\$%\^&\*<>\.]+/g.test(snpmir_sequence)) {
             alert("Invalid input");
             flag_altmir = 1;
@@ -79,14 +79,14 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
     $scope.predict_structure=function () {
         console.log("predic structure");
         $scope.loading=true;
-        var wildmir_str_seq=$("#wildmir_str_seq").val();
+        var wildmir_str_seq=$.trim($("#wildmir_str_seq").val());
         if (/[@#\$%\^&\*<>\.]+/g.test(wildmir_str_seq)) {
             alert("Invalid input");
             flag_stru = 1;
             history.back();
         }
         console.log(wildmir_str_seq);
-        var snp_val=$("#snps").val();
+        var snp_val=$.trim($("#snps").val());
         if (/[@#\$%\^&\*<>\.]+/g.test(snp_val)) {
             alert("Invalid input");
             flag_stru = 1;

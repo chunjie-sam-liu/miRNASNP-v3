@@ -27,7 +27,8 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
 
     $scope.fetch_item=function(){
     $http({
-        url:'/api/mutation_summary',
+        url:base_url+'/api/mutation_summary',
+        //url:'/api/mutation_summary',
         method:'GET',
         params:{gene:$scope.query_gene,target_effection:1}
     }).then(function(response){
@@ -43,7 +44,8 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
         console.log(gene_search_count)
     })
     $http({
-        url:'/api/snp_summary',
+        url:base_url+'/api/snp_summary',
+        //url:'/api/snp_summary',
         method:'GET',
         params:{gene:$scope.query_gene}
     }).then(function(response){

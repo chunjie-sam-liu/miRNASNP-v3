@@ -84,8 +84,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         }
         if(flag_snp==0 && flag_identifier==0){
             $http({
-                //url:base_url+ip_address,
-                url:'/api/snp_summary',
+                url:base_url+ip_address,
+                //url:'/api/snp_summary',
                 method:'GET',
                 params:condition,
             }).then(function(response){
@@ -170,8 +170,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         }
         if(flag_snp==0 && flag_identifier==0){
             $http({
-                //url:base_url+ip_address,
-                url:'/api/snp_summary',
+                url:base_url+ip_address,
+                //url:'/api/snp_summary',
                 method:'GET',
                 params:condition,
             }).then(function(response){

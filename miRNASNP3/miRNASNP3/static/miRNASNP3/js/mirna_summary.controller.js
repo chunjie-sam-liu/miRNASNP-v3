@@ -36,7 +36,7 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         condition['page']=1
     //});
         
-        var mirna_id = $('#query_mirna_summary').val();
+        var mirna_id = $.trim($('#query_mirna_summary').val());
         if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
             alert("Invalid input");
             flag_mirna = 1;
@@ -46,8 +46,8 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
             condition['mirna_id']=mirna_id
         console.log(mirna_id);
         $http({
-            //url:base_url+ip_address,
-            url:'api/mirna_summary',
+            url:base_url+ip_address,
+            //url:'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -82,7 +82,7 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         condition['page']=page
     //});
         
-        var mirna_id = $('#query_mirna_summary').val();
+        var mirna_id = $.trim($('#query_mirna_summary').val());
         if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
             alert("Invalid input");
             flag_mirna = 1;
@@ -92,8 +92,8 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
             condition['mirna_id']=mirna_id
         console.log(mirna_id);
         $http({
-            //url:base_url+ip_address,
-            url:'api/mirna_summary',
+            url:base_url+ip_address,
+            //url:'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -144,7 +144,7 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
             condition["chrome"]=chr
         }
     //});
-        var mirna_id = $('#query_mirna_summary').val();
+        var mirna_id = $.trim($('#query_mirna_summary').val());
         if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
             alert("Invalid input");
             flag_pri = 1;
@@ -153,8 +153,8 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            //url:base_url+ip_address,
-            url:'/api/primir_summary',
+            url:base_url+ip_address,
+            //url:'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -186,7 +186,7 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
             condition["chrome"]=chr
         }
     //});
-        var mirna_id = $('#query_mirna_summary').val();
+        var mirna_id = $.trim($('#query_mirna_summary').val());
         if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
             alert("Invalid input");
             flag_pri = 1;
@@ -195,8 +195,8 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            //url:base_url+ip_address,
-            url:'/api/primir_summary',
+            url:base_url+ip_address,
+            //url:'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
