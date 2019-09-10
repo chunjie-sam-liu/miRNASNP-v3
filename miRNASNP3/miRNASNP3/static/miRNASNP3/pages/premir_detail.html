@@ -17,7 +17,7 @@
                     <td style="font-size: 18px;" width="200px">
                         <strong>Precursor ID</strong>
                     </td>
-                    <td>{$premir_info.pre_id$}
+                    <td style="text-align: left">{$premir_info.pre_id$}
                         <span style="float:right;clear;">
                             <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}"
                                title="miRBase" target="blank">
@@ -30,13 +30,13 @@
                     <td style="font-size: 18px;">
                         <strong>Accession</strong>
                     </td>
-                    <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}">{$premir_info.mirinfo[0].pre_acc$}</a>
+                    <td style="text-align: left"><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}">{$premir_info.mirinfo[0].pre_acc$}</a>
                     </td>
                 </tr>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Genome Position
                     </td>
-                    <td>
+                    <td style="text-align: left">
                         <a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].pre_chr$}:{$premir_info.mirinfo[0].pre_start$}-{$premir_info.mirinfo[0].pre_end$}">
                             {$premir_info.mirinfo[0].pre_chr$}:{$premir_info.mirinfo[0].pre_start$}-{$premir_info.mirinfo[0].pre_end$}({$premir_info.mirinfo[0].pre_strand$})</a>
                     </td>
@@ -44,7 +44,7 @@
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Host Gene
                     </td>
-                    <td>
+                    <td style="text-align: left">
                         <span ng-if="premir_info.host_gene != 'NA'">{$premir_info.host_gene$}</span>
                         <span ng-if="premir_info.host_gene == 'NA' ">intergenic</span>
                     </td>
@@ -53,7 +53,7 @@
                     <td style="font-size: 18px;font-weight: bold">
                         Cluster
                     </td>
-                    <td>10kb:
+                    <td style="text-align: left">10kb:
                         <span ng-if="premir_info.cluster10k.length">
                             <span ng-repeat="v in premir_info.cluster10k">{$v.id$};</span></span>
                         <span ng-if="!premir_info.cluster10k.length">Null</span>
@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                    <td>{$premir_info.sequence$}</td>
+                    <td style="text-align: left">{$premir_info.sequence$}</td>
                 </tr>
                 </tbody>
             </table>
@@ -80,15 +80,15 @@
                 </tr>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA ID</td>
-                    <td>{$premir_info.mirinfo[0].mir_id$}</td>
+                    <td style="text-align: left">{$premir_info.mirinfo[0].mir_id$}</td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold" >Sequence</td>
-                        <td><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[0].matureSeq$}</span></td>
+                        <td style="text-align: left"><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[0].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}">
+                        <td style="text-align: left"><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}">
                             {$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}({$premir_info.mirinfo[0].mir_strand$})</a></td>
                 </tr>
                 </tbody>
@@ -99,15 +99,15 @@
                 <tbody>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA ID</td>
-                    <td>{$premir_info.mirinfo[1].mir_id$}</td>
+                    <td style="text-align: left">{$premir_info.mirinfo[1].mir_id$}</td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                        <td><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
+                        <td><span style="color: red;font-weight: bold;text-align: left"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}">
+                        <td style="text-align: left"><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}">
                             {$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}({$premir_info.mirinfo[1].mir_strand$})</a></td>
                 </tr>
                 </tbody>
@@ -118,15 +118,15 @@
                 <tbody>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Mature miRNA ID</td>
-                    <td>{$premir_info.mirinfo[2].mir_id$}</td>
+                    <td style="text-align: left">{$premir_info.mirinfo[2].mir_id$}</td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                        <td><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[2].matureSeq$}</span></td>
+                        <td style="text-align: left"><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[2].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}">
+                        <td style="text-align: left"><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}">
                             {$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}({$premir_info.mirinfo[2].mir_strand$})</a></td>
                 </tr>
                 </tbody>
@@ -165,10 +165,13 @@
                                 <td style="font-size: 16px;font-weight: bold" width="200px">
                                   SNPs in Primary miRNA
                                 </td>
-                                <td>
-                        <span ng-repeat="v in premir_info.snv">
-                            <button ng-click="structure_effection_snp(v)">{$v$}&nbsp;</button>
-                        </span>
+                                <td style="text-align: justify">
+                                    <span ng-if="premir_info.snv.length">
+                                            
+                                                <span ng-repeat="v in premir_info.snv">                                                                                                              
+                                            <button ng-click="structure_effection_snp(v)">{$v$}&nbsp;</button>
+                                                </span></span>
+                                    <span ng-if="!premir_info.snv.length">Null</span>
                                 </td>
                             </tr>
                             <tr>
