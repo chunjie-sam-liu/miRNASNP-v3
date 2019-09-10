@@ -1479,7 +1479,8 @@ class SnpSummary(Resource):
         if args['spe_snp_id']:
             condition['snp_id']=args['spe_snp_id']
         if args['snp_id']:
-            condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
+            #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
+            condition['snp_id']=args['snp_id']
         if args['identifier']:
             condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
         if args['location']!='All' and args['location']:
