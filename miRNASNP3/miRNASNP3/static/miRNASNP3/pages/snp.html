@@ -6,8 +6,8 @@
 
 
 
-<ul class="nav nav-tabs"  ng-show="snpinfo_count">
-    <li id="one" ng-click="show_one('one')" ng-show="snpinfo_count" style="background-color:#EBEBEB;margin-right: 3px "
+<ul class="nav nav-tabs"  ng-show="snp_summary_count">
+    <li id="one" ng-click="show_one('one')" ng-show="snp_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>SNP Details</strong></a> </li>
     <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNP in seed</strong></a> </li>
@@ -23,7 +23,7 @@
         class="class_five" ><a data-toggle="tab"><strong>SNP Ralate Mutation</strong></a> </li>
 </ul>
 
-<div ng-show="snpinfo_count">
+<div ng-show="snp_summary_count">
     <div class="panel panel-info" ng-show="one" id="section-1">
         <div class="panel-heading" >
             <strong>Basic Information of SNP : {$ query_snp $}</strong>
@@ -31,17 +31,17 @@
         <div class="panel-body">
             <dl class="dl-horizontal">
                 <dt>SNP ID</dt>
-                <dd class="ng-binding">{$ snpinfo_alias.snp_id$}</dd>
+                <dd class="ng-binding">{$ snp_summary_alias.snp_id$}</dd>
                 <dt>SNP Coordinate</dt>
-                <dd class="ng-binding">{$ snpinfo_alias.snp_chr$}:{$snpinfo_alias.snp_coordinate$}</dd>
+                <dd class="ng-binding">{$ snp_summary_alias.snp_chr$}:{$snp_summary_alias.snp_coordinate$}</dd>
                 <dt>Ref/Alt</dt>
-                <dd class="ng-binidng">{$snpinfo_alias.ref$}
-                    <span ng-if="snpinfo_alias.ref_freq">({$snpinfo_alias.ref_freq$})</span> /{$snpinfo_alias.alt$}
-                    <span ng-if="snpinfo_alias.alt_freq">({$snpinfo_alias.alt_freq$})</span> </dd>
+                <dd class="ng-binidng">{$snp_summary_alias.ref$}
+                    <span ng-if="snp_summary_alias.ref_freq">({$snp_summary_alias.ref_freq$})</span> /{$snp_summary_alias.alt$}
+                    <span ng-if="snp_summary_alias.alt_freq">({$snp_summary_alias.alt_freq$})</span> </dd>
                 <dt>Region</dt>
-                <dd class="ng-binding">{$ snpinfo_alias.location $}</dd>
+                <dd class="ng-binding">{$ snp_summary_alias.location $}</dd>
                 <dt>Identifier</dt>
-                <dd class="ng-binding">{$ snpinfo_alias.identifier $}</dd>
+                <dd class="ng-binding">{$ snp_summary_alias.identifier $}</dd>
                 <dt>GWAS Tag</dt>
                 <dd>
                     <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="catalog_count"></span>
@@ -60,7 +60,7 @@
             </dl>
         </div>
     </div>
-    <div ng-show="snpinfo_alias_count">
+    <div ng-show="snp_summary_alias_count">
     <div class="panel panel-info" ng-show="one">
         <div class="panel-heading">
             <strong>Alias information of {$query_snp$}</strong>
@@ -78,7 +78,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="v in snpinfo_list">
+            <tr ng-repeat="v in snp_summary_list">
                 <td>{$v.snp_id$}</td>
                 <td>{$v.snp_chr$}:{$v.snp_coordinate$}</td>
                 <td>{$v.ref$}/{$v.alt$}</td>

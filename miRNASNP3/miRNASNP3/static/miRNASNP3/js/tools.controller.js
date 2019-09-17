@@ -127,8 +127,8 @@ function Predict_UTR_ResultController($scope,$http,$routeParams,$window,miRNASNP
         condition['alt_seq']=$routeParams.snp_seq
     }
     $http({
+        //url:base_url+base_url+'/api/prediction',
         url:base_url+'/api/prediction',
-        //url:'/api/prediction',
         method:'POST',
         data:condition
     }).then(function (response) {
@@ -156,8 +156,8 @@ function Predict_MIR_ResultController($scope,$http,$routeParams,$window,miRNASNP
         condition['alt_seq']=$routeParams.snp_seq
     }
     $http({
+        //url:base_url+base_url+'/api/prediction_altmir',
         url:base_url+'/api/prediction_altmir',
-        //url:'/api/prediction_altmir',
         method:'POST',
         data:condition
     }).then(function (response) {
@@ -185,6 +185,7 @@ function PredictStructureController($scope,$http,$routeParams,$window,miRNASNP3S
         condition['snps']=$routeParams.snps
     }
     $http({
+        //url:base_url+base_url+'/api/prediction_structure',
         url:base_url+'/api/prediction_structure',
         method:'POST',
         data:condition

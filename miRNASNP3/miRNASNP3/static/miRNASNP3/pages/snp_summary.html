@@ -8,7 +8,7 @@
 <div class="panel panel-success">
     <div class="panel-body">   
     <form method="get" id="snp-summary-form" class="form form-horizontal">
-        <div class="form-group">
+        <!--div class="form-group">
             <label class="control-label col-lg-2">Chromosome:</label>
             <div class="col-lg-2">
             <select id="chr" class="form-control">
@@ -39,8 +39,8 @@
                 <option>chrY</option>
             </select>
             </div>
-        <!--/div>
-            <div class="form-group"-->
+        </div>
+            <div class="form-group">
             <label class="control-label col-lg-1">Region:</label>
             <div class="col-lg-2">
                 <select id="location" class="form-control">
@@ -49,20 +49,10 @@
                     <option value="mirseed">mature miRNA seed</option>
                 </select>
             </div>
-            <!--/div>
-            <div class="form-group">
-            <label class="control-label col-lg-1">GMAF:</label>
-            <div class="col-lg-2">
-                <select id="gmaf" class="form-control">
-                    <option value="All">All</option>
-                    <option>&gt;0.05</option>
-                    <option>&gt;0.01</option>
-                </select>
             </div-->
-            </div>
-    
+
             <div class="form-group">
-                    <label class="control-label col-lg-2">GMAF:</label>
+                    <label class="control-label col-lg-1">GMAF:</label>
                     <div class="col-lg-2">
                         <select id="gmaf" class="form-control">
                             <option value="All">All</option>
@@ -70,21 +60,26 @@
                             <option>&gt;0.01</option>
                         </select>
                     </div>
-                <label class="control-label col-lg-1">SNP:</label>
+                <label class="control-label col-lg-2">SNP:</label>
                 <div class="col-lg-2">
-                    <input type="text" class="form-control input-xs" id="query_snp_summary" ng-model="query_snp_summary" placeholder="rs1079033">
+                    <input type="text" class="form-control" id="query_snp_summary" ng-model="query_snp_summary" placeholder="rs1079033">
                 </div>
                 <span class="help-block">Input a  SNP ID,such as rs1079033</span>
             </div>
             <div class="form-group">
-                <label class="control-label col-lg-2">Gene</label>
+                <label class="control-label col-lg-1">Gene</label>
                     <div class="col-lg-2">
-                        <input type="text" class="form-control input-xs" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53"> 
+                        <!--input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53" class="iden"-->
+                        <div id="query_iden_summary-div" class=" ui-widget has-feedback inner-addon right-addon">
+                                <input name="query_iden_summary" type="text" id="query_iden_summary" class="form-control ui-autocomplete-input" placeholder="TP53" autocomplete="off">
+                                <span class="glyphicon form-control-feedback"></span>
+                                <label class="control-label" for="annotations"></label>
+                            </div>      
                     </div>
                     <span class="help-block">Input a  Gene/miRNA,such as hsa-miR-6761-3p/TP53</span>
             <!--/div>
             <div class="form-group"-->
-                <div class="checkbox col-sm-offset-2 col-sm-3" data-triggle="hover" data-placement="right">
+                <div class="checkbox col-sm-offset-1 col-lg-2" data-triggle="hover" data-placement="right">
                     <label class="control-label checkbox-inline">
                         <input type="checkbox" id="ldsnp">
                             <strong id="ldsnp_1">LD SNP</strong>
@@ -102,11 +97,11 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-4">
-                        <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_snp_summary(page)" >
+                        <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_snp_summary()" >
 							Submit
                         </button>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" id="reset_query" type="reset" ng-click="reset_query()" >
+                        <button class="btn btn-primary" id="reset_query" type="reset" ng-click="reset_query()" name="reset_query">
 							Reset
                         </button>
                 </div>
@@ -115,8 +110,290 @@
     </div>
 </div>
 
+<ul class="nav nav-tabs">
+    <li id="seed" ng-click="show_one('seed')" ng-show="seed_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_seed" ><a data-toggle="tab"><strong>SNP on seed</strong></a> </li>
+    <li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_mature" ><a data-toggle="tab"><strong>SNP on mature miRNA</strong></a> </li>
+    <li id="premir" ng-click="show_one('premir')" ng-show="premir_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_premir" ><a data-toggle="tab"><strong>SNP on pre-miRNA</strong></a> </li>
+    <li id="utr3" ng-click="show_one('utr3')" ng-show="utr3_count" style="background-color:#EBEBEB;margin-right: 3px "
+        class="class_utr3" ><a data-toggle="tab"><strong>SNP on 3'UTR</strong></a> </li>
+</ul>
 
-<div class="div-table">
+<div ng-show="initial">
+    <div class="flyover" ng-hide="snp_summary_count">
+            <div class="mask"></div>
+            <div class="spinner"></div>
+        </div>
+        </div>
+<!--div ng-show="seed_count"-->
+        <div ng-show="seed">
+                <div paging
+                page="currentPage_seed"
+                page-size=15
+                total="seed_count"
+                scroll-top="true"
+                hide-if-empty="true"
+                show-prev-next="true"
+                show-first-last="true"
+                text-title-page="Page {page} Hover Over"
+                text-title-first="First hover"
+                text-title-last="Last hover"
+                text-title-next="Next hover"
+                text-title-prev="Prev hover"
+                show-prev-next="true"
+                show-first-last="true"
+                ul-class="pagination"
+                active-class="active"
+                disabled-class="disabled"
+                paging-action="update_page(page,'mirseed')"
+                
+           ></div>
+        <!--/div-->
+    <div class="panel panel-info" ng-show="seed" id="section-seed">
+            <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+                    <thead>
+                    <tr>
+                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
+                        <th ts-criteria="snp_id" width="10%">SNP ID</th>
+                        <th width="5%">Ref/Alt</th>
+                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
+                        <th width="7%">Region</th>
+                        <th ts-criteria="identifier" width="10%">miRNA
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
+                        <th ts-criteria="ldsnp" width="5%">LD SNP
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
+                        <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
+                        <th ts-criteria="gain_count|parseInt" width="7%">Target Gain
+                        <th ts-criteria="loss_count|parseInt" width="7%">Target Loss
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="v in seed_list" ts-repeat>
+                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
+                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
+                        <td >{$v.ref$}/{$v.alt$}</td>
+                        <td align="center">
+                            <span ng-if="!v.ref_freq">-</span>
+                            <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
+                            <span ng-if="!v.alt_freq">-</span>
+                            <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+                        </td>
+                        <td>{$v.location$}</td>
+                        <td>{$v.identifier$}</td>
+                        <td>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
+                        </td>
+                        <!--td>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
+                        </td-->
+                        <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.gain_count$}</a></td>
+                        <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.loss_count$}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+    </div>
+</div>
+
+
+<div ng-show="mature">
+                <div paging
+                page="currentPage_mature"
+                page-size=15
+                total="mature_count"
+                scroll-top="true"
+                hide-if-empty="true"
+                show-prev-next="true"
+                show-first-last="true"
+                text-title-page="Page {page} Hover Over"
+                text-title-first="First hover"
+                text-title-last="Last hover"
+                text-title-next="Next hover"
+                text-title-prev="Prev hover"
+                show-prev-next="true"
+                show-first-last="true"
+                ul-class="pagination"
+                active-class="active"
+                disabled-class="disabled"
+                paging-action="update_page(page,'mature')"
+                
+           ></div>
+        </div>
+    <div class="panel panel-info" ng-show="mature" id="section-mature">
+            <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+                    <thead>
+                    <tr>
+                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
+                        <th ts-criteria="snp_id" width="10%">SNP ID</th>
+                        <th width="5%">Ref/Alt</th>
+                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
+                        <th width="7%">Region</th>
+                        <th ts-criteria="identifier" width="10%">miRNA
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
+                        <th ts-criteria="ldsnp" width="5%">LD SNP
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="v in mature_list" ts-repeat>
+                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
+                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
+                        <td >{$v.ref$}/{$v.alt$}</td>
+                        <td align="center">
+                            <span ng-if="!v.ref_freq">-</span>
+                            <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
+                            <span ng-if="!v.alt_freq">-</span>
+                            <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+                        </td>
+                        <td>{$v.location$}</td>
+                        <td>{$v.identifier$}</td>
+                        <td>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+    </div>
+</div>
+
+        <div ng-show="premir">
+                <div paging
+                page="currentPage_premir"
+                page-size=15
+                total="premir_count"
+                scroll-top="true"
+                hide-if-empty="true"
+                show-prev-next="true"
+                show-first-last="true"
+                text-title-page="Page {page} Hover Over"
+                text-title-first="First hover"
+                text-title-last="Last hover"
+                text-title-next="Next hover"
+                text-title-prev="Prev hover"
+                show-prev-next="true"
+                show-first-last="true"
+                ul-class="pagination"
+                active-class="active"
+                disabled-class="disabled"
+                paging-action="update_page(page,'pre-miRNA')"
+                
+           ></div>
+        </div>
+    <div class="panel panel-info" ng-show="premir" id="section-premir">
+            <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+                    <thead>
+                    <tr>
+                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
+                        <th ts-criteria="snp_id" width="10%">SNP ID</th>
+                        <th width="5%">Ref/Alt</th>
+                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
+                        <th width="7%">Region</th>
+                        <th ts-criteria="identifier" width="10%">pre-miRNA
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
+                        <th ts-criteria="ldsnp" width="5%">LD SNP
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="v in premir_list" ts-repeat>
+                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
+                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
+                        <td >{$v.ref$}/{$v.alt$}</td>
+                        <td align="center">
+                            <span ng-if="!v.ref_freq">-</span>
+                            <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
+                            <span ng-if="!v.alt_freq">-</span>
+                            <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+                        </td>
+                        <td>{$v.location$}</td>
+                        <td><a href="#!/premir_detail?search_ids={$v.identifier$}" style="color: red">{$v.identifier$}</td>
+                        <td>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+    </div>
+
+
+
+        <div ng-show="utr3">
+                <div paging
+                page="currentPage_utr3"
+                page-size=15
+                total="utr3_count"
+                scroll-top="true"
+                hide-if-empty="true"
+                show-prev-next="true"
+                show-first-last="true"
+                text-title-page="Page {page} Hover Over"
+                text-title-first="First hover"
+                text-title-last="Last hover"
+                text-title-next="Next hover"
+                text-title-prev="Prev hover"
+                show-prev-next="true"
+                show-first-last="true"
+                ul-class="pagination"
+                active-class="active"
+                disabled-class="disabled"
+                paging-action="update_page(page,'UTR3')"
+                
+           ></div>
+        </div>
+    <div class="panel panel-info" ng-show="utr3" id="section-utr3">
+            <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+                    <thead>
+                    <tr>
+                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
+                        <th ts-criteria="snp_id" width="10%">SNP ID</th>
+                        <th width="5%">Ref/Alt</th>
+                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
+                        <th width="7%">Region</th>
+                        <th ts-criteria="identifier" width="10%">Gene
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
+                        <th ts-criteria="ldsnp" width="5%">LD SNP
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
+                        <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
+                        <th ts-criteria="gain_count|parseInt" width="7%">Target Gain
+                        <th ts-criteria="loss_count|parseInt" width="7%">Target Loss
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="v in utr3_list" ts-repeat>
+                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
+                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
+                        <td >{$v.ref$}/{$v.alt$}</td>
+                        <td align="center">
+                            <span ng-if="!v.ref_freq">-</span>
+                            <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
+                            <span ng-if="!v.alt_freq">-</span>
+                            <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+                        </td>
+                        <td>{$v.location$}</td>
+                        <td>{$v.identifier$}</td>
+                        <td>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
+                        </td>
+                        <!--td>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
+                        </td-->
+                        <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.gain_count$}</a></td>
+                        <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.loss_count$}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+    </div>
+
+<!--div class="div-table">
     <div ng-show="initial">
             <div class="flyover" ng-hide="snp_summary_count">
                     <div class="mask"></div>
@@ -159,10 +436,10 @@
             <th ts-criteria="identifier" width="10%">Gene
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
             <th ts-criteria="ldsnp" width="5%">LD SNP
-            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
+            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th-->
             <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
-            <th ts-criteria="gain_count|parseInt" width="7%">Target Gain
+            <!--th ts-criteria="gain_count|parseInt" width="7%">Target Gain
             <th ts-criteria="loss_count|parseInt" width="7%">Target Loss
         </tr>
         </thead>
@@ -182,15 +459,15 @@
             <td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
-            </td>
+            </td-->
             <!--td>
                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
             </td-->
-            <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.gain_count$}</a></td>
+            <!--td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.gain_count$}</a></td>
             <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.loss_count$}</a></td>
         </tr>
         </tbody>
     </table>    
 </div>
-</div>
+</div-->

@@ -54,7 +54,7 @@ function HomeController($scope,$http,$routeParams,$window,miRNASNP3Service) {
                 url:base_url+'/api/snp_summary',
                 //url:'/api/snp_summary',
                 method:'GET',
-                params:{spe_snp_id:query_snp},
+                params:{snp_id:query_snp},
             }).then(function(response){
                 console.log(response);
                 $scope.snp_summary_list=response.data.snp_summary_list;

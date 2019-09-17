@@ -1332,7 +1332,10 @@ mutation_line={
     'pubmed_id':fields.String,
     'gain_count':fields.String,
     'loss_count':fields.String,
-    'identifier':fields.String
+    'identifier':fields.String,
+    'is_tag':fields.Integer,
+    'is_ld':fields.Integer,
+    'rela_tag_snp':fields.String
 }
 
 count_group={
@@ -1340,22 +1343,30 @@ count_group={
     'count':fields.Integer
 }
 
-mutation_summary={
+mutation_summary_list={
+    'mutation_seed_list':fields.Nested(mutation_line),
+    'mutation_seed_count':fields.Nested(count_group),
+    'mutation_mature_list':fields.Nested(mutation_line),
+    'mutation_mature_count':fields.Nested(count_group),
+    'mutation_premir_list':fields.Nested(mutation_line),
+    'mutation_premir_count':fields.Nested(count_group),
+    'mutation_utr3_list':fields.Nested(mutation_line),
+    'mutation_utr3_count':fields.Nested(count_group),
     'mutation_summary_list':fields.Nested(mutation_line),
     'mutation_summary_count':fields.Nested(count_group)
 }
 
 class MutationSummary(Resource):
-    @marshal_with(mutation_summary)
+    @marshal_with(mutation_summary_list)
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('mut_id', type=str)
         parser.add_argument('page')
-        parser.add_argument('chrome')
-        parser.add_argument('location')
+        #parser.add_argument('chrome')
+        #parser.add_argument('location')
         parser.add_argument('resource')
-        parser.add_argument('snp_rela')
-        parser.add_argument('pubmed_id')
+        #parser.add_argument('snp_rela')
+        #parser.add_argument('pubmed_id')
         parser.add_argument('histology')
         parser.add_argument('pathology')
         parser.add_argument('gene')
@@ -1375,10 +1386,10 @@ class MutationSummary(Resource):
             record_skip = (int(page) - 1) * per_page
         if args['gene']:
             condition['identifier_lower']=args['gene'].lower()
-        if args['chrome']!='All' and args['chrome']:
-            condition['chrome']=args['chrome']
-        if args['location'] != 'All'and args['location']:
-            condition['location']=args['location']
+        #if args['chrome']!='All' and args['chrome']:
+        #    condition['chrome']=args['chrome']
+        #if args['location'] != 'All'and args['location']:
+        #    condition['location']=args['location']
         if args['resource']!='All' and args['resource']:
             condition['resource']=args['resource'].lower()
         if args['histology'] and args['histology'] != 'All':
@@ -1391,10 +1402,10 @@ class MutationSummary(Resource):
             mut_id=args['mut_id']
             if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
                 condition['mut_id']=args['mut_id']
-        if args['snp_rela']:
-            condition['snp_rela']=args['snp_rela']
-        if args['pubmed_id']:
-            condition['pubmed_id']={'$exists':True}
+        #if args['snp_rela']:
+        #    condition['snp_rela']=args['snp_rela']
+        #if args['pubmed_id']:
+        #    condition['pubmed_id']={'$exists':True}
         match_condition={'$match':condition}
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
@@ -1424,6 +1435,373 @@ class MutationSummary(Resource):
 
 api.add_resource(MutationSummary,'/api/mutation_summary')
 
+gene_symbol={
+    'gene_symbol':fields.String,
+    'gene_symbol_lower':fields.String
+}
+gene_list={
+    'gene_list':fields.Nested(gene_symbol),
+    'gene_query':fields.Nested(gene_symbol)
+}
+class GetGene(Resource):
+    @marshal_with(gene_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('gene', type=str)
+        args = parser.parse_args()
+        condition={}
+        accurate_condition={}
+        print(args['gene'])
+        if args['gene']:
+            condition['gene_symbol']={'$regex':args['gene'].lower(),'$options':'$i'}
+            accurate_condition['gene_symbol_lower']=args['gene'].lower()
+            print(accurate_condition)
+            gene_list=mongo.db.snp_summary_genelist.find(condition).limit(10)
+            gene_query=mongo.db.snp_summary_genelist.find(accurate_condition)
+        else:
+            gene_list={}
+            gene_query={}
+        return {'gene_list':list(gene_list),'gene_query':list(gene_query)}
+api.add_resource(GetGene,'/api/snp_summary_gene')
+
+class MutGetGene(Resource):
+    @marshal_with(gene_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('gene', type=str)
+        args = parser.parse_args()
+        condition={}
+        accurate_condition={}
+        print(args['gene'])
+        if args['gene']:
+            condition['gene_symbol']={'$regex':args['gene'].lower(),'$options':'$i'}
+            accurate_condition['gene_symbol_lower']=args['gene'].lower()
+            print(accurate_condition)
+            gene_list=mongo.db.mutation_summary_genelist.find(condition).limit(10)
+            gene_query=mongo.db.mutation_summary_genelist.find(accurate_condition)
+        else:
+            gene_list={}
+            gene_query={}
+        return {'gene_list':list(gene_list),'gene_query':list(gene_query)}
+api.add_resource(MutGetGene,'/api/mutation_summary_gene')
+
+class MutationSummarySeed(Resource):
+    @marshal_with(mutation_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mut_id', type=str)
+        parser.add_argument('page')
+        #parser.add_argument('chrome')
+        parser.add_argument('location')
+        parser.add_argument('resource')
+        #parser.add_argument('snp_rela')
+        #parser.add_argument('pubmed_id')
+        parser.add_argument('histology')
+        parser.add_argument('pathology')
+        parser.add_argument('gene')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page) - 1) * per_page
+        condition = {}
+        histology_dict={}
+        pathology_dict={}
+        match_histology={}
+        match_pathology={}
+        pipline=[]
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page) - 1) * per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome']!='All' and args['chrome']:
+        #    condition['chrome']=args['chrome']
+        #if args['location'] != 'All'and args['location']:
+        #    condition['location']=args['location']
+        if args['resource']!='All' and args['resource']:
+            condition['resource']=args['resource']
+        if args['histology'] and args['histology'] != 'All':
+            histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
+            match_histology={'$match':histology_dict}
+        if args['pathology'] and args['pathology']!='All':
+            pathology_dict['pathology']={'$regex':args['pathology'],'$options':'$i'}
+            match_pathology={'$match':pathology_dict}
+        if args['mut_id']:
+           # mut_id=args['mut_id']
+           # if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
+            condition['mut_id']=args['mut_id']
+        #if args['snp_rela']:
+        #    condition['snp_rela']=args['snp_rela']
+        #if args['pubmed_id']:
+        #    condition['pubmed_id']={'$exists':True}
+        match_condition={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        count_group={'$group':{'_id':'null','count':{'$sum':1}}}
+        if condition:
+            pipline.append(match_condition)
+        if histology_dict:
+            pipline.append(match_histology)
+        if pathology_dict:
+            pipline.append(match_pathology)
+        
+        pipline_count=pipline+[count_group]
+        pipline.append(skip)
+        pipline.append(limit)
+
+        print(condition)
+        print(histology_dict)
+        print(pathology_dict)
+
+        #if condition or histology_dict or pathology_dict:
+        mutation_seed_list=mongo.db.mutation_summary_seed.aggregate(pipline)
+        #else:
+        #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
+        mutation_seed_count=mongo.db.mutation_summary_seed.aggregate(pipline_count)
+       
+        return{'mutation_seed_list':list(mutation_seed_list),'mutation_seed_count':list(mutation_seed_count)}
+
+api.add_resource(MutationSummarySeed,'/api/mutation_summary_seed')
+
+class MutationSummaryMature(Resource):
+    @marshal_with(mutation_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mut_id', type=str)
+        parser.add_argument('page')
+        #parser.add_argument('chrome')
+        #parser.add_argument('location')
+        parser.add_argument('resource')
+        #parser.add_argument('snp_rela')
+        #parser.add_argument('pubmed_id')
+        parser.add_argument('histology')
+        parser.add_argument('pathology')
+        parser.add_argument('gene')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page) - 1) * per_page
+        condition = {}
+        histology_dict={}
+        pathology_dict={}
+        match_histology={}
+        match_pathology={}
+        pipline=[]
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page) - 1) * per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome']!='All' and args['chrome']:
+        #    condition['chrome']=args['chrome']
+        #if args['location'] != 'All'and args['location']:
+        #    condition['location']=args['location']
+        if args['resource']!='All' and args['resource']:
+            condition['resource']=args['resource']
+        if args['histology'] and args['histology'] != 'All':
+            histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
+            match_histology={'$match':histology_dict}
+        if args['pathology'] and args['pathology']!='All':
+            pathology_dict['pathology']={'$regex':args['pathology'],'$options':'$i'}
+            match_pathology={'$match':pathology_dict}
+        if args['mut_id']:
+           # mut_id=args['mut_id']
+           # if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
+            condition['mut_id']=args['mut_id']
+        #if args['snp_rela']:
+        #    condition['snp_rela']=args['snp_rela']
+        #if args['pubmed_id']:
+        #    condition['pubmed_id']={'$exists':True}
+        match_condition={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        count_group={'$group':{'_id':'null','count':{'$sum':1}}}
+        if condition:
+            pipline.append(match_condition)
+        if histology_dict:
+            pipline.append(match_histology)
+        if pathology_dict:
+            pipline.append(match_pathology)
+        
+        pipline_count=pipline+[count_group]
+        pipline.append(skip)
+        pipline.append(limit)
+
+        print(condition)
+        print(histology_dict)
+        print(pathology_dict)
+
+        #if condition or histology_dict or pathology_dict:
+        mutation_mature_list=mongo.db.mutation_summary_mature.aggregate(pipline)
+        #else:
+        #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
+        mutation_mature_count=mongo.db.mutation_summary_mature.aggregate(pipline_count)
+       
+        return{'mutation_mature_list':list(mutation_mature_list),'mutation_mature_count':list(mutation_mature_count)}
+
+api.add_resource(MutationSummaryMature,'/api/mutation_summary_mature')
+
+class MutationSummaryPremir(Resource):
+    @marshal_with(mutation_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mut_id', type=str)
+        parser.add_argument('page')
+        #parser.add_argument('chrome')
+        #parser.add_argument('location')
+        parser.add_argument('resource')
+        #parser.add_argument('snp_rela')
+        #parser.add_argument('pubmed_id')
+        parser.add_argument('histology')
+        parser.add_argument('pathology')
+        parser.add_argument('gene')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page) - 1) * per_page
+        condition = {}
+        histology_dict={}
+        pathology_dict={}
+        match_histology={}
+        match_pathology={}
+        pipline=[]
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page) - 1) * per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome']!='All' and args['chrome']:
+        #    condition['chrome']=args['chrome']
+        #if args['location'] != 'All'and args['location']:
+        #    condition['location']=args['location']
+        if args['resource']!='All' and args['resource']:
+            condition['resource']=args['resource']
+        if args['histology'] and args['histology'] != 'All':
+            histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
+            match_histology={'$match':histology_dict}
+        if args['pathology'] and args['pathology']!='All':
+            pathology_dict['pathology']={'$regex':args['pathology'],'$options':'$i'}
+            match_pathology={'$match':pathology_dict}
+        if args['mut_id']:
+           # mut_id=args['mut_id']
+           # if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
+            condition['mut_id']=args['mut_id']
+        #if args['snp_rela']:
+        #    condition['snp_rela']=args['snp_rela']
+        #if args['pubmed_id']:
+        #    condition['pubmed_id']={'$exists':True}
+        match_condition={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        count_group={'$group':{'_id':'null','count':{'$sum':1}}}
+        if condition:
+            pipline.append(match_condition)
+        if histology_dict:
+            pipline.append(match_histology)
+        if pathology_dict:
+            pipline.append(match_pathology)
+        
+        pipline_count=pipline+[count_group]
+        pipline.append(skip)
+        pipline.append(limit)
+
+        print(condition)
+        print(histology_dict)
+        print(pathology_dict)
+
+        #if condition or histology_dict or pathology_dict:
+        mutation_premir_list=mongo.db.mutation_summary_premir.aggregate(pipline)
+        #else:
+        #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
+        mutation_premir_count=mongo.db.mutation_summary_premir.aggregate(pipline_count)
+       
+        return{'mutation_premir_list':list(mutation_premir_list),'mutation_premir_count':list(mutation_premir_count)}
+
+api.add_resource(MutationSummaryPremir,'/api/mutation_summary_premir')
+
+
+class MutationSummaryUtr3(Resource):
+    @marshal_with(mutation_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mut_id', type=str)
+        parser.add_argument('page')
+        #parser.add_argument('chrome')
+        #parser.add_argument('location')
+        parser.add_argument('resource')
+        #parser.add_argument('snp_rela')
+        #parser.add_argument('pubmed_id')
+        parser.add_argument('histology')
+        parser.add_argument('pathology')
+        parser.add_argument('gene')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page) - 1) * per_page
+        condition = {}
+        histology_dict={}
+        pathology_dict={}
+        match_histology={}
+        match_pathology={}
+        pipline=[]
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page) - 1) * per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome']!='All' and args['chrome']:
+        #    condition['chrome']=args['chrome']
+        #if args['location'] != 'All'and args['location']:
+        #    condition['location']=args['location']
+        if args['resource']!='All' and args['resource']:
+            condition['resource']=args['resource']
+        if args['histology'] and args['histology'] != 'All':
+            histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
+            match_histology={'$match':histology_dict}
+        if args['pathology'] and args['pathology']!='All':
+            pathology_dict['pathology']={'$regex':args['pathology'],'$options':'$i'}
+            match_pathology={'$match':pathology_dict}
+        if args['mut_id']:
+           # mut_id=args['mut_id']
+           # if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
+            condition['mut_id']=args['mut_id']
+        #if args['snp_rela']:
+        #    condition['snp_rela']=args['snp_rela']
+        #if args['pubmed_id']:
+        #    condition['pubmed_id']={'$exists':True}
+        match_condition={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        count_group={'$group':{'_id':'null','count':{'$sum':1}}}
+        if condition:
+            pipline.append(match_condition)
+        if histology_dict:
+            pipline.append(match_histology)
+        if pathology_dict:
+            pipline.append(match_pathology)
+        
+        pipline_count=pipline+[count_group]
+        pipline.append(skip)
+        pipline.append(limit)
+
+        print(condition)
+        print(histology_dict)
+        print(pathology_dict)
+
+        #if condition or histology_dict or pathology_dict:
+        mutation_utr3_list=mongo.db.mutation_summary_utr3.aggregate(pipline)
+        #else:
+        #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
+        mutation_utr3_count=mongo.db.mutation_summary_utr3.aggregate(pipline_count)
+       
+        return{'mutation_utr3_list':list(mutation_utr3_list),'mutation_utr3_count':list(mutation_utr3_count)}
+
+api.add_resource(MutationSummaryUtr3,'/api/mutation_summary_utr3')
+
 snp_line={
     'snp_id':fields.String,
     'snp_chr':fields.String,
@@ -1441,11 +1819,108 @@ snp_line={
 }
 
 snp_summary_list={
+    'snp_seed_list':fields.Nested(snp_line),
+    'snp_seed_count':fields.Integer,
+    'snp_mature_list':fields.Nested(snp_line),
+    'snp_mature_count':fields.Integer,
+    'snp_premir_list':fields.Nested(snp_line),
+    'snp_premir_count':fields.Integer,
+    'snp_utr3_list':fields.Nested(snp_line),
+    'snp_utr3_count':fields.Integer,
     'snp_summary_list':fields.Nested(snp_line),
     'snp_summary_count':fields.Integer
+
 }
 
 class SnpSummary(Resource):
+    @marshal_with(snp_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('snp_id', type=str)
+        #parser.add_argument('page')
+        #parser.add_argument('chrome')
+        #parser.add_argument('location')
+        parser.add_argument('identifier')
+        #parser.add_argument('gmaf')
+        #parser.add_argument('ldsnp')
+        #parser.add_argument('mutation_rela')
+        #parser.add_argument('gene')
+        #parser.add_argument('spe_snp_id')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        #page=1
+        #per_page = 15
+        #record_skip = (int(page)-1)*per_page
+        condition = {}
+        pipline = []
+        
+        #print(args['page'])
+        #print(record_skip)
+        print(args)
+        #if args['page']:
+        #    page=args['page']
+        #    record_skip = (int(page)-1)*per_page
+        #if args['gene']:
+        #    condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome'] != 'All' and args['chrome']:
+        #    condition['snp_chr'] = args['chrome']
+        #if args['spe_snp_id']:
+        #    condition['snp_id']=args['spe_snp_id']
+        if args['snp_id']:
+            #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
+            condition['snp_id']=args['snp_id']
+        if args['identifier']:
+            #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
+            condition['identifier_lower']=args['identifier'].lower()
+        #if args['ldsnp']: 
+        #    condition['ldsnp']=args['ldsnp']
+        #if args['mutation_rela']:
+        #    condition['mutation_rela']=args['mutation_rela']
+        #if args['gmaf'] !='All' and args['gmaf']:
+        #    condition['alt_freq']={'$gt':args['gmaf'][1:]}
+        #if args['location']=="All":
+        #    condition_utr3=condition
+        #    condition_utr3['location']='UTR3'
+        #    snp_utr3_list=mongo.db.snp_summary.find(condition_utr3).skip(record_skip).limit(per_page)
+        #    snp_utr3_count=mongo.db.snp_summary.find(condition_utr3).count()
+        #    condition_seed=condition
+        #    condition_seed['location']='mirseed'
+        #    snp_seed_list=mongo.db.snp_summary.find(condition_seed).skip(record_skip).limit(per_page)
+        #    snp_seed_count=mongo.db.snp_summary.find(condition_seed).count()  
+        #    condition_mature=condition
+        #    condition_mature['location']='mature'
+        #    snp_mature_list=mongo.db.snp_summary.find(condition_mature).skip(record_skip).limit(per_page)
+        #    snp_mature_count=mongo.db.snp_summary.find(condition_mature).count()   
+        #    condition_premir=condition
+        #    condition_premir['location']='pre-miRNA'
+        #    snp_premir_list=mongo.db.snp_summary.find(condition_premir).skip(record_skip).limit(per_page)
+        #    snp_premir_count=mongo.db.snp_summary.find(condition_premir).count()
+          
+        #elif args['location']=='mirseed':
+        #    condition['location']='mirseed'
+        #    snp_seed_list=mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)
+        #    snp_seed_count=mongo.db.snp_summary.find(condition).count()
+        #elif args['location']=='mature':
+        #    condition['location']='mature'
+        #    snp_mature_list=mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)
+        #    snp_mature_count=mongo.db.snp_summary.find(condition).count()
+        #elif args['location']=='pre-miRNA':
+        #    condition['location']='pre-miRNA'
+        #    snp_premir_list=mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)
+        #    snp_premir_count=mongo.db.snp_summary.find(condition).count()
+        #elif args['location']=='UTR3':
+        #    condition['location']='UTR3'
+        #    snp_utr3_list=mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)
+        #    snp_utr3_count=mongo.db.snp_summary.find(condition).count()
+        #print(condition)
+        snp_summary_list=mongo.db.snp_summary.find(condition)
+        snp_summary_count=mongo.db.snp_summary.find(condition).count()
+        
+        return {'snp_summary_list':list(snp_summary_list),'snp_summary_count':snp_summary_count}
+
+api.add_resource(SnpSummary,'/api/snp_summary')
+
+class SnpSummarySeed(Resource):
     @marshal_with(snp_summary_list)
     def get(self):
         parser = reqparse.RequestParser()
@@ -1465,7 +1940,81 @@ class SnpSummary(Resource):
         per_page = 15
         record_skip = (int(page)-1)*per_page
         condition = {}
+        #condition['location']='mirseed'
         pipline = []
+        snp_seed_list={}
+        snp_mature_list={}
+        snp_premir_list={}
+        snp_utr3_list={}
+        snp_seed_count=0
+        snp_mature_count=0
+        snp_premir_count=0
+        snp_utr3_count=0
+        print(args['page'])
+        print(record_skip)
+        print(args)
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page)-1)*per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome'] != 'All' and args['chrome']:
+        #    condition['snp_chr'] = args['chrome']
+        #if args['spe_snp_id']:
+        #    condition['snp_id']=args['spe_snp_id']
+        if args['snp_id']:
+            #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
+            condition['snp_id']=args['snp_id']
+        if args['identifier']:
+            #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
+            condition['identifier_lower']=args['identifier'].lower()
+        if args['ldsnp']:
+            condition['ldsnp']=args['ldsnp']
+       # if args['mutation_rela']:
+       #     condition['mutation_rela']=args['mutation_rela']
+        if args['gmaf'] !='All' and args['gmaf']:
+            condition['alt_freq']={'$gt':args['gmaf'][1:]}
+        match={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        pipline=[match,skip,limit]
+        snp_seed_list=mongo.db.snp_summary_mirseed.aggregate(pipline)
+        snp_seed_count=mongo.db.snp_summary_mirseed.find(condition).count()
+
+        return {'snp_seed_list':list(snp_seed_list),'snp_seed_count':snp_seed_count}
+
+api.add_resource(SnpSummarySeed,'/api/snp_summary_seed')
+
+class SnpSummaryMature(Resource):
+    @marshal_with(snp_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('page')
+        parser.add_argument('chrome')
+        parser.add_argument('location')
+        parser.add_argument('identifier')
+        parser.add_argument('gmaf')
+        parser.add_argument('ldsnp')
+        parser.add_argument('mutation_rela')
+        parser.add_argument('gene')
+        parser.add_argument('spe_snp_id')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page)-1)*per_page
+        condition = {}
+        condition['location']='mature'
+        pipline = []
+        snp_seed_list={}
+        snp_mature_list={}
+        snp_premir_list={}
+        snp_utr3_list={}
+        snp_seed_count=0
+        snp_mature_count=0
+        snp_premir_count=0
+        snp_utr3_count=0
         print(args['page'])
         print(record_skip)
         print(args)
@@ -1482,23 +2031,148 @@ class SnpSummary(Resource):
             #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
             condition['snp_id']=args['snp_id']
         if args['identifier']:
-            condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
-        if args['location']!='All' and args['location']:
-            condition['location']=args['location']
+            #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
+            condition['identifier_lower']=args['identifier'].lower()
         if args['ldsnp']:
             condition['ldsnp']=args['ldsnp']
         if args['mutation_rela']:
             condition['mutation_rela']=args['mutation_rela']
         if args['gmaf'] !='All' and args['gmaf']:
             condition['alt_freq']={'$gt':args['gmaf'][1:]}
-        print(condition)
-        snp_summary_list = mongo.db.snp_summary.find(condition).skip(record_skip).limit(per_page)
-        snp_summary_count = mongo.db.snp_summary.find(condition).count()
-        print(str(snp_summary_count))
-        return {'snp_summary_list':list(snp_summary_list),'snp_summary_count':snp_summary_count}
+        snp_mature_list=mongo.db.snp_summary_mature.find(condition).skip(record_skip).limit(per_page)
+        snp_mature_count=mongo.db.snp_summary_mature.find(condition).count()
 
-api.add_resource(SnpSummary,'/api/snp_summary')
+        return {'snp_mature_list':list(snp_mature_list),'snp_mature_count':snp_mature_count}
 
+api.add_resource(SnpSummaryMature,'/api/snp_summary_mature')
+
+class SnpSummaryPremir(Resource):
+    @marshal_with(snp_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('page')
+        parser.add_argument('chrome')
+        parser.add_argument('location')
+        parser.add_argument('identifier')
+        parser.add_argument('gmaf')
+        parser.add_argument('ldsnp')
+        parser.add_argument('mutation_rela')
+        parser.add_argument('gene')
+        parser.add_argument('spe_snp_id')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page)-1)*per_page
+        condition = {}
+        condition['location']='pre-miRNA'
+        pipline = []
+        snp_seed_list={}
+        snp_mature_list={}
+        snp_premir_list={}
+        snp_utr3_list={}
+        snp_seed_count=0
+        snp_mature_count=0
+        snp_premir_count=0
+        snp_utr3_count=0
+        print(args['page'])
+        print(record_skip)
+        print(args)
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page)-1)*per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        if args['chrome'] != 'All' and args['chrome']:
+            condition['snp_chr'] = args['chrome']
+        if args['spe_snp_id']:
+            condition['snp_id']=args['spe_snp_id']
+        if args['snp_id']:
+            #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
+            condition['snp_id']=args['snp_id']
+        if args['identifier']:
+            #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
+            condition['identifier_lower']=args['identifier'].lower()
+        if args['ldsnp']:
+            condition['ldsnp']=args['ldsnp']
+        if args['mutation_rela']:
+            condition['mutation_rela']=args['mutation_rela']
+        if args['gmaf'] !='All' and args['gmaf']:
+            condition['alt_freq']={'$gt':args['gmaf'][1:]}
+        snp_premir_list=mongo.db.snp_summary_premir.find(condition).skip(record_skip).limit(per_page)
+        snp_premir_count=mongo.db.snp_summary_premir.find(condition).count()
+
+        return {'snp_premir_list':list(snp_premir_list),'snp_premir_count':snp_premir_count}
+
+api.add_resource(SnpSummaryPremir,'/api/snp_summary_premir')
+
+class SnpSummaryUtr3(Resource):
+    @marshal_with(snp_summary_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('snp_id', type=str)
+        parser.add_argument('page')
+        parser.add_argument('chrome')
+        parser.add_argument('location')
+        parser.add_argument('identifier')
+        parser.add_argument('gmaf')
+        parser.add_argument('ldsnp')
+        parser.add_argument('mutation_rela')
+        parser.add_argument('gene')
+        parser.add_argument('spe_snp_id')
+        args = parser.parse_args()
+        #print(args['chrome'])
+        page=1
+        per_page = 15
+        record_skip = (int(page)-1)*per_page
+        condition = {}
+        #condition['location']='UTR3'
+        pipline = []
+        snp_seed_list={}
+        snp_mature_list={}
+        snp_premir_list={}
+        snp_utr3_list={}
+        snp_seed_count=0
+        snp_mature_count=0
+        snp_premir_count=0
+        snp_utr3_count=0
+        print(args['page'])
+        print(record_skip)
+        print(args)
+        if args['page']:
+            page=args['page']
+            record_skip = (int(page)-1)*per_page
+        if args['gene']:
+            condition['identifier_lower']=args['gene'].lower()
+        #if args['chrome'] != 'All' and args['chrome']:
+        #    condition['snp_chr'] = args['chrome']
+        #if args['spe_snp_id']:
+        #    condition['snp_id']=args['spe_snp_id']
+        if args['snp_id']:
+            #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
+            condition['snp_id']=args['snp_id']
+        if args['identifier']:
+            #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
+            condition['identifier_lower']=args['identifier'].lower()
+        if args['ldsnp']:
+            condition['ldsnp']=args['ldsnp']
+        #if args['mutation_rela']:
+        #    condition['mutation_rela']=args['mutation_rela']
+        if args['gmaf'] !='All' and args['gmaf']:
+            condition['alt_freq']={'$gt':args['gmaf'][1:]}
+
+        match={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        pipline=[match,skip,limit]
+        
+        snp_utr3_list=mongo.db.snp_summary_utr3.aggregate(pipline)
+        snp_utr3_count=mongo.db.snp_summary_utr3.find(condition).count()
+
+        return {'snp_utr3_list':list(snp_utr3_list),'snp_utr3_count':snp_utr3_count}
+
+api.add_resource(SnpSummaryUtr3,'/api/snp_summary_utr3')
 
 cosmic_line = {
     'ID_NCV':fields.String,

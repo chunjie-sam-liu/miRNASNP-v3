@@ -12,7 +12,9 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
    // var base_url=miRNASNP3Service.getAPIBaseUrl();
     $scope.query_mutation=$routeParams.mut_id;
+    var location=$routeParams.location;
     console.log($routeParams.mut_id);
+    console.log($routeParams.location)
 	var page=1;
 
 	$scope.clear=function(){
@@ -49,39 +51,126 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 			$scope.class_five="ative"
 		}
 	};
-
+    console.log(location)
     $scope.fetch_mutation_details=function(){
         var page=1;
-    	$http({
-            url: base_url+'/api/mutation_summary',
-            //url:'/api/mutation_summary',
-            method: 'GET',
-            params: {mut_id:$scope.query_mutation,page:page}
-        }).then(
-            function (response) {
-                console.log(response);
-                $scope.mutation_summary_list=response.data.mutation_summary_list;
-                $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
-                var data_list=$scope.mutation_summary_list
+    	switch(location){
+            case 'mirseed':
+                {
+                $http({
+                    url:base_url+'/api/mutation_summary_seed',
+                    method:'GET',
+                    params:{mut_id:$scope.query_mutation}
+                }).then(function(response){
+                    console.log(response)
+                    $scope.initial=0;
+                    $scope.mutation_summary_list=response.data.mutation_seed_list;
+                    $scope.mutation_summary_count=response.data.mutation_seed_count[0].count;
+                    var data_list=$scope.mutation_summary_list
                 for(var i=0;i<data_list.length;i++){
-                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
-                if(data_list[i].resource=="clinvar"){data_list[i].resource="ClinVar"}
-                if(data_list[i].resource=="cosmic"){data_list[i].resource="COSMIC"}
-
-            }
+                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                    if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                    if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                    //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                    data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                    data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                }
                 $scope.mutation_alias=$scope.mutation_summary_list.shift();
                 console.log($scope.mutation_alias)
                 $scope.mutation_alias_count=$scope.mutation_summary_list.length
                 console.log($scope.mutation_alias_count)
-            });
-	};
+                })
+                break;
+            }
+            case 'mature':
+                {
+                    $http({
+                        url:base_url+'/api/mutation_summary_mature',
+                        method:'GET',
+                        params:{mut_id:$scope.query_mutation}
+                    }).then(function(response){
+                        console.log(response)
+                        $scope.initial=0;
+                        $scope.mutation_summary_list=response.data.mutation_mature_list;
+                        $scope.mutation_summary_count=response.data.mutation_mature_count[0].count;
+                        var data_list=$scope.mutation_summary_list
+                    for(var i=0;i<data_list.length;i++){
+                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                        if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                        if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                        //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    }
+                    $scope.mutation_alias=$scope.mutation_summary_list.shift();
+                    console.log($scope.mutation_alias)
+                    $scope.mutation_alias_count=$scope.mutation_summary_list.length
+                    console.log($scope.mutation_alias_count)
+                    })
+                    break;  
+                }
+            case 'pre-miRNA':
+                {
+                    $http({
+                        url:base_url+'/api/mutation_summary_premir',
+                        method:'GET',
+                        params:{mut_id:$scope.query_mutation}
+                    }).then(function(response){
+                        console.log(response)
+                        $scope.initial=0;
+                        $scope.mutation_summary_list=response.data.mutation_premir_list;
+                        $scope.mutation_summary_count=response.data.mutation_premir_count[0].count;
+                        var data_list=$scope.mutation_summary_list
+                    for(var i=0;i<data_list.length;i++){
+                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                        if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                        if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                        //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    }
+                    $scope.mutation_alias=$scope.mutation_summary_list.shift();
+                    console.log($scope.mutation_alias)
+                    $scope.mutation_alias_count=$scope.mutation_summary_list.length
+                    console.log($scope.mutation_alias_count)
+                    })
+                    break; 
+                }
+            case 'UTR3':
+                {
+                    $http({
+                        url:base_url+'/api/mutation_summary_utr3',
+                        method:'GET',
+                        params:{mut_id:$scope.query_mutation}
+                    }).then(function(response){
+                        console.log(response)
+                        $scope.initial=0;
+                        $scope.mutation_summary_list=response.data.mutation_utr3_list;
+                        $scope.mutation_summary_count=response.data.mutation_utr3_count[0].count;
+                        var data_list=$scope.utr3_list
+                    for(var i=0;i<data_list.length;i++){
+                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                        if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                        if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                        data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    }
+                    $scope.mutation_alias=$scope.mutation_summary_list.shift();
+                    console.log($scope.mutation_alias)
+                    $scope.mutation_alias_count=$scope.mutation_summary_list.length
+                    console.log($scope.mutation_alias_count)
+                    })  
+                }
+    }
+    }
 	$scope.fetch_mutation_details();
 
     $scope.fetch_target_gain_mut = function (page) {
         console.log($scope.query_mutation);
     	$http({
+            //!apache_url!//url:base_url+base_url+'/api/mut_seed_gain',
             url:base_url+'/api/mut_seed_gain',
-            //url:'/api/mut_seed_gain',
 			method: 'GET',
 			params: {mut_id: $scope.query_mutation,page:page}
             }).then(
@@ -119,8 +208,8 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
             if(flag==0){
                 console.log(query_gene_gain)
                 $http({
+                    //!apache_url!//url:base_url+base_url+'/api/mut_seed_gain',
                     url:base_url+'/api/mut_seed_gain',
-                    //url:'/api/mut_seed_gain',
                     method: 'GET',
                     params: {mut_id: $scope.query_mutation,page:page,gene:query_gene_gain}
                     }).then(
@@ -148,8 +237,8 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
     $scope.fetch_target_loss_mut = function (page) {
     	$http({
+            //!apache_url!//url:base_url+base_url+'/api/mut_seed_loss',
             url:base_url+'/api/mut_seed_loss',
-            //url:'/api/mut_seed_loss',
 			method: 'GET',
 			params: {mut_id: $scope.query_mutation,page:page}
             }).then(
@@ -186,8 +275,8 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
             if(flag==0){
                 console.log(query_gene_loss)
                 $http({
+                    //url:base_url+base_url+'/api/mut_seed_loss',
                     url:base_url+'/api/mut_seed_loss',
-                    //url:'/api/mut_seed_loss',
                     method: 'GET',
                     params: {mut_id: $scope.query_mutation,page:page,gene:query_gene_loss}
                     }).then(
@@ -215,8 +304,8 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
     $scope.fetch_utr_gain_mut=function(page){
         $http({
+            //url:base_url+base_url+'/api/mut_utr_gain',
             url:base_url+'/api/mut_utr_gain',
-            //url:'/api/mut_utr_gain',
             method:'GET',
             params:{mut_id:$scope.query_mutation,page:page}
         }).then(function(response){
@@ -241,8 +330,8 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
     $scope.fetch_utr_loss_mut=function(page){
         $http({
+            //url:base_url+base_url+'/api/mut_utr_loss',
             url:base_url+'/api/mut_utr_loss',
-           //url:'/api/mut_utr_loss',
             method:'GET',
             params:{mut_id:$scope.query_mutation,page:page}
         }).then(function(response){

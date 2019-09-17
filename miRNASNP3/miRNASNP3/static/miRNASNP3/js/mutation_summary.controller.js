@@ -14,45 +14,198 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     var base_url = miRNASNP3Service.getAPIBaseUrl();
     var gene=$routeParams.gene
     $scope.initial=1;
+    $scope.flag_identifier=0;
+
+
+    $scope.clear = function () {
+        $scope.seed = 0;
+        $scope.mature = 0;
+        $scope.premir = 0;
+        $scope.utr3 = 0;
+    };
+    $scope.seed = 1;
+    $scope.show_one = function (refer) {
+        console.log(refer);
+        $scope.clear();
+        if (refer == "seed") {
+            $scope.seed = 1;
+            $scope.class_seed = "ative";
+        }
+        if (refer == "mature") {
+            $scope.mature = 1;
+            $scope.class_mature = "ative";
+        }
+        if (refer == "premir") {
+            $scope.premir = 1;
+            $scope.class_premir = "ative";
+        }
+        if (refer == "utr3") {
+            $scope.utr3 = 1;
+            $scope.class_utr3 = "ative"
+        }
+    }
+
+
+    //for input genes 
+    function addAnnotationInputKeyupHandler(){
+        var $query_iden_summary = $("#query_iden_summary");
+        $query_iden_summary.keyup(function () {
+            console.log("addAnnotationInputKeyupHandler");
+            clearValidationStyles(this);
+            //var query_iden_summary = this.value.trim();
+            var query_iden_summary = $.trim($('#query_iden_summary').val())
+            if (query_iden_summary != '') {
+                checkAnnotationInput(query_iden_summary.toLowerCase(), this);
+            }
+        });
+    }
+
+    //----------------------------------------------------------------
+    // clear validation styles
+    function clearValidationStyles(obj) {
+        console.log("clearValidationStyles")
+        var $parent = $(obj).parent();
+        console.log($parent)
+        $parent.children('label').text('');
+        $parent.removeClass('has-error').removeClass('has-success');
+        $parent.children('span')
+            .removeClass('glyphicon-remove-sign')
+            .removeClass('glyphicon-ok-sign');
+        $scope.flag_identifier=0;        
+    }
+    // --------------------------------------------------------------
+
+    // check input in backend
+    function checkAnnotationInput(annotation, obj, url) {
+        console.log("checkAnnotationInput")
+        url=  '/api/snp_summary_gene?gene=';
+        $.getJSON(url+annotation, function(data){
+            console.log(data)
+            if(data.gene_query.length > 0){
+                showSuccess(obj,'');
+            }else{
+                showError(obj, 'No match for ['+ annotation +']')
+            }
+        });
+    }
+    //---------------------------------------------------------------
+
+    // show success to query
+    function showSuccess(obj, msg) {
+        clearValidationStyles(obj);
+        var $parent = $(obj).parent();
+        $parent.addClass('has-success');
+        $parent.children('span').addClass('glyphicon-ok-sign');
+        $parent.children('label').text(msg);
+        $scope.flag_identifier=0;   
+    }
+    // --------------------------------------------------------------
+
+    // show errors
+    function showError(obj, msg) {
+        clearValidationStyles(obj);
+        var $parent = $(obj).parent();
+        $parent.addClass('has-error');
+        $parent.children('span').addClass('glyphicon-remove-sign');
+        $parent.children('label').text('Error: ' + msg);
+        $scope.flag_identifier=1;
+    }
+    // --------------------------------------------------------------
+     // search autocomplete
+     function check_input_autocomplete(){
+         console.log("check_input_autocomplete")
+        $("#query_iden_summary").autocomplete({
+            autoFocus: true,
+            source: function(request, response){
+                var url = base_url+'/api/mutation_summary_gene?gene=' + request.term.trim();
+                //url = '/api/mutation_summary_gene?gene=' + request.term.trim();
+                $.getJSON(
+                    url,
+                    function(data){
+                        console.log(data)
+                        response($.map(data.gene_list, function(item){
+                            console.log(item)
+                           // var genes=[] 
+                            //for(var i=0;i<item.gene_list.length;i++){
+                             //   genes.push(item.gene_list[i].gene_symbol)
+                            //}
+                            return item.gene_symbol}))
+
+                    }
+                );
+            },
+            select: function(event, ui){
+                showSuccess(this);
+            }
+        });
+    }
+    addAnnotationInputKeyupHandler()
+    check_input_autocomplete()
 
     $scope.fetch_mutation_summary=function(){
 
         $scope.mutation_summary_count=0;
-        condition['chrome']='All';
-        condition['location']='All';
+        $scope.seed_count=0;
+        $scope.mature_count=0;
+        $scope.premir_count=0;
+        $scope.utr3_count=0;
+        $scope.initial=1;
+        $scope.flag_identifier=0;
+        $scope.flag_phenotype=0;
+       // condition['chrome']='All';
+        //condition['location']='All';
         condition['resource']='All';
-        condition["snp_rela"]='';
-        condition['pubmed_id']='';
+        //condition["snp_rela"]='';
+       // condition['pubmed_id']='';
         condition['page']=1
 
         if (gene){
             condition['gene']=gene
         }
-        var chr = $("#chr option:selected").text();
-        if (chr!="All"){
-            condition["chrome"]=chr
-        }
-        var location=$("#location option:selected").val();
-        if(location!="All"){
-            condition['location']=location
-        }
+        //var chr = $("#chr option:selected").text();
+        //if (chr!="All"){
+        //    condition["chrome"]=chr
+        //}
+        //var location=$("#location option:selected").val();
+        //if(location!="All"){
+        //    condition['location']=location
+        //}
         var resource=$("#resource option:selected").text();
         if(resource!="All"){
             condition['resource']=resource
         }
     
         
+        var query_iden_summary=$.trim($('#query_iden_summary').val());
+        if (/[@#\$%\^&\*<>\.]+/g.test(query_iden_summary)) {
+            alert("Invalid input");
+            $scope.flag_identifier = 1;
+            history.back();
+         
+        }else{
+            condition['gene']=query_iden_summary
+        }
+
+        var query_phenotype_summary=$.trim($('#query_phenotype_summary').val());
+        if (/[@#\$%\^&\*<>\.]+/g.test(query_phenotype_summary)) {
+            alert("Invalid input");
+            $scope.flag_phenotype = 1;
+            history.back();
+         
+        }else{
+            condition['pathology']=query_phenotype_summary
+        }
+
+
         $('#histology').change(function(){
            console.log("change histology")
             condition['histology']=$('#histology').selectpicker('val')
         });
-        $('#pathology').change(function(){
-        condition['pathology']=$('#pathology').selectpicker('val')
-        })
+        
     
-        if ($("#snp_rela").is(":checked")){
-            condition["snp_rela"]=1
-        }
+        //if ($("#snp_rela").is(":checked")){
+         //   condition["snp_rela"]=1
+        //}
         //if ($("#is_pubmed").is(":checked")){
         //    condition['pubmed_id']=1
         //}
@@ -60,30 +213,93 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
 
         //condition['target_effection']=$scope.target_effection;
         console.log(condition)
-        $http({
-            url:base_url+'/api/mutation_summary',
-            //url:'/api/mutation_summary',
-            method:'GET',
-            params:condition,
-        }).then(function (response) {
-            console.log(response);
-            $scope.initial=0;
-            $scope.mutation_summary_list=response.data.mutation_summary_list;
-            $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
-            var data_list=$scope.mutation_summary_list
+        if($scope.flag_identifier==0 && $scope.flag_phenotype==0){
+            $http({
+                
+                url:base_url+'/api/mutation_summary_seed',
+                method:'GET',
+                params:condition
+            }).then(function(response){
+                $scope.initial=0;
+                console.log(response)
+                $scope.seed_list=response.data.mutation_seed_list;
+                if(response.data.mutation_seed_count.length!=0){$scope.seed_count=response.data.mutation_seed_count[0].count;}
+                var data_list=$scope.seed_list
             for(var i=0;i<data_list.length;i++){
                 data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
-                if(data_list[i].resource=="clinvar"){data_list[i].resource="ClinVar";data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
-                if(data_list[i].resource=="cosmic"){data_list[i].resource="COSMIC";data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+            }
+            })
+            $http({
+                
+                url:base_url+'/api/mutation_summary_mature',
+                method:'GET',
+                params:condition
+            }).then(function(response){
+                $scope.initial=0;
+                console.log(response)
+                $scope.mature_list=response.data.mutation_mature_list;
+                if(response.data.mutation_mature_count.length!=0){$scope.mature_count=response.data.mutation_mature_count[0].count;}
+                var data_list=$scope.mature_list
+            for(var i=0;i<data_list.length;i++){
+                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+            }
+            })
+            $http({
+                
+                url:base_url+'/api/mutation_summary_premir',
+                method:'GET',
+                params:condition
+            }).then(function(response){
+                $scope.initial=0;
+                console.log(response)
+                $scope.premir_list=response.data.mutation_premir_list;
+                if(response.data.mutation_premir_count.length!=0){$scope.premir_count=response.data.mutation_premir_count[0].count;}
+                var data_list=$scope.premir_list
+            for(var i=0;i<data_list.length;i++){
+                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+            }
+            })
+            $http({
+                
+                url:base_url+'/api/mutation_summary_utr3',
+                method:'GET',
+                params:condition
+            }).then(function(response){
+                $scope.initial=0;
+                console.log(response)
+                $scope.utr3_list=response.data.mutation_utr3_list;
+                if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
+                var data_list=$scope.utr3_list
+            for(var i=0;i<data_list.length;i++){
+                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                 data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
-        })
-    };
+            })
+        }
+    }
+        
     $scope.fetch_mutation_summary()
 
-    $scope.update_page=function(page){
+    $scope.update_page=function(page,location){
         condition['chrome']='All';
         condition['location']='All';
         condition['resource']='All';
@@ -94,14 +310,14 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         if (gene){
             condition['gene']=gene
         }
-        var chr = $("#chr option:selected").text();
-        if (chr!="All"){
-            condition["chrome"]=chr
-        }
-        var location=$("#location option:selected").val();
-        if(location!="All"){
-            condition['location']=location
-        }
+        //var chr = $("#chr option:selected").text();
+        //if (chr!="All"){
+        //    condition["chrome"]=chr
+       // }
+        //var location=$("#location option:selected").val();
+        //if(location!="All"){
+         //   condition['location']=location
+       // }
         var resource=$("#resource option:selected").text();
         if(resource!="All"){
             condition['resource']=resource
@@ -116,41 +332,117 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         condition['pathology']=$('#pathology').selectpicker('val')
         })
     
-        if ($("#snp_rela").is(":checked")){
-            condition["snp_rela"]=1
-        }
+       // if ($("#snp_rela").is(":checked")){
+        //    condition["snp_rela"]=1
+        //}
         //if ($("#is_pubmed").is(":checked")){
         //    condition['pubmed_id']=1
         //}
         
+        switch(location){
+            case 'mirseed':
+                {
+                $http({
+                    
+                    url:base_url+'/api/mutation_summary_seed',
+                    method:'GET',
+                    params:condition
+                }).then(function(response){
+                    console.log(response)
+                    $scope.initial=0;
+                    $scope.seed_list=response.data.mutation_seed_list;
+                    $scope.seed_count=response.data.mutation_seed_count[0].count;
+                    var data_list=$scope.seed_list
+                for(var i=0;i<data_list.length;i++){
+                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                    if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                    if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                    //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                    data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                    data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                }
+                })
+                break;
+            }
+            case 'mature':
+                {
+                    $http({
+                        
+                        url:base_url+'/api/mutation_summary_mature',
+                        method:'GET',
+                        params:condition
+                    }).then(function(response){
+                        console.log(response)
+                        $scope.initial=0;
+                        $scope.mature_list=response.data.mutation_mature_list;
+                        $scope.mature_count=response.data.mutation_mature_count[0].count;
+                        var data_list=$scope.mature_list
+                    for(var i=0;i<data_list.length;i++){
+                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                        if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                        if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                        //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    }
+                    })
+                    break;  
+                }
+            case 'pre-miRNA':
+                {
+                    $http({
+                        
+                        url:base_url+'/api/mutation_summary_premir',
+                        method:'GET',
+                        params:condition
+                    }).then(function(response){
+                        console.log(response)
+                        $scope.initial=0;
+                        $scope.premir_list=response.data.mutation_premir_list;
+                        $scope.premir_count=response.data.mutation_premir_count[0].count;
+                        var data_list=$scope.premir_list
+                    for(var i=0;i<data_list.length;i++){
+                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                        if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                        if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                        //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    }
+                    })
+                    break; 
+                }
+            case 'UTR3':
+                {
+                    $http({
+                        
+                        url:base_url+'/api/mutation_summary_utr3',
+                        method:'GET',
+                        params:condition
+                    }).then(function(response){
+                        console.log(response)
+                        $scope.initial=0;
+                        $scope.utr3_list=response.data.mutation_utr3_list;
+                        $scope.utr3_count=response.data.mutation_utr3_count[0].count;
+                        var data_list=$scope.utr3_list
+                    for(var i=0;i<data_list.length;i++){
+                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                        if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                        if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                        data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    }
+                    })  
+                }
 
+        }
         //condition['target_effection']=$scope.target_effection;
         console.log(condition)
-        $http({
-            url:base_url+'/api/mutation_summary',
-            //url:'/api/mutation_summary',
-            method:'GET',
-            params:condition,
-        }).then(function (response) {
-            console.log(response);
-            $scope.initial=0;
-            $scope.mutation_summary_list=response.data.mutation_summary_list;
-           // $scope.mutation_summary_count=response.data.mutation_summary_count[0].count;
-            var data_list=$scope.mutation_summary_list
-            for(var i=0;i<data_list.length;i++){
-                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
-                if(data_list[i].resource=="clinvar"){data_list[i].resource="ClinVar";data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
-                if(data_list[i].resource=="cosmic"){data_list[i].resource="COSMIC";data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
-                if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
-                data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
-                data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
-            }
-        })
     }
 
     $scope.reset=function(){
         $('#histology').selectpicker('val','All')
-        $('#pathology').selectpicker('val','All')
         condition['histology']='All'
         condition['pathology']='All'
     }
