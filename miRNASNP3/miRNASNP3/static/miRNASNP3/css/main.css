@@ -372,3 +372,11 @@ div.div-table {
 li.list-group-item.list-group-item-primary:hover {
   background-color: #f4f5e3;
 }
+.thumbnail a > img {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+.thumbnail .caption {
+  padding: 0px;
+  color: #333;
+}

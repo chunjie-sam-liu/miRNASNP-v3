@@ -135,7 +135,7 @@
                 <td align="center">{$ v.mirna_id$}</td>
                 <td align="center">{$v.snp_id$}</td>
                 <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}<br>{$v.utr_info.enst_id$}</td>
-                <td align="center">miRmap:{$v.site_info.chrome$}:{$v.site_info.mm-start$}-{$v.site_info.mm_end$}<br>{$v.site_info.chrome$}:{$v.site_info.tgs_start$}-{$v.site_info.tgs_end$}</td>
+                <td align="center">miRmap:{$v.site_info.chrome$}:{$v.site_info.mm_start$}-{$v.site_info.mm_end$}<br>TargetScan:{$v.site_info.chrome$}:{$v.site_info.tgs_start$}-{$v.site_info.tgs_end$}</td>
                 <td align="center">
                     <span ng-if="v.gene_expression[0]">
                     <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
