@@ -369,3 +369,6 @@ div.div-table {
   float: left;
   margin-left: 111px;
 }
+li.list-group-item.list-group-item-primary:hover {
+  background-color: #f4f5e3;
+}
