@@ -12,24 +12,25 @@
         </div>
         <div class="collapse navbar-collapse" id="navigation">
             <ul class="nav navbar-nav">
+           
                 <!--li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown"><strong>miRNA</strong><span
+                    <a class="dropdown-toggle" data-toggle="dropdown">miRNA<span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#!/mirna_summary">Mature miRNA</a> </li>
                         <li><a href="#!/primir_summary">Pre-miRNA</a></li>
                     </ul>
                 </li-->
-                <li><a href="#!/snp_summary">SNP</a> </li>
-                <li><a href="#!/mutation_summary">Phenotype</a></li>
-                <li><a href="#!/mirna_summary">Mature-miRNA</a> </li>
-                <li><a href="#!/primir_summary">Pre-miRNA</a> </li>
+                <li id=mature-nav ng-click=nav_mature()><a href="#!/mirna_summary">Mature-miRNA</a> </li>
+                <li id=premir-nav ng-click=nav_premir()><a href="#!/primir_summary">Pre-miRNA</a> </li>
+                <li id=snp-nav ng-click="nav_snp()"><a href="#!/snp_summary">SNP</a> </li>
+                <li id=phenotype-nav ng-click=nav_phenotype()><a href="#!/mutation_summary">Phenotype</a></li>
                 <li><a href="#!/tools">Tools</a></li>
                 <li><a href="#!/download">Download</a> </li>
                 <li><a href="#!/document">Document</a></li>
                
             </ul>
-            <!-- <a class="btn btn-success help-block" href="http://bioinfo.life.hust.edu.cn/miRNASNP2" target="_blank" style="color:white"><strong>Archive</strong></a> -->
+            <!-- <a class="btn btn-success help-block" href="http://bioinfo.life.hust.edu.cn/miRNASNP2" target="_blank" style="color:white">Archive</a> -->
         </div>
     </nav>
 </div>

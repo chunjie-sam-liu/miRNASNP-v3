@@ -8,7 +8,7 @@
 
 <ul class="nav nav-tabs"  ng-show="snp_summary_count">
     <li id="one" ng-click="show_one('one')" ng-show="snp_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>SNP Details</strong></a> </li>
+        class="class_one" ><a data-toggle="tab"><strong>SNP Details</strong></a> </li>
     <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNP in seed</strong></a> </li>
     <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
@@ -23,8 +23,8 @@
         class="class_five" ><a data-toggle="tab"><strong>SNP Ralate Mutation</strong></a> </li>
 </ul>
 
-<div ng-show="snp_summary_count">
-    <div class="panel panel-info" ng-show="one" id="section-1">
+<div ng-show="one" id="section-1">
+    <div class="panel panel-info" ng-show="snp_summary_count">
         <div class="panel-heading" >
             <strong>Basic Information of SNP : {$ query_snp $}</strong>
         </div>
@@ -96,6 +96,7 @@
         </div>
     </div>
 </div>
+
 
 <div ng-show="two">
 <div class="panel panel-info" id="section-2">
@@ -440,7 +441,7 @@
 
 <div class="panel panel-info" ng-show="six" id="section-6">
     <div class="panel-heading" style="background-color: #c4e3f3">
-        <strong style="color: black">{$ query_snp $}in GWAS LD regions</strong>
+        <strong style="color: black">{$ query_snp $} in GWAS LD regions</strong>
     </div>
     <div class="panel-body">
         <div class="col-lg-9">

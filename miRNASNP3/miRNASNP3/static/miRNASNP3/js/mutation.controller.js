@@ -17,6 +17,12 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
     console.log($routeParams.location)
 	var page=1;
 
+    var one=$routeParams.one;
+    var two=$routeParams.two;
+    var three=$routeParams.three;
+    var four=$routeParams.four;
+    var five=$routeParams.five;
+
 	$scope.clear=function(){
 		$scope.one=0;
 		$scope.two=0;
@@ -26,7 +32,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 		$scope.six=0;
 		$scope.seven=0;
 	};
-	$scope.one=1;
+	$scope.clear()
 	$scope.show_one=function(refer){
 		console.log(refer);
 		$scope.clear()
@@ -50,7 +56,13 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 			$scope.five=1;
 			$scope.class_five="ative"
 		}
-	};
+    };
+    if(one){$scope.show_one('one');$('#one').addClass('active')}
+    else if(two){$scope.show_one('two');$('#two').addClass('active')}
+    else if(three){$scope.show_one('three');$('#three').addClass('active')}
+    else if(four){$scope.show_one('four');$('#four').addClass('active')}
+    else if(five){$scope.show_one('five');$('#five').addClass('active')}
+    
     console.log(location)
     $scope.fetch_mutation_details=function(){
         var page=1;
@@ -147,7 +159,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                         $scope.initial=0;
                         $scope.mutation_summary_list=response.data.mutation_utr3_list;
                         $scope.mutation_summary_count=response.data.mutation_utr3_count[0].count;
-                        var data_list=$scope.utr3_list
+                        var data_list=$scope.mutation_summary_list
                     for(var i=0;i<data_list.length;i++){
                         data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
@@ -200,7 +212,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
         $('#search_gene').on('input propertychange', function() {
             var query_gene_gain = $.trim($('#search_gene').val());
             console.log(query_gene_gain)
-            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
+            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_gain)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
@@ -267,7 +279,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
         $('#search_gene_loss').on('input propertychange', function() {
             var query_gene_loss = $.trim($('#search_gene_loss').val());
             console.log(query_gene_loss)
-            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
+            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();

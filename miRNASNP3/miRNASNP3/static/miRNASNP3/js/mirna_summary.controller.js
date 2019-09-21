@@ -19,10 +19,15 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     var base_url = miRNASNP3Service.getAPIBaseUrl();
     //$('#query_mirna_summary').val("hsa-let-7a-3p");
     $scope.initial=1;
-    
+    $scope.close_invalid=function(){
+        $scope.alert_invalid=0;
+        $scope.alert_nonitem=0;
+    }
     $scope.fetch_mirna_summary=function(){
         var flag_mirna=0;
         var condition={}
+        $scope.alert_nonitem=0;
+        $scope.alert_invalid=0;
         $scope.mirna_summary_count=0
         condition['chrome']='All';
         condition['mirna_id']='';
@@ -37,17 +42,17 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     //});
         
         var mirna_id = $.trim($('#query_mirna_summary').val());
-        if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
-            alert("Invalid input");
+        if (/[@#\$%\^&\*<>\.\\\/]+/g.test(mirna_id)) {
             flag_mirna = 1;
-            history.back();
+            $scope.alert_invalid=1;
+            $('#alert_invalid').show()
         }
         if(flag_mirna==0){
             condition['mirna_id']=mirna_id
         console.log(mirna_id);
         $http({
-            url:base_url+ip_address,
-            //url:'api/mirna_summary',
+            url:+base_url+ip_address,
+            //url:+base_url+'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -56,12 +61,17 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 $scope.initial=0;
                 $scope.mirna_summary_list=response.data.mirna_summary_list;
                 $scope.mirna_summary_count=response.data.mirna_summary_count;
+                if($scope.mirna_summary_count==0){
+                    $scope.alert_nonitem=1;
+                    $('#alert_nonitem').show()
+                }else{
                 var data_list=$scope.mirna_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
                     data_list[i].mutation_sum= Number(data_list[i].cosmic_in_matue)+Number(data_list[i].clinvar_in_matue)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
+            }
             }
         )
     };
@@ -83,17 +93,17 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     //});
         
         var mirna_id = $.trim($('#query_mirna_summary').val());
-        if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
-            alert("Invalid input");
+        if (/[@#\$%\^&\*<>\.\\\/]+/g.test(mirna_id)) {
             flag_mirna = 1;
-            history.back();
+            $scope.alert_invalid=1;
+            $('#alert_invalid').show()
         }
         if(flag_mirna==0){
             condition['mirna_id']=mirna_id
         console.log(mirna_id);
         $http({
-            url:base_url+ip_address,
-            //url:'api/mirna_summary',
+            url:+base_url+ip_address,
+            //url:+base_url+'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -112,6 +122,9 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         )
     };
 }
+    $scope.reset_query=function(){
+        //window.open('#!/mirna_summary','_self')
+    }
 }
 
 angular.module('miRNASNP3')
@@ -127,11 +140,17 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
         })
       })
     $scope.initial=1;
+    $scope.alert_nonitem=0;
+    $scope.alert_invalid=0;
     var condition={}
     var page=1;
     var ip_address='/api/primir_summary';
     var base_url = miRNASNP3Service.getAPIBaseUrl();
 
+    $scope.close_invalid=function(){
+        $scope.alert_invalid=0;
+        $scope.alert_nonitem=0;
+    }
     $scope.fetch_primir_summary=function(){
         var condition={}
         var flag_pri=0;
@@ -145,16 +164,16 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
         }
     //});
         var mirna_id = $.trim($('#query_mirna_summary').val());
-        if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
-            alert("Invalid input");
+        if (/[@#\$%\^&\*<>\.\\\/]+/g.test(mirna_id)) {
             flag_pri = 1;
-            history.back();
+            $scope.alert_invalid=1;
+            $('#alert_invalid').show()
         }
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            url:base_url+ip_address,
-            //url:'/api/primir_summary',
+            url:+base_url+ip_address,
+            //url:+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -163,12 +182,17 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
                 $scope.initial=0;
                 $scope.primir_summary_list=response.data.primir_summary_list;
                 $scope.primir_summary_count=response.data.primir_summary_count[0].count;
+                if(response.data.primir_summary_count.length==0){
+                    $scope.alert_nonitem=1;
+                    $('#alert_nonitem').show()
+                }else{
                 var data_list=$scope.primir_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
                     data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
+            }
             }
         )
     };
@@ -187,16 +211,16 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
         }
     //});
         var mirna_id = $.trim($('#query_mirna_summary').val());
-        if (/[@#\$%\^&\*<>\.]+/g.test(mirna_id)) {
-            alert("Invalid input");
+        if (/[@#\$%\^&\*<>\.\\\/]+/g.test(mirna_id)) {
             flag_pri = 1;
-            history.back();
+            $scope.alert_invalid=1;
+            $('#alert_invalid').show()
         }
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            url:base_url+'/api/primir_summary',
-            //url:'/api/primir_summary',
+            url:+base_url+'/api/primir_summary',
+            //url:+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -214,5 +238,8 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
             }
         )
     };
+    }
+    $scope.reset_query=function(){
+        window.open('#!/primir_summary','_self')
     }
 }

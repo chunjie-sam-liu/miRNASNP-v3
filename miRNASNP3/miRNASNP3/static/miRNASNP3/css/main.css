@@ -275,7 +275,7 @@ div#search-box {
   margin-top: 10px;
 }
 div#home-description {
-  margin-top: 30px;
+  margin-top: 10px;
   text-align: justify;
   font-size: 16px;
 }
@@ -330,3 +330,35 @@ div.div-table {
   text-align: center;
   vertical-align: middle!important;
   }
+  
+.active a{
+  background-color:#2e6da4 !important;
+  color: white !important;
+}
+
+.badge-success {
+  background-color: #468847;
+}
+.badge-success:hover {
+  background-color: #356635;
+}
+.badge-info {
+  background-color: #3a87ad;
+}
+.badge-info:hover {
+  background-color: #2d6987;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #170303;
+}
+.navbar-default .navbar-nav > li > a:hover{
+  color: #f9f9f9;
+  background-color: #337ab7;
+}
+.navbar-default .navbar-nav > li > a:focus {
+  color: #f9f9f9;
+  background-color: #337ab7;
+}
+.ui-widget {
+  height: 34px;
+}

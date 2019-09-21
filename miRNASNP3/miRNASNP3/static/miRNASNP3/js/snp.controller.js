@@ -29,11 +29,16 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     $scope.query_snp=$routeParams.snp_id;
     console.log($routeParams.snp_id);
 	var page=1;
-
+    var one=$routeParams.one;
+    var two=$routeParams.two;
+    var three=$routeParams.three;
+    var four=$routeParams.four;
+    var five=$routeParams.five;
+		
 	$scope.clear=function(){
-		$scope.one=0;
-		$scope.two=0;
-		$scope.three=0;
+        $scope.one=0;
+        $scope.two=0;
+        $scope.three=0;
 		$scope.four=0;
 		$scope.five=0;
 		$scope.six=0;
@@ -73,8 +78,17 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 		}
 	};
 
-	//$scope.fetch_gwas=function(){};
+    console.log('two')
+    console.log(two)
+    console.log('three')
+    console.log(three)
+    if(one){$scope.show_one('one');$('#one').addClass('active')}
+    else if(two){$scope.show_one('two');$('#two').addClass('active')}
+    else if(three){$scope.show_one('three');$('#three').addClass('active')}
+    else if(four){$scope.show_one('four');$('#four').addClass('active')}
+    else if(five){$scope.show_one('five');$('#five').addClass('active')}
 
+	//$scope.fetch_gwas=function(){};
 
     //$scope.string2list = function (predict_info) {
       //  $scope.site_info = eval(predict_info)
@@ -138,7 +152,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $('#search_gene').on('input propertychange', function() {
             var query_gene_gain = $.trim($('#search_gene').val());
             console.log(query_gene_gain)
-            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
+            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_gain)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
@@ -464,7 +478,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $('#search_gene_loss').on('input propertychange', function() {
             var query_gene_loss = $.trim($('#search_gene_loss').val());
             console.log(query_gene_loss)
-            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
+            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
@@ -859,16 +873,6 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             }});
 	};
 	$scope.fetch_relate_cosmic();
-	$scope.fetch_relate_clinvar();
-}
-
-function addAnnotationInputKeyupHandler(){
-    var $snorna = $("#snorna");
-    $snorna.keyup(function () {
-        clearValidationStyles(this);
-        var snorna = this.value.trim();
-        if (snorna !== '') {
-            checkAnnotationInput(snorna.toLowerCase(), this);
-        }
-    });
+    $scope.fetch_relate_clinvar();
+    
 }

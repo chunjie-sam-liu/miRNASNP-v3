@@ -50,11 +50,11 @@
             </div>
             <div class="form-group">
                     <div class="col-sm-offset-4">
-                        <button class="btn btn-danger" id="search_button" type="button" ng-click="fetch_primir_summary()">
+                        <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_primir_summary()">
                             Submit
                         </button>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" id="reset_query" type="button" ng-click="reset_query()">
+                        <button class="btn btn-primary" id="reset_query" type="reset" ng-click="reset_query()">
                             Reset
                         </button>
                 </div>
@@ -63,6 +63,24 @@
     </div>
 </div>
 
+
+<!-- alert -->
+<div class="alert alert-danger alert-dismissible" ng-show="alert_nonitem" id="alert_nonitem">
+        <button type="button" class="close" ng-click="close_invalid()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      
+        <strong>Sorry, your query item is not exist.</strong>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible" ng-show="alert_invalid" id="alert_invalid">
+        <!--button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="close_invalid()"-->
+                <button type="button" class="close" ng-click="close_invalid()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+     
+        <strong>Invalid input!</strong>
+    </div>
 <div class="div-table">
     <div ng-show="initial">
         <div class="flyover" ng-hide="snp_summary_count">
@@ -82,7 +100,7 @@
         <table class="table table-bordered " ts-wrapper>
             <thead>
                 <tr>
-                    <th ts-criteria="_id.pre_id" style="width: 14%">miRNA</th>
+                    <th ts-criteria="_id.pre_id" style="width: 14%">Pre-miRNA</th>
                     <th ts-criteria="_id.pre_acc" style="width: 14%">Accession</th>
                     <th ts-criteria="_id.pre_start" style="width: 24%">Position</th>
                     <th ts-criteria="_id.snv_in_pri|parseInt" style="width: 12%">SNP Number
@@ -101,8 +119,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="v in primir_summary_list" ts-repeat>
-                    <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$
-                            v._id.pre_id$}</a></td>
+                    <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000"><strong>{$v._id.pre_id$}</strong></a></td>
                     <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}">{$ v._id.pre_acc
                             $}</a></td>
                     <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>

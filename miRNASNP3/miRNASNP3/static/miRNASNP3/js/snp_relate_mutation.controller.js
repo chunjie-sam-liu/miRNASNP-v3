@@ -19,6 +19,12 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
     console.log(location)
 	var page=1;
 
+    var one=$routeParams.one;
+    var two=$routeParams.two;
+    var three=$routeParams.three;
+    var four=$routeParams.four;
+    var five=$routeParams.five;
+
 	$scope.clear=function(){
 		$scope.one=0;
 		$scope.two=0;
@@ -55,10 +61,17 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
 			$scope.six = 1;
 			$scope.class_six = "active";
 		}
-	};
+    };
+    
+    if(one){$scope.show_one('one');$('#one').addClass('active')}
+    else if(two){$scope.show_one('two');$('#two').addClass('active')}
+    else if(three){$scope.show_one('three');$('#three').addClass('active')}
+    else if(four){$scope.show_one('four');$('#four').addClass('active')}
+    else if(five){$scope.show_one('five');$('#five').addClass('active')}
+
     $scope.fetch_mutation_details=function(){
     var page=1;
-    	switch(location){}
+    	switch(location){
             case 'mirseed':
                 {
                 $http({
@@ -203,7 +216,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
         $('#search_gene').on('input propertychange', function() {
             var query_gene_gain = $.trim($('#search_gene').val());
             console.log(query_gene_gain)
-            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_gain)) {
+            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_gain)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
@@ -494,7 +507,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
         $('#search_gene_loss').on('input propertychange', function() {
             var query_gene_loss = $.trim($('#search_gene_loss').val());
             console.log(query_gene_loss)
-            if (/[@#\$%\^&\*<>\.]+/g.test(query_gene_loss)) {
+            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();

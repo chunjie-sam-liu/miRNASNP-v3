@@ -1,19 +1,26 @@
 <!-- search box -->
 <div id="search-box">
-    <div class="input-group">
-        <input ng-model="query_item" type="text" class="form-control" style="border-color: #81C2D6"
-            data-provide="typeahead" placeholder="rs779353569/hsa-let-7a-3p/tp53" id="search">
-        <span class="input-group-btn">
-            <button class="btn btn-default" id="search_button" type="button" style="background-color: #ffbbbc"
+    <div class="input-group" style="text-align:center;">
+        <input ng-model="query_item" type="text" class="form-control" style="border-color: #81C2D6;height:40px;font-size:14pt;" 
+            data-provide="typeahead" placeholder="Search miRNA/Gene/SNP" id="search"><!--border-radius:20px-->
+        <span class="input-group-btn" style="text-align:center;"-->
+               
+            <button class="btn btn-default" id="search_button" type="button" style="background-color: #ffbbbc;height:40px;font-size:14pt;"
                 ng-click="search_query()">
-                Search
-            </button>
-        </span>
+                <span class="glyphicon glyphicon-search"></span>
+            </span> 
+    </div><!--input group-->
+    <div>
+        <h5>&nbsp;<strong>Example: </strong>
+            <a href="#!/mirna?mirna_id=hsa-miR-200a-3p">hsa-miR-200a-3p</a>,
+            <a href="#!/gene?query_gene=TP53&has_snp=1&has_phenotype=1">TP53</a>,
+            <a href="#!/snp?snp_id=rs12402181">rs12402181</a>
+        </h5>
     </div>
 </div>
 <!-- alert -->
 <div class="alert alert-danger alert-dismissible" ng-show="alert_nonitem" id="alert_nonitem">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <button type="button" class="close" ng-click="close_invalid()">
         <span aria-hidden="true">&times;</span>
     </button>
   
@@ -21,7 +28,8 @@
 </div>
 
 <div class="alert alert-danger alert-dismissible" ng-show="alert_invalid" id="alert_invalid">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+   
+            <button type="button" class="close" ng-click="close_invalid()">
         <span aria-hidden="true">&times;</span>
     </button>
  
@@ -65,28 +73,9 @@
     </div>
 </div>
 
+
 <!-- module -->
 <div class="row">
-<div class="col-md-3">
-        <div class="thumbnail">
-            <a href="#!/snp_summary">
-                <img src="/static/miRNASNP3/img/snp_stamp.png" alt="#" class="img-round" style="height: 120px;width: 220px">
-                    <div class="caption" style="text-align: center">
-                        <span style="font-size: x-large;" class="center" ><h4><a href="#!/snp_summary">SNP</a></h4></span>
-                    </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="thumbnail">
-            <a href="#!/mutation_summary">
-                <img src="/static/miRNASNP3/img/phenotype_stamp_1.png" alt="#" class="img-round" style="height: 120px;width:220px">
-                <div class="caption" style="text-align: center">
-                        <span style="font-size: x-large;" class="center" ><h4><a href="#!/mutation_summary">Phenotype</a></h4></span>
-                    </div>
-            </a>
-        </div>
-    </div>
         <div class="col-md-3">
                 <div class="thumbnail">
                     <a href="#!/mirna_summary">
@@ -104,6 +93,26 @@
                 <div class="caption" style="text-align: center">
                         <span style="font-size: x-large;" class="center" ><h4><a href="#!/primir_summary">Pre-miRNA</a></h4></span>
                 </div>
+            </a>
+        </div>
+    </div>
+<div class="col-md-3">
+        <div class="thumbnail">
+            <a href="#!/snp_summary?seed='1'">
+                <img src="/static/miRNASNP3/img/snp_stamp.png" alt="#" class="img-round" style="height: 120px;width: 220px">
+                    <div class="caption" style="text-align: center">
+                        <span style="font-size: x-large;" class="center" ><h4><a href="#!/snp_summary?seed='1'">SNP</a></h4></span>
+                    </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="thumbnail">
+            <a href="#!/mutation_summary">
+                <img src="/static/miRNASNP3/img/phenotype_stamp_1.png" alt="#" class="img-round" style="height: 120px;width:220px">
+                <div class="caption" style="text-align: center">
+                        <span style="font-size: x-large;" class="center" ><h4><a href="#!/mutation_summary">Phenotype</a></h4></span>
+                    </div>
             </a>
         </div>
     </div>

@@ -1319,6 +1319,7 @@ class LDinfo(Resource):
 api.add_resource(LDinfo,'/api/ldinfo')
 
 mutation_line={
+    'chr':fields.String,
     'chrome':fields.String,
     'position':fields.String,
     'mut_id':fields.String,
@@ -1335,7 +1336,11 @@ mutation_line={
     'identifier':fields.String,
     'is_tag':fields.Integer,
     'is_ld':fields.Integer,
-    'rela_tag_snp':fields.String
+    'rela_tag_snp':fields.String,
+    'identifier_lower':fields.String,
+    'pre_id':fields.String,
+    'energy_change':fields.String,
+    'expression_change':fields.String
 }
 
 count_group={
@@ -1713,10 +1718,10 @@ class MutationSummaryPremir(Resource):
         print(pathology_dict)
 
         #if condition or histology_dict or pathology_dict:
-        mutation_premir_list=mongo.db.mutation_summary_premir.aggregate(pipline)
+        mutation_premir_list=mongo.db.gwas_total_premir.aggregate(pipline)
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_premir_count=mongo.db.mutation_summary_premir.aggregate(pipline_count)
+        mutation_premir_count=mongo.db.gwas_total_premir.aggregate(pipline_count)
        
         return{'mutation_premir_list':list(mutation_premir_list),'mutation_premir_count':list(mutation_premir_count)}
 
@@ -1787,11 +1792,11 @@ class MutationSummaryUtr3(Resource):
         pipline_count=pipline+[count_group]
         pipline.append(skip)
         pipline.append(limit)
-
+        print('get mutation summary UTR3')
         print(condition)
         print(histology_dict)
         print(pathology_dict)
-
+        print(pipline)
         #if condition or histology_dict or pathology_dict:
         mutation_utr3_list=mongo.db.mutation_summary_utr3.aggregate(pipline)
         #else:
@@ -1815,7 +1820,10 @@ snp_line={
     'ldsnp':fields.Integer,
     'mutation_rela':fields.Integer,
     'gain_count':fields.String,
-    'loss_count':fields.String
+    'loss_count':fields.String,
+    'pre_id':fields.String,
+    'energy_change':fields.String,
+    'expression_change':fields.String
 }
 
 snp_summary_list={
@@ -1984,7 +1992,7 @@ class SnpSummarySeed(Resource):
         return {'snp_seed_list':list(snp_seed_list),'snp_seed_count':snp_seed_count}
 
 api.add_resource(SnpSummarySeed,'/api/snp_summary_seed')
-
+'''
 class SnpSummaryMature(Resource):
     @marshal_with(snp_summary_list)
     def get(self):
@@ -2045,6 +2053,7 @@ class SnpSummaryMature(Resource):
         return {'snp_mature_list':list(snp_mature_list),'snp_mature_count':snp_mature_count}
 
 api.add_resource(SnpSummaryMature,'/api/snp_summary_mature')
+'''
 
 class SnpSummaryPremir(Resource):
     @marshal_with(snp_summary_list)
@@ -2066,7 +2075,6 @@ class SnpSummaryPremir(Resource):
         per_page = 15
         record_skip = (int(page)-1)*per_page
         condition = {}
-        condition['location']='pre-miRNA'
         pipline = []
         snp_seed_list={}
         snp_mature_list={}
@@ -2084,8 +2092,8 @@ class SnpSummaryPremir(Resource):
             record_skip = (int(page)-1)*per_page
         if args['gene']:
             condition['identifier_lower']=args['gene'].lower()
-        if args['chrome'] != 'All' and args['chrome']:
-            condition['snp_chr'] = args['chrome']
+        #if args['chrome'] != 'All' and args['chrome']:
+         #   condition['snp_chr'] = args['chrome']
         if args['spe_snp_id']:
             condition['snp_id']=args['spe_snp_id']
         if args['snp_id']:
@@ -2100,8 +2108,8 @@ class SnpSummaryPremir(Resource):
             condition['mutation_rela']=args['mutation_rela']
         if args['gmaf'] !='All' and args['gmaf']:
             condition['alt_freq']={'$gt':args['gmaf'][1:]}
-        snp_premir_list=mongo.db.snp_summary_premir.find(condition).skip(record_skip).limit(per_page)
-        snp_premir_count=mongo.db.snp_summary_premir.find(condition).count()
+        snp_premir_list=mongo.db.snp_summary_mature_premir.find(condition).skip(record_skip).limit(per_page)
+        snp_premir_count=mongo.db.snp_summary_mature_premir.find(condition).count()
 
         return {'snp_premir_list':list(snp_premir_list),'snp_premir_count':snp_premir_count}
 

@@ -51,11 +51,11 @@
             </div>
             <div class="form-group">
                     <div class="col-sm-offset-4">
-                        <button class="btn btn-danger" id="search_button" type="button" ng-click="fetch_mirna_summary()" >
+                        <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_mirna_summary()" >
 							Submit
                         </button>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" id="reset_button" type="bottom" ng-click="reset_query()" >
+                        <button class="btn btn-primary" id="reset_button" type="reset" ng-click="reset_query()" >
 							Reset
                         </button>
                 </div>
@@ -64,6 +64,23 @@
     </div>
 </div>
 
+<!-- alert -->
+<div class="alert alert-danger alert-dismissible" ng-show="alert_nonitem" id="alert_nonitem">
+        <button type="button" class="close" ng-click="close_invalid()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      
+        <strong>Sorry, your query item is not exist.</strong>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible" ng-show="alert_invalid" id="alert_invalid">
+        <!--button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="close_invalid()"-->
+                <button type="button" class="close" ng-click="close_invalid()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+     
+        <strong>Invalid input!</strong>
+    </div>
 <div class="div-table">
     <div ng-show="initial">
         <div class="flyover" ng-hide="mirna_summary_count">
@@ -97,7 +114,7 @@
             <table class="table table-bordered" ts-wrapper>
                 <thead>
                     <tr>
-                        <th ts-criteria="mir_id" >miRNA</th>
+                        <th ts-criteria="mir_id" >Mature miRNA</th>
                         <th ts-criteria="mir_acc">Accession</th>
                         <th ts-criteria="mir_start" >Position</th>
                         <th ts-criteria="snp_in_seed+snp_in_mature|parseInt style="width: 12%">SNP Number
@@ -112,7 +129,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="v in mirna_summary_list" ts-repeat>
-                        <td><a href="#!/mirna?mirna_id={$v.mir_id$}" style="color:#FF0000">{$ v.mir_id$}</a></td>
+                        <td><a href="#!/mirna?mirna_id={$v.mir_id$}" style="color:#FF0000"><strong>{$ v.mir_id$}</strong></a></td>
                         <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.mir_acc$}">{$ v.mir_acc $}</a></td>
                         <td>{$ v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
                         <td>{$ v.snp_in_seed$}/{$v.snp_in_matue$}</td>
