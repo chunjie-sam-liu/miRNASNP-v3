@@ -362,3 +362,10 @@ div.div-table {
 .ui-widget {
   height: 34px;
 }
+.form-horizontal .checkbox{
+  margin-top: -3px
+}
+.checkbox.col-lg-4 {
+  float: left;
+  margin-left: 111px;
+}
