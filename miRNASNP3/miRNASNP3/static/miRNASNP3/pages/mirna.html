@@ -105,7 +105,7 @@
 <div ng-show="two">
     <div class="panel panel-info" id="section-2">
         <div class="panel-heading" style="height: 50px">
-            <!--strong >{$ query_mirna $} with SNPs in seed region result in target gain</strong--->
+            <strong >{$ query_mirna $} with SNPs in seed region result in gaining target</strong>
             <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain">
@@ -118,8 +118,10 @@
                 <th>miRNA</th>
                 <th>SNP</th>
                 <th>Gene</th>
-                <th>Accession</th>
-                <th>Transcript ID</th>
+                <th>Target region
+                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Genome region of the target predicted by miRmap and TargetScan.">
+                    </span>
+                </th>
                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                     </span>
@@ -132,9 +134,8 @@
                 <!--td>{$ $index+1 $}</td-->
                 <td align="center">{$ v.mirna_id$}</td>
                 <td align="center">{$v.snp_id$}</td>
-                <td align="center">{$ v.gene_symbol$}</td>
-                <td align="center">{$v.utr_info.acc$}</td>
-                <td align="center">{$v.utr_info.enst_id$}</td>
+                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}<br>{$v.utr_info.enst_id$}</td>
+                <td align="center">miRmap:{$v.site_info.chrome$}:{$v.site_info.mm-start$}-{$v.site_info.mm_end$}<br>{$v.site_info.chrome$}:{$v.site_info.tgs_start$}-{$v.site_info.tgs_end$}</td>
                 <td align="center">
                     <span ng-if="v.gene_expression[0]">
                     <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -489,11 +490,11 @@
                     </tr>
                     <tr>
                         <th class="success" colspan="2">TargetScan</th>
-                        <td style="width: 100px" colspan="3" align="center">{$modal_site.site_info.tgs_start$}-{$modal_site.site_info.tgs_end$}</td>
+                        <td style="width: 100px" colspan="3" align="center">{$modal_site.site_info.chrome$}:{$modal_site.site_info.tgs_start$}-{$modal_site.site_info.tgs_end$}</td>
                     </tr>
                     <tr>
                         <th class="success" colspan="2">miRmap</th>
-                        <td style="width: 100px"colspan="3" align="center">{$modal_site.site_info.mm_start$}-{$modal_site.site_info.mm_end$}</td>
+                        <td style="width: 100px"colspan="3" align="center">{$modal_site.site_info.chrome$}:{$modal_site.site_info.mm_start$}-{$modal_site.site_info.mm_end$}</td>
                     </tr>
                     <tr>
                         <th rowspan="7">Site detail</th>
