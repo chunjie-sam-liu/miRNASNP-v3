@@ -289,13 +289,20 @@ ul.list-unstyled li>p>.badge {
   float: right;
 }
 
-.bs-callout-info {
+/*.bs-callout-info {
   padding: 20px;
   margin: 20px 0;
   border: 1px solid #5bc0de;
   border-left-width: 5px;
   border-radius: 3px;
-}
+}*/
+.bs-callout-info {
+  padding: 4px;
+  margin: 5px 0;
+  border: 1px solid #47899c;
+  border-left-width: 5px;
+  border-radius: 3px;
+} /*by FU */
 
 .bs-callout-danger {
   padding: 20px;

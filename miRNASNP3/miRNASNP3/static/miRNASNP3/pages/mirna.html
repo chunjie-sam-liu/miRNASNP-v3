@@ -8,7 +8,7 @@
     <li id="one" ng-click="show_one('one')" ng-show="mirna_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>miRNA Details</strong></a> </li>
     <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNPs in seed</strong></a> </li>
+        class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNPs on seed</strong></a> </li>
     <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_three" ><a data-toggle="tab"><strong>Loss targets with SNPs in seed</strong></a> </li>
     <li id="four" ng-click="show_one('four')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
@@ -118,10 +118,10 @@
                 <th>miRNA</th>
                 <th>SNP</th>
                 <th>Gene</th>
-                <th>Target region
-                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Genome region of the target predicted by miRmap and TargetScan.">
-                    </span>
-                </th>
+                <th>Binding start(miRmap)</th>
+                <th>Binding end(miRmap)</th>
+                <th>Binding start(TargetScan)</th>
+                <th>Binding end(TargetScan)</th>
                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                     </span>
@@ -134,8 +134,11 @@
                 <!--td>{$ $index+1 $}</td-->
                 <td align="center">{$ v.mirna_id$}</td>
                 <td align="center">{$v.snp_id$}</td>
-                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}<br>{$v.utr_info.enst_id$}</td>
-                <td align="center">miRmap:{$v.site_info.chrome$}:{$v.site_info.mm_start$}-{$v.site_info.mm_end$}<br>TargetScan:{$v.site_info.chrome$}:{$v.site_info.tgs_start$}-{$v.site_info.tgs_end$}</td>
+                <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center">{$v.site_info.mm_start$}</td>
+                <td align="center">{$v.site_info.mm_end$</td>
+                <td align="center">{$v.site_info.tgs_start$}</td>
+                <td align="center">{$v.site_info.tgs_end$}</td>
                 <td align="center">
                     <span ng-if="v.gene_expression[0]">
                     <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -486,19 +489,23 @@
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
-                        <th rowspan="3">Site Position</th>
-                    </tr>
-                    <tr>
-                        <th class="success" colspan="2">TargetScan</th>
-                        <td style="width: 100px" colspan="3" align="center">{$modal_site.site_info.chrome$}:{$modal_site.site_info.tgs_start$}-{$modal_site.site_info.tgs_end$}</td>
-                    </tr>
-                    <tr>
-                        <th class="success" colspan="2">miRmap</th>
-                        <td style="width: 100px"colspan="3" align="center">{$modal_site.site_info.chrome$}:{$modal_site.site_info.mm_start$}-{$modal_site.site_info.mm_end$}</td>
-                    </tr>
-                    <tr>
-                        <th rowspan="7">Site detail</th>
-                    </tr>
+                            <th rowspan="2">TargetScan</th>
+                            <th class="success" style="width: 50%">start</th>
+                            <th class="success" style="width: 50%">end</th>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">{$ modal_site.site_info.tgs_start $}</td>
+                            <td style="width: 100px">{$ modal_site.site_info.tgs_end $}</td>
+                        </tr>
+                        <tr>
+                                <th rowspan="5">miRanda</th>
+                                <th class="success" style="width: 50%">start</th>
+                                <th class="success" style="width: 50%">end</th>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%">{$ modal_site.site_info.mm_start $}</td>
+                                <td style="width: 50%">{$ modal_site.site_info.mm_end $}</td>
+                            </tr>
                     <tr>
                         <td colspan="2">&Delta;G duplex (kCal/mol)</td>
                         <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
