@@ -132,21 +132,21 @@
             <tbody>
             <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center">{$ v.mirna_id$}</td>
-                <td align="center">{$v.snp_id$}</td>
-                <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
-                <td align="center">{$v.site_info.mm_start$}</td>
-                <td align="center">{$v.site_info.mm_end$}</td>
-                <td align="center">{$v.site_info.tgs_start$}</td>
-                <td align="center">{$v.site_info.tgs_end$}</td>
-                <td align="center">
+                <td align="center" style="width:10%">{$ v.mirna_id$}</td>
+                <td align="center" style="width: 10%">{$v.snp_id$}</td>
+                <td align="center" style="width: 10%">{$v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
+                <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
+                <td align="center" style="width: 10%">{$v.site_info.tgs_start$}</td>
+                <td align="center" style="width: 10%">{$v.site_info.tgs_end$}</td>
+                <td align="center" style="width: 10%">
                     <span ng-if="v.gene_expression[0]">
                     <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
                     </a>
                     </span>
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
-                <td>
+                <td align="center" style="width: 10%">
                     <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
                             ng-click="modal_gain_site(v)">Detail
                     </button>
