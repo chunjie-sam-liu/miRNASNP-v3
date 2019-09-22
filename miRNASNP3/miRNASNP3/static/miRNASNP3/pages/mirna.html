@@ -16,7 +16,7 @@
     <li id="five" ng-click="show_one('five')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_five" ><a data-toggle="tab"><strong>Loss targets with mutations on seed</strong></a> </li>
     <li id="six" ng-click="show_one('six')" ng-show="enrich_result_count"  style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_six" ><a data-toggle="tab"><strong>Target Genes Enrich Analysis</strong></a> </li>
+        class="class_six" ><a data-toggle="tab"><strong>Target Genes Enrichment Analysis</strong></a> </li>
     <!--li id="six" ng-click="show_one('six')" ng-show="ld_list_lenth" style="background-color:white;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>SNP in LD Region</strong></a> </li-->
 </ul>
@@ -105,7 +105,7 @@
 <div ng-show="two">
     <div class="panel panel-info" id="section-2">
         <div class="panel-heading" style="height: 50px">
-            <!--strong >{$ query_mirna $} with SNPs in seed region result in gaining target</strong-->
+            <strong >{$ query_mirna $} with SNPs in seed region causes miRNA:mRNA gains</strong>
             <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain">
@@ -179,7 +179,7 @@
 <div ng-show="three">
 <div class="panel panel-info" id="section-3">
     <div class="panel-heading" style="height: 50px">
-          
+            <strong >{$ query_mirna $} with SNPs in seed region causes miRNA:mRNA losses</strong>
          <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_loss">
@@ -189,25 +189,25 @@
     <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
-            <th style="width: 13%">miRNA</th>
+            <th style="width: 15%">miRNA</th>
             <th style="width: 10%">SNP</th>
-            <th style="width: 15%">Gene</th>
+            <th style="width: 10%">Gene</th>
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
-            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
+            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                 </span>
             </th> 
-            <th style="width: 10%">Experiment validation</th>
-            <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. cor.
+            <th style="width: 7%">Experiment validation</th>
+            <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                         </span>
             </th>
-            <th>Binding start<br>(miRmap)</th>
-            <th>Binding end<br>(miRmap)</th>
-            <th>Binding start<br>(TargetScan)</th>
+            <th style="width:10%">Binding start<br>(miRmap)</th>
+            <th style="width:10%">Binding end<br>(miRmap)</th>
+            <th style="width:10%">Binding start<br>(TargetScan)</th>
             <th>Binding end<br>(TargetScan)</th>
-            <th style="width: 10%">Predict</th>
+            <th style="width: 8%">Predict</th>
         </thead>
         <tbody>
         <tr ng-repeat="v in snp_seed_loss_list" ts-repeat>
@@ -272,7 +272,7 @@
 <div ng-show="four">
 <div class="panel panel-info"  id="section-4">
     <div class="panel-heading" style="height: 50px">
-       
+            <strong >{$ query_mirna $} with SNPs in 3'UTR region causes miRNA:mRNA gains</strong>
         <form class="form-inline pull-right">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="gene" id="search_gene_gain_mut">
@@ -346,6 +346,7 @@
 <div ng-show="five">
 <div class="panel panel-info" ng-show="five" id="section-5">
     <div class="panel-heading" style="height: 50px">
+            <strong >{$ query_mirna $} with SNPs in 3'UTR region causes miRNA:mRNA losses</strong>
             <form class="form-inline pull-right">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_mut">
@@ -514,8 +515,8 @@
                             <th colspan="3" class="success" style="width: 50%">end</th>
                         </tr>
                         <tr>
-                            <td style="width: 100px" colspan="2">{$ modal_site.site_info.tgs_start $}</td>
-                            <td style="width: 100px" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
+                            <td>{$ modal_site.site_info.tgs_start $}</td>
+                            <td>{$ modal_site.site_info.tgs_end $}</td>
                         </tr>
                         <tr>
                                 <th rowspan="9">miRanda</th>
@@ -551,8 +552,7 @@
                         <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
                     </tr>
                     <tr>
-                        <th>Align</th>
-                        <td class="warning" colspan="3">
+                        <td class="warning" colspan="4">
                             <pre>3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
                         </td>
                         <!--td class="warning" colspan="3">

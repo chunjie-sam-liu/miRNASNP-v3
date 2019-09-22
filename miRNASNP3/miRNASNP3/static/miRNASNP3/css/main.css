@@ -339,7 +339,7 @@ div.div-table {
   }
   
 .active a{
-  background-color:#2e6da4 !important;
+  background-color:#5294be !important;
   color: white !important;
 }
 
@@ -360,11 +360,11 @@ div.div-table {
 }
 .navbar-default .navbar-nav > li > a:hover{
   color: #f9f9f9;
-  background-color: #5294be;
+  background-color: #337ab7;
 }
 .navbar-default .navbar-nav > li > a:focus {
   color: #f9f9f9;
-  background-color: #5294be;
+  background-color: #337ab7;
 }
 .ui-widget {
   height: 34px;
