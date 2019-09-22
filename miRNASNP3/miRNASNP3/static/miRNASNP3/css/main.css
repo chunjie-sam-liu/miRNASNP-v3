@@ -360,11 +360,11 @@ div.div-table {
 }
 .navbar-default .navbar-nav > li > a:hover{
   color: #f9f9f9;
-  background-color: #337ab7;
+  background-color: #5294be;
 }
 .navbar-default .navbar-nav > li > a:focus {
   color: #f9f9f9;
-  background-color: #337ab7;
+  background-color: #5294be;
 }
 .ui-widget {
   height: 34px;
@@ -386,4 +386,12 @@ li.list-group-item.list-group-item-primary:hover {
 .thumbnail .caption {
   padding: 0px;
   color: #333;
+}
+.panel-info > .panel-heading {
+  color: #eeeeee;
+  background-color: #5294be;
+  border-color: #bce8f1;
+} 
+.panel-info {
+  border-color: #5294be;
 }
