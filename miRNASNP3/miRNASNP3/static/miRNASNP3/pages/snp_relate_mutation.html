@@ -21,7 +21,7 @@
                     <dl class="dl-horizontal">
                         <dt>Mutation ID:</dt>
                         <dd class="ng-binding">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</dd>
-                        <dt>Mutation Coordinate:</dt>
+                        <dt>Mutation position:</dt>
                         <dd class="ng-binding">{$ mutation_alias.chrome$}:{$mutation_alias.position$}</dd>
                         <dt>Ref/Alt:</dt>
                         <dd>{$ mutation_alias.ref $}/{$ mutation_alias.alt $}</dd>
@@ -48,7 +48,7 @@
                     <thead>
                         <tr>
                                 <th>Mutation ID</th>
-                                <th>position</th>
+                                <th>Position</th>
                                 <th>Ref/Alt</th>
                                 <th>Region</th>
                                 <th>{$head_identifier$}</th>
@@ -82,21 +82,22 @@
                         <table class="table table-bordered" ts-wrapper>
                                 <thead>
                                 <tr>
-                                    <th>Mutation</th>
                                     <th>miRNA</th>
+                                    <th>Mutation</th>
+                                    <th>Gene</th>
                                     <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                                     </span>
                                     </th>
-                                    <th>Gene</th>
+                                    
                                     <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                                     </span>
                                     </th>
-                                    <th>Binding start<br>(miRmap)</th>
-                                    <th>Binding end<br>(miRmap)</th>
-                                    <th>Binding start<br>(TargetScan)</th>
-                                    <th>Binding end<br>(TargetScan)</th>
+                                    <th style="width: 10%">Binding start<br>(miRmap)</th>
+                                    <th style="width: 10%">Binding end<br>(miRmap)</th>
+                                    <th style="width: 10%">Binding start<br>(TargetScan)</th>
+                                    <th style="width: 10%">Binding end<br>(TargetScan)</th>
                                     <th>Predict</th>
                                 </tr>
                                 </thead>
@@ -105,8 +106,9 @@
 
                                 <tbody>
                                 <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
-                                    <td align="center">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</td>
                                     <td align="center">{$v.mirna_id$}</td>
+                                    <td align="center">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</td>
+                                    <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
                                     <td align="center">
                                         <span ng-if="v.mirna_expression[0]">
                                         <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -114,7 +116,7 @@
                                         </span>
                                         <span ng-if="!v.mirna_expression[0]">-</span>
                                     </td>
-                                    <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                                    
                                    
                                     <td align="center">
                                         <span ng-if="v.gene_expression[0]">
@@ -170,12 +172,13 @@
                                 <table class="table table-bordered" ts-wrapper>
                                     <thead>
                                     <tr>
+                                        <th style="width: 12%">miRNA</th>
                                         <th style="width: 10%">Mutation</th>
-                                        <th style="width: 10%">miRNA</th>
+                                        <th style="width: 10%">Gene</th>
                                         <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
                                                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
                                             </span>
-                                        <th style="width: 15%">Gene</th>
+                                       
                                         <!--th style="width: 10%;">Gene ACC</th>
                                         <th style="width: 10%">Transcript ID</th-->
                                         <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
@@ -186,7 +189,10 @@
                                                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                                                     </span>
                                         </th>
-                                        <th style="width: 10%">Experiment validation</th>
+                                        <th style="width: 10%">
+                                                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA">
+                                                    </span>
+                                        </th>
                                         <th>Binding start<br>(miRmap)</th>
                                         <th>Binding end<br>(miRmap)</th>
                                         <th>Binding start<br>(TargetScan)</th>
@@ -196,8 +202,9 @@
                                     <tbody>
                                     <tr ng-repeat="v in snp_seed_loss_list" ts-repeat>
                                             <!--td>{$ $index+1 $}</td-->
-                                            <td align="center">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</td>
                                             <td align="center">{$v.mirna_id$}</td>
+                                            <td align="center">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</td>
+                                            <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
                                             <td align="center">
                                                 <span ng-if="v.mirna_expression[0]">
                                                 <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -205,7 +212,7 @@
                                                 </span>
                                                 <span ng-if="!v.mirna_expression[0]">-</span>
                                             </td>
-                                            <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                                            
                                             <!--td align="center">{$v.utr_info.acc$}</td>
                                             <td align="center">{$v.utr_info.enst_id$}</td-->
                                             <td align="center">
@@ -268,28 +275,35 @@
                                         <table class="table table-bordered" ts-wrapper>
                                             <thead>
                                             <tr>
+                                                <th>miRNA</th>
                                                 <th>Mutation</th>
                                                 <th>Gene</th>
+                                                <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
+                                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
+                                                    </span>
                                                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
                                                     </span>
                                                     </th>
-                                                <th>miRNA</th>
-                                                <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
-                                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
-                                                    </span>
                                                 
-                                                <th>Binding start<br>(miRmap)</th>
-                                                <th>Binding end<br>(miRmap)</th>
-                                                <th>Binding start<br>(TargetScan)</th>
-                                                <th>Binding end<br>(TargetScan)</th>
+                                                <th style="width: 10%">Binding start<br>(miRmap)</th>
+                                                <th style="width: 10%">Binding end<br>(miRmap)</th>
+                                                <th style="width: 10%">Binding start<br>(TargetScan)</th>
+                                                <th style="width: 10%">Binding end<br>(TargetScan)</th>
                                                 <th style="width: 10%">Predict</th>
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="v in snv_utr_gain_list">
+                                                <td align="center">{$v.mirna_id$}</td>
                                                 <td align="center">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</td>
                                                 <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc $}</td>
-                                                <td align="center">{$v.mirna_id$}</td>
+                                                <td align="center">
+                                                        <span ng-if="v.gene_expression[0]">
+                                                        <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
+                                                        </a>
+                                                        </span>
+                                                        <span ng-if="!v.gene_expression[0]">-</span>
+                                                    </td>
                                                 <td align="center">
                                                         <span ng-if="v.mirna_expression[0]">
                                                         <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -298,13 +312,7 @@
                                                         <span ng-if="!v.mirna_expression[0]">-</span>
                                                     </td>
                                                 
-                                                <td align="center">
-                                                        <span ng-if="v.gene_expression[0]">
-                                                        <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
-                                                        </a>
-                                                        </span>
-                                                        <span ng-if="!v.gene_expression[0]">-</span>
-                                                    </td>
+                                                
                                                 <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
                                                 <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
                                                 <td align="center" style="width: 10%">{$v.site_info.tgs_start$}</td>
@@ -349,25 +357,30 @@
                                         <table class="table table-bordered" ts-wrapper>
                                             <thead>
                                             <tr>
+                                                <th>miRNA</th>
                                                 <th>Mutation</th>
                                                 <th>Gene</th>
                                                 <!--th>Accession</th>
                                                 <th>Transcript</th-->
+                                                    <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
+                                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
+                                                        </span>
+                                                        </th>
                                                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
                                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expresion!Click number to show details">
                                                     </span>
                                                     </th>
-                                                <th>miRNA</th>
-                                                <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
-                                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression!Click number to show details">
-                                                    </span>
-                                                    </th>
+                                               
+                                                
                                                     
                                                     <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. cor.
                                                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                                                                 </span>
                                                     </th>
-                                                <th style="width: 10%">Experiment validation</th>
+                                                <th style="width: 10%">
+                                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA">
+                                                            </span>
+                                                </th>
                                                 <th>Binding start<br>(miRmap)</th>
                                                 <th>Binding end<br>(miRmap)</th>
                                                 <th>Binding start<br>(TargetScan)</th>
@@ -381,19 +394,19 @@
                                                 <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc $}</td>
                                                 <!--td>{$v.utr_info.acc $}</td>
                                                 <td>{$ v.utr_info.enst_id $}</td-->
+                                                    <td align="center">
+                                                            <span ng-if="v.mirna_expression[0]">
+                                                            <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
+                                                            </a>
+                                                            </span>
+                                                            <span ng-if="!v.mirna_expression[0]">-</span>
+                                                        </td>
                                                 <td align="center">
                                                         <span ng-if="v.gene_expression[0]">
                                                         <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
                                                         </a>
                                                         </span>
                                                         <span ng-if="!v.gene_expression[0]">-</span>
-                                                    </td>
-                                                <td align="center">
-                                                        <span ng-if="v.mirna_expression[0]">
-                                                        <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
-                                                        </a>
-                                                        </span>
-                                                        <span ng-if="!v.mirna_expression[0]">-</span>
                                                     </td>
                                                     
                                                     <td align="center">

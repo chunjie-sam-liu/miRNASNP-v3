@@ -28,11 +28,11 @@
        </div>
         <div class="panel-body">
             <dl class="dl-horizontal">
-                <dt>miRNA ID:</dt>
+                <dt>Mature miRNA:</dt>
                 <dd>{$ mirna_summary_alias.mir_id $}</dd>
                 <dt>Accession</dt>
                 <dd>{$ mirna_summary_alias.mir_acc $}</dd>
-                <dt>Coordinates:</dt>
+                <dt>Position:</dt>
                 <dd>{$ mirna_summary_alias.mir_chr $}:{$ mirna_summary_alias.mir_start $}-{$ mirna_summary_alias.mir_end$}({$ mirna_summary_alias.mir_strand $})</dd>
                 <dt>Mature Sequence:</dt>
                 <dd>{$ mirna_summary_alias.matureSeq $}</dd>
@@ -62,7 +62,7 @@
                 <dd>{$ mirna_summary_alias.pre_id $}</dd>
                 <dt>Precursor Accession:</dt>
                 <dd>{$mirna_summary_alias.pre_acc $}</dd>
-                <dt>Precursor Coordinate:</dt>
+                <dt>Precursor position:</dt>
                  <dd>{$ mirna_summary_alias.pre_chr $}:{$ mirna_summary_alias.pre_start $}-{$ mirna_summary_alias.pre_end$}({$ mirna_summary_alias.mir_strand $})</dd>
                 <dt>Precursor sequence:</dt>
                 <dd style="word-break: break-all">{$ mirna_summary_alias.harpin_seq $}</dd>
@@ -78,12 +78,12 @@
             <table style="text-align: center" ts-wrapper id="mirna-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
             <thead>
             <tr>
-                <th>miRNA ID</th>
-                <th>miRNA Accession</th>
-                <th>miRNA Coordinate</th>
+                <th>Mature miRNA</th>
+                <th>miRNA accession</th>
+                <th>miRNA position</th>
                 <th>Precursor ID</th>
-                <th>Precursor Accession</th>
-                <th>Precursor Coordinate</th>
+                <th>Precursor accession</th>
+                <th>Precursor position</th>
             </tr>
             </thead>
             <tbody>
@@ -119,14 +119,14 @@
                 <th>SNP</th>
                 <th>Gene</th>
                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
                     </span>
                 </th>
-                <th>Binding start<br>(miRmap)</th>
-                <th>Binding end<br>(miRmap)</th>
-                <th>Binding start<br>(TargetScan)</th>
-                <th>Binding end<br>(TargetScan)</th>
-                <th>Predict</th>
+                <th style="width:10%">Binding start<br>(miRmap)</th>
+                <th style="width: 10%">Binding end<br>(miRmap)</th>
+                <th style="width: 10%">Binding start<br>(TargetScan)</th>
+                <th style="width: 10%">Binding end<br>(TargetScan)</th>
+                <th style="width: 10%">Predict</th>
             </tr>
             </thead>
             <tbody>
@@ -195,12 +195,15 @@
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
                 </span>
             </th> 
-            <th style="width: 7%">Experiment validation</th>
             <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
+                        </span>
+            </th>
+            <th style="width: 4%">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA interaction.">
                         </span>
             </th>
             <th style="width:10%">Binding start<br>(miRmap)</th>
@@ -225,14 +228,14 @@
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
             <td align="center">
-                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
-                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
-            </td>
-            <td align="center">
                 <span ng-if="v.corelation_detail[0]">
                     <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                 </span>
                 <span ng-if="!v.corelation_detail[0]">-</span>
+            </td>
+            <td align="center">
+                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
+                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
             </td>
             <td align="center" >{$v.site_info.mm_start$}</td>
             <td align="center">{$v.site_info.mm_end$}</td>
@@ -286,7 +289,7 @@
             <th>Mutation</th>
             <th>Gene</th>
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
                 </span>
             </th>
             <th>Binding start<br>(miRmap)</th>
@@ -362,12 +365,15 @@
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
                 </span>
                 </th>
-            <th style="width: 7%">Experiment validation</th>
             <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
+                        </span>
+            </th>
+            <th style="width: 4%">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA interaction.">
                         </span>
             </th>
             <th style="width: 10%">Binding start<br>(miRmap)</th>
@@ -392,15 +398,15 @@
                     <span ng-if="!v.gene_expression[0]">-</span>
                 </td>
             <td align="center">
-                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
-                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
-            </td>
-            <td align="center">
                     <span ng-if="v.corelation_detail[0]">
                         <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                     </span>
                     <span ng-if="!v.corelation_detail[0]">-</span>
                 </td>
+                <td align="center">
+                        <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
+                        <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
+                    </td>
                 <td align="center" >{$v.site_info.mm_start$}</td>
                 <td align="center">{$v.site_info.mm_end$}</td>
                 <td align="center">{$v.site_info.tgs_start$}</td>
