@@ -91,6 +91,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                     data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                     data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                    data_list[i].head_identifier='miRNA'
                 }
                 $scope.mutation_alias=$scope.mutation_summary_list.shift();
                 console.log($scope.mutation_alias)
@@ -118,6 +119,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                         //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                        data_list[i].head_identifier='miRNA'
                     }
                     $scope.mutation_alias=$scope.mutation_summary_list.shift();
                     console.log($scope.mutation_alias)
@@ -145,6 +147,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                         //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                        data_list[i].head_identifier='miRNA'
                     }
                     $scope.mutation_alias=$scope.mutation_summary_list.shift();
                     console.log($scope.mutation_alias)
@@ -172,6 +175,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                         if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+                        data_list[i].head_identifier='Gene'
                     }
                     $scope.mutation_alias=$scope.mutation_summary_list.shift();
                     console.log($scope.mutation_alias)

@@ -395,3 +395,6 @@ li.list-group-item.list-group-item-primary:hover {
 .panel-info {
   border-color: #5294be;
 }
+.panel {
+  margin-top: 1px;
+}

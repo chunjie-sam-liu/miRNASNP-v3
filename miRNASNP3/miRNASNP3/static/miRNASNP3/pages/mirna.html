@@ -28,23 +28,23 @@
        </div>
         <div class="panel-body">
             <dl class="dl-horizontal">
-                <dt>miRNA ID</dt>
+                <dt>miRNA ID:</dt>
                 <dd>{$ mirna_summary_alias.mir_id $}</dd>
                 <dt>Accession</dt>
                 <dd>{$ mirna_summary_alias.mir_acc $}</dd>
-                <dt>Coordinates</dt>
+                <dt>Coordinates:</dt>
                 <dd>{$ mirna_summary_alias.mir_chr $}:{$ mirna_summary_alias.mir_start $}-{$ mirna_summary_alias.mir_end$}({$ mirna_summary_alias.mir_strand $})</dd>
-                <dt>Mature Sequence</dt>
+                <dt>Mature Sequence:</dt>
                 <dd>{$ mirna_summary_alias.matureSeq $}</dd>
                 <div ng-show="mirna_expression_show">
-                    <dt>Average expression
+                    <dt>Average expression:
                     <span class="glyph icon glyph icon-question-sign" data-toggle="popover" data-container="body"
                           data-trigger="hover"
                           data-content="miRNA expression profiles were calculated from 33 cancer types from TCGA"
                           style="color: #5bc0de"></span>
                     </dt>
                     <dd>{$ mirna_expression.exp_mean $}</dd>
-                    <dt>Profile
+                    <dt>Profile:
                         <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                           data-trigger="hover"
                           data-content="The average expression levels in different cancer types are from green(low) to red(high)"
@@ -58,13 +58,13 @@
                     </div>
                 </dd>
             </div>
-                <dt>Precursor</dt>
+                <dt>Precursor:</dt>
                 <dd>{$ mirna_summary_alias.pre_id $}</dd>
-                <dt>Precursor Accession</dt>
+                <dt>Precursor Accession:</dt>
                 <dd>{$mirna_summary_alias.pre_acc $}</dd>
-                <dt>Precursor Coordinates</dt>
+                <dt>Precursor Coordinate:</dt>
                  <dd>{$ mirna_summary_alias.pre_chr $}:{$ mirna_summary_alias.pre_start $}-{$ mirna_summary_alias.pre_end$}({$ mirna_summary_alias.mir_strand $})</dd>
-                <dt>Precursor sequence</dt>
+                <dt>Precursor sequence:</dt>
                 <dd style="word-break: break-all">{$ mirna_summary_alias.harpin_seq $}</dd>
             </dl>
         </div>
@@ -356,25 +356,25 @@
     <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
-            <th style="width: 10%">miRNA</th>
+            <th style="width: 15%">miRNA</th>
             <th style="width: 10%">Mutation</th>
             <th style="width: 10%">Gene</th>
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
-            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
+            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="gene average expression!Click number to show details">
                 </span>
                 </th>
-            <th style="width: 10%">Experiment validation</th>
-            <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. cor.
+            <th style="width: 7%">Experiment validation</th>
+            <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                         </span>
             </th>
-            <th>Binding start<br>(miRmap)</th>
-            <th>Binding end<br>(miRmap)</th>
-            <th>Binding start<br>(TargetScan)</th>
+            <th style="width: 10%">Binding start<br>(miRmap)</th>
+            <th style="width: 10%">Binding end<br>(miRmap)</th>
+            <th style="width:10%">Binding start<br>(TargetScan)</th>
             <th>Binding end<br>(TargetScan)</th>
-            <th style="width: 10%">Predict</th>
+            <th style="width: 8%">Predict</th>
         </thead>
         <tbody>
         <tr ng-repeat="v in mut_seed_loss_list" ts-repeat>
@@ -590,7 +590,7 @@
                         </tr>
                         <tr>
                             <th>Gene</th>
-                            <td colspan="2">{$modal_site.gene_symbol$}</td>
+                            <td colspan="2">{$modal_site.gene_symbol$}({$modal_site.utr_info.enst_id$})</td>
                             <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                         </tr>
                         <tr>
@@ -636,8 +636,8 @@
                             <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
                         </tr>
                         <tr>
-                            <th>Align</th>
-                            <td class="warning" colspan="3">
+                          
+                            <td class="warning" colspan="4">
                                 <pre>3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
                             </td>
                             <!--td class="warning" colspan="3">

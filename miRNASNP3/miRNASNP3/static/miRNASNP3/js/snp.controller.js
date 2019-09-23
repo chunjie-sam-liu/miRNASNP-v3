@@ -110,6 +110,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 for(var i=0;i<data_list.length;i++){
                     if(data_list[i].ref_freq=='novalue'){data_list[i].ref_freq=0}
                     if(Number(data_list[i].alt_freq)==0.0){data_list[i].alt_freq=0}
+                    if(data_list[i].location=='mirseed'){$scope.head_identifier='miRNA';data_list[i].location='seed'}
+                    if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR"}
             }
                 $scope.snp_summary_list=data_list
                 console.log($scope.snp_summary_list)
