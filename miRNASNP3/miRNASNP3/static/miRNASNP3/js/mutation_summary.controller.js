@@ -233,7 +233,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         if($scope.flag_identifier==0 && $scope.flag_phenotype==0){
             $http({
                 
-                url:'/api/mutation_summary_seed',
+                url:base_url+'/api/mutation_summary_seed',
                 method:'GET',
                 params:condition
             }).then(function(response){
@@ -263,7 +263,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             })
            /* $http({
                 
-                url:'/api/mutation_summary_mature',
+                url:base_url+'/api/mutation_summary_mature',
                 method:'GET',
                 params:condition
             }).then(function(response){
@@ -283,7 +283,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             })*/
             $http({
                 
-                url:'/api/mutation_summary_premir',
+                url:base_url+'/api/mutation_summary_premir',
                 method:'GET',
                 params:condition
             }).then(function(response){
@@ -312,7 +312,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             })
             $http({
                 
-                url:'/api/mutation_summary_utr3',
+                url:base_url+'/api/mutation_summary_utr3',
                 method:'GET',
                 params:condition
             }).then(function(response){
@@ -385,7 +385,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 {
                 $http({
                     
-                    url:'/api/mutation_summary_seed',
+                    url:base_url+'/api/mutation_summary_seed',
                     method:'GET',
                     params:condition
                 }).then(function(response){
@@ -410,7 +410,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 {
                     $http({
                         
-                        url:'/api/mutation_summary_mature',
+                        url:base_url+'/api/mutation_summary_mature',
                         method:'GET',
                         params:condition
                     }).then(function(response){
@@ -434,7 +434,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 {
                     $http({
                         
-                        url:'/api/mutation_summary_premir',
+                        url:base_url+'/api/mutation_summary_premir',
                         method:'GET',
                         params:condition
                     }).then(function(response){
@@ -459,7 +459,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 {
                     $http({
                         
-                        url:'/api/mutation_summary_utr3',
+                        url:base_url+'/api/mutation_summary_utr3',
                         method:'GET',
                         params:condition
                     }).then(function(response){
@@ -497,7 +497,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         condition['pathology']='All'
         $http({
                 
-            url:'/api/mutation_summary_seed',
+            url:base_url+'/api/mutation_summary_seed',
             method:'GET',
             params:condition
         }).then(function(response){
@@ -517,7 +517,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         })
         $http({
                 
-            url:'/api/mutation_summary_premir',
+            url:base_url+'/api/mutation_summary_premir',
             method:'GET',
             params:condition
         }).then(function(response){
@@ -537,7 +537,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         })
         $http({
             
-            url:'/api/mutation_summary_utr3',
+            url:base_url+'/api/mutation_summary_utr3',
             method:'GET',
             params:condition
         }).then(function(response){
