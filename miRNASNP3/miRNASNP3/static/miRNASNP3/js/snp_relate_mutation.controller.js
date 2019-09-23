@@ -33,7 +33,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
 		$scope.five=0;
 		$scope.six=0;
 	};
-	$scope.one=1;
+	
 	$scope.show_one=function(refer){
 		console.log(refer);
 		$scope.clear()
