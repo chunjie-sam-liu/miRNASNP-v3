@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', 'ui.bootstrap-slider', 'bw.paging','tableSort'])
+angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', 'ui.bootstrap-slider', 'bw.paging','tableSort','ngTagsInput'])
     .config(function ($routeProvider) {
         $routeProvider
             .when("/", {

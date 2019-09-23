@@ -119,6 +119,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     // check input in backend
     function checkAnnotationInput(annotation, obj, url) {
         console.log("checkAnnotationInput")
+        console.log(annotation)
         url=  base_url+'/api/snp_summary_gene?gene=';
         $.getJSON(url+annotation, function(data){
             console.log(data)
