@@ -103,7 +103,7 @@
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                        <td style="text-align: left"><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
+                        <td><span style="color: red;font-weight: bold;text-align: left"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
@@ -139,7 +139,7 @@
             <h4>Structure Information</h4></div>
         <div class="panel-body"-->
             <div class="panel panel-primary">
-                <div class="panel-heading" style="padding:0 10px;">Wild structure information of pre-miRNA
+                <div class="panel-heading" style="padding:0 10px;">Wild structure information of primary miRNA
                 </div>
                 <div class="panel-body">
                 <div ng-show="wild">
@@ -150,11 +150,11 @@
                             <tr>
                                 <td colspan="2" class="info"
                                     style="text-align: left;font-weight: bold;font-size: 18px">
-                                    <span>Pre-miRNA basic information </span>
+                                    <span>Primary RNA basic information </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 16px;font-weight: bold" width="200px">pre-miRNA</td>
+                                <td style="font-size: 16px;font-weight: bold" width="200px">Primary miRNA</td>
                                 <td>{$premir_info.pre_id$}</td>
                             </tr>
                             <tr>
@@ -163,7 +163,7 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">
-                                  SNPs in pre-miRNA
+                                  SNPs in Primary miRNA
                                 </td>
                                 <td style="text-align: justify">
                                     <span ng-if="premir_info.snv.length">
@@ -176,7 +176,7 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">
-                                  Mutations in pre-miRNA
+                                  Mutations in primary miRNA
                                 </td>
                                 <td>
                                     <span ng-if="premir_info.cosmic.length || premir_info.clinvar.length">
@@ -203,7 +203,7 @@
             </div>
             <div ng-show="primir_alt_count">
                 <div class="panel panel-primary">
-                    <div class="panel-heading" style="padding:0 10px;">Structure information of pre-miRNA with SNPs and mutations</div>
+                    <div class="panel-heading" style="padding:0 10px;">Structure information of primary miRNA with SNPs and mutations</div>
                     <div class="panel-body">
                         <div style="width: 50%; float:left; display:inline" ng-show="snp_single">
                             <table class="table table-condensed table-bordered table-hover" style="word-break:break-all; word-wrap:break-all;">
@@ -223,7 +223,8 @@
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to pre-miRNA
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to primary
+                                    miRNA
                                 </td>
                                 <td>{$primir_alt_info.rela_loc$}</td>
                             </tr>
@@ -261,7 +262,8 @@
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to pre-miRNA
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to primary
+                                    miRNA
                                 </td>
                                 <td>{$primir_alt_info.rela_loc$}</td>
                             </tr>
@@ -294,7 +296,7 @@
             </div>
                 <div ng-show="primir_mut_count">
                     <div class="panel panel-primary">
-                    <div class="panel-heading" style="padding:0 10px;">Structure information of pre-miRNA with SNPs and mutations
+                    <div class="panel-heading" style="padding:0 10px;">Structure information of primary miRNA with SNPs and mutations
                 </div>
                 <div class="panel-body">
                     <div style="width: 50%; float:left; display:inline">
@@ -319,7 +321,8 @@
                                 <td>{$primir_mut_list.mut_chr$}:{$primir_mut_list.mut_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Loc relative to pre-miRNA
+                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Loc relative to primary
+                                    miRNA
                                 </td>
                                 <td>{$primir_mut_list.rela_loc$}</td>
                             </tr>
