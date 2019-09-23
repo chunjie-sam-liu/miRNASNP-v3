@@ -1,0 +1,658 @@
+
+    <ul class="nav nav-tabs"  ng-show="mutation_summary_count">
+        <li id="one" ng-click="show_one('one')" ng-show="mutation_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
+            class="class_one" ><a data-toggle="tab"><strong>Mutation Details</strong></a> </li>
+        <li id="two" ng-click="show_one('two')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
+            class="class_two" ><a data-toggle="tab"><strong>Gain targets with mutation on seed</strong></a> </li>
+        <li id="three" ng-click="show_one('three')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
+            class="class_three" ><a data-toggle="tab"><strong>Loss targets with mutation on seed</strong></a> </li>
+        <li id="four" ng-click="show_one('four')" ng-show="mut_utr_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
+            class="class_four" ><a data-toggle="tab"><strong>Gain miRNAs with mutation on 3'UTR</strong></a> </li>
+        <li id="five" ng-click="show_one('five')" ng-show="mut_utr_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
+            class="class_five" ><a data-toggle="tab"><strong>Loss miRNAs with mutation on 3'UTR</strong></a> </li>
+    </ul>
+
+    <div ng-show="mutation_summary_count">
+        <div class="panel panel-info" ng-show="one" id="section-1">
+            <div class="panel-heading" >
+                <strong>Basic Information of mutation : {$ query_mutation $}</strong>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Mutation ID:</dt>
+                    <dd class="ng-binding">{$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</dd>
+                    <dt>Mutation position:</dt>
+                    <dd class="ng-binding">{$ mutation_alias.chrome$}:{$mutation_alias.position$}</dd>
+                    <dt>Ref/Alt:</dt>
+                    <dd>{$ mutation_alias.ref $}/{$ mutation_alias.alt $}</dd>
+                    <dt>Region:</dt>
+                    <dd class="ng-binding">{$ mutation_alias.location $}</dd>
+                    <dt>{$head_identifier$}:</dt>
+                    <dd class="ng-binding">{$ mutation_alias.identifier $}</dd>
+                    <span ng-if="mutation_alias.pathology!='not_provided'">
+                        <dt>Phenotype:</dt>
+                        <dd>{$ mutation_alias.pathology $}</dd>
+                    </span>
+                    <!--dt>Relate SNP</dt>
+                    <dd><span class="glyphicon glyphicon-remove" style="color: red"></span></dd-->
+                    </dl>
+            </div>
+            <div class="panel-heading" style="background-color: #3F96C3" ng-show="mutation_alias_count">
+                    <strong style="color: white">Alias information of {$query_mutation$}
+                    </strong>
+                    </div>
+                    <div class="pre-scrollable" ng-show="snpinfo_alias_count">
+                        <table style="text-align: center" ts-wrapper id="snp-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
+                        <thead>
+                        <tr>
+                            <th>Mutation ID</th>
+                            <th>Position</th>
+                            <th>Ref/Alt</th>
+                            <th>Region</th>
+                            <th>{$head_identifier$}</th>
+                            <th style="width: 30%">Phenotype</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="v in mutation_summary_list">
+                            <td>{$mutation_alias.resource$}:{$v.mut_id$}</td>
+                            <td>{$v.chrome$}:{$v.position$}</td>
+                            <td>{$v.ref$}/{$v.alt$}</td>
+                            <td>{$v.location$}</td>
+                            <td>{$v.identifier$}</td>
+                            <td>{$ v.pathology $></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+
+        <div ng-show="two">
+                <div class="panel panel-info" id="section-2">
+                    <div class="panel-heading" style="height: 50px">
+                        <strong >{$ mutation_alias.mut_id $} on miRNA seed region causes mRNA:miRNA gains</strong>
+                        <form class="form-inline pull-right">
+                               <div class="form-group">
+                                   <input type="text" class="form-control" placeholder="gene" id="search_gene">
+                               </div>
+                           </form>
+                    </div>
+                    <table class="table table-bordered" ts-wrapper>
+                            <thead>
+                            <tr>
+                                <th style="width: 12%">miRNA</th>
+                                <th style="width:15%">Mutation</th>
+                                <th>Gene</th>
+                                <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                                    </span>
+                                    </th>
+                                <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                                </span>
+                                </th>
+                                <th>Binding start<br>(miRmap)</th>
+                                <th>Binding end<br>(miRmap)</th>
+                                <th>Binding start<br>(TargetScan)</th>
+                                <th>Binding end<br>(TargetScan)</th>
+                                <th>Predict</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="v in mut_seed_gain_list" ts-repeat>
+                                <td align="center">{$v.mirna_id$}</td>
+                                <td align="center">{$mutation_alias.resource$}:{$ v.mut_id$}</td>
+                                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                                <td align="center">
+                                    <span ng-if="v.mirna_expression[0]">
+                                    <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
+                                    </a>
+                                    </span>
+                                    <span ng-if="!v.mirna_expression[0]">-</span>
+                                </td>
+                                
+                
+                                <td align="center">
+                                    <span ng-if="v.gene_expression[0]">
+                                    <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
+                                    </a>
+                                    </span>
+                                    <span ng-if="!v.gene_expression[0]">-</span>
+                                </td>
+                                <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
+                                <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
+                                <td align="center" style="width: 10%">{$v.site_info.tgs_start$}</td>
+                                <td align="center" style="width: 10%">{$v.site_info.tgs_end$}</td>
+                                <td>
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
+                                            ng-click="modal_gain_site(v)">Detail
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div paging
+                             page="currentPage_seedgain"
+                             page-size=15
+                             total="mut_seed_gain_count"
+                             scroll-top="true"
+                             hide-if-empty="true"
+                             show-prev-next="true"
+                             show-first-last="true"
+                             text-title-page="Page {page} Hover Over"
+                             text-title-first="First hover"
+                             text-title-last="Last hover"
+                             text-title-next="Next hover"
+                             text-title-prev="Prev hover"
+                             show-prev-next="true"
+                             show-first-last="true"
+                             ul-class="pagination"
+                             active-class="active"
+                             disabled-class="disabled"
+                             paging-action="fetch_target_gain_mut(page)"></div>
+                </div>
+
+                <div ng-show="three">
+                        <div class="panel panel-info" id="section-3">
+                            <div class="panel-heading" style="height: 50px">
+                                    <strong >{$ mutation_alias.mut_id $} on miRNA seed region causes miRNA:mRNA losses</strong>   
+                                <form class="form-inline pull-right">
+                                       <div class="form-group">
+                                           <input type="text" class="form-control" placeholder="gene" id="search_gene_loss">
+                                       </div>
+                                   </form>
+                                </div>
+                            <table class="table table-bordered" ts-wrapper>
+                                <thead>
+                                <tr>
+                                    <th style="width: 15%">miRNA</th>
+                                    <th style="width: 10%">Muation</th>
+                                    <th style="width: 10%">Gene</th>
+                                    <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
+                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                                        </span>
+                                   
+                                    <!--th style="width: 10%;">Gene ACC</th>
+                                    <th style="width: 10%">Transcript ID</th-->
+                                    <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
+                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                                        </span>
+                                        </th>
+                                    <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. cor.
+                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
+                                                </span>
+                                    </th>
+                                    <th style="width: 10%">
+                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA">
+                                                </span>
+                                    </th>
+                                    <th>Binding start<br>(miRmap)</th>
+                                    <th>Binding end<br>(miRmap)</th>
+                                    <th>Binding start<br>(TargetScan)</th>
+                                    <th>Binding end<br>(TargetScan)</th>
+                                    <th style="width: 10%">Predict</th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="v in mut_seed_loss_list" ts-repeat>
+                                        <!--td>{$ $index+1 $}</td-->
+                                        <td align="center">{$v.mirna_id$}</td>
+                                        <td align="center">{$mutation_alias.resource$}:{$ v.mut_id$}</td>
+                                        <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                                        <td align="center">
+                                            <span ng-if="v.mirna_expression[0]">
+                                            <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
+                                            </a>
+                                            </span>
+                                            <span ng-if="!v.mirna_expression[0]">-</span>
+                                        </td>
+                                        
+                                        <!--td align="center">{$v.utr_info.acc$}</td>
+                                        <td align="center">{$v.utr_info.enst_id$}</td-->
+                                        <td align="center">
+                                            <span ng-if="v.gene_expression[0]">
+                                            <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
+                                            </a>
+                                            </span>
+                                            <span ng-if="!v.gene_expression[0]">-</span>
+                                        </td>
+                                        <td align="center">
+                                            <span ng-if="v.corelation_detail[0]">
+                                                <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                                            </span>
+                                            <span ng-if="!v.corelation_detail[0]">-</span>
+                                        </td>
+                                        <td>
+                                                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
+                                                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
+                                            </td>
+                                        <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
+                                        <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
+                                        <td align="center" style="width: 10%">{$v.site_info.tgs_start$}</td>
+                                        <td align="center" style="width: 10%">{$v.site_info.tgs_end$}</td>
+                                    <td>
+                                        <button class="btn btn-success" data-toggle="modal" data-target="#myModal"
+                                                ng-click="modal_loss_site(v)">Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                            <div paging
+                                     page="currentPage_seedloss"
+                                     page-size=15
+                                     total="mut_seed_loss_count"
+                                     scroll-top="true"
+                                     hide-if-empty="true"
+                                     show-prev-next="true"
+                                     show-first-last="true"
+                                     text-title-page="Page {page} Hover Over"
+                                     text-title-first="First hover"
+                                     text-title-last="Last hover"
+                                     text-title-next="Next hover"
+                                     text-title-prev="Prev hover"
+                                     show-prev-next="true"
+                                     show-first-last="true"
+                                     ul-class="pagination"
+                                     active-class="active"
+                                     disabled-class="disabled"
+                                     paging-action="fetch_target_loss_mut(page)">
+                            </div>
+                        </div>
+
+                        <div ng-show="four">
+                                <div class="panel panel-info" id="section-4">
+                                    <div class="panel-heading" >
+                                        <strong>{$ mutation_alias.mut_id $} on gene 3'UTR causes mRNA:miRNA gains</strong> 
+                                    </div>
+                                    <table class="table table-bordered" ts-wrapper>
+                                        <thead>
+                                        <tr>
+                                            <th>miRNA</th>
+                                            <th>Mutation</th>
+                                            <th>Gene</th>
+                                            <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
+                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                                                </span></th>
+                                            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
+                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                                                </span>
+                                                </th>
+                                            
+                                            
+                                            <th style="width:10%">Binding start<br>(miRmap)</th>
+                                            <th style="width:10%">Binding end<br>(miRmap)</th>
+                                            <th style="width:10%">Binding start<br>(TargetScan)</th>
+                                            <th style="width:10%">Binding end<br>(TargetScan)</th>
+                                            <th style="width: 10%">Predict</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="v in mut_utr_gain_list">
+                                            <td align="center">{$mutation_alias.resource$}:{$v.mut_id$}</td>
+                                            <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc $}</td>
+                                            <td align="center">
+                                                    <span ng-if="v.gene_expression[0]">
+                                                    <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
+                                                    </a>
+                                                    </span>
+                                                    <span ng-if="!v.gene_expression[0]">-</span>
+                                                </td>
+                                            <td align="center">{$v.mirna_id$}</td>
+                                            <td align="center">
+                                                    <span ng-if="v.mirna_expression[0]">
+                                                    <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
+                                                    </a>
+                                                    </span>
+                                                    <span ng-if="!v.mirna_expression[0]">-</span>
+                                                </td>
+                                            <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
+                                            <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
+                                            <td align="center" style="width: 10%">{$v.site_info.tgs_start$}</td>
+                                            <td align="center" style="width: 10%">{$v.site_info.tgs_end$}</td>
+                                            <td>
+                                                <button class="btn btn-success" data-toggle="modal" data-target="#myModal_utr"
+                                                        ng-click="modal_gain_site_utr(v)">Detail
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    <div paging
+                                             page="currentPage_utrgain"
+                                             page-size=15
+                                             total="mut_utr_gain_count"
+                                             scroll-top="true"
+                                             hide-if-empty="true"
+                                             show-prev-next="true"
+                                             show-first-last="true"
+                                             text-title-page="Page {page} Hover Over"
+                                             text-title-first="First hover"
+                                             text-title-last="Last hover"
+                                             text-title-next="Next hover"
+                                             text-title-prev="Prev hover"
+                                             show-prev-next="true"
+                                             show-first-last="true"
+                                             ul-class="pagination"
+                                             active-class="active"
+                                             disabled-class="disabled"
+                                             paging-action="fetch_utr_gain_mut(page)"
+                                        ></div>
+                                </div>
+                                
+                                <div ng-show="five">
+                                <div class="panel panel-info" id="section-5">
+                                    <div class="panel-heading" >
+                                        <strong>{$ mutation_alias.mut_id $} on gene 3'UTR causes mRNA:miRNA losses</strong>
+                                    </div>
+                                    <table class="table table-bordered" ts-wrapper>
+                                        <thead>
+                                        <tr>
+                                            <th>miRNA</th>
+                                            <th>Mutation</th>
+                                            <th>Gene</th>
+                                            <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
+                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                                                </span>
+                                            </th>
+                                            <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
+                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                                                </span>
+                                                </th>
+                                            
+                                            
+                                                <th ts-criteria="expr_corelation|parseInt" style="width: 10%">Exp. cor.
+                                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
+                                                            </span>
+                                                        </th>
+                                            <th style="width: 4%">
+                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA">
+                                                        </span>
+                                            </th>
+                                            <th>Binding start<br>(miRmap)</th>
+                                            <th>Binding end<br>(miRmap)</th>
+                                            <th>Binding start<br>(TargetScan)</th>
+                                            <th>Binding end<br>(TargetScan)</th>
+                                            <th style="width: 10%">Predict</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="v in mut_utr_loss_list">
+                                                <td align="center">{$v.mirna_id$}</td>
+                                            <td align="center">{$mutation_alias.resource$}:{$v.mut_id$}</td>
+                                            <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc $}</td>
+                                            <!--td>{$v.utr_info.acc $}</td>
+                                            <td>{$ v.utr_info.enst_id $}</td-->
+                                                <td align="center">
+                                                        <span ng-if="v.mirna_expression[0]">
+                                                        <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
+                                                        </a>
+                                                        </span>
+                                                        <span ng-if="!v.mirna_expression[0]">-</span>
+                                                    </td>
+                                            <td align="center">
+                                                    <span ng-if="v.gene_expression[0]">
+                                                    <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
+                                                    </a>
+                                                    </span>
+                                                    <span ng-if="!v.gene_expression[0]">-</span>
+                                                </td>
+                                            
+                                            
+                                                
+                                                <td align="center">
+                                                        <span ng-if="v.corelation_detail[0]">
+                                                            <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                                                        </span>
+                                                        <span ng-if="!v.corelation_detail[0]">-</span>
+                                                    </td>
+                                            <td>
+                                                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
+                                                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
+                                            </td>
+                                            <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
+                                            <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
+                                            <td align="center" style="width: 10%">{$v.site_info.tgs_start$}</td>
+                                            <td align="center" style="width: 10%">{$v.site_info.tgs_end$}</td>
+                                            <td>
+                                                <button class="btn btn-success" data-toggle="modal" data-target="#myModal_utr"
+                                                        ng-click="modal_loss_site_utr(v)">Detail
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    <div paging
+                                             page="currentPage_utrloss"
+                                             page-size=15
+                                             total="mut_utr_loss_count"
+                                             scroll-top="true"
+                                             hide-if-empty="true"
+                                             show-prev-next="true"
+                                             show-first-last="true"
+                                             text-title-page="Page {page} Hover Over"
+                                             text-title-first="First hover"
+                                             text-title-last="Last hover"
+                                             text-title-next="Next hover"
+                                             text-title-prev="Prev hover"
+                                             show-prev-next="true"
+                                             show-first-last="true"
+                                             ul-class="pagination"
+                                             active-class="active"
+                                             disabled-class="disabled"
+                                             paging-action="fetch_utr_loss_mut(page)"
+                                        ></div>
+                                </div>
+
+                                <div class="fade" tabindex="-1">
+                                        <div class="dialog">
+                                            <div class="content"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" style="width: 600px">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">
+                                                        {$ modal_header $}
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table table-bordered table-hover table-condensed">
+                                                        <tr>
+                                                            <th>miRNA</th>
+                                                            <td colspan="2">{$modal_site.mirna_id$}</td>
+                                                            <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}](miRNA seed region)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Mutation</th>
+                                                            <td colspan="2">{$mutation_alias.resource$}:{$modal_site.mut_info.mut_id$} ({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
+                                                            <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Gene</th>
+                                                            <td colspan="2">{$modal_site.gene_symbol$}({$modal_site.utr_info.enst_id$})</td>
+                                                            <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="2">TargetScan</th>
+                                                            <th  colspan="2" class="success" style="width: 50%">start</th>
+                                                            <th colspan="3" class="success" style="width: 50%">end</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 50%" colspan="2">{$ modal_site.site_info.tgs_start $}</td>
+                                                            <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="9">miRmap</th>
+                                                            <th colspan="2" class="success" style="width: 50%">start</th>
+                                                            <th colspan="3" class="success" style="width: 50%">end</th>
+                                                            </tr>
+                                                        <tr>
+                                                            <td style="width: 50%" colspan="2">{$ modal_site.site_info.mm_start $}</td>
+                                                            <td style="width: 50%" colspan="3">{$ modal_site.site_info.mm_end $}</td>
+                                                        </tr>
+                                                
+                                                        <tr>
+                                                            <td colspan="2">&Delta;G duplex (kCal/mol)</td>
+                                                            <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">&Delta;G binding (kCal/mol)</td>
+                                                            <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">&Delta;G open (kCal/mol)</td>
+                                                            <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">TargetScan Score</td>
+                                                            <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">AU content</td>
+                                                            <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Exact Probability</td>
+                                                            <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="warning" colspan="4">
+                                                                    <pre>3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                                                                </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="modal fade" id="myModal_utr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" style="width:600px">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                            &times;
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">
+                                                            {$ modal_header $}
+                                                        </h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-bordered table-hover table-condensed">
+                                                            <tr>
+                                                                <th>miRNA</th>
+                                                                <td colspan="2">{$modal_site.mirna_id$}</td>
+                                                                <td colspan="3" align="center">-</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Mutation</th>
+                                                                <td colspan="2">{$mutation_alias.resource$}:{$modal_site.mut_info.mut_id$}({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
+                                                                <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Gene</th>
+                                                                <td colspan="2">{$modal_site.gene_symbol$}({$modal_site.utr_info.enst_id$})</td>
+                                                                <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                    <th rowspan="2">TargetScan</th>
+                                                                    <th  colspan="2" class="success" style="width: 50%">start</th>
+                                                                    <th colspan="3" class="success" style="width: 50%">end</th>
+                                                                </tr>
+                                                            <tr>
+                                                                    <td colspan="2" style="width: 50%">{$ modal_site.site_info.tgs_start $}</td>
+                                                                    <td colspan="2"  style="width: 50%">{$ modal_site.site_info.tgs_end $}</td>
+                                                                </tr>
+                                                            <tr>
+                                                                    <th rowspan="9">miRmap</th>
+                                                                    <th colspan="2" class="success" style="width: 50%">start</th>
+                                                                    <th colspan="3" class="success" style="width: 50%">end</th>
+                                                                </tr>
+                                                            <tr>
+                                                                    <td style="width: 50%" colspan="2">{$ modal_site.site_info.mm_start $}</td>
+                                                                    <td style="width: 50%" colspan="3">{$ modal_site.site_info.mm_end $}</td>
+                                                                </tr>
+                                                              
+                                                            <tr>
+                                                                <td colspan="2">&Delta;G duplex (kCal/mol)</td>
+                                                                <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">&Delta;G binding (kCal/mol)</td>
+                                                                <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">&Delta;G open (kCal/mol)</td>
+                                                                <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">TargetScan Score</td>
+                                                                <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">AU content</td>
+                                                                <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">Exact Probability</td>
+                                                                <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
+                                                            </tr>
+                                                            <tr>
+                                                               
+                                                                <td class="warning" colspan="4">
+                                                                        <pre>3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$}</pre>
+                                                                    </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                    <div id="exp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" style="width:1000px;margin-top:7%;">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <!--button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                                            class="sr-only">Close</span></button-->
+                                                    <h4 class="modal-title">{$exp_item$}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="col-lg-3" id="expression" style="height: 300px;width: 850px;border: 0px"></div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                    
+                                    <div id="corelation_detail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+                                            <div class="modal-dialog" style="width: 1000px;margin-top:7%;">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">{$gene_mir$}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div>
+                                                        <!--div class="mirna-profile cursor-hand"
+                                                        title="cancer={$c.cancer_type$}; correlation_coefficient={$ c.corelation $}"
+                                                        style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div-->
+                                                        <div class="col-lg-5" id="correlation" style="height: 300px;width: 850px;border: 0px"></div>
+                                                        </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                
