@@ -3,7 +3,7 @@
 angular.module('miRNASNP3')
     .controller('MirSummaryController', MirSummaryController);
 
-function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
+function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
     console.log("MirSummaryController loaded");
     $("[data-toggle='popover']").popover();
 
@@ -124,13 +124,14 @@ function MirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
 }
     $scope.reset_query=function(){
         //window.open('#!/mirna_summary','_self')
+        $route.reload('#!/mirna_summary');
     }
 }
 
 angular.module('miRNASNP3')
     .controller('PrimirSummaryController',PrimirSummaryController);
 
-function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
+function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
     console.log("PrimirSummaryController loaded");
     $("[data-toggle='popover']").popover();
    
@@ -240,6 +241,7 @@ function PrimirSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Serv
     };
     }
     $scope.reset_query=function(){
-        window.open('#!/primir_summary','_self')
+        //window.open('#!/mirna_summary','_self')
+        $route.reload('#!/primir_summary');
     }
 }

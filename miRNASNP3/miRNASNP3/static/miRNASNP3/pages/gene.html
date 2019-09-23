@@ -12,21 +12,25 @@
         <div class="row" >
             <div class="col-sm-6 col-md-4" ng-show="snp_utr3_count">
                 <div class="thumbnail">
+                        <a href="#!/snp_summary?gene={$query_gene$}">
                         <img src="/static/miRNASNP3/img/snp_stamp.png" alt="#" class="img-round" style="height: 160px;width:252px">
                         <div class="caption">
                             <h3>SNP</h3>
-                                <p><a href="#!/snp_summary?gene={$query_gene$}">
-                                    <span class="badge badge-success "> {$snp_utr3_count$}</span></a> records of SNPs about <strong>{$query_gene$}</strong></p>
+                                <p>
+                                    <span class="badge badge-success "> {$snp_utr3_count$}</span> records of SNPs about <strong>{$query_gene$}</strong></p>
                         </div>
+                        </a>
                 </div>
             </div>
             <div class="col-sm-6 col-md-4" ng-show="mutation_utr3_count">
                 <div class="thumbnail">
+                        <a href="#!/mutation_summary?gene={$query_gene$}">
                         <img src="/static/miRNASNP3/img/phenotype_stamp_1.png" alt="#" class="img-round" style="height: 160px;width:252px">
                         <div class="caption">
                             <h3>Phenotypes</h3>
-                            <p><a href="#!/mutation_summary?gene={$query_gene$}"><span class="badge badge-info ">{$mutation_utr3_count$}</span></a> records of mutation phenotypes about <strong>{$query_gene$}</strong></p>
+                            <p><span class="badge badge-info ">{$mutation_utr3_count$}</span> records of mutation phenotypes about <strong>{$query_gene$}</strong></p>
                         </div>
+                        </a>
                 </div>
             </div>
         </div>

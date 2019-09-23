@@ -133,8 +133,8 @@ function HomeController($scope,$http,$routeParams,$window,miRNASNP3Service,$rout
             // invalid $route.reload()
             $route.reload('#!/mutation_summary');
         }
-        $scope.nav_matrue=function(){
-            console.log('click navigation!')
+        $scope.nav_mature=function(){
+            console.log('click mature miRNA navigation!')
             // invalid $route.reload()
             $route.reload('#!/mirna_summary');
         }

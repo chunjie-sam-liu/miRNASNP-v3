@@ -198,16 +198,16 @@
     <table class="table table-bordered" ts-wrapper>
         <thead>
         <tr>
-            <th style="width: 12%">miRNA</th>
+            <th style="width: 15%">miRNA</th>
             <th style="width: 10%">SNP</th>
             <th style="width: 10%">Gene</th>
-            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
                 </span>
             </th>
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
-            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+            <th ts-criteria="gene_expression[0].exp_mean" style="width: 7%">Gene exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
                 </span>
                 </th>
@@ -518,22 +518,23 @@
         <div class="col-lg-3" ng-show="ld_t">
             <!--div class="scrollable">
             <div class="pre-scrollable"-->
-            <table id="ld_region" class="table table-bordered table-condensed table-hover table-striped " style='height:850px;display:block;overflow:scroll'>
+            <!--table id="ld_region" class="table table-bordered table-condensed table-hover table-striped " style='height:850px;display:block;overflow:scroll'-->
+            <table id="ld_region" class="table table-bordered table-condensed table-hover table-striped " align="right"></table>
                 <tr>
                     <th class="text-center">population</th>
-                    <th class="text-center">Tag SNP</th>
+                    <!--th class="text-center">Tag SNP</th-->
                     <th class="text-center">Start</th>
                     <th class="text-center">End</th>
-                    <th class="text-center">d_prime</th>
-                    <th class="text-center">R2</th>
+                    <!--th class="text-center">d_prime</th>
+                    <th class="text-center">R2</th-->
                </tr>
                 <tr ng-repeat="ld in ld_array">
                     <td>{$ ld.population $}</td>
-                    <td>{$ ld.rela_tag$}</td>
+                    <!--td>{$ ld.rela_tag$}</td-->
                     <td>{$ ld.start $}</td>
                     <td>{$ ld.end $}</td>
-                    <td>{$ ld.d_prime$}</td>
-                    <td>{$ ld.r2$}</td>
+                    <!--td>{$ ld.d_prime$}</td>
+                    <td>{$ ld.r2$}</td-->
                 </tr>
             </table>
            
