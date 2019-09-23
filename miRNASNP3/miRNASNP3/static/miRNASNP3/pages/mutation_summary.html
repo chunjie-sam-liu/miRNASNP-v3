@@ -51,6 +51,111 @@
             </div>
             </div-->
             <div class="form-group">
+                    <label class="control-label col-lg-2">Tissue:</label>
+                    <div class="col-lg-3">
+                        <select id="histology" class="selectpicker" data-live-search="true">
+                            <option value="All">All</option>
+                            <option>adrenal_gland</option>
+                            <option>autonomic_ganglia</option>
+                            <option>biliary</option>
+                            <option>bone</option>
+                            <option>breast</option>
+                            <option>central_nervous_system</option>
+                            <option>cervix</option>
+                            <option>endometrium</option>
+                            <option>eye</option>
+                            <option>haematopoietic</option>
+                            <option>lymphoid</option>
+                            <option>kidney</option>
+                            <option>large_intestine</option>
+                            <option>liver</option>
+                            <option>lung</option>
+                            <option>oesophagus</option>
+                            <option>ovary</option>
+                            <option>pancreas</option>
+                            <option>parathyroid</option>
+                            <option>peritoneum</option>
+                            <option>prostate</option>
+                            <option>salivary_gland</option>
+                            <option>skin</option>
+                            <option>small_intestine</option>
+                            <option>soft_tissue</option>
+                            <option>stomach</option>
+                            <option>testis</option>
+                            <option>thymus</option>
+                            <option>thyroid</option>
+                            <option>upper_aerodigestive</option>
+                            <option>urinary</option>
+                        </select>
+                        </div>
+            <!--/div>
+            <div class="form-group"-->
+                <label class="control-label col-lg-2">Phenotype:</label>
+                <div class="col-lg-3">
+                        <div id="query_phenotype_summary-div" class=" ui-widget has-feedback inner-addon right-addon">
+                                <input name="query_phenotype_summary" type="text" id="query_phenotype_summary" class="form-control ui-autocomplete-input" placeholder="acne" autocomplete="off" list="phenotype_list">
+                                <!--span class="glyphicon form-control-feedback"-->
+                                
+                                <datalist id="phenotype_list">
+                                                <option value="All">All</option>
+                                                <option>carcinoma</option>
+                                                <option>tumor</option>
+                                                <option>neoplasm</option>
+                                                <option>Congenital_disorder_of_glycosylation</option>
+                        <option>Charcot-Marie-Tooth_disease</option>
+                        <option>Retinitis_Pigmentosa</option>
+                        <option>Zellweger_syndrome</option>
+                        <option>Spastic_paraplegia</option>
+                        <option>Ciliary_dyskinesia</option>
+                        <option>Pseudohypoaldosteronism</option>
+                        <option>Brugada_syndrome</option>
+                        <option>Fanconi_anemia</option>
+                        <option>Neuronal_Ceroid-Lipofuscinosis</option>
+                        <option>Non-syndromic_X-linked_intellectual_disability</option>
+                        <option>Congenital_hypothyroidism</option>
+                        <option>Pheochromocytoma</option>
+                        <option>Disorders_of_Intracellular_Cobalamin_Metabolism</option>
+                        <option>Joubert_syndrome</option>
+                        <option>Epilepsy</option>
+                        <option>Heterotaxia</option>
+                        <option>Primary_pulmonary_hypertension</option>
+                        <option>Cryptophthalmos_syndrome</option>
+                        <option>Progressive_myoclonic_epilepsy</option>
+                        <option>Nonsyndromic_Hearing_Loss</option>
+                        <option>Tuberous_sclerosis_syndrome</option>
+                        <option>dysplasia</option>
+                        <option>Osteogenesis_Imperfecta</option>
+                        <option>Hereditary_cancer-predisposing_syndrome</option>
+                        <option>Hermansky-Pudlak_syndrome</option>
+                        <option>Noonan-Like_Syndrome_Disorder</option>
+                        <option>Skeletal_dysplasia</option>
+                        <option>Larsen_syndrome</option>
+                        <option>3-Methylglutaconic_aciduria</option>
+                        <option>Combined_oxidative_phosphorylation_deficiency</option>
+                        <option>Benign_familial_neonatal_seizures</option>
+                        <option>Maple_syrup_urine_disease</option>
+                        <option>Dilated_Cardiomyopathy</option>
+                        <option>Holoprosencephaly_sequence</option>
+                        <option>Congenital_Myasthenic_Syndrome</option>
+                        <option>Weill-Marchesani-like_syndrome</option>
+                        <option>Familial_Candidiasis</option>
+                        <option>Delta-sarcoglycanopathy</option>
+                        <option>Dilated_Cardiomyopathy</option>
+                        <option>Limb-Girdle_Muscular_Dystrophy</option>
+                        <option>Xeroderma_pigmentosum</option>
+                        <option>Nail-patella_syndrome</option>
+                        <option>Brugada_syndrome</option>
+                        <option>Timothy_syndrome</option>
+                        <option>Arrhythmogenic_right_ventricular_cardiomyopathy</option>
+                        <option>Osteopetrosis</option>
+                    </datalist>
+                    <label class="control-label" for="annotations"></label>
+                   
+                </div>   
+                    <!--/select-->
+                </div>
+            </div>  
+            <div class="form-group">
                 <label class="control-label col-lg-2">Gene/miRNA:</label>
                     <div class="col-lg-3">
                         <!--input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53" class="iden"-->
@@ -70,111 +175,7 @@
                     </select>
                 </div>    
             </div>
-        <div class="form-group">
-                <label class="control-label col-lg-2">Tissue:</label>
-                <div class="col-lg-3">
-                    <select id="histology" class="selectpicker" data-live-search="true">
-                        <option value="All">All</option>
-                        <option>adrenal_gland</option>
-                        <option>autonomic_ganglia</option>
-                        <option>biliary</option>
-                        <option>bone</option>
-                        <option>breast</option>
-                        <option>central_nervous_system</option>
-                        <option>cervix</option>
-                        <option>endometrium</option>
-                        <option>eye</option>
-                        <option>haematopoietic</option>
-                        <option>lymphoid</option>
-                        <option>kidney</option>
-                        <option>large_intestine</option>
-                        <option>liver</option>
-                        <option>lung</option>
-                        <option>oesophagus</option>
-                        <option>ovary</option>
-                        <option>pancreas</option>
-                        <option>parathyroid</option>
-                        <option>peritoneum</option>
-                        <option>prostate</option>
-                        <option>salivary_gland</option>
-                        <option>skin</option>
-                        <option>small_intestine</option>
-                        <option>soft_tissue</option>
-                        <option>stomach</option>
-                        <option>testis</option>
-                        <option>thymus</option>
-                        <option>thyroid</option>
-                        <option>upper_aerodigestive</option>
-                        <option>urinary</option>
-                    </select>
-                    </div>
-        <!--/div>
-        <div class="form-group"-->
-            <label class="control-label col-lg-2">Phenotype:</label>
-            <div class="col-lg-3">
-                    <div id="query_phenotype_summary-div" class=" ui-widget has-feedback inner-addon right-addon">
-                            <input name="query_phenotype_summary" type="text" id="query_phenotype_summary" class="form-control ui-autocomplete-input" placeholder="acne" autocomplete="off" list="phenotype_list">
-                            <!--span class="glyphicon form-control-feedback"-->
-                            
-                            <datalist id="phenotype_list">
-                                            <option value="All">All</option>
-                                            <option>carcinoma</option>
-                                            <option>tumor</option>
-                                            <option>neoplasm</option>
-                                            <option>Congenital_disorder_of_glycosylation</option>
-                    <option>Charcot-Marie-Tooth_disease</option>
-                    <option>Retinitis_Pigmentosa</option>
-                    <option>Zellweger_syndrome</option>
-                    <option>Spastic_paraplegia</option>
-                    <option>Ciliary_dyskinesia</option>
-                    <option>Pseudohypoaldosteronism</option>
-                    <option>Brugada_syndrome</option>
-                    <option>Fanconi_anemia</option>
-                    <option>Neuronal_Ceroid-Lipofuscinosis</option>
-                    <option>Non-syndromic_X-linked_intellectual_disability</option>
-                    <option>Congenital_hypothyroidism</option>
-                    <option>Pheochromocytoma</option>
-                    <option>Disorders_of_Intracellular_Cobalamin_Metabolism</option>
-                    <option>Joubert_syndrome</option>
-                    <option>Epilepsy</option>
-                    <option>Heterotaxia</option>
-                    <option>Primary_pulmonary_hypertension</option>
-                    <option>Cryptophthalmos_syndrome</option>
-                    <option>Progressive_myoclonic_epilepsy</option>
-                    <option>Nonsyndromic_Hearing_Loss</option>
-                    <option>Tuberous_sclerosis_syndrome</option>
-                    <option>dysplasia</option>
-                    <option>Osteogenesis_Imperfecta</option>
-                    <option>Hereditary_cancer-predisposing_syndrome</option>
-                    <option>Hermansky-Pudlak_syndrome</option>
-                    <option>Noonan-Like_Syndrome_Disorder</option>
-                    <option>Skeletal_dysplasia</option>
-                    <option>Larsen_syndrome</option>
-                    <option>3-Methylglutaconic_aciduria</option>
-                    <option>Combined_oxidative_phosphorylation_deficiency</option>
-                    <option>Benign_familial_neonatal_seizures</option>
-                    <option>Maple_syrup_urine_disease</option>
-                    <option>Dilated_Cardiomyopathy</option>
-                    <option>Holoprosencephaly_sequence</option>
-                    <option>Congenital_Myasthenic_Syndrome</option>
-                    <option>Weill-Marchesani-like_syndrome</option>
-                    <option>Familial_Candidiasis</option>
-                    <option>Delta-sarcoglycanopathy</option>
-                    <option>Dilated_Cardiomyopathy</option>
-                    <option>Limb-Girdle_Muscular_Dystrophy</option>
-                    <option>Xeroderma_pigmentosum</option>
-                    <option>Nail-patella_syndrome</option>
-                    <option>Brugada_syndrome</option>
-                    <option>Timothy_syndrome</option>
-                    <option>Arrhythmogenic_right_ventricular_cardiomyopathy</option>
-                    <option>Osteopetrosis</option>
-                </datalist>
-                <label class="control-label" for="annotations"></label>
-               
-            </div>   
-                <!--/select-->
-            </div>
-        </div>  
+        
         <!--div class="form-group">
                 <div class="checkbox col-sm-offset-3 col-sm-4" data-triggle="hover" data-placement="right">
                     <label class="control-label checkbox-inline">
