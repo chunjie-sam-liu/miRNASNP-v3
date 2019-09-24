@@ -307,7 +307,7 @@ ul.list-unstyled li>p>.badge {
 .bs-callout-danger {
   padding: 4px;
   margin: 5px 0;
-  border: 1px solid #ebcccc;
+  border: 1px solid #c10808;
   border-left-width: 5px;
   border-radius: 3px;
 }
@@ -315,7 +315,7 @@ ul.list-unstyled li>p>.badge {
 .bs-callout-success {
   padding: 4px;
   margin: 5px 0;
-  border: 1px solid #d0e9c6;
+  border: 1px solid #32920b;
   border-left-width: 5px;
   border-radius: 3px;
 }
@@ -391,6 +391,12 @@ li.list-group-item.list-group-item-primary:hover {
 } 
 .panel-info {
   border-color: #5294be;
+}
+.panel-danger {
+  border-color: #c10808;
+}
+.panel-success{
+  border-color:#32920b;
 }
 .panel {
   margin-top: 1px;
