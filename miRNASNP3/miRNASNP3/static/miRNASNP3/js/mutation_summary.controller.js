@@ -156,6 +156,34 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     addAnnotationInputKeyupHandler()
     check_input_autocomplete()
 
+    function check_input_autocomplete_phenotype(){
+        console.log("check_input_autocomplete_phenotype")
+       $("#query_phenotype_summary").autocomplete({
+           autoFocus: true,
+           source: function(request, response){
+               var url = base_url+'/api/mutation_summary_phenotype?phenotype=' + request.term.trim();
+               //url = '/api/mutation_summary_gene?gene=' + request.term.trim();
+               $.getJSON(
+                   url,
+                   function(data){
+                       console.log(data)
+                       response($.map(data.phenotype_list, function(item){
+                           console.log(item)
+                          // var genes=[] 
+                           //for(var i=0;i<item.gene_list.length;i++){
+                            //   genes.push(item.gene_list[i].gene_symbol)
+                           //}
+                           return item.phenotype}))
+
+                   }
+               );
+           },
+           select: function(event, ui){
+               //showSuccess(this);
+           }
+       });
+   }
+   check_input_autocomplete_phenotype()
     $scope.fetch_mutation_summary=function(){
         $scope.mutation_summary_count=0;
         $scope.clear()
@@ -188,7 +216,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     
         
         var query_iden_summary=$.trim($('#query_iden_summary').val());
-        if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_iden_summary)) {
+        if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_iden_summary)) {
             $scope.flag_identifier = 1;
             $scope.alert_invalid=1;
             $scope.initial=0;
@@ -199,7 +227,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         }
 
         var query_phenotype_summary=$.trim($('#query_phenotype_summary').val());
-        if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_phenotype_summary)) {
+        if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_phenotype_summary)) {
             $scope.flag_phenotype = 1;
             $scope.alert_invalid=1;
             $scope.initial=0;
@@ -257,6 +285,8 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                 if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                data_list[i].gain_count_initial=data_list[i].gain_count
+                data_list[i].loss_count_initial=data_list[i].loss_count
                 data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
@@ -400,6 +430,8 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                     if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                     //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                     if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                    data_list[i].gain_count_initial=data_list[i].gain_count
+                    data_list[i].loss_count_initial=data_list[i].loss_count
                     data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                     data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
                 }
@@ -511,6 +543,8 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
             //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+            data_list[i].gain_count_initial=data_list[i].gain_count
+            data_list[i].loss_count_initial=data_list[i].loss_count
             data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
             data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
         }

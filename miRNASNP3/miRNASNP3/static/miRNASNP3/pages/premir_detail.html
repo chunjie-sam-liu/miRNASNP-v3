@@ -1,8 +1,8 @@
 <div class="content">
-    <h3 class="quicksearch">Detail information of {$premir_info.pre_id$}</h3>
+    
     <div class="panel panel-primary">
         <div class="panel-heading">
-          
+                <strong>Basic information of {$premir_info.pre_id$}</strong>
         </div>
         <div class="panel-body">
             <table id="pre" class="table table-condensed table-bordered" style="word-break:break-all; word-wrap:break-all;">
@@ -37,7 +37,7 @@
                     <td style="font-size: 18px;font-weight: bold">Genome Position
                     </td>
                     <td style="text-align: left">
-                        <a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].pre_chr$}:{$premir_info.mirinfo[0].pre_start$}-{$premir_info.mirinfo[0].pre_end$}">
+                            <a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].pre_chr$}%3A{$premir_info.mirinfo[0].pre_start$}%2D{$premir_info.mirinfo[0].pre_end$}">
                             {$premir_info.mirinfo[0].pre_chr$}:{$premir_info.mirinfo[0].pre_start$}-{$premir_info.mirinfo[0].pre_end$}({$premir_info.mirinfo[0].pre_strand$})</a>
                     </td>
                 </tr>
@@ -55,12 +55,12 @@
                     </td>
                     <td style="text-align: left">10kb:
                         <span ng-if="premir_info.cluster10k.length">
-                            <span ng-repeat="v in premir_info.cluster10k">{$v.id$};</span></span>
+                            <span ng-repeat="v in premir_info.cluster10k">{$v.pre_id$},</span></span>
                         <span ng-if="!premir_info.cluster10k.length">Null</span>
                         <br>
                         5kb:
-                        <span ng-if="premir_info.cluster5k/length">
-                            <span ng-repeat="v in premir_info.cluster5k">{$v.id$};</span></span>
+                        <span ng-if="premir_info.cluster5k.length">
+                            <span ng-repeat="v in premir_info.cluster5k">{$v.pre_id$},</span></span>
                         <span ng-if="!premir_info.cluster5k.length">Null</span>
                     </td>
                 </tr>
@@ -79,16 +79,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA ID</td>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA</td>
                     <td style="text-align: left">{$premir_info.mirinfo[0].mir_id$}</td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold" >Sequence</td>
-                        <td style="text-align: left"><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[0].matureSeq$}</span></td>
+                        <td style="text-align: left"><span style="font-weight: bold"> {$premir_info.mirinfo[0].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td style="text-align: left"><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}">
+                        <td style="text-align: left"><!--a href="http://ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}"-->
+                            <a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].mir_chr$}%3A{$premir_info.mirinfo[0].mir_start$}%2D{$premir_info.mirinfo[0].mir_end$}">
                             {$premir_info.mirinfo[0].mir_chr$}:{$premir_info.mirinfo[0].mir_start$}-{$premir_info.mirinfo[0].mir_end$}({$premir_info.mirinfo[0].mir_strand$})</a></td>
                 </tr>
                 </tbody>
@@ -98,16 +99,16 @@
             <table id="mature_2" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
-                    <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA ID</td>
+                    <td style="font-size: 18px;font-weight: bold" width="200px">Mature miRNA</td>
                     <td style="text-align: left">{$premir_info.mirinfo[1].mir_id$}</td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                        <td><span style="color: red;font-weight: bold;text-align: left"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
+                        <td style="text-align: left"><span style="font-weight: bold"> {$premir_info.mirinfo[1].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td style="text-align: left"><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}">
+                        <td style="text-align: left"><a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].mir_chr$}%3A{$premir_info.mirinfo[0].mir_start$}%2D{$premir_info.mirinfo[0].mir_end$}">
                             {$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}({$premir_info.mirinfo[1].mir_strand$})</a></td>
                 </tr>
                 </tbody>
@@ -117,16 +118,16 @@
             <table id="mature_3" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
-                    <td style="font-size: 18px;font-weight: bold">Mature miRNA ID</td>
+                    <td style="font-size: 18px;font-weight: bold">Mature miRNA</td>
                     <td style="text-align: left">{$premir_info.mirinfo[2].mir_id$}</td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                        <td style="text-align: left"><span style="color: red;font-weight: bold"> {$premir_info.mirinfo[2].matureSeq$}</span></td>
+                        <td style="text-align: left"><span style="font-weight: bold"> {$premir_info.mirinfo[2].matureSeq$}</span></td>
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td style="text-align: left"><a href="http://asia.ensembl.org/Homo_sapiens/Location/View?r={$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}">
+                        <td style="text-align: left"><a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].mir_chr$}%3A{$premir_info.mirinfo[0].mir_start$}%2D{$premir_info.mirinfo[0].mir_end$}">
                             {$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}({$premir_info.mirinfo[2].mir_strand$})</a></td>
                 </tr>
                 </tbody>
@@ -139,7 +140,8 @@
             <h4>Structure Information</h4></div>
         <div class="panel-body"-->
             <div class="panel panel-primary">
-                <div class="panel-heading" style="padding:0 10px;">Wild structure information of pre-miRNA
+                <div class="panel-heading" >
+                    <strong>Wild structure information of pre-miRNA</strong>
                 </div>
                 <div class="panel-body">
                 <div ng-show="wild">
@@ -150,7 +152,7 @@
                             <tr>
                                 <td colspan="2" class="info"
                                     style="text-align: left;font-weight: bold;font-size: 18px">
-                                    <span>Pre-miRNA RNA basic information </span>
+                                    <span>Pre-miRNA basic information </span>
                                 </td>
                             </tr>
                             <tr>
@@ -238,7 +240,7 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">Minimum Free Energy</td>
-                                <td>{$primir_alt_info.mfe$}kCal/mol</td>
+                                <td>{$primir_alt_info.mfe$} kCal/mol</td>
                             </tr>
                             </tbody>
                         </table>
@@ -331,9 +333,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Miniman Free Energy</td>
-                                <td>{$primir_mut_list.mfe$}kCal/mol</td>
+                                <td style="font-size: 18px;font-weight: bold" width="200px">Minimum Free Energy</td>
+                                <td>{$primir_mut_list.mfe$} kCal/mol</td>
                             </tr>
+                            
                             </tbody>
                         </table>
                     </div>

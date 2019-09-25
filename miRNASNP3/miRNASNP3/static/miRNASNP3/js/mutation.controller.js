@@ -264,9 +264,17 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     $scope.mut_seed_loss_count=response.data.mut_seed_loss_count;
                     var site_array=$scope.mut_seed_loss_list
                 for(var i=0;i<site_array.length;i++){
+                    site_array[i].has_cor=1
                     if(site_array[i].expr_corelation){
-                        site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                        if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                        else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
                     }
+                    if(site_array[i].mirna_expression[0]){
+                        if(Number(site_array[i].mirna_expression[0].exp_mean)==0){site_array[i].mirna_expression[0]=0;site_array[i].has_cor=0}
+                    }else{site_array[i].has_cor=0}
+                    if(site_array[i].gene_expression[0]){
+                        if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                    }else{site_array[i].has_cor=0}
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -302,9 +310,17 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                             $scope.snp_seed_loss_count=response.data.snp_seed_loss_count+1;
                             var site_array=$scope.snp_seed_loss_list
                             for(var i=0;i<site_array.length;i++){
+                                site_array[i].has_cor=1
                                 if(site_array[i].expr_corelation){
-                                    site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                    if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                                else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
                                 }
+                                if(site_array[i].mirna_expression[0]){
+                                    if(Number(site_array[i].mirna_expression[0].exp_mean)==0){site_array[i].mirna_expression[0]=0;site_array[i].has_cor=0}
+                                }else{site_array[i].has_cor=0}
+                                if(site_array[i].gene_expression[0]){
+                                    if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                                }else{site_array[i].has_cor=0}
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                                 site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -356,9 +372,17 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
             $scope.mut_utr_loss_count=response.data.mut_utr_loss_count;
             var site_array=$scope.mut_utr_loss_list
                 for(var i=0;i<site_array.length;i++){
+                    site_array[i].has_cor=1
                     if(site_array[i].expr_corelation){
-                        site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                        if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                        else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
                     }
+                    if(site_array[i].mirna_expression[0]){
+                        if(Number(site_array[i].mirna_expression[0].exp_mean)==0){site_array[i].mirna_expression[0]=0;site_array[i].has_cor=0}
+                    }else{site_array[i].has_cor=0}
+                    if(site_array[i].gene_expression[0]){
+                        if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                    }else{site_array[i].has_cor=0}
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -375,97 +399,96 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
 
 
-    $scope.modal_expression=function(exp,title){
+    $scope.modal_expression=function(exp,title){ 
+        echarts.init(document.getElementById('expression')).dispose();
+        var myChart = echarts.init(document.getElementById('expression'));
+        var series_list=[]
         $scope.expression=exp[0];
         $scope.exp_item=title;
         console.log($scope.expression);
         var gene_expr = $scope.expression.exp_df;
-        var source_data_expr=[]
-       // var cancer_types=[];
-       // var expr=[];
+        var cancer_types=['cancer_type'];
+        var expr=['RPKM'];
+       
         for(var cancer in gene_expr){
-            source_data_expr.push([cancer,gene_expr[cancer]])
-            //cancer_types.push(cancer);
-            //expr.push(Number(gene_expr[cancer]))
+            var source_data={}
+            var labelOption={}
+            if(gene_expr[cancer]&&Number(gene_expr[cancer])!=0){
+                labelOption = {
+                    normal: {
+                        show: true,
+                        position: 'top',
+                        distance: 5,
+                        align: 'left',
+                        verticalAlign: 'middle',
+                        rotate: 90,
+                        formatter:'{name|{a}}',
+                        fontSize: 8,
+                        rich: {
+                            name: {
+                                color:'#000000',
+                                textBorderColor: '#000000'
+                            }
+                        }
+                    }
+                };
+                source_data['data']=[gene_expr[cancer]]
+                series_list.push(source_data)
+                cancer_types.push(cancer)
+                expr.push(gene_expr[cancer])
+                source_data['label']=labelOption;
+                source_data['name']=cancer;
+                source_data['type']='bar';
+                source_data['barGap']=0.2;
+                source_data['barWidth']=23
+            }
+            
         }
-        source_data_expr.sort(up)
-        //barplot
-        var a = echarts;
-        var myChart = a.init(document.getElementById('expression'));
+        //source_data_expr.sort(up)
+        console.log(series_list)
+        
         myChart.setOption({
-            dataset:{
-                source:source_data_expr
-            },
-                color: ['#ce0000'],
-                //graph:{
-                //    color:colorPalette
-                //},
+            //dataset:{
+            //    source:[cancer_types,expr]
+            //},
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {show:false},
+                   
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name:'RPKM',
+                    nameTextStyle:{
+                        align:'left',
+                        fontSize:12,
+                        fontWeight:'bold',
+                    }}
+                ],
+            // Declare several bar series, each will be mapped
+            // to a column of dataset.source by default.
+            series: series_list,
+                color: ['#600000','#ff79bc','#930093','#b15bff','#000093','#46a3ff','#005757','#1afd9c','#007500',
+                        '#b7ff4a','#737300','#ffdc35','#ff8000','#ff9d6f','#984b4b','#c2c287','#408080','5a5aad',
+                        '#6c3365','	#ff5151','#820041','#ff00ff','#3a006f','#0000c6','#66b3ff','#00a600','#ce0000',
+                        '#b15bff','#00db00','#796400','#004b97','#f9f900','#bb3d00'],
                 tooltip: {
                     trigger: 'item',
                     axisPointer: {
                         type: 'shadow'
                     }
                 },
-                toolbox: {
-                    show: true,
-                    orient: 'vertical',
-                    left: 'right',
-                    top: 'center',
-                    feature: {
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},
-                       // magicType: {show: true, type: ['line', 'bar']},
-                       // restore: {show: true},
-                        saveAsImage: {show: true}
-                    }
-                },
-                calculable: true,
-                xAxis: [
-                    {
-                        type: 'category',
-                        axisTick: {show: false},
-                       // data:cancer_types,
-                        //name:'Cancer Types',
-                        nameTextStyle:{
-                            align:'center',
-                            fontSize:12,
-                            fontWeight:'bold',
-                        },
-                        rotate:45,
-                        splitLine:{
-　　　　                    show:false
-　　                          },
-
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        name:'PRKM',
-                        nameTextStyle:{
-                            align:'left',
-                            fontSize:12,
-                            fontWeight:'bold',
-                        },
-                        splitLine:{
-　　　　                    show:false
-　　                          },
-                        position:'bottom'
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barGap: 0,
-                   //     data:expr
-                    },
-                ],
-              //  title: [
-                //    {
-                //        text: 'Expression level of ' + $scope.gene_expression.symbol,
-                 //       left: 'center'
-                 //   }
-               // ]
+                series: series_list,
+                grid:{
+                    x:45,
+                    y:35,
+                    x2:30,
+                    y2:20,
+                    borderWidth:1
+                   },
             });
     };
 
@@ -533,8 +556,9 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                 $scope.corelation_detail = array; 
         }*/
           $scope.echart_correlation=function(cor){
-            $scope.gene_mir=cor.mir_gene;
+            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1];
             var c=echarts;
+            c.init(document.getElementById('correlation')).dispose();
             var cor_echart=c.init(document.getElementById('correlation'));
             var source_data=[]
             //var source_data=[["cancer_types", "correlation"]]
@@ -581,7 +605,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                         type: 'shadow'
                     }
                 },
-                toolbox: {
+                /*toolbox: {
                     show: true,
                     orient: 'vertical',
                     left: 'right',
@@ -593,17 +617,19 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                         //restore: {show: true},
                         saveAsImage: {show: true}
                     }
-                },
+                },*/
             color:'#0000c6',
             
-           series: [
-            {
-             type: 'bar',
-                encode: {
-                x:'correlation',
-                y:'cancer_types' 
-            },
-        }],
+            series: [
+                {
+                 type: 'bar',
+                    encode: {
+                    x:'correlation',
+                    y:'cancer_types' 
+                },
+                barWidth:10,
+                barGap:2
+            }],
     };
             cor_echart.setOption(option)
         }

@@ -1,8 +1,14 @@
 <div class="bs-callout-success">
-    <h4>SNPs locate in miRNA seed region and gene 3'UTR.</h4>
-    <p>
-        <span class="badge alert-success">4,666 </span>SNPs in microRNA seed region and <span class="badge alert-success">6,363,450</span> SNPs in 3'UTR are indentified in miRNASNP3.
-    </p>
+    <div class="description" style="margin-left: 7px;">
+    <h4>SNP in miRNAs and gene 3’UTR</h4>
+    <!--p>
+        <span class="badge alert-success">43,923</span> SNPs in pre-miRNA, with <span class="badge alert-success">4,666 </span>SNPs in microRNA seed region and <span class="badge alert-success">6,358,867</span> SNPs in 3'UTR are identified in miRNASNP3. 
+    </p-->
+    <p>A total of <span class="badge alert-success">43,923</span> SNPs in the pre-miRNA and <span class="badge alert-success">6,358,867</span> SNPs in the gene 3'UTR were identified by miRNASNP-v3, including <span class="badge alert-success">4,666 </span> SNPs in the seed region. 
+        For miRNA seed regions and SNPs in the gene 3'UTR, we focused on their effects on miRNA:gene interactions, 
+        while for SNPs in pre-miRNAs, we investigated their effects on pre-miRNA structure. 
+        Customers can retrieve specific genes/miRNAs to obtain a collection of SNPs on them.</p>
+    </div>
 </div>
 
 <div class="panel panel-success">
@@ -61,8 +67,8 @@
                             </div>
             
                 <label class="control-label col-lg-2">SNP ID:</label>
-                <div class="col-lg-3">
-                    <input type="text" class="form-control" id="query_snp_summary" ng-model="query_snp_summary" placeholder="rs1079033">
+                <div class="col-lg-3"> 
+                    <input type="text" class="form-control" id="query_snp_summary" ng-model="query_snp_summary" placeholder="rs2070960">
                 </div>
                 
                 <!--span class="help-block">Input a  SNP ID,such as rs1079033</span-->
@@ -74,7 +80,7 @@
             <!--/div>
             <div class="form-group"-->
                     <label class="control-label col-lg-2">Gene/miRNA:</label>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3" style="height: 34px">
                         <!--input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53" class="iden"-->
                         <div id="query_iden_summary-div" class=" ui-widget has-feedback inner-addon right-addon">
                                 <input name="query_iden_summary" type="text" id="query_iden_summary" class="form-control ui-autocomplete-input" placeholder="TP53" autocomplete="off">
@@ -135,14 +141,14 @@
             </div>
 <ul class="nav nav-tabs">
     <li id="seed" ng-click="show_one('seed')" ng-show="seed_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_seed" ><a data-toggle="tab"><strong>SNP on seed</strong></a> </li>
+        class="class_seed" ><a data-toggle="tab"><strong>SNP in seed</strong></a> </li>
     <!--li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px;margin-right: 3px "
         class="class_mature" ><a data-toggle="tab"><strong>SNP on mature miRNA</strong></a> </li-->
     <li id="premir" ng-click="show_one('premir')" ng-show="premir_count" style="background-color:#EBEBEB;margin-right: 3px"
         class="class_premir"><a data-toggle="tab">
-            <strong id="premir_tab">SNP on pre-miRNA</strong></a> </li>
+            <strong id="premir_tab">SNP in pre-miRNA</strong></a> </li>
     <li id="utr3" ng-click="show_one('utr3')" ng-show="utr3_count" style="background-color:#EBEBEB;margin-right: 3px"
-        class="class_utr3" ><a data-toggle="tab"><strong id="utr3_tab">SNP on 3'UTR</strong></a> </li>    
+        class="class_utr3" ><a data-toggle="tab"><strong id="utr3_tab">SNP in 3'UTR</strong></a> </li>    
 </ul>
 
 <!--div ng-show="seed_count"-->
@@ -178,16 +184,16 @@
                         <th ts-criteria="snp_coordinate" width="10%">Position</th>
                        
                         <th width="5%">Ref/Alt</th>
-                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
+                        <th ts-criteria="alt_freq|parseInt" width="13%">Ref freq./Alt freq.</th>
                         <th width="7%">Region</th>
                         
                         <th ts-criteria="ldsnp" width="5%">LD
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
                         <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
-                        <th ts-criteria="gain_count|parseInt" width="7%">Gain
+                        <th ts-criteria="gain_count_initial|parseInt" width="7%">Gain
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="The number of gained gene target by the SNP on mature miRNA seed region."></span></th>
-                        <th ts-criteria="loss_count|parseInt" width="7%">Loss
+                        <th ts-criteria="loss_count_initial|parseInt" width="7%">Loss
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="The number of lost gene target by the SNP on mature miRNA seed region."></span></th>
                     </tr>
                     </thead>
@@ -195,7 +201,7 @@
                     <tr ng-repeat="v in seed_list" ts-repeat>
                             <td><a href="#!/mirna?mirna_id={$v.identifier$}&one='1'" style="color: red"><strong>{$v.identifier$}</strong></a></td>
                             <!--td><a href="http://www.mirbase.org/textsearch.shtml?q={&v.identifier&}&submit=submit">{$v.identifier$}</a></td-->
-                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
+                        <td ><a href="#!/snp?snp_id={$v.snp_id$}&one=1">{$v.snp_id$}</a></td>
                         <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>    
                         <td >{$v.ref$}/{$v.alt$}</td>
                         <td align="center">
@@ -317,14 +323,18 @@
                         <th ts-criteria="snp_id" width="10%">SNP ID</th>
                         <th ts-criteria="snp_coordinate" width="10%">Position</th>
                         <th width="5%">Ref/Alt</th>
-                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
+                        <th ts-criteria="alt_freq|parseInt" width="13%">Ref freq./Alt freq.</th>
                         <th width="7%">Region
                                 <!--span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
                                 data-content="In pre-miRNA means SNP in pre-miRNA but not in mature region;In mature means SNP in mature region but not in seed region."></span-->
                         </th>
                         <th ts-criteria="identifier" width="10%">Mature miRNA</th>
-                        <th ts-criteria="energy_change|parseInt" width="10%">Energy change (kcal/mol)</th>
+                        <th ts-criteria="energy_change|parseInt" width="10%">&Delta;G
+                                <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                                data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                                data-content="Minimum free energy(kcal/mol) change predicted by RNAfold."></span> 
+                        </th>
                         <th ts-criteria="expression_change" width="10%">Predict
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"

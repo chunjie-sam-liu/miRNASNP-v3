@@ -3,13 +3,13 @@
         <li id="one" ng-click="show_one('one')" ng-show="mutation_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
             class="class_one" ><a data-toggle="tab"><strong>Mutation Details</strong></a> </li>
         <li id="two" ng-click="show_one('two')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_two" ><a data-toggle="tab"><strong>Gain targets with mutation on seed</strong></a> </li>
+            class="class_two" ><a data-toggle="tab"><strong>Gain targets with mutation in seed</strong></a> </li>
         <li id="three" ng-click="show_one('three')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_three" ><a data-toggle="tab"><strong>Loss targets with mutation on seed</strong></a> </li>
+            class="class_three" ><a data-toggle="tab"><strong>Loss targets with mutation in seed</strong></a> </li>
         <li id="four" ng-click="show_one('four')" ng-show="mut_utr_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_four" ><a data-toggle="tab"><strong>Gain miRNAs with mutation on 3'UTR</strong></a> </li>
+            class="class_four" ><a data-toggle="tab"><strong>Gain miRNAs with mutation in 3'UTR</strong></a> </li>
         <li id="five" ng-click="show_one('five')" ng-show="mut_utr_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_five" ><a data-toggle="tab"><strong>Loss miRNAs with mutation on 3'UTR</strong></a> </li>
+            class="class_five" ><a data-toggle="tab"><strong>Loss miRNAs with mutation in 3'UTR</strong></a> </li>
     </ul>
 
     <div ng-show="mutation_summary_count">
@@ -70,11 +70,11 @@
 
         <div ng-show="two">
                 <div class="panel panel-info" id="section-2">
-                    <div class="panel-heading" style="height: 50px">
-                        <strong >{$ mutation_alias.mut_id $} on miRNA seed region causes mRNA:miRNA gains</strong>
+                    <div class="panel-heading">
+                        <strong >{$ mutation_alias.mut_id $} in miRNA seed region causes mRNA:miRNA gains</strong>
                         <form class="form-inline pull-right">
                                <div class="form-group">
-                                   <input type="text" class="form-control" placeholder="gene" id="search_gene">
+                                   <input type="text" class="form-control" placeholder="gene" id="search_gene" style="height: 24px">
                                </div>
                            </form>
                     </div>
@@ -156,11 +156,11 @@
 
                 <div ng-show="three">
                         <div class="panel panel-info" id="section-3">
-                            <div class="panel-heading" style="height: 50px">
-                                    <strong >{$ mutation_alias.mut_id $} on miRNA seed region causes miRNA:mRNA losses</strong>   
+                            <div class="panel-heading">
+                                    <strong >{$ mutation_alias.mut_id $} in miRNA seed region causes miRNA:mRNA losses</strong>   
                                 <form class="form-inline pull-right">
                                        <div class="form-group">
-                                           <input type="text" class="form-control" placeholder="gene" id="search_gene_loss">
+                                           <input type="text" class="form-control" placeholder="gene" id="search_gene_loss" style="height: 24px">
                                        </div>
                                    </form>
                                 </div>
@@ -185,7 +185,7 @@
                                                 </span>
                                     </th>
                                     <th style="width: 10%">
-                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA">
+                                            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA-gene validated by experiment.">
                                                 </span>
                                     </th>
                                     <th>Binding start<br>(miRmap)</th>
@@ -218,10 +218,10 @@
                                             <span ng-if="!v.gene_expression[0]">-</span>
                                         </td>
                                         <td align="center">
-                                            <span ng-if="v.corelation_detail[0]">
+                                            <span ng-if="v.corelation_detail[0]&&v.has_cor">
                                                 <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                                             </span>
-                                            <span ng-if="!v.corelation_detail[0]">-</span>
+                                            <span ng-if="!v.corelation_detail[0]||!v.has_cor">-</span>
                                         </td>
                                         <td>
                                                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
@@ -265,7 +265,7 @@
                         <div ng-show="four">
                                 <div class="panel panel-info" id="section-4">
                                     <div class="panel-heading" >
-                                        <strong>{$ mutation_alias.mut_id $} on gene 3'UTR causes mRNA:miRNA gains</strong> 
+                                        <strong>{$ mutation_alias.mut_id $} in gene 3'UTR causes mRNA:miRNA gains</strong> 
                                     </div>
                                     <table class="table table-bordered" ts-wrapper>
                                         <thead>
@@ -345,7 +345,7 @@
                                 <div ng-show="five">
                                 <div class="panel panel-info" id="section-5">
                                     <div class="panel-heading" >
-                                        <strong>{$ mutation_alias.mut_id $} on gene 3'UTR causes mRNA:miRNA losses</strong>
+                                        <strong>{$ mutation_alias.mut_id $} in gene 3'UTR causes mRNA:miRNA losses</strong>
                                     </div>
                                     <table class="table table-bordered" ts-wrapper>
                                         <thead>
@@ -368,7 +368,7 @@
                                                             </span>
                                                         </th>
                                             <th style="width: 4%">
-                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Experiment validation for miRNA:mRNA">
+                                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA-gene validated by experiment.">
                                                         </span>
                                             </th>
                                             <th>Binding start<br>(miRmap)</th>
@@ -402,10 +402,10 @@
                                             
                                                 
                                                 <td align="center">
-                                                        <span ng-if="v.corelation_detail[0]">
+                                                        <span ng-if="v.corelation_detail[0]&&v.has_cor">
                                                             <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
                                                         </span>
-                                                        <span ng-if="!v.corelation_detail[0]">-</span>
+                                                        <span ng-if="!v.corelation_detail[0]||!v.has_cor">-</span>
                                                     </td>
                                             <td>
                                                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
@@ -617,36 +617,37 @@
                                             </div>
                                         </div>
                                     
-                                    <div id="exp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" style="width:1000px;margin-top:7%;">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <!--button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                                                            class="sr-only">Close</span></button-->
-                                                    <h4 class="modal-title">{$exp_item$}</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="col-lg-3" id="expression" style="height: 300px;width: 850px;border: 0px"></div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                        <div id="exp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" style="width:1000px;margin-top:7%;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="padding: 10px">
+                                                            <!--button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                                                    class="sr-only">Close</span></button-->
+                                                            <h4 class="modal-title">{$exp_item$}</h4>
+                                                        </div>
+                                                        
+                                                        <div class="modal-body" style="padding: 0px">
+                                                            <div class="col-lg-3" id="expression" style="height: 350px;width: 1000px;border: 0px"></div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
                                     
                                     <div id="corelation_detail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
                                             <div class="modal-dialog" style="width: 1000px;margin-top:7%;">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header" style="padding: 10px">
                                                     <h4 class="modal-title">{$gene_mir$}</h4>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding: 0px">
                                                     <div>
                                                         <!--div class="mirna-profile cursor-hand"
                                                         title="cancer={$c.cancer_type$}; correlation_coefficient={$ c.corelation $}"
                                                         style="background-color: {$c.color$}" ng-repeat="c in corelation_detail"></div-->
-                                                        <div class="col-lg-5" id="correlation" style="height: 300px;width: 850px;border: 0px"></div>
+                                                        <div class="col-lg-5" id="correlation" style="height: 400px;width: 850px;border: 0px"></div>
                                                         </div>
                                                 </div>
                                                 <div class="modal-footer">

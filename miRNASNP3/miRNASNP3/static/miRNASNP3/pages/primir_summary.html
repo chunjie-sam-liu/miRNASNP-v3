@@ -1,8 +1,14 @@
 <div class="bs-callout-danger">
-    <h4>SNPs in human precursor miRNA</h4>
-    <p>
+    <div class="description" style="margin-left: 7px;">
+    <h4>Variations in human precursor miRNA</h4>
+    <!--p>
         There are <span class="badge alert-info">1,913</span> precursor miRNAs collected from miRBase v22.
-    </p>
+        You can click on your interest pre-miRNA in the following table to see details, including miRNA basic information and structure effect caused by SNPs/mutations in the pre-miRNA.
+    </p-->
+    <p>In this module, we provide information on the distribution of variations(dbSNP, COSMIC, ClinVar) in precursor miRNAs(pre-miRNAs). 
+        There are <span class="badge alert-danger">1,913</span> pre-miRNAs collected from mirBase v22. 
+        You can click on the pre-miRNA you are interested in in the table below to see the structure changes caused by the variations.</p>
+    </div>
 </div>
 
 <div class="panel panel-danger">
@@ -44,9 +50,9 @@
                 <label class="control-label col-lg-2">Input:</label>
                 <div class="col-lg-3">
                     <input type="text" class="form-control input-xs" id="query_mirna_summary"
-                        ng-model="query_mirna_summary" placeholder="hsa-mir-6859-1">
+                        ng-model="query_mirna_summary" placeholder="hsa-mir-200b">
                 </div>
-                <span class="help-block">Input a miRNA, such as hsa-mir-6859-1</span>
+                <span class="help-block">Input a miRNA, such as hsa-mir-200b</span>
             </div>
             <div class="form-group">
                     <div class="col-sm-offset-4">

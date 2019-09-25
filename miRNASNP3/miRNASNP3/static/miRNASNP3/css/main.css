@@ -401,3 +401,12 @@ li.list-group-item.list-group-item-primary:hover {
 .panel {
   margin-top: 1px;
 }
+button.btn.dropdown-toggle.btn-default {
+  width: 254.5px;
+}
+div.div-table {
+  margin-top: 0px;
+}
+.pagination {
+  margin: 10px 0;
+}

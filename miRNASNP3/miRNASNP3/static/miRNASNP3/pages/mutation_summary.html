@@ -1,13 +1,21 @@
 <div class="bs-callout-primary">
-        <h4>Mutations locate on miRNAs and gene 3'UTR</h4>
-        <p>
-                <span class="badge alert-warning">175,985</span> mutations from COSMIC and <span class="badge alert-warning">32,136</span> variations from ClinVar are collected in miRNASNP3,some of these muttaions share the same genome position with SNPs.
-        </p>
+    <div class="description" style="margin-left: 7px;">
+        <h4>Phenotype-related variations</h4>
+        <!--p>
+            There are<span class="badge alert-warning">175,985</span> mutations from COSMIC, <span
+                class="badge alert-warning">32,136</span> variations from ClinVar and 235,148 SNPs, are collected in miRNASNP3,some of
+            these muttaions share the same genome position with SNPs.
+        </p-->
+        <p>We integrated pathological information of <span class="badge alert-primary">175,985</span> mutations from COSMIC, 
+            disease information of <span class="badge alert-primary">32,136</span> variations from ClinVar and disease/trait information of <span class="badge alert-primary">235,148</span> SNPs from GWAS catalog to construct the module called phenotype-related variations. 
+            Variations listed below are located in the pre-miRNA or gene 3’UTR. 
+            Enter the phenotype you are interested in and get the highest match.</p>
     </div>
+</div>
 
-    <div class="panel panel-primary">
-        <div class="panel-body">
-            <form method="get" id="mutation-summary-form" class="form form-horizontal">
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <form method="get" id="mutation-summary-form" class="form form-horizontal">
             <!--div class="form-group">
             <label class="control-label col-lg-2">Chromosome:</label>
             <div class="col-lg-2">
@@ -51,120 +59,146 @@
             </div>
             </div-->
             <div class="form-group">
-                    <label class="control-label col-lg-2">Tissue:</label>
-                    <div class="col-lg-3">
+                <label class="control-label col-lg-2">Tissue:</label>
+                <div class="col-lg-3">
+                    <div style="width: 254.5px">
                         <select id="histology" class="selectpicker" data-live-search="true">
                             <option value="All">All</option>
-                            <option>adrenal_gland</option>
-                            <option>autonomic_ganglia</option>
-                            <option>biliary</option>
-                            <option>bone</option>
-                            <option>breast</option>
-                            <option>central_nervous_system</option>
-                            <option>cervix</option>
-                            <option>endometrium</option>
-                            <option>eye</option>
-                            <option>haematopoietic</option>
-                            <option>lymphoid</option>
-                            <option>kidney</option>
-                            <option>large_intestine</option>
-                            <option>liver</option>
-                            <option>lung</option>
-                            <option>oesophagus</option>
-                            <option>ovary</option>
-                            <option>pancreas</option>
-                            <option>parathyroid</option>
-                            <option>peritoneum</option>
-                            <option>prostate</option>
-                            <option>salivary_gland</option>
-                            <option>skin</option>
-                            <option>small_intestine</option>
-                            <option>soft_tissue</option>
-                            <option>stomach</option>
-                            <option>testis</option>
-                            <option>thymus</option>
-                            <option>thyroid</option>
-                            <option>upper_aerodigestive</option>
-                            <option>urinary</option>
+                            <option> adrenal gland </option>
+                            <option> autonomic ganglia </option>
+                            <option> biliary tract </option>
+                            <option> bone </option>
+                            <option> breast </option>
+                            <option> central nervous system </option>
+                            <option> cervix </option>
+                            <option> endometrium </option>
+                            <option> eye </option>
+                            <option> fallopian tube </option>
+                            <option> female genital tract </option>
+                            <option> gastrointestinal tract </option>
+                            <option> genital tract </option>
+                            <option> haematopoietic tissue</option>
+                            <option> lymphoid tissue </option>
+                            <option> kidney </option>
+                            <option> large intestine </option>
+                            <option> liver </option>
+                            <option> lung </option>
+                            <option> mediastinum </option>
+                            <option> meninges </option>
+                            <option> midline organs </option>
+                            <option> oesophagus </option>
+                            <option> ovary </option>
+                            <option> pancreas </option>
+                            <option> paratesticular tissues </option>
+                            <option> parathyroid </option>
+                            <option> penis </option>
+                            <option> pericardium </option>
+                            <option> perineum </option>
+                            <option> peritoneum </option>
+                            <option> pituitary </option>
+                            <option> placenta </option>
+                            <option> pleura </option>
+                            <option> prostate </option>
+                            <option> retroperitoneum </option>
+                            <option> salivary gland </option>
+                            <option> skin </option>
+                            <option> small intestine </option>
+                            <option> soft tissue </option>
+                            <option> stomach </option>
+                            <option> testis </option>
+                            <option> thymus </option>
+                            <option> thyroid </option>
+                            <option> upper aerodigestive tract </option>
+                            <option> urinary tract </option>
+                            <option> vagina </option>
+                            <option> vulva </option>
                         </select>
-                        </div>
-            <!--/div>
+                    </div>
+                </div>
+                <!--/div>
             <div class="form-group"-->
                 <label class="control-label col-lg-2">Phenotype:</label>
                 <div class="col-lg-3">
-                        <div id="query_phenotype_summary-div" class=" ui-widget has-feedback inner-addon right-addon">
-                                <input name="query_phenotype_summary" type="text" id="query_phenotype_summary" class="form-control ui-autocomplete-input" placeholder="acne" autocomplete="off" list="phenotype_list">
-                                <!--span class="glyphicon form-control-feedback"-->
-                                
-                                <datalist id="phenotype_list">
-                                                <option value="All">All</option>
-                                                <option>carcinoma</option>
-                                                <option>tumor</option>
-                                                <option>neoplasm</option>
-                                                <option>Congenital_disorder_of_glycosylation</option>
-                        <option>Charcot-Marie-Tooth_disease</option>
-                        <option>Retinitis_Pigmentosa</option>
-                        <option>Zellweger_syndrome</option>
-                        <option>Spastic_paraplegia</option>
-                        <option>Ciliary_dyskinesia</option>
-                        <option>Pseudohypoaldosteronism</option>
-                        <option>Brugada_syndrome</option>
-                        <option>Fanconi_anemia</option>
-                        <option>Neuronal_Ceroid-Lipofuscinosis</option>
-                        <option>Non-syndromic_X-linked_intellectual_disability</option>
-                        <option>Congenital_hypothyroidism</option>
-                        <option>Pheochromocytoma</option>
-                        <option>Disorders_of_Intracellular_Cobalamin_Metabolism</option>
-                        <option>Joubert_syndrome</option>
-                        <option>Epilepsy</option>
-                        <option>Heterotaxia</option>
-                        <option>Primary_pulmonary_hypertension</option>
-                        <option>Cryptophthalmos_syndrome</option>
-                        <option>Progressive_myoclonic_epilepsy</option>
-                        <option>Nonsyndromic_Hearing_Loss</option>
-                        <option>Tuberous_sclerosis_syndrome</option>
-                        <option>dysplasia</option>
-                        <option>Osteogenesis_Imperfecta</option>
-                        <option>Hereditary_cancer-predisposing_syndrome</option>
-                        <option>Hermansky-Pudlak_syndrome</option>
-                        <option>Noonan-Like_Syndrome_Disorder</option>
-                        <option>Skeletal_dysplasia</option>
-                        <option>Larsen_syndrome</option>
-                        <option>3-Methylglutaconic_aciduria</option>
-                        <option>Combined_oxidative_phosphorylation_deficiency</option>
-                        <option>Benign_familial_neonatal_seizures</option>
-                        <option>Maple_syrup_urine_disease</option>
-                        <option>Dilated_Cardiomyopathy</option>
-                        <option>Holoprosencephaly_sequence</option>
-                        <option>Congenital_Myasthenic_Syndrome</option>
-                        <option>Weill-Marchesani-like_syndrome</option>
-                        <option>Familial_Candidiasis</option>
-                        <option>Delta-sarcoglycanopathy</option>
-                        <option>Dilated_Cardiomyopathy</option>
-                        <option>Limb-Girdle_Muscular_Dystrophy</option>
-                        <option>Xeroderma_pigmentosum</option>
-                        <option>Nail-patella_syndrome</option>
-                        <option>Brugada_syndrome</option>
-                        <option>Timothy_syndrome</option>
-                        <option>Arrhythmogenic_right_ventricular_cardiomyopathy</option>
-                        <option>Osteopetrosis</option>
-                    </datalist>
-                    <label class="control-label" for="annotations"></label>
-                   
-                </div>   
+                    <div id="query_phenotype_summary-div" class=" ui-widget has-feedback inner-addon right-addon"
+                        style="height: 34px">
+                        <input name="query_phenotype_summary" type="text" id="query_phenotype_summary"
+                            class="form-control ui-autocomplete-input" placeholder="acne" autocomplete="off"
+                            >
+                        <!--list="phenotype_list"-->
+                        <!--span class="glyphicon form-control-feedback"-->
+
+                        <datalist id="phenotype_list">
+                            <option value="All">All</option>
+                            <option>carcinoma</option>
+                            <!--option>tumor</option-->
+                            <option>neoplasm</option>
+                            <option>Congenital_disorder_of_glycosylation</option>
+                            <option>Charcot-Marie-Tooth_disease</option>
+                            <option>Retinitis_Pigmentosa</option>
+                            <option>Zellweger_syndrome</option>
+                            <option>Spastic_paraplegia</option>
+                            <option>Ciliary_dyskinesia</option>
+                            <option>Pseudohypoaldosteronism</option>
+                            <option>Brugada_syndrome</option>
+                            <option>Fanconi_anemia</option>
+                            <option>Neuronal_Ceroid-Lipofuscinosis</option>
+                            <option>Non-syndromic_X-linked_intellectual_disability</option>
+                            <option>Congenital_hypothyroidism</option>
+                            <option>Pheochromocytoma</option>
+                            <option>Disorders_of_Intracellular_Cobalamin_Metabolism</option>
+                            <option>Joubert_syndrome</option>
+                            <option>Epilepsy</option>
+                            <option>Heterotaxia</option>
+                            <option>Primary_pulmonary_hypertension</option>
+                            <option>Cryptophthalmos_syndrome</option>
+                            <option>Progressive_myoclonic_epilepsy</option>
+                            <option>Nonsyndromic_Hearing_Loss</option>
+                            <option>Tuberous_sclerosis_syndrome</option>
+                            <option>dysplasia</option>
+                            <option>Osteogenesis_Imperfecta</option>
+                            <option>Hereditary_cancer-predisposing_syndrome</option>
+                            <option>Hermansky-Pudlak_syndrome</option>
+                            <option>Noonan-Like_Syndrome_Disorder</option>
+                            <option>Skeletal_dysplasia</option>
+                            <option>Larsen_syndrome</option>
+                            <option>3-Methylglutaconic_aciduria</option>
+                            <option>Combined_oxidative_phosphorylation_deficiency</option>
+                            <option>Benign_familial_neonatal_seizures</option>
+                            <option>Maple_syrup_urine_disease</option>
+                            <option>Dilated_Cardiomyopathy</option>
+                            <option>Holoprosencephaly_sequence</option>
+                            <option>Congenital_Myasthenic_Syndrome</option>
+                            <option>Weill-Marchesani-like_syndrome</option>
+                            <option>Familial_Candidiasis</option>
+                            <option>Delta-sarcoglycanopathy</option>
+                            <option>Dilated_Cardiomyopathy</option>
+                            <option>Limb-Girdle_Muscular_Dystrophy</option>
+                            <option>Xeroderma_pigmentosum</option>
+                            <option>Nail-patella_syndrome</option>
+                            <option>Brugada_syndrome</option>
+                            <option>Timothy_syndrome</option>
+                            <option>Arrhythmogenic_right_ventricular_cardiomyopathy</option>
+                            <option>Osteopetrosis</option>
+                        </datalist>
+                        <label class="control-label" for="annotations"></label>
+
+                    </div>
                     <!--/select-->
                 </div>
-            </div>  
+            </div>
             <div class="form-group">
                 <label class="control-label col-lg-2">Gene/miRNA:</label>
-                    <div class="col-lg-3">
-                        <!--input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53" class="iden"-->
-                        <div id="query_iden_summary-div" class=" ui-widget has-feedback inner-addon right-addon">
-                            <input name="query_iden_summary" type="text" id="query_iden_summary" class="form-control ui-autocomplete-input" placeholder="TP53/hsa-miR-let-7a" autocomplete="off">
-                            <span class="glyphicon form-control-feedback"></span>
-                            <label class="control-label" for="annotations"></label>
-                        </div>      
+                <div class="col-lg-3">
+                    <!--input type="text" class="form-control" id="query_iden_summary" ng-model="query_iden_summary" placeholder="tp53" class="iden"-->
+                    <div id="query_iden_summary-div" class=" ui-widget has-feedback inner-addon right-addon"
+                        style="height: 34px">
+                        <input name="query_iden_summary" type="text" id="query_iden_summary"
+                            class="form-control ui-autocomplete-input" placeholder="TP53/hsa-miR-let-7a"
+                            autocomplete="off">
+                        <span class="glyphicon form-control-feedback"></span>
+                        <label class="control-label" for="annotations"></label>
                     </div>
+                </div>
                 <label class="control-label col-lg-2">Resource:</label>
                 <div class="col-lg-3">
                     <select id="resource" class="form-control">
@@ -173,10 +207,10 @@
                         <option>ClinVar</option>
                         <option>GWAS</option>
                     </select>
-                </div>    
+                </div>
             </div>
-        
-        <!--div class="form-group">
+
+            <!--div class="form-group">
                 <div class="checkbox col-sm-offset-3 col-sm-4" data-triggle="hover" data-placement="right">
                     <label class="control-label checkbox-inline">
                         <input type="checkbox" id="snp_rela">
@@ -184,29 +218,29 @@
                     </label>
                 </div>
             </div-->
-        <div class="form-group">
-            <div class="col-sm-offset-4">
-                <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_mutation_summary()">
+            <div class="form-group">
+                <div class="col-sm-offset-4">
+                    <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_mutation_summary()">
                         Submit
-                </button>
-                
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button class="btn btn-primary" id="reset_query" type="reset" ng-click=reset()>
-							Reset
-                </button>
+                    </button>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary" id="reset_query" type="reset" ng-click=reset()>
+                        Reset
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 </div>
 
 
 <div class="alert alert-danger alert-dismissible" ng-show="alert_invalid" id="alert_invalid">
-                        <button type="button" class="close" ng-click="close_invalid()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong style="vertical-align: middle;text-align: left;">Invalid input!</strong>
-                    </div>
+    <button type="button" class="close" ng-click="close_invalid()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong style="vertical-align: middle;text-align: left;">Invalid input!</strong>
+</div>
 <div ng-show="initial">
     <div class="flyover" ng-hide="snp_summary_count">
         <div class="mask"></div>
@@ -214,141 +248,149 @@
     </div>
 </div>
 <div ng-show="!initial">
-    <div class="alert alert-danger alert-dismissible" ng-show="seed_nonitem+premir_nonitem+utr3_nonitem==3" id="alert_nonitem">
+    <div class="alert alert-danger alert-dismissible" ng-show="seed_nonitem+premir_nonitem+utr3_nonitem==3"
+        id="alert_nonitem">
         <button type="button" class="close" ng-click="close_invalid()">
             <span aria-hidden="true">&times;</span>
         </button>
         <strong style="vertical-align: middle">No result for you query item !</strong>
     </div>
-<ul class="nav nav-tabs">
-        <li id="seed" ng-click="show_one('seed')" ng-show="seed_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_seed" ><a data-toggle="tab"><strong>Mutation on seed</strong></a> </li>
+    <ul class="nav nav-tabs">
+        <li id="seed" ng-click="show_one('seed')" ng-show="seed_count"
+            style="background-color:#EBEBEB;margin-right: 3px " class="class_seed"><a data-toggle="tab"><strong>Mutation
+                    in seed</strong></a> </li>
         <!--li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px "
             class="class_mature" ><a data-toggle="tab"><strong>Mutation on mature miRNA</strong></a> </li-->
-        <li id="premir" ng-click="show_one('premir')" ng-show="premir_count" style="background-color:#EBEBEB;margin-right: 3px"
-            class="class_premir" ><a data-toggle="tab"><strong id="premir_tab">Mutation on pre-miRNA</strong></a> </li>
-        <li id="utr3" ng-click="show_one('utr3')" ng-show="utr3_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_utr3" ><a data-toggle="tab"><strong id="utr3_tab">Mutation on 3'UTR</strong></a> </li>
+        <li id="premir" ng-click="show_one('premir')" ng-show="premir_count"
+            style="background-color:#EBEBEB;margin-right: 3px" class="class_premir"><a data-toggle="tab"><strong
+                    id="premir_tab">Mutation in pre-miRNA</strong></a> </li>
+        <li id="utr3" ng-click="show_one('utr3')" ng-show="utr3_count"
+            style="background-color:#EBEBEB;margin-right: 3px " class="class_utr3"><a data-toggle="tab"><strong
+                    id="utr3_tab">Mutation in 3'UTR</strong></a> </li>
     </ul>
-    
+
     <div ng-show="seed">
 
-                    <div paging
-                                     page="currentPage_seed"
-                                     page-size=15
-                                     total="seed_count"
-                                     scroll-top="true"
-                                     hide-if-empty="true"
-                                     show-prev-next="true"
-                                     show-first-last="true"
-                                     text-title-page="Page {page} Hover Over"
-                                     text-title-first="First hover"
-                                     text-title-last="Last hover"
-                                     text-title-next="Next hover"
-                                     text-title-prev="Prev hover"
-                                     show-prev-next="true"
-                                     show-first-last="true"
-                                     ul-class="pagination"
-                                     active-class="active"
-                                     disabled-class="disabled"
-                                     paging-action="update_page(page,'mirseed')"
-                                ></div>
+        <div paging page="currentPage_seed" page-size=15 total="seed_count" scroll-top="true" hide-if-empty="true"
+            show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
+            text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
+            text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
+            active-class="active" disabled-class="disabled" paging-action="update_page(page,'mirseed')"></div>
 
-    <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-        <thead>
-            <tr>
-                <th style="width: 12%">Mature miRNA</th>
-                <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
-                <th style="width: 12%">Position</th>
-                <th style="width:6%">Ref/Alt</th>
-                <th style="width: 20%">Phenotype</th>
-                <th style="width: 7%">Region</th>
-                
-                <!--th>SNP Related</th-->
-                <th style="width: 10%">Resource</th>
-                <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed ID</th>
-                <th ts-criteria="gain_count|parseInt" style="width: 8%">Gain</th>
-                <th ts-criteria="loss_count|parseInt" style="width: 8%">Loss</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="v in seed_list" ts-repeat>
-                    <td><a href="#!/mirna?mirna_id={$v.identifier$}" style="color: red"><strong>{$v.identifier$}</strong></a></td>
+        <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+            <thead>
+                <tr>
+                    <th style="width: 12%">Mature miRNA</th>
+                    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
+                    <th style="width: 12%">Position</th>
+                    <th style="width:6%">Ref/Alt</th>
+                    <th style="width: 20%">Phenotype</th>
+                    <th style="width: 7%">Region</th>
+
+                    <!--th>SNP Related</th-->
+                    <th style="width: 10%">Resource</th>
+                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed ID</th>
+                    <th ts-criteria="gain_count_initial|parseInt" style="width: 8%">Gain</th>
+                    <th ts-criteria="loss_count_initial|parseInt" style="width: 8%">Loss</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="v in seed_list" ts-repeat>
+                    <td><a href="#!/mirna?mirna_id={$v.identifier$}"
+                            style="color: red"><strong>{$v.identifier$}</strong></a></td>
                     <!--td>{$ $index+1 $}</td-->
                     <td>
-                            <span ng-if="v.resource=='ClinVar'&&v.snp_id">
-                                    <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&one=1" style="color: red" >{$v.resource$}:{$ v.mut_id $}</a>
-                            </span>
-                            <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                                    <a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&one=1" style="color: red" >{$v.resource$}:{$ v.mut_id $}</a>
-                            </span>
-                            
-                            <span ng-if="v.resource=='COSMIC'&&v.snp_id">
-                                    <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&one=1" style="color: red" >{$ v.mut_id $}</a>
-                            </span>
-                            <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                                    <a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&one=1" style="color: red" >{$ v.mut_id $}</a>
-                            </span>
-                            <!--span ng-if='v.is_tag||v.is_ld'>
+                        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
+                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span>
+
+                        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
+                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&one=1"
+                                style="color: red">{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&one=1" style="color: red">{$
+                                v.mut_id $}</a>
+                        </span>
+                        <!--span ng-if='v.is_tag||v.is_ld'>
                                     <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
                             </span-->
-                            <span ng-if="v.is_tag">
-                                    <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
-                            </span>
-                            <span ng-if="v.is_ld">
-                                    <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}" >tagSNP:{$ v.rela_tag_snp $}</a><br>
-                                        <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
-                            </span>
-                            <!--span ng-if="!v.is_tag && !v.is_ld">
+                        <span ng-if="v.is_tag">
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.is_ld">
+                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
+                                $}</a><br>
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
+                        </span>
+                        <!--span ng-if="!v.is_tag && !v.is_ld">
                                     <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
                             </span-->
-                            </td>
-                <td>{$ v.chrome$}:{$ v.position $}</td>
-                
-                <td>{$ v.ref$}/{$v.alt$}</td>
-                <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-                <td style="word-break:break-all">{$ v.pathology_show$}</td>
-                <td>{$v.location $}</td>
-                
-                <!--td align="center">
+                    </td>
+                    <td>{$ v.chrome$}:{$ v.position $}</td>
+
+                    <td>{$ v.ref$}/{$v.alt$}</td>
+                    <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
+                    <td style="word-break:break-all">{$ v.pathology_show$}</td>
+                    <td>{$v.location $}</td>
+
+                    <!--td align="center">
                     <span ng-if="v.snp_id"><a href="#!/snp?snp_id={$v.snp_id$}">{$ v.snp_id $}</span>
                     <span ng-if="!v.snp_id">-</span>
                 </td-->
                     <td>
                         <span ng-if="v.is_ld||v.is_tag">
-                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}" >GWAS</a><br>
+                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">GWAS</a><br>
                         </span>
                         <span ng-if="!v.is_ld && !v.is_tag">
                             {$v.resource$}
                         </span>
                     </td>
-                <td align="center">
-                    <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$ v.pubmed_id$}</a></span>
-                    <span ng-if="!v.pubmed_id">-</span>
-                </td>
-                <td>
-                        <span ng-if="v.snp_id"><a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&two=1" style="color: red">
-                            <button class="btn btn-success" style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
-
-                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&two=1" style="color: red">
-                            <button class="btn btn-success" style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
-
-                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&two=1" style="color: red">
-                            <button class="btn btn-success" style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>  
+                    <td align="center">
+                        <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
+                                v.pubmed_id$}</a></span>
+                        <span ng-if="!v.pubmed_id">-</span>
                     </td>
                     <td>
-                        <span ng-if="v.snp_id"><a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&three=1" style="color: red">
-                            <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                        <span ng-if="v.snp_id"><a
+                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&two=1"
+                                style="color: red">
+                                <button class="btn btn-success"
+                                    style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
 
-                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&three=1" style="color: red">
-                            <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
-                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&three=1" style="color: red">
-                            <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
+                                href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&two=1" style="color: red">
+                                <button class="btn btn-success"
+                                    style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
+
+                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&two=1" style="color: red">
+                                <button class="btn btn-success"
+                                    style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
                     </td>
-            </tr>
-        </tbody>
-    </table> 
-    </div> 
+                    <td>
+                        <span ng-if="v.snp_id"><a
+                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&three=1"
+                                style="color: red">
+                                <button class="btn btn-danger"
+                                    style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+
+                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
+                                href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&three=1" style="color: red">
+                                <button class="btn btn-danger"
+                                    style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&three=1" style="color: red">
+                                <button class="btn btn-danger"
+                                    style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <!--div ng-show="mature">
 
             <div paging
@@ -416,235 +458,233 @@
     </tr>
 </tbody>
 </table> 
-</div--> 
+</div-->
 
-<div ng-show="premir">
+    <div ng-show="premir">
 
-        <div paging
-                         page="currentPage_premir"
-                         page-size=15
-                         total="premir_count"
-                         scroll-top="true"
-                         hide-if-empty="true"
-                         show-prev-next="true"
-                         show-first-last="true"
-                         text-title-page="Page {page} Hover Over"
-                         text-title-first="First hover"
-                         text-title-last="Last hover"
-                         text-title-next="Next hover"
-                         text-title-prev="Prev hover"
-                         show-prev-next="true"
-                         show-first-last="true"
-                         ul-class="pagination"
-                         active-class="active"
-                         disabled-class="disabled"
-                         paging-action="update_page(page,'pre-miRNA')"
-                    ></div>
+        <div paging page="currentPage_premir" page-size=15 total="premir_count" scroll-top="true" hide-if-empty="true"
+            show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
+            text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
+            text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
+            active-class="active" disabled-class="disabled" paging-action="update_page(page,'pre-miRNA')"></div>
 
-<table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-<thead>
-<tr>
-    <th ts-criteria="pre_id" style="width: 12%">Pre-miRNA</th>
-    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
-    <th style="width: 12%">Position</th>
-    <th style="width:6%">Ref/Alt</th>
-    <th style="width: 18%">Phenotype</th>
-    <th style="width: 7%">Region
-            <!--span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+        <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+            <thead>
+                <tr>
+                    <th ts-criteria="pre_id" style="width: 12%">Pre-miRNA</th>
+                    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
+                    <th style="width: 12%">Position</th>
+                    <th style="width:6%">Ref/Alt</th>
+                    <th style="width: 18%">Phenotype</th>
+                    <th style="width: 7%">Region
+                        <!--span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
             data-content="In pre-miRNA means SNP in pre-miRNA but not in mature region;In mature means SNP in mature region but not in seed region."></span-->
-        </th>
-    <th ts-criteria="energy_change|parseInt" width="7%">&Delta;G
-            <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
-            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-            data-content="Minimum free energy(kcal/mol) change predicted by RNAfold."></span> 
-    </th>
-    <th ts-criteria="expression_change" width="8%">Exp.
-            <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
-            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-            data-content="up:expression increases; mild:expression change mildly; down:expression change decreases"></span>  
-    </th>
-    <th style="width: 12%">Resource</th>
-    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
-</thead>
-<tbody>
-<tr ng-repeat="v in premir_list" ts-repeat>
-        <!--td>{$ $index+1 $}</td-->
-    <td>
-        <a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color: red"><strong>{$v.pre_id$}</strong></td>
-        <td>
-        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
-                <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=premir&one=1" style="color: red" >{$v.resource$}:{$ v.mut_id $}</a>
-        </span>
-        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                <a href="#!/mutation?mut_id={$v.mut_id$}&location=premir&one=1" style="color: red" >{$v.resource$}:{$ v.mut_id $}</a>
-        </span>
-        
-        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
-                <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=premir&one=1" style="color: red" >{$ v.mut_id $}</a>
-        </span>
-        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                <a href="#!/mutation?mut_id={$v.mut_id$}&location=premir&one=1" style="color: red" >{$ v.mut_id $}</a>
-        </span>
-        <!--span ng-if='v.is_tag||v.is_ld'>
+                    </th>
+                    <th ts-criteria="energy_change|parseInt" width="7%">&Delta;G
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                            data-content="Minimum free energy(kcal/mol) change predicted by RNAfold."></span>
+                    </th>
+                    <th ts-criteria="expression_change" width="8%">Exp.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                            data-content="up:expression increases; mild:expression change mildly; down:expression change decreases"></span>
+                    </th>
+                    <th style="width: 12%">Resource</th>
+                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="v in premir_list" ts-repeat>
+                    <!--td>{$ $index+1 $}</td-->
+                    <td>
+                        <a href="#!/premir_detail?search_ids={$v.pre_id$}"
+                            style="color: red"><strong>{$v.pre_id$}</strong></td>
+                    <td>
+                        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
+                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=premir&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=premir&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span>
+
+                        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
+                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=premir&one=1"
+                                style="color: red">{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=premir&one=1" style="color: red">{$
+                                v.mut_id $}</a>
+                        </span>
+                        <!--span ng-if='v.is_tag||v.is_ld'>
                 <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
         </span-->
-        <span ng-if="v.is_tag">
-                <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
-        </span>
-        <span ng-if="v.is_ld">
-                <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}" >tagSNP:{$ v.rela_tag_snp $}</a><br>
-                    <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
-        </span>
-        <!--span ng-if="!v.is_tag && !v.is_ld">
+                        <span ng-if="v.is_tag">
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.is_ld">
+                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
+                                $}</a><br>
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
+                        </span>
+                        <!--span ng-if="!v.is_tag && !v.is_ld">
                 <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
         </span-->
-        </td>
-    <td>{$ v.chr$}:{$ v.position $}</td>
-    
-    <td>{$ v.ref$}/{$v.alt$}</td>
-    <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-    <td style="word-break:break-all">{$ v.pathology_show$}</td>
-    <td>{$v.location $}</td>
-    <!--td>
+                    </td>
+                    <td>{$ v.chr$}:{$ v.position $}</td>
+
+                    <td>{$ v.ref$}/{$v.alt$}</td>
+                    <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
+                    <td style="word-break:break-all">{$ v.pathology_show$}</td>
+                    <td>{$v.location $}</td>
+                    <!--td>
             <span ng-if="v.location != 'pre-miRNA'">{$v.identifier$}</span>
             <span ng-if="v.location=='pre-miRNA'">-</span>
         </td-->
-    <td>{$v.energy_change$}</td>
-    <td>{$v.expression_change$}</td>
-    <td align="center">
-            <span ng-if="v.is_ld||v.is_tag">
-                    <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}" >GWAS</a><br>
-                </span>
-                <span ng-if="!v.is_ld && !v.is_tag">
-                    {$v.resource$}
-                </span>
-    </td>
-    <td align="center">
-        <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$ v.pubmed_id$}</a></span>
-        <span ng-if="!v.pubmed_id">-</span>
-    </td>
-</tr>
-</tbody>
-</table> 
-</div> 
+                    <td>{$v.energy_change$}</td>
+                    <td>{$v.expression_change$}</td>
+                    <td align="center">
+                        <span ng-if="v.is_ld||v.is_tag">
+                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">GWAS</a><br>
+                        </span>
+                        <span ng-if="!v.is_ld && !v.is_tag">
+                            {$v.resource$}
+                        </span>
+                    </td>
+                    <td align="center">
+                        <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
+                                v.pubmed_id$}</a></span>
+                        <span ng-if="!v.pubmed_id">-</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<div ng-show="utr3">
+    <div ng-show="utr3">
 
-        <div paging
-                         page="currentPage_utr3"
-                         page-size=15
-                         total="utr3_count"
-                         scroll-top="true"
-                         hide-if-empty="true"
-                         show-prev-next="true"
-                         show-first-last="true"
-                         text-title-page="Page {page} Hover Over"
-                         text-title-first="First hover"
-                         text-title-last="Last hover"
-                         text-title-next="Next hover"
-                         text-title-prev="Prev hover"
-                         show-prev-next="true"
-                         show-first-last="true"
-                         ul-class="pagination"
-                         active-class="active"
-                         disabled-class="disabled"
-                         paging-action="update_page(page,'UTR3')"
-                    ></div>
+        <div paging page="currentPage_utr3" page-size=15 total="utr3_count" scroll-top="true" hide-if-empty="true"
+            show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
+            text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
+            text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
+            active-class="active" disabled-class="disabled" paging-action="update_page(page,'UTR3')"></div>
 
-<table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-<thead>
-<tr>
-    <th style="width: 8%">Gene</th>
-    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
-    <th style="width: 12%">Position</th>
-    
-    <th style="width:6%">Ref/Alt</th>
-    <th style="width: 25%">Pathology</th>
-    <th style="width: 7%">Region</th>
-    
-    <!--th>SNP Related</th-->
-    
-    <th style="width: 10%">Resource</th>
-    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
-    <th ts-criteria="gain_count|parseInt" style="width: 8%">Gain</th>
-    <th ts-criteria="loss_count|parseInt" style="width: 8%">Loss</th>
-</tr>
-</thead>
-<tbody>
-<tr ng-repeat="v in utr3_list" ts-repeat>
-        <!--td>{$ $index+1 $}</td-->
-        <td><a href="#!/gene?query_gene={$v.identifier$}&has_snp=1&has_phenotype=1" style="color: red"><strong>{$v.identifier$}</strong></td>
-            <td>
-            <span ng-if="v.resource=='ClinVar'&&v.snp_id">
-                    <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&one=1" style="color: red" >{$v.resource$}:{$ v.mut_id $}</a>
-            </span>
-            <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                    <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1" style="color: red" >{$v.resource$}:{$ v.mut_id $}</a>
-            </span>
-            
-            <span ng-if="v.resource=='COSMIC'&&v.snp_id">
-                    <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&one=1" style="color: red" >{$ v.mut_id $}</a>
-            </span>
-            <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                    <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1" style="color: red" >{$ v.mut_id $}</a>
-            </span>
-            <!--span ng-if='v.is_tag||v.is_ld'>
+        <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+            <thead>
+                <tr>
+                    <th style="width: 8%">Gene</th>
+                    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
+                    <th style="width: 12%">Position</th>
+
+                    <th style="width:6%">Ref/Alt</th>
+                    <th style="width: 25%">Pathology</th>
+                    <th style="width: 7%">Region</th>
+
+                    <!--th>SNP Related</th-->
+
+                    <th style="width: 10%">Resource</th>
+                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
+                    <th ts-criteria="gain_count|parseInt" style="width: 8%">Gain</th>
+                    <th ts-criteria="loss_count|parseInt" style="width: 8%">Loss</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="v in utr3_list" ts-repeat>
+                    <!--td>{$ $index+1 $}</td-->
+                    <td><a href="#!/gene?query_gene={$v.identifier$}&has_snp=1&has_phenotype=1"
+                            style="color: red"><strong>{$v.identifier$}</strong></td>
+                    <td>
+                        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
+                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span>
+
+                        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
+                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&one=1"
+                                style="color: red">{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1" style="color: red">{$ v.mut_id
+                                $}</a>
+                        </span>
+                        <!--span ng-if='v.is_tag||v.is_ld'>
                     <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
             </span-->
-            <span ng-if="v.is_tag">
-                    <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
-            </span>
-            <span ng-if="v.is_ld">
-                    <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}" >tagSNP:{$ v.rela_tag_snp $}</a><br>
-                        <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
-            </span>
-            <!--span ng-if="!v.is_tag && !v.is_ld">
+                        <span ng-if="v.is_tag">
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
+                        </span>
+                        <span ng-if="v.is_ld">
+                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
+                                $}</a><br>
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
+                        </span>
+                        <!--span ng-if="!v.is_tag && !v.is_ld">
                     <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
             </span-->
-            </td>
-    <td>{$ v.chrome$}:{$ v.position $}</td>
-    <td>{$ v.ref$}/{$v.alt$}</td>
-    <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-    <td style="word-break:break-all">{$ v.pathology_show$}</td>
-    <td>{$v.location $}</td>
-    
-    <td align="center">
-            <span ng-if="v.is_ld||v.is_tag">
-                    <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}" >GWAS</a><br>
-                </span>
-                <span ng-if="!v.is_ld && !v.is_tag">
-                    {$v.resource$}
-                </span>
-    </td>
-    <td align="center">
-        <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$ v.pubmed_id$}</a></span>
-        <span ng-if="!v.pubmed_id">-</span>
-    </td>
-    <td>
-            <span ng-if="v.snp_id"><a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3;four=1" style="color: red">
-                <button class="btn btn-success" style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
+                    </td>
+                    <td>{$ v.chrome$}:{$ v.position $}</td>
+                    <td>{$ v.ref$}/{$v.alt$}</td>
+                    <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
+                    <td style="word-break:break-all">{$ v.pathology_show$}</td>
+                    <td>{$v.location $}</td>
 
-            <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&four=1" style="color: red">
-                <button class="btn btn-success" style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
+                    <td align="center">
+                        <span ng-if="v.is_ld||v.is_tag">
+                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">GWAS</a><br>
+                        </span>
+                        <span ng-if="!v.is_ld && !v.is_tag">
+                            {$v.resource$}
+                        </span>
+                    </td>
+                    <td align="center">
+                        <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
+                                v.pubmed_id$}</a></span>
+                        <span ng-if="!v.pubmed_id">-</span>
+                    </td>
+                    <td>
+                        <span ng-if="v.snp_id"><a
+                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3;four=1"
+                                style="color: red">
+                                <button class="btn btn-success"
+                                    style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
 
-            <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&location=UTR3&four=1" style="color: red">
-                <button class="btn btn-success" style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
+                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
+                                href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&four=1" style="color: red">
+                                <button class="btn btn-success"
+                                    style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
 
-        </td>
-        <td>
-            <span ng-if="v.snp_id"><a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&five=1" style="color: red">
-                <button class="btn btn-danger" style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&location=UTR3&four=1"
+                                style="color: red">
+                                <button class="btn btn-success"
+                                    style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
 
-            <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&five=1" style="color: red">
-                <button class="btn btn-danger" style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                    </td>
+                    <td>
+                        <span ng-if="v.snp_id"><a
+                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&five=1"
+                                style="color: red">
+                                <button class="btn btn-danger"
+                                    style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
 
-            <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&lcoation=UTR3&five=1" style="color: red">
-                <button class="btn btn-danger" style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
-        </td>
-   
-</tr>
-</tbody>
-</table> 
-</div> 
+                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
+                                href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&five=1" style="color: red">
+                                <button class="btn btn-danger"
+                                    style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+
+                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&lcoation=UTR3&five=1"
+                                style="color: red">
+                                <button class="btn btn-danger"
+                                    style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

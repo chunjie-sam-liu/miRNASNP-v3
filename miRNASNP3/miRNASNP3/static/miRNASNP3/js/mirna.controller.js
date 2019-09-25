@@ -22,10 +22,6 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $scope.four = 0;
         $scope.five = 0;
         $scope.six = 0;
-        $scope.enrich_dot=0;
-        $scope.enrich_cnet=0;
-        $scope.enrich_emap=0;
-        $scope.enrich_table=0;
     };
     $scope.one = 1;
     $scope.show_one = function (refer) {
@@ -55,6 +51,15 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             $scope.six = 1;
             $scope.class_six = "ative";
         }
+    };
+    $scope.enrich_clear=function(){
+        $scope.enrich_dot=0;
+        $scope.enrich_cnet=0;
+        $scope.enrich_emap=0;
+        $scope.enrich_table=0;
+    }
+    $scope.show_enrich=function(refer){
+        $scope.enrich_clear();
         if(refer=="enrich_dot"){
             $scope.enrich_dot=1;
             $scope.class_enrich_dot="active";
@@ -71,7 +76,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             $scope.enrich_table=1;
             $scope.class_enrich_table="active";
         }
-    };
+    }
     $scope.fetch_mirna_details = function () {
         $http({
            url:base_url+'/api/mirinfo',
@@ -114,26 +119,49 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             temp=$scope.mirna_expression.exp_df;
             console.log($scope.mirna_expression_show)
             for (var key in temp) {
-                    if (temp[key]>500){
-                        value=500
-                    }else{
-                        value = temp[key]
+                value=Number(temp[key])
+                if(value!=0){
+                if(min_value){
+                    if(value<min_value){
+                        min_value=value
                     }
-                    value=value/500*100-1;
-
-                    if(value<50){
-                        r = Math.floor(255*(value/50));
+                }else{
+                    var min_value= value
+                }
+                if(max_value){
+                    if (value>max_value){
+                        max_value=value
+                    }
+                }else{
+                    var max_value=value
+                }
+                }}
+            console.log(min_value)
+            console.log(max_value)
+            var w= max_value-min_value
+            console.log(w)
+            for (var key in temp) {
+                if(w==0){
+                    r=255
+                    g=255
+                    b=0
+                    }else{
+                    value=Number(temp[key])
+                    if(value<w/2){
+                        r = Math.floor((510/w)*(value-min_value));
                         g = 255
                     }else{
                         r = 255;
-                        g = Math.floor(255*((50-value%50)/50))
+                        g = Math.floor((510/w)*(max_value-value))
                     }
                     b = 0;
+                }
                     var p = "rgb("+r+","+g+","+b+")";
-                    if (temp[key]){
+                    if (Number(temp[key])!=0){
                         array.push({"cancer_type":key,"expression":temp[key],"color":p})
                     }
                 }
+            
                 console.log(array);
                 $scope.mirna_profile = array;
         })
@@ -214,8 +242,9 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
           });
 
           $scope.echart_correlation=function(cor){
-            $scope.gene_mir=cor.mir_gene;
+            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1];
             var c=echarts;
+            c.init(document.getElementById('correlation')).dispose();
             var cor_echart=c.init(document.getElementById('correlation'));
             var source_data=[]
             //var source_data=[["cancer_types", "correlation"]]
@@ -262,7 +291,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         type: 'shadow'
                     }
                 },
-                toolbox: {
+               /* toolbox: {
                     show: true,
                     orient: 'vertical',
                     left: 'right',
@@ -274,22 +303,116 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         //restore: {show: true},
                         saveAsImage: {show: true}
                     }
-                },
+                },*/
             color:'#0000c6',
             
-           series: [
-            {
-             type: 'bar',
-                encode: {
-                x:'correlation',
-                y:'cancer_types' 
-            },
-        }],
+            series: [
+                {
+                 type: 'bar',
+                    encode: {
+                    x:'correlation',
+                    y:'cancer_types' 
+                },
+                barWidth:10,
+                barGap:2
+            }],
     };
             cor_echart.setOption(option)
         }
-
-    $scope.modal_gene_expression=function(exp){
+        $scope.modal_gene_expression=function(exp){ 
+            echarts.init(document.getElementById('gene_expression')).dispose();
+            var myChart = echarts.init(document.getElementById('gene_expression'));
+            var series_list=[]
+            $scope.gene_expression=exp[0];
+        //console.log($scope.gene_expression);
+            var gene_expr = $scope.gene_expression.exp_df;
+           // $scope.exp_item=title;
+            
+            var cancer_types=['cancer_type'];
+            var expr=['RPKM'];
+           
+            for(var cancer in gene_expr){
+                var source_data={}
+                var labelOption={}
+                if(gene_expr[cancer]&&Number(gene_expr[cancer])!=0){
+                    labelOption = {
+                        normal: {
+                            show: true,
+                            position: 'top',
+                            distance: 5,
+                            align: 'left',
+                            verticalAlign: 'middle',
+                            rotate: 90,
+                            formatter:'{name|{a}}',
+                            fontSize: 8,
+                            rich: {
+                                name: {
+                                    color:'#000000',
+                                    textBorderColor: '#000000'
+                                }
+                            }
+                        }
+                    };
+                    source_data['data']=[gene_expr[cancer]]
+                    series_list.push(source_data)
+                    cancer_types.push(cancer)
+                    expr.push(gene_expr[cancer])
+                    source_data['label']=labelOption;
+                    source_data['name']=cancer;
+                    source_data['type']='bar';
+                    source_data['barGap']=0.2;
+                    source_data['barWidth']=23
+                }
+                
+            }
+            //source_data_expr.sort(up)
+            console.log(series_list)
+            
+            myChart.setOption({
+                //dataset:{
+                //    source:[cancer_types,expr]
+                //},
+                xAxis: [
+                    {
+                        type: 'category',
+                        axisTick: {show:false},
+                       
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name:'RPKM',
+                        nameTextStyle:{
+                            align:'left',
+                            fontSize:12,
+                            fontWeight:'bold',
+                        }}
+                    ],
+                // Declare several bar series, each will be mapped
+                // to a column of dataset.source by default.
+                series: series_list,
+                    color: ['#600000','#ff79bc','#930093','#b15bff','#000093','#46a3ff','#005757','#1afd9c','#007500',
+                            '#b7ff4a','#737300','#ffdc35','#ff8000','#ff9d6f','#984b4b','#c2c287','#408080','5a5aad',
+                            '#6c3365','	#ff5151','#820041','#ff00ff','#3a006f','#0000c6','#66b3ff','#00a600','#ce0000',
+                            '#b15bff','#00db00','#796400','#004b97','#f9f900','#bb3d00'],
+                    tooltip: {
+                        trigger: 'item',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    series: series_list,
+                    grid:{
+                        x:45,
+                        y:35,
+                        x2:30,
+                        y2:20,
+                        borderWidth:1
+                       },
+                });
+        };
+    /*$scope.modal_gene_expression=function(exp){
         $scope.gene_expression=exp[0];
         //console.log($scope.gene_expression);
         var gene_expr = $scope.gene_expression.exp_df;
@@ -380,7 +503,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                  //   }
                // ]
             });
-    };
+    };*/
 
     $scope.modal_gain_site=function(site){
 		$scope.modal_header="Target Gain";
@@ -429,10 +552,15 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     $scope.snp_seed_loss_count = response.data.snp_seed_loss_count;
                     var site_array=$scope.snp_seed_loss_list
                     for(var i=0;i<site_array.length;i++){
+                        site_array[i].has_cor=1
                         if(site_array[i].expr_corelation){
-                            site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
-                            if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
+                            console.log(site_array[i].expr_corelation)
+                            if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                            else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
                         }
+                        if(site_array[i].gene_expression[0]){
+                            if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                        }else{site_array[i].has_cor=0}
                         site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                         site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -469,10 +597,14 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         $scope.snp_seed_loss_count = response.data.snp_seed_loss_count+1;
                         var site_array=$scope.snp_seed_loss_list
                         for(var i=0;i<site_array.length;i++){
+                            site_array[i].has_cor=1
                             if(site_array[i].expr_corelation){
-                                site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
-                                if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
-                            }
+                                if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                                else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
+                                }
+                            if(site_array[i].gene_expression[0]){
+                                if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                            }else{site_array[i].has_cor=0}
                             site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                             site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -653,10 +785,14 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     $scope.mut_seed_loss_count=response.data.mut_seed_loss_count;
                     var site_array=$scope.mut_seed_loss_list
                 for(var i=0;i<site_array.length;i++){
-                    if(site_array[i].expr_corelation){
-                        site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
-                        if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
-                    }
+                        site_array[i].has_cor=1
+                        if(site_array[i].expr_corelation){
+                            if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                            else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
+                        }
+                        if(site_array[i].gene_expression[0]){
+                            if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                        }else{site_array[i].has_cor=0}
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -692,10 +828,14 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             $scope.mut_seed_loss_count=response.data.mut_seed_loss_count+1;
                             var site_array=$scope.snp_seed_gain_list
                             for(var i=0;i<site_array.length;i++){
+                                site_array[i].has_cor=1
                                 if(site_array[i].expr_corelation){
-                                    site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
-                                    if(Number(site_array[i].expr_corelation)==0){site_array[i].expr_corelation='NAN'}
+                                    if(site_array[i].expr_corelation=='Not significant'){site_array[i].expr_corelation="0.00"}
+                                    else{site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)}
                                 }
+                                if(site_array[i].gene_expression[0]){
+                                    if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
+                                }else{site_array[i].has_cor=0}
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                                 site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -729,18 +869,31 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         })
     };
     $scope.fetch_enrich_result();
+    $scope.enrich_init=function(){
+        $scope.show_dot=0;
+        $scope.show_cnet=0;
+        $scope.show_emap=0;
+        $scope.show_table=0;
+    }
+    $scope.enrich_init()
 
     $scope.enrichment_view=function(e){
+        console.log('enrichment result')
         $scope.enrich_item=e
         $scope.csv_table=e.csv_table
         console.log($scope.csv_table)
+        $scope.enrich_clear()
         $scope.show_dot=0;
         $scope.show_cnet=0;
         $scope.show_emap=0;
         $scope.show_table=1;
+        $scope.enrich_table=1;
         if(e.dot_file){$scope.show_dot=1}
-        if(e.chet_file){$scope.show_cnet=1}
-        if(e.emap_file){$scope.show_emap=1}
+       
+        $('#enrich_table').addClass('active')
+        $("#enrich_dot").removeClass('active')
+       // if(e.chet_file){$scope.show_cnet=1}
+       // if(e.emap_file){$scope.show_emap=1}
         //console.log($scope.enrich_filename)
     }
 

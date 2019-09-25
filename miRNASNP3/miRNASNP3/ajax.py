@@ -980,6 +980,7 @@ class PrimirSummary(Resource):
 
 api.add_resource(PrimirSummary, '/api/primir_summary')
 
+'''
 premir_genome={
     'start':fields.String,
     'end':fields.String,
@@ -1003,7 +1004,12 @@ mir_cluster10k={
     'genome':fields.List(fields.Nested(premir_genome)),
     'rpm':fields.String
 }
-
+'''
+premir_cluster={
+    'pre_id':fields.String,
+    'cluster10k_id':fields.String,
+    'cluster5k_id':fields.String
+}
 premir_info={
     'pre_id':fields.String,
     'cluster10k_id':fields.String,
@@ -1016,8 +1022,8 @@ premir_info={
     'resouce':fields.String,
     'mfe':fields.String,
     'host_gene':fields.String,
-    'cluster10k':fields.Nested(mir_cluster10k),
-    'cluster5k':fields.Nested(mir_cluster5k),
+    'cluster10k':fields.Nested(premir_cluster),
+    'cluster5k':fields.Nested(premir_cluster),
     'mirinfo':fields.Nested(mir_summary),
     'mature_position':fields.List(fields.List(fields.String))
 }
@@ -1039,13 +1045,13 @@ class PremirInfo(Resource):
                 'pre_id':search_ids
             }}
             lookup_cluster10k={'$lookup':{
-                'from':'primir_cluster_advanced',
+                'from':'premir_cluster_10k',
                 'localField':'cluster10k_id',
                 'foreignField':'cluster10k_id',
                 'as':'cluster10k'
             }}
             lookup_cluster5k={'$lookup':{
-                'from':'primir_cluster_advanced',
+                'from':'premir_cluster_5k',
                 'localField':'cluster5k_id',
                 'foreignField':'cluster5k_id',
                 'as':'cluster5k'
@@ -1489,6 +1495,35 @@ class MutGetGene(Resource):
             gene_query={}
         return {'gene_list':list(gene_list),'gene_query':list(gene_query)}
 api.add_resource(MutGetGene,'/api/mutation_summary_gene')
+
+phenotype_line={
+    'phenotype':fields.String
+}
+phenotype_list={
+    'phenotype_list':fields.Nested(phenotype_line)
+}
+
+class GetPhenotype(Resource):
+    @marshal_with(phenotype_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('phenotype', type=str)
+        args = parser.parse_args()
+        condition={}
+        #accurate_condition={}
+        print(args['phenotype'])
+        if args['phenotype']:
+            condition['phenotype']={'$regex':args['phenotype'],'$options':'$i'}
+            #accurate_condition['gene_symbol_lower']=args['gene'].lower()
+            #print(accurate_condition)
+            phenotype_list=mongo.db.phenotype_list.find(condition).limit(10)
+            #gene_query=mongo.db.mutation_summary_genelist.find(accurate_condition)
+        else:
+            phenotype_list={}
+            #gene_query={}
+        return {'phenotype_list':list(phenotype_list)}
+
+api.add_resource(GetPhenotype,'/api/mutation_summary_phenotype')
 
 class MutationSummarySeed(Resource):
     @marshal_with(mutation_summary_list)
