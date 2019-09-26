@@ -8,7 +8,7 @@
         </p-->
         <p>We integrated pathological information of <span class="badge alert-primary">175,985</span> mutations from COSMIC, 
             disease information of <span class="badge alert-primary">32,136</span> variations from ClinVar and disease/trait information of <span class="badge alert-primary">235,148</span> SNPs from GWAS catalog to construct the module called phenotype-related variations. 
-            Variations listed below are located in the pre-miRNA or gene 3’UTR. 
+            Variations listed below are located in the pre-miRNA or gene 3'UTR. 
             Enter the phenotype you are interested in and get the highest match.</p>
     </div>
 </div>
@@ -289,7 +289,7 @@
 
                     <!--th>SNP Related</th-->
                     <th style="width: 10%">Resource</th>
-                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed ID</th>
+                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
                     <th ts-criteria="gain_count_initial|parseInt" style="width: 8%">Gain</th>
                     <th ts-criteria="loss_count_initial|parseInt" style="width: 8%">Loss</th>
                 </tr>
@@ -321,12 +321,12 @@
                                     <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
                             </span-->
                         <span ng-if="v.is_tag">
-                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">tagSNP:{$ v.mut_id $}</a>
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
                         </span>
                         <span ng-if="v.is_ld">
-                            <a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
-                                $}</a><br>
-                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">SNP:{$ v.mut_id $}</a>
+                            <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
+                                $}</a><br-->
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
                         </span>
                         <!--span ng-if="!v.is_tag && !v.is_ld">
                                     <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
