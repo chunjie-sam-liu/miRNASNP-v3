@@ -244,6 +244,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
           
           $scope.update_target_gain=function(page){
             var flag=0;
+            console.log(page)
             $('#search_gene_gain').on('input propertychange', function() {
                 var query_gene_gain = $.trim($('#search_gene_gain').val());
                 console.log(query_gene_gain)
