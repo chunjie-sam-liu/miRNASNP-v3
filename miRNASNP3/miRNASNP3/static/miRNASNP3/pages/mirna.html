@@ -559,7 +559,12 @@
                     </tr>
                     <tr>
                         <td class="warning" colspan="4">
-                            <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                            <span ng-if="target_gain">
+                                    <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                            </span>
+                            <span ng-if="target_loss">
+                            <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                            </span>
                         </td>
                         <!--td class="warning" colspan="3">
                             <pre>{$modal_site.site_info.align6$}<br>{$modal_site.site_info.align7$}<br>{$modal_site.site_info.align8$}</pre>
@@ -643,9 +648,14 @@
                         </tr>
                         <tr>
                           
-                            <td class="warning" colspan="4">
-                                <pre>3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
-                            </td>
+                                <td class="warning" colspan="4">
+                                        <span ng-if="target_gain">
+                                                <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                                        </span>
+                                        <span ng-if="target_loss">
+                                        <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                                        </span>
+                                    </td>
                             <!--td class="warning" colspan="3">
                                 <pre>{$modal_site.site_info.align6$}<br>{$modal_site.site_info.align7$}<br>{$modal_site.site_info.align8$}</pre>
                             </td-->
