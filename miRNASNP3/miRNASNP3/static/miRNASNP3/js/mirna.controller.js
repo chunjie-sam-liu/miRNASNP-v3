@@ -530,7 +530,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $scope.modal_loss_site=function(site){
 		$scope.modal_header="Target Loss";
 		$scope.modal_site=site;
-		var align8=site.site_info.align8;
+        var align8=site.site_info.align8;
+        var align7=site.site_info.align7;
 		//var b=0;
 		//for (var i=0;i<align8.length;i++){
 		 //   if(align8[i]==' '){
