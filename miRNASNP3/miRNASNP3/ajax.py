@@ -175,7 +175,7 @@ class SnpSeedGain(Resource):
         print(args['mirna_id'])
         page = args['page']
         per_page = 15
-        record_skip = (page - 1) * per_page
+        record_skip = (int(page) - 1) * per_page
         condition = {}
         pipline=[]
         print(args['mirna_id'])
@@ -284,7 +284,7 @@ class SnpSeedLoss(Resource):
         args = parser.parse_args()
         page = args['page']
         per_page = 15
-        record_skip = (page - 1) * per_page
+        record_skip = (int(page) - 1) * per_page
         condition = {}
         print(args['mirna_id'])
         if args['snp_id']:
@@ -364,7 +364,7 @@ class MutSeedGain(Resource):
         mirna_id = args['mirna_id']
         page = args['page']
         per_page = 15
-        record_skip = (page - 1) * per_page
+        record_skip = (int(page) - 1) * per_page
         condition = {}
         if args['mirna_id']:
             condition['mirna_id']=mirna_id
@@ -431,7 +431,7 @@ class MutSeedLoss(Resource):
         page=1
         page = args['page']
         per_page = 15
-        record_skip = (page - 1) * per_page
+        record_skip = (int(page) - 1) * per_page
         condition = {}
         if args['mirna_id']:
             condition['mirna_id']=mirna_id
@@ -544,7 +544,7 @@ class SnvUtrLoss(Resource):
         snp_id = args['snp_id']
         page = args['page']
         per_page = 15
-        record_skip = (page - 1) * per_page
+        record_skip = (int(page) - 1) * per_page
         condition = {}
         if snp_id:
             condition['snp_id']=snp_id
@@ -603,7 +603,7 @@ class SnvUtrGain(Resource):
         snp_id = args['snp_id']
         page = args['page']
         per_page = 15
-        record_skip = (page - 1) * per_page
+        record_skip = (int(page) - 1) * per_page
         condition = {}
         if snp_id:
             condition['snp_id']=snp_id

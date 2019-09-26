@@ -184,11 +184,20 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
     $scope.fetch_target_gain_mut = function (page) {
         console.log($scope.query_mutation);
+        var flag=0;
+        var query_gene_gain = $.trim($('#search_gene').val());
+            console.log(query_gene_gain)
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_gain)) {
+                alert("Invalid input");
+                flag = 1;
+                history.back();
+            }
+            if(flag==0){
     	$http({
             //!apache_url!//url:base_url+base_url+'/api/mut_seed_gain',
             url:base_url+'/api/mut_seed_gain',
 			method: 'GET',
-			params: {mut_id: $scope.query_mutation,page:page}
+			params: {mut_id: $scope.query_mutation,page:page,gene:query_gene_gain}
             }).then(
                 function (response) {
                     console.log(response);
@@ -208,15 +217,17 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     
                 }
                 })
+            }
             };
     $scope.fetch_target_gain_mut(page);
 
     $(document).ready(function(){
         var flag=0;
         $('#search_gene').on('input propertychange', function() {
+            $scope.currentPage_seedgain=1
             var query_gene_gain = $.trim($('#search_gene').val());
             console.log(query_gene_gain)
-            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_gain)) {
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_gain)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
@@ -252,11 +263,20 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
       });
 
     $scope.fetch_target_loss_mut = function (page) {
+        var flag=0;
+        var query_gene_loss = $.trim($('#search_gene_loss').val());
+            console.log(query_gene_loss)
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_loss)) {
+                alert("Invalid input");
+                flag = 1;
+                history.back();
+            }
+            if(flag==0){
     	$http({
             //!apache_url!//url:base_url+base_url+'/api/mut_seed_loss',
             url:base_url+'/api/mut_seed_loss',
 			method: 'GET',
-			params: {mut_id: $scope.query_mutation,page:page}
+			params: {mut_id: $scope.query_mutation,page:page,gene:query_gene_loss}
             }).then(
                 function (response) {
                     console.log(response);
@@ -284,14 +304,16 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     
                 }
                 })
+            }
             };
     $scope.fetch_target_loss_mut(page);
     $(document).ready(function(){
         var flag=0;
         $('#search_gene_loss').on('input propertychange', function() {
+            $scope.currentPage_seedloss=1
             var query_gene_loss = $.trim($('#search_gene_loss').val());
             console.log(query_gene_loss)
-            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_loss)) {
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();

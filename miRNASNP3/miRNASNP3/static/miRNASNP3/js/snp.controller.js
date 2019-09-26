@@ -123,11 +123,20 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.fetch_target_gain = function (page) {
         console.log("fetch_target_gain");
+        var flag=0;
+        var query_gene_gain = $.trim($('#search_gene').val());
+        console.log(query_gene_gain)
+        if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_gain)) {
+            alert("Invalid input");
+            flag = 1;
+            history.back();
+        }
+        if(flag==0){
     	$http({
             //url:base_url+base_url+'/api/snp_seed_gain',
             url:base_url+'/api/snp_seed_gain',
 			method: 'GET',
-			params: {snp_id: $scope.query_snp,page:page}
+			params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
             }).then(
                 function (response) {
                     console.log(response);
@@ -153,15 +162,17 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
                 }
                 })
+            }
             };
     $scope.fetch_target_gain(page);
 
     $(document).ready(function(){
         var flag=0;
         $('#search_gene').on('input propertychange', function() {
+            $scope.currentPage_seedgain=1
             var query_gene_gain = $.trim($('#search_gene').val());
             console.log(query_gene_gain)
-            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_gain)) {
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_gain)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
@@ -411,11 +422,20 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
 
     $scope.fetch_target_loss = function (page) {
+        var flag=0;
+        var query_gene_loss = $.trim($('#search_gene_loss').val());
+            console.log(query_gene_loss)
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_loss)) {
+                alert("Invalid input");
+                flag = 1;
+                history.back();
+            }
+            if(flag==0){
     	$http({
         	//url:base_url+base_url+'/api/snp_seed_loss',
             url:base_url+'/api/snp_seed_loss',
             method: 'GET',
-            params: {snp_id: $scope.query_snp,page:page}
+            params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
         }).then(
             function (response) {
                 console.log(response);
@@ -442,15 +462,17 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
                 }
             });
+        }
         };
     $scope.fetch_target_loss(page);
 
     $(document).ready(function(){
         var flag=0;
         $('#search_gene_loss').on('input propertychange', function() {
+            $scope.currentPage_seedloss=1
             var query_gene_loss = $.trim($('#search_gene_loss').val());
             console.log(query_gene_loss)
-            if (/[@#\$%\^&\*<>\.\\\/]+/g.test(query_gene_loss)) {
+            if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_loss)) {
                 alert("Invalid input");
                 flag = 1;
                 history.back();
