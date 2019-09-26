@@ -548,8 +548,11 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
            // var distance=Number(site.snp_info.distance)+b+2;
         var distance=align8.length-site.snp_info.distance-1;
 		$scope.align8_pre=align8.substring(0,distance);
-        $scope.align8_letter=align8[distance];
+        $scope.align8_letter=site.snp_info.curalt;
         $scope.align8_later=align8.substring(distance+1,align8.length);
+        $scope.align7_pre=align7.substring(0,distance);
+        $scope.align7_letter='X';
+        $scope.align7_later=align7.substring(distance+1,align7.length);
         }
 
    $scope.fetch_target_loss = function (page) {
