@@ -410,18 +410,3 @@ div.div-table {
 .pagination {
   margin: 10px 0;
 }
-.badge {
-  background-color: #2e6da4;
-}
-.alert-success {
-  color: white;
-  background-color: #32920b;
-}
-.alert-danger {
-  color: white;
-  background-color: #c10808;
-}
-.alert-info {
-  color: white;
-  background-color: #47899c;
-}
