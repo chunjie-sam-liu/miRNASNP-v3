@@ -676,8 +676,8 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
     
             $scope.modal_loss_site_utr=function(site){
                 $scope.modal_header="Target Loss";
-                $scope.target_loss=0
-                $scope.target_gain=1
+                $scope.target_loss=1
+                $scope.target_gain=0
                 $scope.modal_site=site;
                 var align6=site.site_info.align6;
                 var align7=site.site_info.align7;
