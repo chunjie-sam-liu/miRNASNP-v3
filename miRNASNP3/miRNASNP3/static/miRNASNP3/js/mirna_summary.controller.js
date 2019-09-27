@@ -48,7 +48,7 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             $('#alert_invalid').show()
         }
         if(flag_mirna==0){
-            condition['mirna_id']=mirna_id
+            condition['mirna_id']=mirna_id.replace(/r/g,"R")
         console.log(mirna_id);
         $http({
             url:base_url+ip_address,
@@ -99,7 +99,7 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             $('#alert_invalid').show()
         }
         if(flag_mirna==0){
-            condition['mirna_id']=mirna_id
+            condition['mirna_id']=mirna_id.replace(/R/g,"r")
         console.log(mirna_id);
         $http({
             url:base_url+ip_address,
