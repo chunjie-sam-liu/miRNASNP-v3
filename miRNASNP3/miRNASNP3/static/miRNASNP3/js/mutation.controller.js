@@ -513,7 +513,13 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                    },
             });
     };
-
+    var RULE1={
+        'A':'U',
+        'T':'A',
+        'C':'G',
+        'G':'C',
+        'N':'N'
+    }
 	$scope.modal_gain_site=function(site){
         $scope.modal_header="Target Gain";
         $scope.target_gain=1;
@@ -535,7 +541,11 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
         console.log(align7)
         var distance=align8.length-site.snp_info.distance-1;
 		$scope.align8_pre=align8.substring(0,distance);
-        $scope.align8_letter=site.mut_info.curalt;
+        if(site.strand=='-'){
+            $scope.align8_letter=RULE1[site.mut_info.curalt]
+        }else{
+            $scope.align8_letter=site.mut_info.curalt;
+        }
         $scope.align8_later=align8.substring(distance+1,align8.length);
         $scope.align7_pre=align7.substring(0,distance);
         console.log($scope.align7_pre)
@@ -668,7 +678,7 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
             $scope.target_loss=0
             $scope.modal_site=site;
             var align6=site.site_info.align6;
-                var distance=Number(site.snp_info.distance_align)+3;
+                var distance=Number(site.mut_info.distance_align)+3;
                 $scope.align6_pre=align6.substring(0,distance);
                 $scope.align6_letter=align6[distance];
                 $scope.align6_later=align6.substring(distance+1,align6.length);
@@ -681,9 +691,13 @@ function MutationController($scope,$routeParams,$http,miRNASNP3Service) {
                 $scope.modal_site=site;
                 var align6=site.site_info.align6;
                 var align7=site.site_info.align7;
-                    var distance=Number(site.snp_info.distance_align)+3;
+                    var distance=Number(site.mut_info.distance_align)+3;
                     $scope.align6_pre=align6.substring(0,distance);
-                    $scope.align6_letter=site.mut_info.curalt
+                    if(site.utr_info.strand=='-'){
+                        $scope.align6_letter=RULE1[site.mut_info.curalt]
+                    }else{
+                        $scope.align6_letter=site.mut_info.curalt;
+                    }
                     $scope.align6_later=align6.substring(distance+1,align6.length);
                     $scope.align7_pre=align7.substring(0,distance);
                     $scope.align7_letter='X';

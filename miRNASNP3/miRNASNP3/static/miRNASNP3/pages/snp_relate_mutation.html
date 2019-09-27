@@ -27,7 +27,7 @@
                         <dd>{$ mutation_alias.ref $}/{$ mutation_alias.alt $}</dd>
                         <dt>Region:</dt>
                         <dd class="ng-binding">{$ mutation_alias.location $}</dd>
-                        <dt>{$head_identifier$}:</dt>
+                        <dt>{$mutation_alias.head_identifier$}:</dt>
                         <dd class="ng-binding">{$ mutation_alias.identifier $}</dd>
                         <span ng-if="mutation_alias.pathology!='not_provided'">
                             <dt>Phenotype:</dt>
@@ -51,7 +51,7 @@
                                 <th>Position</th>
                                 <th>Ref/Alt</th>
                                 <th>Region</th>
-                                <th>{$head_identifier$}</th>
+                                <th>{$mutation_alias.head_identifier$}</th>
                                 <th style="width: 30%">Phenotype</th>
                             </tr>
                             </thead>
