@@ -515,8 +515,12 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.target_gain=1
         $scope.target_loss=0
 		$scope.modal_site=site;
-		var align6=site.site_info.align6;
-		    var distance=Number(site.snp_info.distance_align)+3;
+        var align6=site.site_info.align6;
+        if(align_1){
+            var distance=Number(site.snp_info.distance_align)+1;
+        }else{
+            var distance=Number(site.snp_info.distance_align)+3;
+        }
 		    $scope.align6_pre=align6.substring(0,distance);
             $scope.align6_letter=align6[distance];
             $scope.align6_later=align6.substring(distance+1,align6.length);
@@ -529,7 +533,11 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             $scope.modal_site=site;
             var align6=site.site_info.align6;
             var align7=site.site_info.align7;
+            if(align_1){
+                var distance=Number(site.snp_info.distance_align)+1;
+            }else{
                 var distance=Number(site.snp_info.distance_align)+3;
+            }
                 $scope.align6_pre=align6.substring(0,distance);
                 $scope.align6_letter=site.snp_info.curalt
                 $scope.align6_later=align6.substring(distance+1,align6.length);
