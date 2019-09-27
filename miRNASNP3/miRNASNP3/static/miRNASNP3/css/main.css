@@ -410,3 +410,9 @@ div.div-table {
 .pagination {
   margin: 10px 0;
 }
+span.document {
+  font-weight: bold;
+  font-size: 18px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid red;
+}
