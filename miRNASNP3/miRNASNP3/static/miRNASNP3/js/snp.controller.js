@@ -305,7 +305,13 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                    },
             });
     };
-
+    var RULE1={
+        'A':'U',
+        'T':'A',
+        'C':'G',
+        'G':'C',
+        'N':'N'
+    }
 	$scope.modal_gain_site=function(site){
         $scope.modal_header="Target Gain";
         $scope.target_gain=1;
@@ -326,8 +332,12 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         var align7=site.site_info.align7;
         console.log(align7)
         var distance=align8.length-site.snp_info.distance-1;
-		$scope.align8_pre=align8.substring(0,distance);
-        $scope.align8_letter=site.snp_info.curalt;
+        $scope.align8_pre=align8.substring(0,distance);
+        if(site.strand=='-'){
+            $scope.align8_letter=RULE1[site.snp_info.curalt]
+        }else{
+            $scope.align8_letter=site.snp_info.curalt;
+        }
         $scope.align8_later=align8.substring(distance+1,align8.length);
         $scope.align7_pre=align7.substring(0,distance);
         console.log($scope.align7_pre)
@@ -539,7 +549,12 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 var distance=Number(site.snp_info.distance_align)+3;
             //}
                 $scope.align6_pre=align6.substring(0,distance);
-                $scope.align6_letter=site.snp_info.curalt
+                
+                if(site.utr_info.strand=='-'){
+                    $scope.align6_letter=RULE1[site.snp_info.curalt]
+                }else{
+                    $scope.align6_letter=site.snp_info.curalt;
+                }
                 $scope.align6_later=align6.substring(distance+1,align6.length);
                 $scope.align7_pre=align7.substring(0,distance);
                 $scope.align7_letter='X';
