@@ -46,7 +46,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         $scope.utr3 = 0;
     };
     
-    $scope.show_one = function (refer) {
+    $scope.show_one = function(refer){
         console.log(refer);
         $scope.clear();
         renew_snp_summary_tab()
