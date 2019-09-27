@@ -516,7 +516,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.target_loss=0
 		$scope.modal_site=site;
         var align6=site.site_info.align6;
-        if(align_1){
+        if(site.site_info.align_1){
             var distance=Number(site.snp_info.distance_align)+1;
         }else{
             var distance=Number(site.snp_info.distance_align)+3;
@@ -533,7 +533,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             $scope.modal_site=site;
             var align6=site.site_info.align6;
             var align7=site.site_info.align7;
-            if(align_1){
+            if(site.site_info.align_1){
                 var distance=Number(site.snp_info.distance_align)+1;
             }else{
                 var distance=Number(site.snp_info.distance_align)+3;
