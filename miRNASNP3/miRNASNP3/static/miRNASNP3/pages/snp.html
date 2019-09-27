@@ -730,7 +730,6 @@
                         <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
                     </tr>
                     <tr>
-                        <th>Align</th>
                         <td class="warning" colspan="4">
                             <span ng-if="target_gain">
                                     <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
@@ -819,10 +818,10 @@
                         <tr>
                             <td class="warning" colspan="4">
                                 <span ng-if="target_gain">
-                                    <pre>3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$}</pre>
+                                    <pre align="left">3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$}</pre>
                                     </span>
                                 <span ng-if="target_loss">
-                                        <pre>3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$modal_site.site_info.align8$}</pre>
+                                        <pre align="left">3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$modal_site.site_info.align8$}</pre>
                                 </span>
                                 </td>
                         </tr>
