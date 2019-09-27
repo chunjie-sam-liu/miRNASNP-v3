@@ -44,12 +44,12 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         $scope.mature = 0;
         $scope.premir = 0;
         $scope.utr3 = 0;
-    };
+    }
     
     $scope.show_one = function(refer){
         console.log(refer);
         $scope.clear();
-        renew_snp_summary_tab()
+       // renew_snp_summary_tab()
         if (refer == "seed") {
             $scope.seed = 1;
             $scope.class_seed = "active";
