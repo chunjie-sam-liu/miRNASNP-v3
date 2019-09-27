@@ -52,21 +52,21 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         renew_snp_summary_tab()
         if (refer == "seed") {
             $scope.seed = 1;
-            $scope.class_seed = "ative";
+            $scope.class_seed = "active";
         }
         if (refer == "mature") {
             $scope.mature = 1;
-            $scope.class_mature = "ative";
+            $scope.class_mature = "active";
         }
         if (refer == "premir") {
             $scope.premir = 1;
-            $scope.class_premir = "ative";
+            $scope.class_premir = "active";
          //   var $obj=$("#premir_tab")
          //   tab_click($obj)
         }
         if (refer == "utr3") {
             $scope.utr3 = 1;
-            $scope.class_utr3 = "ative"
+            $scope.class_utr3 = "active"
           //  var $obj=$("#utr3_tab")
           //  tab_click($obj)
         }

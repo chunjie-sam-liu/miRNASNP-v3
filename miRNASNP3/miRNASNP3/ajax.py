@@ -842,7 +842,7 @@ class MirSummary(Resource):
         if chrome!="All":
             condition['mir_chr']=chrome
         if mirna_id:
-            condition['mir_id']={'$regex':mirna_id,'$options':'$1'}
+            condition['mir_id']={'$regex':mirna_id,'$options':'$i'}
         mirna_summary_list = mongo.db.mirna_summary.find(condition).skip(record_skip).limit(per_page)
         mirna_summary_count=mongo.db.mirna_summary.find(condition).count()
         return {'mirna_summary_list':list(mirna_summary_list),
@@ -944,7 +944,7 @@ class PrimirSummary(Resource):
             pipline.append(match_chr)
         if pre_id:
             match_mir = {'$match': {
-                'pre_id': {'$regex':pre_id,'$options':'$1'}
+                'pre_id': {'$regex':pre_id,'$options':'$i'}
             }}
             pipline.append(match_mir)
         group={'$group':{
