@@ -114,7 +114,8 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
 function Predict_UTR_ResultController($scope,$http,$routeParams,$window,miRNASNP3Service){
     console.log("PredictionResultController loaded");
     var base_url = miRNASNP3Service.getAPIBaseUrl();
-
+    $scope.wild_seq=$routeParams.wild_seq
+    $scope.snp_seq=$routeParams.snp_seq
     $scope.loading=1;
     console.log($scope.loading);
     $("[data-toggle='popover']").popover();

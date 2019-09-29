@@ -2,9 +2,113 @@
 <div class="text-center" ng-show="loading">
     <img src="/static/miRNASNP3/graph/loading.gif" alt="loading...">
 </div>
+
+<div class="panel panel-primary" ng-show="!loading">
+        <div class="panel-heading" >
+                <strong>Sequences for prediction</strong>
+           </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Wild type sequence:</dt>
+                    <dd>{$wild_seq$}</dd>
+                    <dt>SNP type sequence:</dt>
+                    <dd>{$snp_seq$}</dd>
+                    <dt>miRNA sequences to scan:</dt>
+                    <dd>2652 mature miRNA</dd>
+                    <dt>Number of predicted targets gained:</dt>
+                    <dd>{$result_altutr.gain.length$}</dd>
+                    <dt>Number of redicted targets lost:</dt>
+                    <dd>{$result_altutr.loss.length$}</dd>
+                    <dt>Number of predicted targets for wild type sequence:</dt>
+                    <dd>{$result_altutr.wild_result.length$}</dd>
+                    <dt>Number of predicted targets for SNP type sequence:</dt>
+                    <dd>{$result_altutr.alt_result.length$}</dd>     
+                </dl>
+            </div>
+</div>
+
+</div>
+
 <div ng-show="no_result">
     <p style="color: red">No targets found of query sequence.</p>
 </div>
+
+<div class="panel panel-primary" ng-show="result_altutr.gain.length">
+        <div class="panel-heading">Gain miRNA target:</div>
+        <div id="snv_utr_gain" class="panel-collapse collapse in">
+            <div class="pre-scrollable">
+                <table id="gain_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
+                    <thread>
+                        <tr>
+                            <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
+                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Site Position</th>
+                            <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
+                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">Duplex Energy</th>
+                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">Binding Energy</th>
+                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">Open Energy</th>
+                            <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
+                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probility</th>
+                            <th class="text-center">Align</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    <tr ng-repeat="item in result_altutr.gain" ts-repeat>
+                        <td style="text-align: center;vertical-align: middle">{$item.mir_info$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.site_start$}-{$item.site_end$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.tgs_score$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.dg_duplex$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.dg_binding$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.dg_open$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.tgs_au$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.prob_exac$}</td>
+                        <td>
+                            <pre>Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-primary" ng-show="result_altutr.loss.length">
+        <div class="panel-heading">Loss miRNA target:</div>
+        <div id="snv_utr_loss" class="panel-collapse collapse in">
+            <div class="pre-scrollable">
+                <table id="loss_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
+                    <thread>
+                        <tr>
+                            <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
+                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Site Position</th>
+                            <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
+                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">Duplex Energy</th>
+                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">Binding Energy</th>
+                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">Open Energy</th>
+                            <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
+                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probility</th>
+                            <th class="text-center">Align</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    <tr ng-repeat="item in result_altutr.loss">
+                         <td style="text-align: center;vertical-align: middle">{$item.mir_info$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.site_start$}-{$item.site_end$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.tgs_score$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.dg_duplex$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.dg_binding$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.dg_open$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.tgs_au$}</td>
+                        <td style="text-align: center;vertical-align: middle">{$item.prob_exac$}</td>
+                        <td>
+                            <pre>Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 <div class="panel panel-primary" ng-show="result_altutr.wild_result.length">
     <div class="panel-heading">Wild query sequence predicted targets:</div>
     <div id="snv_utr_wild" class="panel-collapse collapse in">
@@ -81,78 +185,3 @@
     </div>
 </div>
 
-<div class="panel panel-primary" ng-show="result_altutr.gain.length">
-    <div class="panel-heading">Gain miRNA target:</div>
-    <div id="snv_utr_gain" class="panel-collapse collapse in">
-        <div class="pre-scrollable">
-            <table id="gain_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
-                <thread>
-                    <tr>
-                        <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
-                        <th ts-criteria="site_start" class="text-center" style="width: 8%">Site Position</th>
-                        <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
-                        <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">Duplex Energy</th>
-                        <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">Binding Energy</th>
-                        <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">Open Energy</th>
-                        <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
-                        <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probility</th>
-                        <th class="text-center">Align</th>
-                    </tr>
-                </thread>
-                <tbody>
-                <tr ng-repeat="item in result_altutr.gain" ts-repeat>
-                    <td style="text-align: center;vertical-align: middle">{$item.mir_info$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.site_start$}-{$item.site_end$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.tgs_score$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.dg_duplex$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.dg_binding$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.dg_open$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.tgs_au$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.prob_exac$}</td>
-                    <td>
-                        <pre>Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="panel panel-primary" ng-show="result_altutr.loss.length">
-    <div class="panel-heading">Loss miRNA target:</div>
-    <div id="snv_utr_loss" class="panel-collapse collapse in">
-        <div class="pre-scrollable">
-            <table id="loss_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
-                <thread>
-                    <tr>
-                        <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
-                        <th ts-criteria="site_start" class="text-center" style="width: 8%">Site Position</th>
-                        <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
-                        <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">Duplex Energy</th>
-                        <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">Binding Energy</th>
-                        <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">Open Energy</th>
-                        <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
-                        <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probility</th>
-                        <th class="text-center">Align</th>
-                    </tr>
-                </thread>
-                <tbody>
-                <tr ng-repeat="item in result_altutr.loss">
-                     <td style="text-align: center;vertical-align: middle">{$item.mir_info$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.site_start$}-{$item.site_end$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.tgs_score$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.dg_duplex$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.dg_binding$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.dg_open$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.tgs_au$}</td>
-                    <td style="text-align: center;vertical-align: middle">{$item.prob_exac$}</td>
-                    <td>
-                        <pre>Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
