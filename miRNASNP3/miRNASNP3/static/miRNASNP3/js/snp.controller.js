@@ -107,16 +107,44 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 $scope.snp_summary_list = response.data.snp_summary_list;
                 $scope.snp_summary_count=response.data.snp_summary_count;
                 var data_list=$scope.snp_summary_list
+                $scope.has_alt_freq=0
                 for(var i=0;i<data_list.length;i++){
                     if(data_list[i].ref_freq=='novalue'){data_list[i].ref_freq=0}
                     if(Number(data_list[i].alt_freq)==0.0){data_list[i].alt_freq=0}
-                    if(data_list[i].location=='mirseed'){$scope.head_identifier='miRNA';data_list[i].location='seed'}
-                    if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR"}
+                    if(data_list[i].location=='mirseed'){$scope.head_identifier='miRNA';data_list[i].location='seed';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
+                    if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR";$scope.identifier_url="https://www.genecards.org/cgi-bin/carddisp.pl?gene="+data_list[i].identifier}
+                }
+                for(var i=0;i<data_list.length;i++){
+                    if(data_list[i].alt_freq){
+                        $scope.has_alt_freq=1
+                    }
+                }
+                if(data_list.length>1){
+                    $scope.snp_alt=''
+                    $scope.alt_freq=''
+                    for(var i=0;i<data_list.length;i++){
+                        $scope.snp_alt+=String(data_list[i].alt)+','
+                        if($scope.has_alt_freq){
+                            if(data_list[i].alt_freq){
+                                $scope.alt_freq=$scope.alt_freq+String(data_list[i].alt_freq)+','
+                            }else{
+                                $scope.alt_freq+='-,'
+                            }
+                        }
+                        
             }
+            $scope.snp_alt=$scope.snp_alt.substring(0,$scope.snp_alt.length-1)
+            $scope.alt_freq=$scope.alt_freq.substring(0,$scope.alt_freq.length-1)
+        }else{
+            $scope.snp_alt=data_list[0].alt
+            $scope.alt_freq=data_list[0].alt_freq
+        }
+            
+                
                 $scope.snp_summary_list=data_list
                 console.log($scope.snp_summary_list)
                 $scope.snp_summary_alias=$scope.snp_summary_list.shift();
-                $scope.snp_summary_alias_count=$scope.snp_summary_list.length
+               // $scope.snp_summary_alias_count=$scope.snp_summary_list.length
             });
 	};
 	$scope.fetch_snp_details();

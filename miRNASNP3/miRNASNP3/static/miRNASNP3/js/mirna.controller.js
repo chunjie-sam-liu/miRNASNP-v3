@@ -88,8 +88,12 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 console.log(response);
                 $scope.mirna_summary_list = response.data.mirna_summary_list;
                 $scope.mirna_summary_count=response.data.mirna_summary_count;
-                $scope.mirna_summary_alias=$scope.mirna_summary_list.shift();
-                $scope.mirna_alias=$scope.mirna_summary_list.length;
+                if($scope.mirna_summary_list.length>1){
+                    $scope.mirna_table=1
+                }else{
+                    $scope.mirna_table=0
+                }
+                $scope.mirna_summary_alias=$scope.mirna_summary_list[0]
             });
     };
     $scope.fetch_mirna_details();
@@ -111,7 +115,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             }else if(Number($scope.mirna_expression.exp_mean)==0){
                 $scope.mirna_expression_show=0
             }
-            console.log($scope.mirna_expression.exp_mean)
+            /*console.log($scope.mirna_expression.exp_mean)
             var temp;
             var value;
             var array=[];
@@ -163,7 +167,101 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 }
             
                 console.log(array);
-                $scope.mirna_profile = array;
+                $scope.mirna_profile = array;*/
+                if($scope.mirna_expression_show==1){
+
+                    echarts.init(document.getElementById('mirna_expression')).dispose();
+                    var myChart = echarts.init(document.getElementById('mirna_expression'));
+                    var series_list=[]
+                    
+            //console.log($scope.gene_expression);
+                var mirna_expr = $scope.mirna_expression.exp_df;
+               // $scope.exp_item=title;
+                
+                var cancer_types=['cancer_type'];
+                var expr=['RPKM'];
+               
+                for(var cancer in mirna_expr){
+                    var source_data={}
+                    var labelOption={}
+                    if(mirna_expr[cancer]&&Number(mirna_expr[cancer])!=0){
+                        labelOption = {
+                            normal: {
+                                show: true,
+                                position: 'top',
+                                distance: 5,
+                                align: 'left',
+                                verticalAlign: 'middle',
+                                rotate: 90,
+                                formatter:'{name|{a}}',
+                                fontSize: 8,
+                                rich: {
+                                    name: {
+                                        color:'#000000',
+                                        textBorderColor: '#000000'
+                                    }
+                                }
+                            }
+                        };
+                        source_data['data']=[mirna_expr[cancer]]
+                        series_list.push(source_data)
+                        cancer_types.push(cancer)
+                        expr.push(mirna_expr[cancer])
+                        source_data['label']=labelOption;
+                        source_data['name']=cancer;
+                        source_data['type']='bar';
+                        source_data['barGap']=0.2;
+                        source_data['barWidth']=23
+                    }
+                    
+                }
+                //source_data_expr.sort(up)
+                console.log(series_list)
+                
+                myChart.setOption({
+                    //dataset:{
+                    //    source:[cancer_types,expr]
+                    //},
+                    xAxis: [
+                        {
+                            type: 'category',
+                            axisTick: {show:false},
+                           
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name:'RPKM',
+                            nameTextStyle:{
+                                align:'left',
+                                fontSize:12,
+                                fontWeight:'bold',
+                            }}
+                        ],
+                    // Declare several bar series, each will be mapped
+                    // to a column of dataset.source by default.
+                    series: series_list,
+                        color: ['#600000','#ff79bc','#930093','#b15bff','#000093','#46a3ff','#005757','#1afd9c','#007500',
+                                '#b7ff4a','#737300','#ffdc35','#ff8000','#ff9d6f','#984b4b','#c2c287','#408080','5a5aad',
+                                '#6c3365','	#ff5151','#820041','#ff00ff','#3a006f','#0000c6','#66b3ff','#00a600','#ce0000',
+                                '#b15bff','#00db00','#796400','#004b97','#f9f900','#bb3d00'],
+                        tooltip: {
+                            trigger: 'item',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        series: series_list,
+                        grid:{
+                            x:45,
+                            y:35,
+                            x2:30,
+                            y2:20,
+                            borderWidth:1
+                           },
+                    })
+                }
         })
     };
     $scope.fetch_mirna_expression();
@@ -332,6 +430,9 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     };
             cor_echart.setOption(option)
         }
+
+    
+
         $scope.modal_gene_expression=function(exp){ 
             echarts.init(document.getElementById('gene_expression')).dispose();
             var myChart = echarts.init(document.getElementById('gene_expression'));
@@ -425,98 +526,13 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                        },
                 });
         };
-    /*$scope.modal_gene_expression=function(exp){
-        $scope.gene_expression=exp[0];
-        //console.log($scope.gene_expression);
-        var gene_expr = $scope.gene_expression.exp_df;
-        var source_data_expr=[]
-        var cancer_types=[];
-        var expr=[];
-        for(var cancer in gene_expr){
-            source_data_expr.push([cancer,gene_expr[cancer]])
-            //cancer_types.push(cancer);
-            //expr.push(Number(gene_expr[cancer]))
-        }
-        source_data_expr.sort(up)
-        //barplot
-        var a = echarts;
-        var myChart = a.init(document.getElementById('gene_expression'));
-        myChart.setOption({
-                dataset:{
-                    source:source_data_expr
-                },
-                color: ['#ce0000'],
-                //graph:{
-                //    color:colorPalette
-                //},
-                tooltip: {
-                    trigger: 'item',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                toolbox: {
-                    show: true,
-                    orient: 'vertical',
-                    left: 'right',
-                    top: 'center',
-                    feature: {
-                        mark: {show: true},
-                        //dataView: {show: true, readOnly: false},
-                        //magicType: {show: true, type: ['line', 'bar']},
-                        //restore: {show: true},
-                        saveAsImage: {show: true}
-                    }
-                },
-                calculable: true,
-                xAxis: [
-                    {
-                        type: 'category',
-                       // axisTick: {show: true},
-                       // data:cancer_types,
-                        //name:'Cancer Types',
-                     //   nameTextStyle:{
-                      //      align:'center',
-                       //     fontSize:10,
-                        //    fontWeight:'bold',
-                        //},
-                        rotate:45,
-                        splitLine:{
-　　　　                    show:false
-　　                          },
-
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        name:'PRKM',
-                        nameTextStyle:{
-                            align:'left',
-                            fontSize:12,
-                            fontWeight:'bold',
-                        },
-                        splitLine:{
-　　　　                    show:false
-　　                          },
-                        position:'bottom'
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barGap: 0,
-                        //data:expr
-                    },
-                ],
-              //  title: [
-                //    {
-                //        text: 'Expression level of ' + $scope.gene_expression.symbol,
-                 //       left: 'center'
-                 //   }
-               // ]
-            });
-    };*/
+    var RULE1={
+        'A':'U',
+        'T':'A',
+        'C':'G',
+        'G':'C',
+        'N':'N'
+    }
 
     $scope.modal_gain_site=function(site){
         $scope.modal_header="Target Gain";
@@ -538,8 +554,13 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         var align7=site.site_info.align7;
         console.log(align7)
         var distance=align8.length-site.snp_info.distance-1;
-		$scope.align8_pre=align8.substring(0,distance);
-        $scope.align8_letter=site.snp_info.curalt;
+        $scope.align8_pre=align8.substring(0,distance);
+        if(site.strand=='-'){
+            $scope.align8_letter=RULE1[site.snp_info.curalt];
+        }else{
+            $scope.align8_letter=site.snp_info.curalt;
+        }
+       
         $scope.align8_later=align8.substring(distance+1,align8.length);
         $scope.align7_pre=align7.substring(0,distance);
         console.log($scope.align7_pre)
@@ -695,8 +716,12 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         var align8=site.site_info.align8;
         var align7=site.site_info.align7;
         var distance=align8.length-site.mut_info.distance-1;
-		$scope.align8_pre=align8.substring(0,distance);
-        $scope.align8_letter=site.mut_info.curalt;
+        $scope.align8_pre=align8.substring(0,distance);
+        if(site.strand=='-'){
+            $scope.align8_letter=RULE1[site.mut_info.curalt];
+        }else{
+            $scope.align8_letter=site.mut_info.curalt;
+        }
         $scope.align8_later=align8.substring(distance+1,align8.length);
         $scope.align7_pre=align7.substring(0,distance);
         console.log($scope.align7_pre)
@@ -736,6 +761,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                    if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                 }
                 })
             }
@@ -776,6 +802,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                                 site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                                 site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                                 site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                                if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                         }
                         })
             }
@@ -818,6 +845,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                    if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                 }
                 })
             }
@@ -863,6 +891,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                                 site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                                 site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                                 site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
+                                if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                         }
                         })
             }
@@ -885,6 +914,11 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     data_list[j].csv_table[i].pvalue_fix=Number(data_list[j].csv_table[i].pvalue).toExponential(3)
                     data_list[j].csv_table[i].qvalue_fix=Number(data_list[j].csv_table[i].qvalue).toExponential(3)
                     data_list[j].csv_table[i].padjust_fix=Number(data_list[j].csv_table[i].padjust).toExponential(3)
+                    if((/^rs/).test(data_list[j].variate_id)){
+                        data_list[j].variate_url="https://www.ncbi.nlm.nih.gov/snp/?term="+data_list[j].variate_id
+                    }else{
+                        data_list[j].variate_url="https://cancer.sanger.ac.uk/cosmic/search?q="+data_list[j].variate_id
+                    }
                 }
             }
         })

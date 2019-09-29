@@ -164,7 +164,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
             autoFocus: true,
             source: function(request, response){
                 //var url = '/api/snp_summary_gene?gene=' + request.term.trim();
-                var url = base_url+ '/api/snp_summary_gene?gene=' + request.term.trim();
+                var url =  base_url+'/api/snp_summary_gene?gene=' + request.term.trim();
                 $.getJSON(
                     url,
                     function(data){

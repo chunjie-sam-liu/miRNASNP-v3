@@ -6,11 +6,12 @@
 		<ul>
 		<li><a href="#!/document/#one">1. What's new in miRNASNP-v3 compared to the previous version?</a></li>
 		<li><a href="#!/document/#two">2. Data sources and tools for analyze</a></li>
-		<li><a href="#!/document/#three">3. Pipeline to construct miRNASNP3</a></li>
-		<li><a href="#!/document/#four">4. Data statistics for miRNASNP3</a></li>
-		<li><a href="#!/document/#five">5. miRNA information and gene 3'UTR</a></li>
-		<li><a href="#!/document/#six">6. Expression level and expression correlation of miRNAs and target genes</a></li>
-		<li><a href="#!/document/#seven">7. Linking SNPs to the results of genome-wide association studies (GWAS)</a></li>
+		<!--li><a href="#!/document/#three">3. Pipeline to construct miRNASNP3</a></li-->
+		<li><a href="#!/document/#three">3. Data statistics for miRNASNP3</a></li>
+		<li><a href="#!/document/#four">4. miRNA information and gene 3'UTR</a></li>
+		<li><a href="#!/document/#five">5. Expression level and expression correlation of miRNAs and target genes</a></li>
+		<li><a href="#!/document/#six">6. Linking SNPs to the results of genome-wide association studies (GWAS)</a></li>
+		<li><a href="#!/document/#seven">7. Online prediction</a></li>
 		<li><a href="#!/document/#eight">8. Cite miRNASNP3</a></li>
 		<li><a href="#!/document/#nine">9. Contact us</a></li>
 		</ul>
@@ -43,6 +44,274 @@
 				<li>search or browse expression and correlation of miRNAs and genes.</li>
 			</ul>
 		</div>
+		<div id="two">
+				<p>
+					<span class="document">
+						Data statistics for miRNASNP3
+					</span>
+				</p>
+				<div align="center">
+				<img src="/static/miRNASNP3/img/data_statistics_1.png" style="margin: 30px">
+				</div>
+			</div>
+		<!--div id="three">
+			<p>
+				<span class="document">
+						Pipeline to construct miRNASNP3
+				</span>
+			</p>
+			<div align="center">
+							<img src="/static/miRNASNP3/img/pipline-1.png" style="margin-top: 30px;width: 800px;">
+							</div>
+		</div-->
+		<div id="four">
+			<p>
+				<span class="document">Data sources and tools for analyze</span>
+			</p>
+			<table class="table table-bordered table-striped table-hover">
+				<tbody>
+					<tr>
+						<th style="width:25%">Data</th>
+						<th style="width:25%">Source</th>
+						<th style="width:50%">Url</th>
+					</tr>
+					<tr>
+						<td>miRNA</td>
+						<td>miRBase v22</td>
+						<td><a href="http://www.mirbase.org">http://www.mirbase.org</a></td>
+					</tr>
+					<tr>
+						<td>SNP</td>
+						<td>dbSNP v151</td>
+						<td><a href="https://www.ncbi.nlm.nih.gov/snp/">https://www.ncbi.nlm.nih.gov/snp/</a></td>
+					</tr>
+					<tr>
+						<td>GWAS SNP</td>
+						<td>GWAS catelog</td>
+						<td>https://www.ebi.ac.uk/gwas/home</td>
+					</tr>
+					<tr>
+						<td rowspan="2">Gene 3'UTR</td>
+						<td>UCSC table</td>
+						<td>https://genome.ucsc.edu/cgi-bin/hgTables</td>
+					</tr>
+					<tr>
+						<td>Ensembl biomart</td>
+						<td>http://www.ensembl.org/biomart/martview</td>
+					</tr>
+					<tr>
+						<td>miRNA and gene expression</td>
+						<td>TCGA</td>
+						<td>https://portal.gdc.cancer.gov/</td>
+					</tr>
+					<tr>
+					<td>COSMIC Noncoding Variation</td>
+					<td>COSMIC</td>
+					<td>https://cancer.sanger.ac.uk/cosmic/</td>
+					</tr>
+					<tr>
+						<td>ClinVar variation</td>
+						<td>ClinVar</td>
+						<td>https://www.ncbi.nlm.nih.gov/clinvar/</td>
+					</tr>
+					<tr>
+						<td rowspan="5">Experiment validated</td>
+						<td>TarBase v8</td>
+						<td>http://carolina.imis.athena-innovation.gr/diana_tools/web/index.php?r=tarbasev8</td>
+					</tr>
+					<tr>
+						<td>miR2Disease</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>miRecords v4</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>miRTarBase v7</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>StarBase v3</td>
+						<td></td>
+					</tr>
+					
+				</tbody>
+			</table>
+			<table class="table table-bordered table-striped table-hover">
+					<tbody>
+						<tr>
+							<th style="width:25%">Tools</th>
+							<th style="width:25%">Usage</th>
+							<th style="width:50%">Url</th>
+						</tr>
+						<tr>
+							<td>TargetScan</td>
+							<td>miRNA target prediction</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>miRmap</td>
+							<td>miRNA target prediction</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>RNAfold</td>
+							<td>pre-miRNA second structure prediction </td>
+							<td></td>
+						</tr>
+						</tbody>
+						</table>
+		</div>
+
+		
+
+		
+		<div id="five">
+			<p>
+			<span class="document">
+				miRNA information and gene 3'UTR
+			</span>
+			</p>
+			<p>
+					Information about host gene of miRNAs was extracted from mirna_context.txt file.
+					For miRNAs without host gene we label them as intergenic.
+					A gene 3'UTR file and human genome sequence(GRCh38)  were downloaded by the UCSC Table browser, then we use bedtools to get the sequence 
+					information for each transcript based on the genome position. To get a more reliable transcript set, 
+					gene symbol and refseq mRNA ID corresponding to the transcript ID was downloaded from Ensembl biomart, transcripts which not have gene symbol or refseq mRNA ID
+					were excluded.Finally, transcripts with a sequence length greater than 6(seed region length), 34,116 transcripts of 18,286 genes, were ultimately used for target analysis.
+			</p>
+		</div>
+
+		<div id="six">
+				<p>
+				<span class="document">
+					Expression level and expression correlation of miRNAs and target genes
+				</span>
+				</p>
+			<p>
+					Gene expression data and miRNA expression data of 33 cancers were downloaded from TCGA.
+					We calculated the pearson correlation coefficient between gene and miRNA in each cancer, as well as in 33 cancers.
+					Overall correlation coefficient was displayed in loss targets information panel,which can be clicked to pop out a histogram of correlation coefficient for each cancer type. 
+					For gain targets, it's not available, because there are no expression data for SNP type 3'UTR/miRNA.
+			</p>
+			<div align="center">
+				<img style="width: 800px;margin: 30px" src="/static/miRNASNP3/img/correlation_and_expression.png">
+				<div class="panel panel-primary collapse in" id="abbr" style="width: 800px" align="left">
+						<div class="panel-body">
+							<strong>ACC:</strong>Adrenocortical_carcinoma<br>
+							<strong>BLCA:</strong>Bladder_Urothelial_Carcinoma<br>
+							<strong>BRCA:</strong>Breast_invasive_carcinoma<br>
+							<strong>CESC:</strong>Cervical_squamous_cell_carcinoma_and_endocervical_adenocarcinoma<br>
+							<strong>CHOL:</strong>Gallbladder cancer<br>
+							<strong>COAD:</strong>Colon_adenocarcinoma<br>
+							<strong>DLBC:</strong>Lymphoid_Neoplasm_Diffuse_Large_B-cell_Lymphoma<br>
+							<strong>ESCA:</strong>Esophageal_carcinoma<br>
+							<strong>HNSC:</strong>Head_and_Neck_squamous_cell_carcinoma<br>
+							<strong>KICH:</strong>Kidney_Chromophobe<br>
+							<strong>KIRC:</strong>Kidney_renal_clear_cell_carcinoma<br>
+							<strong>KIRP:</strong>Kidney_renal_papillary_cell_carcinoma<br>
+							<strong>LAML:</strong>Acute_Myeloid_Leukemia<br>
+							<strong>LGG:</strong>Brain_Lower_Grade_Glioma<br>
+							<strong>LIHC:</strong>Liver_hepatocellular_carcinoma<br>
+							<strong>LUAD:</strong>Lung_adenocarcinoma<br>
+							<strong>LUSC:</strong>Lung_squamous_cell_carcinoma<br>
+							<strong>MESO:</strong>Mesothelioma<br>
+							<strong>OV:</strong>Ovarian_serous_cystadenocarcinoma<br>
+							<strong>PAAD:</strong>Pancreatic_adenocarcinoma<br>
+							<strong>PCPG:</strong>Pheochromocytoma_and_Paraganglioma<br>
+							<strong>PRAD:</strong>Prostate_adenocarcinoma<br>
+							<strong>READ:</strong>Rectum_adenocarcinoma<br>
+							<strong>SARC:</strong>Sarcoma<br>
+							<strong>SKCM:</strong>Skin_Cutaneous_Melanoma<br>
+							<strong>STAD:</strong>Stomach_adenocarcinoma<br>
+							<strong>TGCT:</strong>Testicular Germ Cell Tumor<br>
+							<strong>THCA:</strong>Thyroid_carcinoma<br>
+							<strong>THYM:</strong>Thymoma<br>
+							<strong>UCEC:</strong>Uterine_Corpus_Endometrial_Carcinoma<br>
+							<strong>UCS:</strong>Uterine_Carcinosarcoma<br>
+							<strong>UVM:</strong>Uveal Melanoma<br>
+						</div>
+					</div>
+			</div>
+			
+			</div>
+		
+	<div id="seven">
+		<p>
+			<span class="document">Linking SNPs to the results of genome-wide association studies (GWAS)</span>
+		</p>
+		<p>
+				GWAS tagSNPs and SNPs in LD region of the tagSNP(d_prime>0.98) were downloaded from GWAS catalog website for 26 populations. 
+				Then, a integrated LD region for tagSNPs relate to a specific SNP of each population is calculated by SNPs in their LD regions.
+				(setting LD analysis regions ±500kb around SNP position)
+		</p>
+		<div align="center">
+				<img style="width: 800px;margin: 30px" src="/static/miRNASNP3/img/snp_ld.png">
+			</div>
+	</div>
+
+	<div id="eight">
+		<p>
+			<span class="document">Online prediction</span>
+		</p>
+		<p>
+				In order to reduce the calculation time, only the longest transcript of each gene was used to take online prediction in Tools module.
+		</p>
+	</div>
+
+	<div id="nine">
+		<p>
+			<span class="document">How to cite miRNASNP?</span>
+		</p>
+		<p>
+				<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4397995/" target="_blank">
+					<strong>An update of
+						miRNASNP database for better SNP selection by GWAS data, miRNA expression and online
+				tools.
+					</strong>
+				</a> <br />
+						Gong J, Liu CJ, Wu Y, Ma Z, Chen H and Guo AY. <em>Database</em>. (2015)
+			</p>
+			<p>
+					<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/humu.21641" target="_blank">
+						<strong>
+							Genome-wide identification of SNPs in microRNA genes and the SNP effects
+							on microRNA target binding and biogenesis.
+						</strong>
+					</a><br />
+							Gong J, Tong Y, Zhang HM, Wang K, Hu T, Shan G, Sun J and Guo AY. <em>Human Mutation</em>. (2011)
+				</p>
+	</div>
+
+	<div id="ten">
+		<p>
+			<span class="document">Contact us</span>
+		</p>
+		<address>
+				<strong>&nbsp;&nbsp;An-Yuan Guo, Ph.D. Professor of Bioinformatics</strong><br />
+				<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+			   <img alt="An-Yuan Guo" src="/static/miRNASNP3/img/guoay_email.png" style="height: 20px">
+			</address>
+			<address>
+				<strong>&nbsp;&nbsp;Xin Fu, M.S. student</strong><br />
+				<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+			   <img alt="Gui-Yan Xie" src="/static/miRNASNP3/img/fuxin_email.png" style="height: 20px">
+			</address>
+			<address>
+				<strong>&nbsp;&nbsp;Chun-Jie Liu, Ph.D. Postdoc Fellow</strong><br/>
+				<strong style="font-size: 18px;margin-top: 1px">&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+				<img alt="Chun-Jie Liu"src="/static/miRNASNP3/img/chunjie_email.png" style="height: 20px">
+			</address>
+	
+		  <div class="address">
+				&nbsp;&nbsp;<a href="http://bioinfo.life.hust.edu.cn/" target=_blank">Hubei Bioinformatics & Molecular Imaging Key Laboratory</a> <br />
+				&nbsp;&nbsp;Department of Bioinformatics and Systems Biology<br />
+				&nbsp;&nbsp;<a href="http://life.hust.edu.cn/" target=_blank">College of Life Science and Technology</a><br />
+				&nbsp;&nbsp;<a href="http://www.hust.edu.cn/" target=_blank">Huazhong University of Science and Technology, Wuhan 430074 P.R. China</a><br />
+			</div>
+	</div>
+		
 	</div>
 </div>		
 

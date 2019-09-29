@@ -27,78 +27,111 @@
             <strong>Basic information of miRNA:{$query_mirna$}</strong>
        </div>
         <div class="panel-body">
+            <div ng-show="!mirna_table">
             <dl class="dl-horizontal">
                 <dt>Mature miRNA:</dt>
-                <dd>{$ mirna_summary_alias.mir_id $}</dd>
-                <dt>Accession</dt>
-                <dd>{$ mirna_summary_alias.mir_acc $}</dd>
+                <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_id $}</a></dd>
+                <dt>Mature accession:</dt>
+                <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_acc $}</a></dd>
                 <dt>Position:</dt>
-                <dd>{$ mirna_summary_alias.mir_chr $}:{$ mirna_summary_alias.mir_start $}-{$ mirna_summary_alias.mir_end$}({$ mirna_summary_alias.mir_strand $})</dd>
+                <dd><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
+                    {$ mirna_summary_alias.mir_chr $}:{$ mirna_summary_alias.mir_start $}-{$ mirna_summary_alias.mir_end$}({$ mirna_summary_alias.mir_strand $})</a></dd>
                 <dt>Mature Sequence:</dt>
                 <dd>{$ mirna_summary_alias.matureSeq $}</dd>
-                <div ng-show="mirna_expression_show">
-                    <dt>Average expression:
-                    <span class="glyph icon glyph icon-question-sign" data-toggle="popover" data-container="body"
-                          data-trigger="hover"
-                          data-content="miRNA expression profiles were calculated from 33 cancer types from TCGA"
-                          style="color: #5bc0de"></span>
-                    </dt>
-                    <dd>{$ mirna_expression.exp_mean $}</dd>
-                    <dt>Profile:
-                        <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
-                          data-trigger="hover"
-                          data-content="The average expression levels in different cancer types are from green(low) to red(high)"
-                          style="color: #5bc0de"></span>
-                    </dt>
-                    <dd>
-                    <div>
-                        <div class="mirna-profile cursor-hand"
-                             title="cancer={$c.cancer_type$}; expression={$ c.expression $}"
-                             style="background-color: {$c.color$}" ng-repeat="c in mirna_profile"></div>
-                    </div>
-                </dd>
-            </div>
                 <dt>Precursor:</dt>
-                <dd>{$ mirna_summary_alias.pre_id $}</dd>
-                <dt>Precursor Accession:</dt>
-                <dd>{$mirna_summary_alias.pre_acc $}</dd>
+                <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$ mirna_summary_alias.pre_id $}</a></dd>
+                <dt>Precursor accession:</dt>
+                <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$mirna_summary_alias.pre_acc $}</a></dd>
                 <dt>Precursor position:</dt>
-                 <dd>{$ mirna_summary_alias.pre_chr $}:{$ mirna_summary_alias.pre_start $}-{$ mirna_summary_alias.pre_end$}({$ mirna_summary_alias.mir_strand $})</dd>
+                 <dd><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.pre_chr $}%3A{$ mirna_summary_alias.pre_start $}%2D{$ mirna_summary_alias.pre_end$}">
+                     {$ mirna_summary_alias.pre_chr $}:{$ mirna_summary_alias.pre_start $}-{$ mirna_summary_alias.pre_end$}({$ mirna_summary_alias.mir_strand $})</a></dd>
                 <dt>Precursor sequence:</dt>
                 <dd style="word-break: break-all">{$ mirna_summary_alias.harpin_seq $}</dd>
+                <div ng-show="mirna_expression_show">
+                        <dt>Average expression:
+                        <span class="glyph icon glyph icon-question-sign" data-toggle="popover" data-container="body"
+                              data-trigger="hover"
+                              data-content="miRNA expression profiles were calculated from 33 cancer types from TCGA"
+                              style="color: #5bc0de"></span>
+                        </dt>
+                        <dd>{$ mirna_expression.exp_mean $}</dd>
+                        <dt style="width: auto">miRNA expression in each cancer type from TCGA:
+                        </dt>
+                        <dd></dd><dt style="width: 0px"></dt>
+                        <dd style="margin-left: 0px">
+                            <div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div>
+                        </dd>
+                        <!--div>
+                            <div class="mirna-profile cursor-hand"
+                                 title="cancer={$c.cancer_type$}; expression={$ c.expression $}"
+                                 style="background-color: {$c.color$}" ng-repeat="c in mirna_profile"></div>
+                        </div-->
+                    </div>
             </dl>
         </div>
-    </div>
-    <div ng-show="mirna_alias">
-    <div class="panel panel-info" ng-show="one">
-        <div class="panel-heading">
-            <strong>Alias information of {$query_mirna$}</strong>
+        <div ng-show="mirna_table">
+            <dl class="dl-horizontal">
+                    <dt>Mature miRNA:</dt>
+                    <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_id $}</a></dd>
+                    <dt>Mature accession:</dt>
+                    <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_acc $}</a></dd>
+                    <dt>Mature Sequence:</dt>
+                    <dd><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
+                        {$ mirna_summary_alias.matureSeq $}</a></dd>
+                    <dt style="width: auto">Different precursor miRNAs of {$query_mirna$}:</dt>
+                    <dd></dd><dt style="width: 1px"> </dt>
+                    <dd style="margin-left: 0px">
+                            <table style="text-align: center" ts-wrapper id="mirna-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
+                                    <thead>
+                                    <tr>
+                                        <!--th>miRNA accession</th-->
+                                        <th style="width: 12%">mature miRNA position</th>
+                                        <th style="width: 9%">Precursor ID</th>
+                                        <th style="width: 9%">Precursor accession</th>
+                                        <th style="width: 12%">Precursor position</th>
+                                        <th style="width: 50%">Precursor sequence</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="v in mirna_summary_list">
+                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
+                                            {$v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</a></td>
+                                        <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_id$}</a></td>
+                                        <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_acc$}</a></td>
+                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.pre_chr $}%3A{$ mirna_summary_alias.pre_start $}%2D{$ mirna_summary_alias.pre_end$}">
+                                            {$v.pre_chr$}:{$v.pre_start$}-{$v.pre_end$}({$v.mir_strand$})</a></td>
+                                        <td style="word-break:break-all">{$v.harpin_seq$}</td>
+                                    </tr>
+                                    </tbody>
+                                    </table>
+                    </dd>
+                    <div ng-show="mirna_expression_show">
+                                    <dt>Average expression:
+                                    <span class="glyph icon glyph icon-question-sign" data-toggle="popover" data-container="body"
+                                          data-trigger="hover"
+                                          data-content="miRNA expression profiles were calculated from 33 cancer types from TCGA"
+                                          style="color: #5bc0de"></span>
+                                    </dt>
+                                    <dd>{$ mirna_expression.exp_mean $}</dd>
+                                    <dt style="width: auto">miRNA expression in each cancer type
+                                        <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                          data-trigger="hover"
+                                          data-content="The average expression levels in different cancer types"
+                                          style="color: #5bc0de"></span>:
+                                    </dt>
+                                    <dd></dd><dt style="width: 0px"></dt>
+                                    <dd style="margin-left: 0px">
+                                        <div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div>
+                                    </dd>
+                                    <!--div>
+                                        <div class="mirna-profile cursor-hand"
+                                             title="cancer={$c.cancer_type$}; expression={$ c.expression $}"
+                                             style="background-color: {$c.color$}" ng-repeat="c in mirna_profile"></div>
+                                    </div-->
+                                </div>
+
+                </dl>
         </div>
-        <div ng-show="mirna_alias">
-            <table style="text-align: center" ts-wrapper id="mirna-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
-            <thead>
-            <tr>
-                <th>Mature miRNA</th>
-                <th>miRNA accession</th>
-                <th>miRNA position</th>
-                <th>Precursor ID</th>
-                <th>Precursor accession</th>
-                <th>Precursor position</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="v in mirna_summary_list">
-                <td>{$v.mir_id$}</td>
-                <td>{$v.mir_acc$}</td>
-                <td>{$v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
-                <td>{$v.pre_id$}</td>
-                <td>{$v.pre_acc$}</td>
-                <td>{$v.pre_chr$}:{$v.pre_start$}-{$v.pre_end$}({$v.mir_strand$})</td>
-            </tr>
-            </tbody>
-            </table>
-        </div>
-       </div>
     </div>
 </div>
 
@@ -119,7 +152,7 @@
                 <th>SNP</th>
                 <th>Gene</th>
                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                     </span>
                 </th>
                 <th style="width:10%">Binding start<br>(miRmap)</th>
@@ -132,9 +165,10 @@
             <tbody>
             <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center" style="width:12%">{$ v.mirna_id$}</td>
-                <td align="center" style="width: 10%">{$v.snp_id$}</td>
-                <td align="center" style="width: 10%">{$v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center" style="width:12%"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ v.mirna_id$}</a></td>
+                <td align="center" style="width: 10%"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
+                <td align="center" style="width: 10%"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">{$v.gene_symbol$}</a><br>
+                    <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</td>
                 <td align="center" style="width: 10%">
                         <span ng-if="v.gene_expression[0]">
                         <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -195,7 +229,7 @@
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
             </th> 
             <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
@@ -215,9 +249,10 @@
         <tbody>
         <tr ng-repeat="v in snp_seed_loss_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center">{$v.mirna_id$}</td>
-                <td align="center">{$ v.snp_id$}</td>
-                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$v.mirna_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$ v.snp_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
+                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <!--td align="center">{$v.utr_info.acc$}</td>
                 <td align="center">{$v.utr_info.enst_id$}</td-->
                 <td align="center">
@@ -289,7 +324,7 @@
             <th>Mutation</th>
             <th>Gene</th>
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
             </th>
             <th>Binding start<br>(miRmap)</th>
@@ -302,9 +337,10 @@
         <tbody>
             <tr ng-repeat="v in mut_seed_gain_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center" style="width: 12%">{$v.mirna_id$}</td>
-                <td align="center" style="width: 10%">{$ v.mut_id$}</td>
-                <td align="center" style="width: 10%">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center" style="width: 12%"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$v.mirna_id$}</a></td>
+                <td align="center" style="width: 10%"><a target="_blank" href={$v.mut_url$}>{$ v.mut_id$}</a></td>
+                <td align="center" style="width: 10%"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
+                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <td align="center" style="width: 10%">
                     <span ng-if="v.gene_expression[0]">
                     <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -365,7 +401,7 @@
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
             <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
@@ -385,9 +421,10 @@
         <tbody>
         <tr ng-repeat="v in mut_seed_loss_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center">{$v.mirna_id$}</td>
-                <td align="center">{$ v.mut_id$}</td>
-                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$v.mirna_id$}</a></td>
+                <td align="center"><a target="_blank" href={$v.mut_url$}>{$ v.mut_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">{$ v.gene_symbol$}</a><br>
+                    <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <!--td align="center">{$v.utr_info.acc$}</td>
                 <td align="center">{$v.utr_info.enst_id$}</td-->
                 <td align="center">
@@ -460,8 +497,8 @@
                 </thead>
             <tbody>
                 <tr ng-repeat="e in enrich_result_list">
-                    <td>{$ e.mirna_id $}</td>
-                    <td>{$ e.variate_id $}</td>
+                    <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ e.mirna_id $}</a></td>
+                    <td><a target="_blank" href="{$e.variate_url$}">{$ e.variate_id $}</td>
                     <td>
                         <span ng-if="e.ref">{$ e.ref $}</span>
                         <span ng-if="!e.ref">-</span>

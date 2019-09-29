@@ -1,6 +1,6 @@
 <div class="bs-callout-danger">
     <div class="description" style="margin-left: 7px;">
-    <h4>Variations in human precursor miRNA</h4>
+    <h4>Variations in human precursor miRNAs</h4>
     <!--p>
         There are <span class="badge alert-info">1,913</span> precursor miRNAs collected from miRBase v22.
         You can click on your interest pre-miRNA in the following table to see details, including miRNA basic information and structure effect caused by SNPs/mutations in the pre-miRNA.
@@ -113,7 +113,7 @@
                     <th ts-criteria="mutation_sum|parseInt" style="width: 10%">Mutation Number
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                            data-content="Number of Mutation which on the pre-miRNA, includes COSMIC Mutations and ClinVar variations;"></span>
+                            data-content="Number of mutation(COSMIC Mutations and ClinVar variations) in pre-miRNAs"></span>
                     </th>
                     <th>Mature miRNAs</th>
                 </tr>
@@ -121,9 +121,8 @@
             <tbody>
                 <tr ng-repeat="v in primir_summary_list" ts-repeat>
                     <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000"><strong>{$v._id.pre_id$}</strong></a></td>
-                    <td><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}">{$ v._id.pre_acc
-                            $}</a></td>
-                    <td>{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
+                    <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}">{$ v._id.pre_acc$}</a></td>
+                    <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v._id.pre_chr $}%3A{$ v._id.pre_start $}%2D{$ v._id.pre_end$}">{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
                     <td>{$ v._id.snv_in_pri$}</td>
                     <td>{$ v.mutation_sum $}</td>
                     <td>

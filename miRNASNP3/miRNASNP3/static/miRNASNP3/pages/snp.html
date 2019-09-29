@@ -31,17 +31,17 @@
         <div class="panel-body">
             <dl class="dl-horizontal">
                 <dt>SNP ID:</dt>
-                <dd class="ng-binding">{$ snp_summary_alias.snp_id$}</dd>
+                <dd class="ng-binding"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$ snp_summary_alias.snp_id$}">{$ snp_summary_alias.snp_id$}</a></dd>
                 <dt>SNP position:</dt>
                 <dd class="ng-binding">{$ snp_summary_alias.snp_chr$}:{$snp_summary_alias.snp_coordinate$}</dd>
                 <dt>Ref/Alt:</dt>
                 <dd class="ng-binidng">{$snp_summary_alias.ref$}
-                    <span ng-if="snp_summary_alias.ref_freq">({$snp_summary_alias.ref_freq$})</span> /{$snp_summary_alias.alt$}
-                    <span ng-if="snp_summary_alias.alt_freq">({$snp_summary_alias.alt_freq$})</span> </dd>
+                    <span ng-if="snp_summary_alias.ref_freq">({$snp_summary_alias.ref_freq$})</span> /{$snp_alt$}
+                    <span ng-if="has_alt_freq">({$alt_freq$})</span> </dd>
                 <dt>Region:</dt>
                 <dd class="ng-binding">{$ snp_summary_alias.location $}</dd>
                 <dt>{$head_identifier$}:</dt>
-                <dd class="ng-binding">{$ snp_summary_alias.identifier $}</dd>
+                <dd class="ng-binding"><a target="_blank" href="{$identifier_url$}">{$ snp_summary_alias.identifier $}</a></dd>
                 <dt>GWAS Tag:</dt>
                 <dd>
                     <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="catalog_count"></span>
@@ -60,7 +60,7 @@
             </dl>
         </div>
     </div>
-    <div ng-show="snp_summary_alias_count">
+    <!--div ng-show="snp_summary_alias_count">
     <div class="panel panel-info" ng-show="one">
         <div class="panel-heading">
             <strong>Alias information of {$query_snp$}</strong>
@@ -94,7 +94,7 @@
             </tbody>
             </table>
         </div>
-    </div>
+    </div-->
 </div>
 
 
@@ -115,12 +115,12 @@
                 <th>SNP</th>
                 <th>Gene</th>
                 <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.
                         ">
                     </span>
                 </th>
                 <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.
                         ">
                     </span>
                     </th>
@@ -133,9 +133,10 @@
             </thead>
             <tbody>
             <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
-                <td align="center">{$v.mirna_id$}</td>
-                <td align="center">{$ v.snp_id$}</td>
-                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$ v.snp_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
+                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -202,13 +203,13 @@
             <th style="width: 9%">SNP</th>
             <th style="width: 10%">Gene</th>
             <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
                 </span>
             </th>
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
             <th ts-criteria="expr_corelation" style="width: 7%">Exp. cor.
@@ -228,9 +229,10 @@
         <tbody>
         <tr ng-repeat="v in snp_seed_loss_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
-                <td align="center">{$v.mirna_id$}</td>
-                <td align="center">{$ v.snp_id$}</td>
-                <td align="center">{$ v.gene_symbol$}<br>{$v.utr_info.acc$}</td>
+                <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$ v.snp_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
+                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -305,11 +307,11 @@
             <th>SNP</th>
             <th>Gene</th>
             <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
                 </span>
             </th>
             <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
            
@@ -321,9 +323,10 @@
         </thead>
         <tbody>
         <tr ng-repeat="v in snv_utr_gain_list" ts-repeat>
-            <td align="center">{$v.mirna_id$}</td>
-            <td align="center">{$v.snp_id$}</td>
-            <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc $}</td>
+            <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
+            <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$v.snp_id$}</a></td>
+            <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
+                {$v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc $}</a></td>
             <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -386,11 +389,11 @@
             <th style="width: 10%">SNP</th>
             <th style="width: 10%">Gene</th>
             <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
                 </span>
             </th>
             <th ts-criteria="gene_expression[0].exp_mean" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer types.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
             <!--th>Accession</th>
@@ -411,9 +414,10 @@
         </thead>
         <tbody>
         <tr ng-repeat="v in snv_utr_loss_list" ts-repeat>
-            <td align="center">{$v.mirna_id$}</td> 
-            <td align="center">{$v.snp_id$}</td>
-            <td align="center">{$v.gene_symbol$}<br>{$v.utr_info.acc $}</td>
+            <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td> 
+            <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$v.snp_id$}</a></td>
+            <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
+                {$v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc $}</a></td>
             <td align="center">
                     <span ng-if="v.mirna_expression[0]">
                     <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -571,8 +575,8 @@
                     </tr>
                     <tbody>
                     <tr ng-repeat="item in tag_array">
-                        <td><a href="https://www.ebi.ac.uk/gwas/variants/{$item.snp_id$}" target="blank"> {$item.snp_id$}</a></td>
-                        <td><a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$item.tag_chr$}%3A{$item.tag_position$}" target="blank">{$item.coordinate$}</a></td>
+                        <td><a href="https://www.ebi.ac.uk/gwas/variants/{$item.snp_id$}" target="_blank"> {$item.snp_id$}</a></td>
+                        <td>{$item.coordinate$}</td>
                         <td>{$item.risk_allele $}</td>
                         <td>{$ item.risk_allele_fre$}</td>
                         <td>{$ item.disease $}</td>
@@ -580,7 +584,7 @@
                         <td>{$ item.p_value$}</td>
                         <td>{$item.or_beta$}</td>
                         <td>{$ item.ci95$}</td>
-                        <td><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$item.pubmed_id$}" target="blank">{$ item.pubmed_id $}</a></td>
+                        <td><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$item.pubmed_id$}" target="_blank">{$ item.pubmed_id $}</a></td>
                     </tr>
                     </tbody>
                 </table>
