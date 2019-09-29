@@ -41,13 +41,13 @@
                     <thread>
                         <tr>
                             <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
-                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Site Position</th>
+                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Binding ite Position</th>
                             <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
-                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">Duplex Energy</th>
-                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">Binding Energy</th>
-                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">Open Energy</th>
+                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">&Delta;G Duplex</th>
+                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">&Delta;G Binding</th>
+                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">&Delta;G Open Energy</th>
                             <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
-                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probility</th>
+                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probability</th>
                             <th class="text-center">Alignment</th>
                         </tr>
                     </thread>
@@ -62,7 +62,7 @@
                         <td style="text-align: center;vertical-align: middle">{$item.tgs_au$}</td>
                         <td style="text-align: center;vertical-align: middle">{$item.prob_exac$}</td>
                         <td>
-                            <pre>Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
+                            <pre align="left">Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
                         </td>
                     </tr>
                     </tbody>
@@ -79,13 +79,13 @@
                     <thread>
                         <tr>
                             <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
-                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Site Position</th>
+                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Binding ite Position</th>
                             <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
-                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">Duplex Energy</th>
-                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">Binding Energy</th>
-                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">Open Energy</th>
+                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">&Delta;G Duplex</th>
+                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">&Delta;G Binding</th>
+                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">&Delta;G Open Energy</th>
                             <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
-                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probility</th>
+                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probability</th>
                             <th class="text-center">Alignment</th>
                         </tr>
                     </thread>
@@ -100,7 +100,7 @@
                         <td style="text-align: center;vertical-align: middle">{$item.tgs_au$}</td>
                         <td style="text-align: center;vertical-align: middle">{$item.prob_exac$}</td>
                         <td>
-                            <pre>Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
+                            <pre align="left">Query:{$item.align6$}<br>{$item.align7$}<br>miRNA:{$item.align8$}</pre>
                         </td>
                     </tr>
                     </tbody>
@@ -116,14 +116,14 @@
             <table id="wild_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
                 <thread>
                     <tr>
-                        <th ts-criteria="mir_info" class="text-center">miRNA</th>
-                        <th ts-criteria="site_start" class="text-center">Site Position</th>
-                        <th ts-criteria="tgs_score|parseFloat" class="text-center">Targetscan Score</th>
-                        <th ts-criteria="dg_duplex|parseFloat" class="text-center">Duplex Energy</th>
-                        <th ts-criteria="dg_binding|parseFloat" class="text-center">Binding Energy</th>
-                        <th ts-criteria="dg_open|parseFloat" class="text-center">Open Energy</th>
-                        <th ts-criteria="tgs_au|parseFloat" class="text-center">AU content</th>
-                        <th ts-criteria="prob_exac|parseFloat" class="text-center">Exact Probility</th>
+                            <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
+                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Binding ite Position</th>
+                            <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
+                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">&Delta;G Duplex</th>
+                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">&Delta;G Binding</th>
+                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">&Delta;G Open Energy</th>
+                            <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
+                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probability</th>
                         <!--th class="text-center">Align</th-->
                     </tr>
                 </thread>
@@ -154,14 +154,14 @@
             <table id="alt_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
                 <thread>
                     <tr>
-                        <th ts-criteria="mir_info" class="text-center">miRNA</th>
-                        <th ts-criteria="site_start" class="text-center">Site Position</th>
-                        <th ts-criteria="tgs_score|parseFloat" class="text-center">Targetscan Score</th>
-                        <th ts-criteria="dg_duplex|parseFloat" class="text-center">Duplex Energy</th>
-                        <th ts-criteria="dg_binding|parseFloat" class="text-center">Binding Energy</th>
-                        <th ts-criteria="dg_open|parseFloat" class="text-center">Open Energy</th>
-                        <th ts-criteria="tgs_au|parseFloat" class="text-center">AU content</th>
-                        <th ts-criteria="prob_exac|parseFloat" class="text-center">Exact Probility</th>
+                            <th ts-criteria="mir_info" class="text-center" style="width: 10%">miRNA</th>
+                            <th ts-criteria="site_start" class="text-center" style="width: 8%">Binding ite Position</th>
+                            <th ts-criteria="tgs_score|parseFloat" class="text-center" style="width: 8%">TargetScan score</th>
+                            <th ts-criteria="dg_duplex|parseFloat" class="text-center" style="width: 8%">&Delta;G Duplex</th>
+                            <th ts-criteria="dg_binding|parseFloat" class="text-center" style="width: 8%">&Delta;G Binding</th>
+                            <th ts-criteria="dg_open|parseFloat" class="text-center" style="width: 8%">&Delta;G Open Energy</th>
+                            <th ts-criteria="tgs_au|parseFloat" class="text-center" style="width: 8%">AU content</th>
+                            <th ts-criteria="prob_exac|parseFloat" class="text-center" style="width: 8%">Exact Probability</th>
                         <!--th class="text-center">Align</th-->
                     </tr>
                 </thread>
