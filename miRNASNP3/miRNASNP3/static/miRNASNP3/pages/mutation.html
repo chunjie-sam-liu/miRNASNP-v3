@@ -31,8 +31,8 @@
                     </dd>
                     <dt>Mutation position:</dt>
                     <dd class="ng-binding">
-                        <span ng-if="mutation_alias.resource=='ClinVar'">{$ mutation_alias.chrome$}:{$mutation_alias.position$}</span>
-                        <span ng-if="mutation_alias.resource=='COSMIC'">{$ mutation_alias.chr$}:{$mutation_alias.position$}</span>
+                        <span ng-if="mutation_alias.chrome">{$ mutation_alias.chrome$}:{$mutation_alias.position$}</span>
+                        <span ng-if="mutation_alias.chr">{$ mutation_alias.chr$}:{$mutation_alias.position$}</span>
                     </dd>
                     <dt>Ref/Alt:</dt>
                     <dd>{$ mutation_alias.ref $}/{$ mutation_alias.alt $}</dd>
