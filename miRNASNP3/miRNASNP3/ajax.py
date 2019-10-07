@@ -860,7 +860,7 @@ class MirInfo(Resource):
         condition = {}
         print(search_ids)
         if search_ids:
-            condition = {'mir_id':search_ids}
+            condition['mir_id']={'$regex':search_ids,'$options':'$i'}
             mirna_summary_list = mongo.db.pri_mir_summary.find(condition)
             mirna_summary_count=mongo.db.pri_mir_summary.find(condition).count()
         else:

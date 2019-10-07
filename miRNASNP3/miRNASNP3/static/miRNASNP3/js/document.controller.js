@@ -5,7 +5,7 @@ angular.module('miRNASNP3')
 
 function DocumentController($scope) {
     console.log("DocumentController loaded");
-    $scope.echart_data_statistics=function(){
+  /*  $scope.echart_data_statistics=function(){
       console.log("plot data statistics")
       echarts.init(document.getElementById('data_statistics')).dispose();
     var myChart = echarts.init(document.getElementById('data_statistics'));
@@ -23,6 +23,6 @@ function DocumentController($scope) {
   };
   myChart.setOption(option)
     }
-  $scope.echart_data_statistics()
+  $scope.echart_data_statistics()*/
     
 }

@@ -27,7 +27,7 @@
             <strong>Basic information of miRNA:{$query_mirna$}</strong>
        </div>
         <div class="panel-body">
-            <div ng-show="!mirna_table">
+            <!--div ng-show="!mirna_table">
             <dl class="dl-horizontal">
                 <dt>Mature miRNA:</dt>
                 <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_id $}</a></dd>
@@ -61,46 +61,51 @@
                         <dd style="margin-left: 0px">
                             <div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div>
                         </dd>
-                        <!--div>
+                        <div>
                             <div class="mirna-profile cursor-hand"
                                  title="cancer={$c.cancer_type$}; expression={$ c.expression $}"
                                  style="background-color: {$c.color$}" ng-repeat="c in mirna_profile"></div>
-                        </div-->
+                        </div>
                     </div>
             </dl>
-        </div>
-        <div ng-show="mirna_table">
+        </div-->
+        <!--div ng-show="mirna_table"--><div>
             <dl class="dl-horizontal">
                     <dt>Mature miRNA:</dt>
                     <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_id $}</a></dd>
                     <dt>Mature accession:</dt>
                     <dd><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ mirna_summary_alias.mir_acc $}</a></dd>
-                    <dt>Mature Sequence:</dt>
+                    <dt>Mature sequence:</dt>
                     <dd><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
                         {$ mirna_summary_alias.matureSeq $}</a></dd>
-                    <dt style="width: auto">Different precursor miRNAs of {$query_mirna$}:</dt>
-                    <dd></dd><dt style="width: 1px"> </dt>
-                    <dd style="margin-left: 0px">
+                    <dt>Precursor miRNAs:</dt>
+                   
+                    <dd >
                             <table style="text-align: center" ts-wrapper id="mirna-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
                                     <thead>
                                     <tr>
                                         <!--th>miRNA accession</th-->
-                                        <th style="width: 12%">mature miRNA position</th>
-                                        <th style="width: 9%">Precursor ID</th>
-                                        <th style="width: 9%">Precursor accession</th>
-                                        <th style="width: 12%">Precursor position</th>
-                                        <th style="width: 50%">Precursor sequence</th>
+                                        <th>Precursor ID</th>
+                                        <th>Precursor accession</th>
+                                        <th>Precursor position</th>
+                                        <th>Precursor sequence</th>
+                                        <th>mature miRNA position</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="v in mirna_summary_list">
-                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
-                                            {$v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</a></td>
+                                        
                                         <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_id$}</a></td>
                                         <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_acc$}</a></td>
                                         <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.pre_chr $}%3A{$ mirna_summary_alias.pre_start $}%2D{$ mirna_summary_alias.pre_end$}">
                                             {$v.pre_chr$}:{$v.pre_start$}-{$v.pre_end$}({$v.mir_strand$})</a></td>
-                                        <td style="word-break:break-all">{$v.harpin_seq$}</td>
+                                        <td style="word-break:break-all">
+                                                <button type="button" class="btn btn-default" aria-label="Left Align">
+                                                        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                                                      </button>
+                                        </td>
+                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
+                                            {$v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</a></td>
                                     </tr>
                                     </tbody>
                                     </table>
@@ -113,15 +118,53 @@
                                           style="color: #5bc0de"></span>
                                     </dt>
                                     <dd>{$ mirna_expression.exp_mean $}</dd>
-                                    <dt style="width: auto">miRNA expression in each cancer type
+                                    <dt>miRNA expression:
                                         <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                           data-trigger="hover"
-                                          data-content="The average expression levels in different cancer types"
+                                          data-content="The average expression levels in different cancer types from TCGA"
                                           style="color: #5bc0de"></span>:
                                     </dt>
-                                    <dd></dd><dt style="width: 0px"></dt>
-                                    <dd style="margin-left: 0px">
+                                    <dd>
+                                        <button data-toggle="collapse" data-target="#abbr" aria-expanded="true" aria-controls="abbr" class="btn btn-default btn-sm collapsed">cancer types</button>
+                                    </dd><dt></dt>
+                                    <dd style="margin-left: 140px">
                                         <div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div>
+                                        <div class="panel panel-primary collapse" id="abbr" style="width: 900px; margin-top: 350px; margin-left: 50px; height: 1.97917px;" align="left" aria-expanded="false">
+                                                <div class="panel-body">
+                                                    <strong>ACC:</strong>Adrenocortical carcinoma<br>
+                                                    <strong>BLCA:</strong>Bladder urothelial carcinoma<br>
+                                                    <strong>BRCA:</strong>Breast invasive carcinoma<br>
+                                                    <strong>CESC:</strong>Cervical squamous cell carcinoma and endocervical adenocarcinoma<br>
+                                                    <strong>CHOL:</strong>Gallbladder cancer<br>
+                                                    <strong>COAD:</strong>Colon adenocarcinoma<br>
+                                                    <strong>DLBC:</strong>Lymphoid neoplasm diffuse large B-cell lymphoma<br>
+                                                    <strong>ESCA:</strong>Esophageal carcinoma<br>
+                                                    <strong>HNSC:</strong>Head and Neck squamous cell carcinoma<br>
+                                                    <strong>KICH:</strong>Kidney chromophobe<br>
+                                                    <strong>KIRC:</strong>Kidney renal clear cell carcinoma<br>
+                                                    <strong>KIRP:</strong>Kidney renal papillary cell carcinoma<br>
+                                                    <strong>LAML:</strong>Acute myeloid leukemia<br>
+                                                    <strong>LGG:</strong>Brain lower grade glioma<br>
+                                                    <strong>LIHC:</strong>Liver hepatocellular carcinoma<br>
+                                                    <strong>LUAD:</strong>Lung adenocarcinoma<br>
+                                                    <strong>LUSC:</strong>Lung squamous cell carcinoma<br>
+                                                    <strong>MESO:</strong>Mesothelioma<br>
+                                                    <strong>OV:</strong>Ovarian serous cystadenocarcinoma<br>
+                                                    <strong>PAAD:</strong>Pancreatic adenocarcinoma<br>
+                                                    <strong>PCPG:</strong>Pheochromocytoma and Paraganglioma<br>
+                                                    <strong>PRAD:</strong>Prostate adenocarcinoma<br>
+                                                    <strong>READ:</strong>Rectum adenocarcinoma<br>
+                                                    <strong>SARC:</strong>Sarcoma<br>
+                                                    <strong>SKCM:</strong>Skin cutaneous melanoma<br>
+                                                    <strong>STAD:</strong>Stomach adenocarcinoma<br>
+                                                    <strong>TGCT:</strong>Testicular germ cell tumor<br>
+                                                    <strong>THCA:</strong>Thyroid carcinoma<br>
+                                                    <strong>THYM:</strong>Thymoma<br>
+                                                    <strong>UCEC:</strong>Uterine corpus endometrial carcinoma<br>
+                                                    <strong>UCS:</strong>Uterine carcinosarcoma<br>
+                                                    <strong>UVM:</strong>Uveal melanoma<br>
+                                                </div>
+                                            </div>
                                     </dd>
                                     <!--div>
                                         <div class="mirna-profile cursor-hand"

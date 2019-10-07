@@ -90,7 +90,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     // check input in backend
     function checkAnnotationInput(annotation, obj, url) {
         console.log("checkAnnotationInput")
-        url='/api/mutation_summary_gene?gene=';
+        url=base_url+'/api/mutation_summary_gene?gene=';
         $.getJSON(url+annotation, function(data){
             console.log(data)
             if(data.gene_query.length > 0){
