@@ -377,6 +377,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 },
                
                 xAxis:{name:'Correlation',
+                min:-1,
+                max:1,
                 nameTextStyle:{
                     align:'right',
                     fontSize:12,

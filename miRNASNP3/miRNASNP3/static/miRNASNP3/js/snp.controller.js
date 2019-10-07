@@ -400,6 +400,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 },
                
                 xAxis:{name:'Correlation',
+                min:-1,
+                max:1,
                 nameTextStyle:{
                     align:'right',
                     fontSize:12,

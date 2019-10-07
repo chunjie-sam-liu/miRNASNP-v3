@@ -1,25 +1,25 @@
 
     <ul class="nav nav-tabs"  ng-show="mutation_summary_count">
         <li id="one" ng-click="show_one('one')" ng-show="mutation_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_one" ><a data-toggle="tab"><strong>Mutation Details</strong></a> </li>
+            class="class_one" ><a data-toggle="tab"><strong>Variation Details</strong></a> </li>
         <li id="two" ng-click="show_one('two')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_two" ><a data-toggle="tab"><strong>Gain targets with mutation in seed</strong></a> </li>
+            class="class_two" ><a data-toggle="tab"><strong>Gain targets with variation in seed</strong></a> </li>
         <li id="three" ng-click="show_one('three')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_three" ><a data-toggle="tab"><strong>Loss targets with mutation in seed</strong></a> </li>
+            class="class_three" ><a data-toggle="tab"><strong>Loss targets with variation in seed</strong></a> </li>
         <li id="four" ng-click="show_one('four')" ng-show="mut_utr_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_four" ><a data-toggle="tab"><strong>Gain miRNAs with mutation in 3'UTR</strong></a> </li>
+            class="class_four" ><a data-toggle="tab"><strong>Gain miRNAs with variation in 3'UTR</strong></a> </li>
         <li id="five" ng-click="show_one('five')" ng-show="mut_utr_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_five" ><a data-toggle="tab"><strong>Loss miRNAs with mutation in 3'UTR</strong></a> </li>
+            class="class_five" ><a data-toggle="tab"><strong>Loss miRNAs with variation in 3'UTR</strong></a> </li>
     </ul>
 
     <div ng-show="mutation_summary_count">
         <div class="panel panel-info" ng-show="one" id="section-1">
             <div class="panel-heading" >
-                <strong>Basic Information of mutation : {$ query_mutation $}</strong>
+                <strong>Basic Information of variation : {$ query_mutation $}</strong>
             </div>
             <div class="panel-body">
                 <dl class="dl-horizontal">
-                    <dt>Mutation ID:</dt>
+                    <dt>Variation ID:</dt>
                     <dd class="ng-binding">
                         <span ng-if="mutation_alias.resource=='ClinVar'">
                         <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$mutation_alias.mut_id$}">
@@ -29,7 +29,7 @@
                                     {$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</a>
                         </span>
                     </dd>
-                    <dt>Mutation position:</dt>
+                    <dt>Variation position:</dt>
                     <dd class="ng-binding">
                         <span ng-if="mutation_alias.chrome">{$ mutation_alias.chrome$}:{$mutation_alias.position$}</span>
                         <span ng-if="mutation_alias.chr">{$ mutation_alias.chr$}:{$mutation_alias.position$}</span>
@@ -48,7 +48,7 @@
                     <dd><span class="glyphicon glyphicon-remove" style="color: red"></span></dd-->
                     </dl>
             </div>
-            <div class="panel-heading" style="background-color: #3F96C3" ng-show="mutation_alias_count">
+            <!--div class="panel-heading" style="background-color: #3F96C3" ng-show="mutation_alias_count">
                     <strong style="color: white">Alias information of {$query_mutation$}
                     </strong>
                     </div>
@@ -81,7 +81,7 @@
                         </tr>
                         </tbody>
                         </table>
-                    </div>
+                    </div-->
             </div>
         </div>
 
@@ -99,7 +99,7 @@
                             <thead>
                             <tr>
                                 <th style="width: 12%">miRNA</th>
-                                <th style="width:15%">Mutation</th>
+                                <th style="width:15%">Variation</th>
                                 <th>Gene</th>
                                 <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
@@ -192,7 +192,7 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 15%">miRNA</th>
-                                    <th style="width: 10%">Muation</th>
+                                    <th style="width: 10%">Variation</th>
                                     <th style="width: 10%">Gene</th>
                                     <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width: 10%">miRNA exp.
                                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
@@ -302,7 +302,7 @@
                                         <thead>
                                         <tr>
                                             <th>miRNA</th>
-                                            <th>Mutation</th>
+                                            <th>Variation</th>
                                             <th>Gene</th>
                                             <th ts-criteria="mirna_expression[0].exp_mean|parseInt">miRNA exp.
                                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
@@ -391,7 +391,7 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 15%">miRNA</th>
-                                            <th style="width: 10%">Mutation</th>
+                                            <th style="width: 10%">Variation</th>
                                             <th style="width: 10%">Gene</th>
                                             <th ts-criteria="mirna_expression[0].exp_mean|parseInt" style="width:8%">miRNA exp.
                                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA mean expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
@@ -518,7 +518,7 @@
                                                             <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}](miRNA seed region)</td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Mutation</th>
+                                                            <th>Variation</th>
                                                             <td colspan="2">{$mutation_alias.resource$}:{$modal_site.mut_info.mut_id$} ({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
                                                             <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
                                                         </tr>
@@ -605,7 +605,7 @@
                                                                 <td colspan="3" align="center">-</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Mutation</th>
+                                                                <th>Variation</th>
                                                                 <td colspan="2">{$mutation_alias.resource$}:{$modal_site.mut_info.mut_id$}({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
                                                                 <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
                                                             </tr>

@@ -462,6 +462,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                 },
                
                 xAxis:{name:'Correlation',
+                min:-1,
+                max:1,
                 nameTextStyle:{
                     align:'right',
                     fontSize:12,

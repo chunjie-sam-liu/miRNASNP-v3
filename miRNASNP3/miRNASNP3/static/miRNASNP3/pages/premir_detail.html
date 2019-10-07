@@ -178,7 +178,7 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">
-                                  Mutations in pre-miRNA
+                                  Variations in pre-miRNA
                                 </td>
                                 <td>
                                     <span ng-if="premir_info.cosmic.length || premir_info.clinvar.length">
@@ -206,7 +206,7 @@
             <div ng-show="primir_alt_count">
                 <div class="panel panel-primary">
                     <div class="panel-heading" >
-                        pre-miRNA structure of SNP type
+                        <strong>pre-miRNA structure of SNP type</strong>
                         </div>
                     <div class="panel-body">
                         <div style="width: 50%; float:left; display:inline" ng-show="snp_single">
@@ -227,7 +227,7 @@
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to pre-miRNA
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP location in pre-miRNA
                                 </td>
                                 <td>{$primir_alt_info.rela_loc$}</td>
                             </tr>
@@ -265,7 +265,7 @@
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP Loc relative to pre-miRNA
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP location in pre-miRNA
                                 </td>
                                 <td>{$primir_alt_info.rela_loc$}</td>
                             </tr>
@@ -298,7 +298,8 @@
             </div>
                 <div ng-show="primir_mut_count">
                     <div class="panel panel-primary">
-                    <div class="panel-heading" >pre-miRNA structure of SNP type
+                    <div class="panel-heading" >
+                        <strong>pre-miRNA structure of variation type</strong>
                 </div>
                 <div class="panel-body">
                     <div style="width: 50%; float:left; display:inline">
@@ -307,11 +308,11 @@
                             <tr>
                                 <td colspan="2" class="info"
                                     style="text-align: left;font-weight: bold;font-size: 18px">
-                                    <span>Mutation information </span>
+                                    <span>Variation information </span>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Mutation ID</td>
+                                <td style="font-size: 18px;font-weight: bold" width="200px">Variation ID</td>
                                 <td>{$primir_mut_list.mut_id$}</td>
                             </tr>
                             <tr>
@@ -319,11 +320,11 @@
                                 <td>{$primir_mut_list.resource$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">Mutation position</td>
+                                <td style="font-size: 18px;font-weight: bold" width="200px">Variation position</td>
                                 <td>{$primir_mut_list.mut_chr$}:{$primir_mut_list.mut_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP Loc relative to pre-miRNA
+                                <td style="font-size: 18px;font-weight: bold" width="200px">SNP location in pre-miRNA
                                     miRNA
                                 </td>
                                 <td>{$primir_mut_list.rela_loc$}</td>
