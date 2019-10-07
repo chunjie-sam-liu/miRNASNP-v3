@@ -5,14 +5,14 @@
 	<div class="panel-body">
 		<ul>
 		<li><a href="#!/document/#one">1. What's new in miRNASNP-v3 compared to the previous version?</a></li>
-		<li><a href="#!/document/#two">2. Data statistics for miRNASNP3Data sources and tools for analyze</a></li>
+		<li><a href="#!/document/#two">2. Data statistics for miRNASNP-v3</a></li>
 		<!--li><a href="#!/document/#three">3. Pipeline to construct miRNASNP3</a></li-->
 		<li><a href="#!/document/#three">3. Data sources and tools for analyze</a></li>
 		<li><a href="#!/document/#four">4. Phenotype</a></li>
 		<li><a href="#!/document/#five">5. Enrichment analysis for gained/lost targets</a></li>
 		<li><a href="#!/document/#six">6. miRNA information and gene 3'UTR</a></li>
 		<li><a href="#!/document/#seven">7. Expression level and expression correlation of miRNAs and target genes</a></li>
-		<li><a href="#!/document/#eight">8. Linking SNPs to the results of genome-wide association studies (GWAS)</a></li>
+		<li><a href="#!/document/#eight">8. Genome-wide association studies (GWAS)</a></li>
 		<li><a href="#!/document/#nine">9. Online prediction</a></li>
 		<li><a href="#!/document/#ten">10. Cite miRNASNP3</a></li>
 		<li><a href="#!/document/#contact">11. Contact us</a></li>
@@ -49,8 +49,12 @@
 		<div id="two">
 				<p>
 					<span class="document">
-						Data statistics for miRNASNP3
+						Data statistics for miRNASNP-v3
 					</span>
+				</p>
+				<p>
+						In total, There are 17361 SNPs and 2155 variations identified in mature miRNA. 43923 SNPs and 5464 variations are identified in pre-miRNA.
+						The number of SNPs and variations in gene 3'UTR is 6,358,867 and 202,942 separately.
 				</p>
 				<div align="center">
 				<img src="/static/miRNASNP3/img/data_statistics_2.png" style="margin: 30px">
@@ -176,6 +180,12 @@
 							Phenotype
 						</span>
 						</p>
+			<p>
+					We integrated pathological information of 175,985 mutations from COSMIC, disease information of 32,136 variations from ClinVar and disease/trait information of 235,148 SNPs from GWAS catalog to construct the module called phenotype-related variations.
+					For these variations, we divided them into three categories based on their location. For variation in seed and variation in 3'UTR, target gain/loss information is presented.
+					For variation in pre-miRNA, we provide the minimum free energy change of pre-miRNA second structure caused by the variation, users can click the pre-miRNA to look into details.
+					In this module, users can screen for variations associated with a particular phenotype by selecting a tissue of interest or typing in a description of the phenotype.
+			</p>
 			<div align="center">
 				<img src="/static/miRNASNP3/img/phenotype-help.png" style="width: 800px;margin: 30px">
 			</div>
@@ -188,6 +198,10 @@
 									Enrichment analysis for gained/lost targets
 								</span>
 								</p>
+				<p>
+						Enrichment analysis of gained/lost targets by variations in miRNA seed region help us discover the underlying biological mechanisms effected by the variation.
+						We perform GO and KEGG enrichment analysis on gained/lost gene sets with gene numbers from 50 to 1000.
+				</p>
 					<div align="center">
 						<img src="/static/miRNASNP3/img/enrichment-help.png" style="width: 800px;margin: 30px">
 					</div>
@@ -217,7 +231,7 @@
 				</p>
 			<p>
 					Gene expression data and miRNA expression data of 33 cancers were downloaded from TCGA.
-					We calculated the pearson correlation coefficient between gene and miRNA in each cancer, as well as in 33 cancers.
+					We calculated the pearson correlation coefficient between gene and miRNA in each cancer.
 					Overall correlation coefficient was displayed in loss targets information panel,which can be clicked to pop out a histogram of correlation coefficient for each cancer type. 
 					For gain targets, it's not available, because there are no expression data for SNP type 3'UTR/miRNA.
 			</p>
@@ -229,10 +243,10 @@
 		
 	<div id="eight">
 		<p>
-			<span class="document">Linking SNPs to the results of genome-wide association studies (GWAS)</span>
+			<span class="document">Genome-wide association studies (GWAS)</span>
 		</p>
 		<p>
-				GWAS tagSNPs and SNPs in LD region of the tagSNP(d_prime>0.98) were downloaded from GWAS catalog website for 26 populations. 
+				GWAS tagSNPs and SNPs in  linkage disequilibrium(LD) region of the tagSNP(d_prime>0.98) were downloaded from GWAS catalog website for 26 populations. 
 				Then, a integrated LD region for tagSNPs relate to a specific SNP of each population is calculated by SNPs in their LD regions.
 				(setting LD analysis regions ±500kb around SNP position)
 		</p>
@@ -246,7 +260,12 @@
 			<span class="document">Online prediction</span>
 		</p>
 		<p>
-				In order to reduce the calculation time, only the longest transcript of each gene was used to take online prediction in Tools module.
+				miRNASNP-v3 provides 3 kinds of online predictions. Predicting the impact of variant in gene 3'UTR on miRNA:mRNA interaction will scan 2,652 mature miRNAs
+    to predict target miRNAs for wild-type and SNP-type 3'UTR sequence, which provided by users, by miRmap and TargetScan. Then follow the analysis pipeline constructed in
+    miRNASNP to get the gain/loss targets. Predicting the impact of variant in miRNA on miRNA:mRNA interaction will scan 18,286 gene 3'UTRs to predict target genes
+    for wild-type and SNP-type miRNA sequence.(In order to reduce the calculation time, only the longest transcript of each gene was used to take online prediction in Tools module.)
+    The prediction result will provide a summary panel, and another four panels to show gain targets, loss targets, wild-type and SNP-type sequence predicted targets. In the target panel, we provide prediction result of miRmap. For predicting the impact of variant in primary miRNA on miRNA structure, The
+    minimum free energy(MFE) of SNP-type sequence for each SNP is predicted by RNAfold.
 		</p>
 		<div align="center">
 				<img src="/static/miRNASNP3/img/predict-help.png" style="width: 800px;margin: 30px">

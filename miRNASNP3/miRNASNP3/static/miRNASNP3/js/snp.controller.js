@@ -766,9 +766,9 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     var ld_region_all = $scope.ld_list[0].tag_info;
                     var ld_array = [];
                     var ld_array_line = {};
-                    var min_start = Number($scope.ld_list[0]._id.snp_position) - 250000;
+                    var min_start = Number($scope.ld_list[0]._id.snp_position) - 500000;
                     if(min_start <0){min_start = 0}
-                    var max_end = Number($scope.ld_list[0]._id.snp_position )+ 250000;
+                    var max_end = Number($scope.ld_list[0]._id.snp_position )+ 500000;
                     $scope.snp_line=(Number($scope.ld_list[0]._id.snp_position)-min_start)/500-20;
                     $scope.tag_line=$scope.snp_line;
                     for (var p=0;p<ld_region_all.length;p++){
@@ -808,13 +808,13 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     var tag_array=[]; //tag table
                     var tag_line=[]; //tag_line
                     var ld_array_dict={};
-                    var min_start = Number($scope.ld_list[0]._id.snp_position) - 250000;
+                    var min_start = Number($scope.ld_list[0]._id.snp_position) - 500000;
                     if (min_start < 0) {
                             min_start = 0
                         }
                     $scope.ld_t=1;
                     $scope.snp_line = (Number($scope.ld_list[0]._id.snp_position) - min_start) / 500 - 20;
-                    var max_end = Number($scope.ld_list[0]._id.snp_position) + 250000;
+                    var max_end = Number($scope.ld_list[0]._id.snp_position) + 500000;
 
                     for (var i = 0; i < $scope.ld_list.length; i++) {
 

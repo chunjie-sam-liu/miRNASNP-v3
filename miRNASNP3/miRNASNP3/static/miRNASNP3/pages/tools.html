@@ -1,5 +1,5 @@
 <div class="panel panel-primary">
-    <div class="panel-heading"><strong>1.Predict the impact of variant in gene 3'utr on miRNA:mRNA interaction</strong></div>
+    <div class="panel-heading"><strong>1.Predict the impact of variant in gene 3'UTR on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
         <p>There are two textboxes below, you can input your wild  sequence and mutant sequence in them, separately. If only wild sequence is provided, you will
             get result about miRNA targets on this sequence, if wild sequence and mutant sequence are provided, you will get miRNA target loss/gain induced by variant.(It takes few minutes for prediction)</p>
@@ -22,9 +22,9 @@
 <div class="panel panel-primary">
     <div class="panel-heading"><strong>2.Predict the impact of variant in miRNA on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
-        <p>There are two textboxes below, you can input your wild  sequence and mutant sequence in them, separately. If only wild sequence is provided, you will
+        <p>There are two text boxes below, you can input your wild  sequence and mutant sequence in them, separately. If only wild sequence is provided, you will
             get result about miRNA targets on this sequence, if wild sequence and mutant sequence are provided, you will get miRNA target loss/gain induced by variant.<br>
-            <strong style="color: red">Warning:</strong>It takes long time for ananlysing single miRNA sequence,be sure to keep the website on if you really want to take the prediction.</p>
+            <strong style="color: red">Warning:</strong>It takes long time for analysing single miRNA sequence,be sure to keep the website on if you really want to take the prediction.</p>
             <div class="alert alert-danger" ng-show="flash_message1">
             <button type="button" class="close" ng-click="flash_message1 = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message1 $}
@@ -44,8 +44,8 @@
 <div class="panel panel-primary">
     <div class="panel-heading"><strong>3.Predict the impact of variant in primary miRNA on miRNA structure</strong></div>
     <div class="panel-body">
-        <p>Secondary structure and Minimam free energy are caculated by RNAfold, please input your SNP file and sequence file.<br>Input format:
-        <strong>SNP file</strong> must contain the list of SNPs thaht are given in separate lines. The SNPs are described as, wild-type nucleotide followed by nucleotide position followed by mutant nucleotide.
+        <p>Secondary structure and Minimum free energy are calculated by RNAfold, please input your SNP file and sequence file.<br>Input format:
+        <strong>SNP file</strong> must contain the list of SNPs that are given in separate lines. The SNPs are described as, wild-type nucleotide followed by nucleotide position followed by mutant nucleotide.
         <strong>Sequence file</strong> should in Fasta format</p>
             <div class="alert alert-danger" ng-show="flash_message2">
             <button type="button" class="close" ng-click="flash_message2 = null"><span aria-hidden="true">&times;</span></button>
