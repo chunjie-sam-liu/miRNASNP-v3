@@ -33,7 +33,8 @@
                 <dt>SNP ID:</dt>
                 <dd class="ng-binding"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$ snp_summary_alias.snp_id$}">{$ snp_summary_alias.snp_id$}</a></dd>
                 <dt>SNP position:</dt>
-                <dd class="ng-binding">{$ snp_summary_alias.snp_chr$}:{$snp_summary_alias.snp_coordinate$}</dd>
+                <!--dd class="ng-binding">{$ snp_summary_alias.snp_chr$}:{$snp_summary_alias.snp_coordinate$}</dd-->
+                <dd class="ng-binding">{$snp_position_list$}</dd>
                 <dt>Ref/Alt:</dt>
                 <dd class="ng-binidng">{$snp_summary_alias.ref$}
                     <span ng-if="snp_summary_alias.ref_freq">({$snp_summary_alias.ref_freq$})</span> /{$snp_alt$}

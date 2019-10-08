@@ -79,8 +79,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     }
     $scope.fetch_mirna_details = function () {
         $http({
-           url:base_url+'/api/mirinfo',
-           // url:base_url+'/api/mirinfo',
+           url:'/api/mirinfo',
+           // url:'/api/mirinfo',
             method: 'GET',
             params: {search_ids: $scope.query_mirna}
         }).then(
@@ -101,8 +101,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     $scope.fetch_mirna_expression=function(){
         $scope.mirna_expression_show=1;
         $http({
-           url:base_url+'/api/mirna_expression',
-           // url:base_url+'/api/mirna_expression',
+           url:'/api/mirna_expression',
+           // url:'/api/mirna_expression',
             method:'GET',
             params:{mirna_id:$scope.query_mirna}
         }).then(function (response){
@@ -283,8 +283,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 }
                 if(flag==0){
             $http({
-               url:base_url+'/api/snp_seed_gain',
-               // url:base_url+'/api/snp_seed_gain',
+               url:'/api/snp_seed_gain',
+               // url:'/api/snp_seed_gain',
                 method: 'GET',
                 params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
                 }).then(
@@ -326,8 +326,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 if(flag==0){
                     console.log(query_gene_gain)
                     $http({
-                       url:base_url+'/api/snp_seed_gain',
-                       // url:base_url+'/api/snp_seed_gain',
+                       url:'/api/snp_seed_gain',
+                       // url:'/api/snp_seed_gain',
                         method: 'GET',
                         params: {mirna_id: $scope.query_mirna,page:1,gene:query_gene_gain}
                         }).then(
@@ -581,8 +581,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     }
     if(flag==0){
             $http({
-               url:base_url+'/api/snp_seed_loss',
-               // url:base_url+'/api/snp_seed_loss',
+               url:'/api/snp_seed_loss',
+               // url:'/api/snp_seed_loss',
                 method: 'GET',
                 params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
             }).then(
@@ -628,8 +628,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             }
             if(flag==0){
                 $http({
-                   url:base_url+'/api/snp_seed_loss',
-                   // url:base_url+'/api/snp_seed_loss',
+                   url:'/api/snp_seed_loss',
+                   // url:'/api/snp_seed_loss',
                     method: 'GET',
                     params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
                 }).then(
@@ -743,8 +743,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             }
             if(flag==0){
     	$http({
-           url:base_url+'/api/mut_seed_gain',
-           // url:base_url+'/api/mut_seed_gain',
+           url:'/api/mut_seed_gain',
+           // url:'/api/mut_seed_gain',
 			method: 'GET',
 			params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
             }).then(
@@ -784,8 +784,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             if(flag==0){
                 console.log(query_gene_gain)
                 $http({
-                   url:base_url+'/api/snp_seed_gain',
-                   // url:base_url+'/api/mut_seed_gain',
+                   url:'/api/snp_seed_gain',
+                   // url:'/api/mut_seed_gain',
                     method: 'GET',
                     params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_gain}
                     }).then(
@@ -822,8 +822,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             }
             if(flag==0){
     	$http({
-           url:base_url+'/api/mut_seed_loss',
-           // url:base_url+'/api/mut_seed_loss',
+           url:'/api/mut_seed_loss',
+           // url:'/api/mut_seed_loss',
 			method: 'GET',
 			params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
             }).then(
@@ -868,8 +868,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             if(flag==0){
                 console.log(query_gene_loss)
                 $http({
-                   url:base_url+'/api/snp_seed_gain',
-                   // url:base_url+'/api/mut_seed_loss',
+                   url:'/api/snp_seed_gain',
+                   // url:'/api/mut_seed_loss',
                     method: 'GET',
                     params: {mirna_id: $scope.query_mirna,page:page,gene:query_gene_loss}
                     }).then(
@@ -902,8 +902,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     
     $scope.fetch_enrich_result=function(){
         $http({
-           url:base_url+'/api/enrich_result',
-           // url:base_url+'/api/enrich_result',
+           url:'/api/enrich_result',
+           // url:'/api/enrich_result',
             method:'GET',
             params:{mirna_id:$scope.query_mirna}
         }).then(function (response) {
@@ -953,7 +953,9 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
        // if(e.emap_file){$scope.show_emap=1}
         //console.log($scope.enrich_filename)
     }
-
+$scope.premir_sequence=function(v){
+    $scope.cur_pre=v
+}
 
 }
 
