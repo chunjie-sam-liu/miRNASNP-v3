@@ -13,8 +13,8 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.fetch_premir=function(){
         $scope.a="letter in fetch_premir";
         $http({
-            //url:base_url+base_url+'/api/premir_info',
-            url:base_url+'/api/premir_info',
+            //url:base_url+'/api/premir_info',
+            url:'/api/premir_info',
             method:'GET',
             params:{search_ids:$scope.search_ids}
         }).then(function (response) {
@@ -26,7 +26,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                 var mcolor = String(Number(mature_position[i][0]) + 1) + '-' + String(Number(mature_position[i][1]) + 1) + ':red';
                 color_option = color_option + ' ' + mcolor
             }
-                var container = new fornac.FornaContainer("#rna_ss_wild", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[300,300]});
+                var container = new fornac.FornaContainer("#rna_ss_wild", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[554,330]});
                 //var options = {'sequence':$scope.premirinfo[0].harpin_seq};
                 var options = {
                     'structure': $scope.premir_info.dotfold,
@@ -44,8 +44,8 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.structure_effection_snp=function (snp_id,click_alt) {
         $scope.primir_mut_count=0;
         $http({
-            //url:base_url+base_url+'/api/primir_altseq',
-            url:base_url+'/api/primir_altseq',
+            //url:base_url+'/api/primir_altseq',
+            url:'/api/primir_altseq',
             method:'GET',
             params:{search_ids:snp_id}
         }).then(function (response) {
@@ -76,7 +76,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                     index_alt = 0
                 }
             }
-            var container = new fornac.FornaContainer("#rna_ss_alt", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[300,250]});
+            var container = new fornac.FornaContainer("#rna_ss_alt", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[554,330]});
             var options = {
                 'structure': $scope.primir_alt_list[index_alt].dotfold,
                 'sequence': $scope.primir_alt_list[index_alt].pre_altseq
@@ -90,8 +90,8 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.structure_effection_mut=function(mut_id){
         $scope.primir_alt_count=0;
       $http({
-          //url:base_url+base_url+'/api/primir_altseq_mut',
-          url:base_url+'/api/primir_altseq_mut',
+          //url:base_url+'/api/primir_altseq_mut',
+          url:'/api/primir_altseq_mut',
           method:'Get',
           params:{mut_id:mut_id}
       }).then(function(response){
@@ -99,7 +99,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
           $scope.primir_mut_list=response.data.primir_mut_list[0];
           $scope.primir_mut_count=response.data.primir_mut_count;
           if($scope.primir_mut_count==1){
-              var container = new fornac.FornaContainer("#rna_ss_mut", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[300,250]});
+              var container = new fornac.FornaContainer("#rna_ss_mut", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[554,330]});
             var options = {
                 'structure': $scope.primir_mut_list.dotfold,
                 'sequence': $scope.primir_mut_list.pre_altseq
