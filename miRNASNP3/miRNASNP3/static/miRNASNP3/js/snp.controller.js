@@ -110,8 +110,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     $scope.fetch_snp_details=function(){
         var page=1;
     	$http({
-            //url: base_url+'/api/snp_summary',
-            url:'/api/snp_summary',
+            //url:base_url+ base_url+'/api/snp_summary',
+            url:base_url+'/api/snp_summary',
             method: 'GET',
             params: {snp_id: $scope.query_snp}
         }).then(
@@ -185,8 +185,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         }
         if(flag==0){
     	$http({
-            //url:base_url+'/api/snp_seed_gain',
-            url:'/api/snp_seed_gain',
+            //url:base_url+base_url+'/api/snp_seed_gain',
+            url:base_url+'/api/snp_seed_gain',
 			method: 'GET',
 			params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
             }).then(
@@ -232,8 +232,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             if(flag==0){
                 console.log(query_gene_gain)
                 $http({
-                    //url:base_url+'/api/snp_seed_gain',
-                    url:'/api/snp_seed_gain',
+                    //url:base_url+base_url+'/api/snp_seed_gain',
+                    url:base_url+'/api/snp_seed_gain',
                     method: 'GET',
                     params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
                     }).then(
@@ -492,8 +492,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             }
             if(flag==0){
     	$http({
-        	//url:base_url+'/api/snp_seed_loss',
-            url:'/api/snp_seed_loss',
+        	//url:base_url+base_url+'/api/snp_seed_loss',
+            url:base_url+'/api/snp_seed_loss',
             method: 'GET',
             params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
         }).then(
@@ -540,8 +540,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             if(flag==0){
                 console.log(query_gene_loss)
                 $http({
-                    //url:base_url+'/api/snp_seed_loss',
-                    url:'/api/snp_seed_loss',
+                    //url:base_url+base_url+'/api/snp_seed_loss',
+                    url:base_url+'/api/snp_seed_loss',
                     method: 'GET',
                     params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
                     }).then(
@@ -618,8 +618,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.fetch_snv_utr_loss=function(page){
         $http({
-            //url:base_url+'/api/snv_utr_loss',
-            url:'/api/snv_utr_loss',
+            //url:base_url+base_url+'/api/snv_utr_loss',
+            url:base_url+'/api/snv_utr_loss',
             method:'Get',
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
@@ -652,8 +652,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.fetch_snv_utr_gain=function(page){
         $http({
-            //url:base_url+'/api/snv_utr_gain',
-            url:'/api/snv_utr_gain',
+            //url:base_url+base_url+'/api/snv_utr_gain',
+            url:base_url+'/api/snv_utr_gain',
             method:'GET',
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
@@ -686,8 +686,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.fetch_gwas_catalog=function(snp_id){
     	$http({
-            //url:base_url+'/api/gwas_catalog',
-            url:'/api/gwas_catalog',
+            //url:base_url+base_url+'/api/gwas_catalog',
+            url:base_url+'/api/gwas_catalog',
 			method:'GET',
 			params:{search_ids:snp_id}
 		}).then(
@@ -731,8 +731,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.search_ld = function(){
         $http({
-            //url:base_url+'/api/ldinfo',
-            url:'/api/ldinfo',
+            //url:base_url+base_url+'/api/ldinfo',
+            url:base_url+'/api/ldinfo',
             method:'GET',
             params:{search_ids:$scope.query_snp}
         }).then(
@@ -749,8 +749,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     $scope.ld_t=0;
                     //$scope.tag_array=$scope.catalog_list;
                     $http({
-                        //url:base_url+'/api/gwas_catalog',
-                        url:'/api/gwas_catalog',
+                        //url:base_url+base_url+'/api/gwas_catalog',
+                        url:base_url+'/api/gwas_catalog',
                         method:'GET',
                         params:{search_ids:$scope.query_snp}
                     }).then(
@@ -960,8 +960,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.fetch_relate_cosmic=function(){
     	$http({
-            //url:base_url+'/api/cosmicinfo',
-            url:'/api/cosmicinfo',
+            //url:base_url+base_url+'/api/cosmicinfo',
+            url:base_url+'/api/cosmicinfo',
             method: 'GET',
             params: {search_ids: $scope.query_snp,page:1}
         }).then(
@@ -977,8 +977,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         };
     $scope.fetch_relate_clinvar=function(){
     	$http({
-            //url:base_url+'/api/clinvarinfo',
-            url:'/api/clinvarinfo',
+            //url:base_url+base_url+'/api/clinvarinfo',
+            url:base_url+'/api/clinvarinfo',
             method: 'GET',
             params: {search_ids: $scope.query_snp,page:1}
         }).then(
