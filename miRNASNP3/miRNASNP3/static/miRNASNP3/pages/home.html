@@ -1,14 +1,14 @@
 <!-- search box -->
 <div id="search-box">
     <div class="input-group" style="text-align:center;">
-        <input ng-model="query_item" type="text" class="form-control" style="border-color: #81C2D6;height:40px;font-size:14pt;" 
+        <input ng-model="query_item" type="text" class="form-control" style="border-color: #81C2D6;height:40px;font-size:14pt;"
             data-provide="typeahead" placeholder="Search miRNA/Gene/SNP" id="search"><!--border-radius:20px-->
         <span class="input-group-btn" style="text-align:center;"-->
-               
+
             <button class="btn btn-default" id="search_button" type="button" style="background-color: #ffbbbc;height:40px;font-size:14pt;"
                 ng-click="search_query()">
                 <span class="glyphicon glyphicon-search"></span>
-            </span> 
+            </span>
     </div><!--input group-->
     <div>
         <h5>&nbsp;<strong>Example: </strong>
@@ -23,16 +23,16 @@
     <button type="button" class="close" ng-click="close_invalid()">
         <span aria-hidden="true">&times;</span>
     </button>
-  
+
     <strong>Sorry, your query item is not exist.</strong>
 </div>
 
 <div class="alert alert-danger alert-dismissible" ng-show="alert_invalid" id="alert_invalid">
-   
+
             <button type="button" class="close" ng-click="close_invalid()">
         <span aria-hidden="true">&times;</span>
     </button>
- 
+
     <strong>Invalid input!</strong>
 </div>
 
@@ -45,13 +45,13 @@
             </div>
             <div class="panel-body">
                 <p>microRNAs (miRNAs) are endogenous and regulatory non-coding RNAs by targeting mRNAs for cleavage or translational repression. SNPs on pre-miRNAs or target sites will affect miRNA expression or functions. <span class="badge alert-info">miRNASNP</span> is a comprehensive resource of human miRNA-related SNPs, including their effects on target gain and loss.</p>
-                <p>In <span class="badge alert-info">miRNASNP<span style="color:red;">-v3</span></span>, <span class="badge alert-danger">6,363,450</span> SNPs on human <span class="badge alert-danger">1,897</span> pre-miRNAs(<span class="badge alert-danger">2,624</span> mature miRNAs) and 3'UTRs of <span class="badge alert-danger">18,152</span> genes were characterized. Besides, <span class="badge alert-danger">203,471</span> mutations from <span class="badge alert-info"><a href="https://www.ncbi.nlm.nih.gov/clinvar/" target="_blank">ClinVar</a></span> and <span class="badge alert-info"><a href="https://cancer.sanger.ac.uk/cosmic" target="_blank">COSMIC</a></span> were identified on the pre-miRNAs(<span class="badge alert-danger">2,065</span> on mature miRNAs, <span class="badge alert-danger">522</span> on seed regions) and 3'UTRs. <span class="badge alert-info">Gene enrichment</span> of targets gained or lost by SNP in the miRNA seed region is provided.
+                <p>In <span class="badge alert-info">miRNASNP<span style="color:red;">-v3</span></span>, <span class="badge alert-danger">6,363,450</span> SNPs on human <span class="badge alert-danger">1,897</span> pre-miRNAs(<span class="badge alert-danger">2,624</span> mature miRNAs) and 3'UTRs of <span class="badge alert-danger">18,152</span> genes were characterized. Besides, <span class="badge alert-danger">203,471(add GWAS number)</span> phenotype related variations (PRVs) from <span class="badge alert-info"><a href="https://www.ncbi.nlm.nih.gov/clinvar/" target="_blank">ClinVar</a></span> and <span class="badge alert-info"><a href="https://cancer.sanger.ac.uk/cosmic" target="_blank">COSMIC</a></span> were identified on the pre-miRNAs(<span class="badge alert-danger">2,065</span> on mature miRNAs, <span class="badge alert-danger">522</span> on seed regions) and 3'UTRs of (how many ?) genes. <span class="badge alert-info">Gene enrichment</span> of targets gained or lost by SNP in the miRNA seed region is provided.
                 </p>
-                
+
             </div>
         </div>
     </div>
-    <div class="col-sm-6">    
+    <div class="col-sm-6">
         <div class="panel">
             <div class="panel-heading">
                 <h4>In miRNASNP<span style="color:red;">-v3</span>, you can browse or search</h4>
@@ -115,7 +115,7 @@
             </a>
         </div>
     </div>
-    
+
     <!--div class="col-md-3">
         <div class="thumbnail">
             <a href="#!/tools">
