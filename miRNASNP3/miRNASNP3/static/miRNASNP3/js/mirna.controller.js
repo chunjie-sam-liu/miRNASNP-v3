@@ -763,7 +763,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                    if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
+                    if((/^COSN/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                 }
                 })
             }
@@ -804,7 +804,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                                 site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                                 site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                                 site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                                if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
+                                if((/^COSN/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                         }
                         })
             }
@@ -847,7 +847,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                    if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
+                    if((/^COSN/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                 }
                 })
             }
@@ -893,7 +893,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                                 site_array[i].site_info.prob_exac=Number(site_array[i].site_info.prob_exac).toFixed(2)
                                 site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                                 site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
-                                if((/^COSN[0-9]+*/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
+                                if((/^COSN/).test(site_array[i].mut_id)){site_array[i].mut_url="https://cancer.sanger.ac.uk/cosmic/search?q="+site_array[i].mut_id}
                         }
                         })
             }
@@ -913,13 +913,13 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             var data_list=$scope.enrich_result_list
             for(var j=0;j<data_list.length;j++){
                 for(var i=0;i<data_list[j].csv_table.length;i++){
-                    data_list[j].csv_table[i].pvalue_fix=Number(data_list[j].csv_table[i].pvalue).toExponential(3)
-                    data_list[j].csv_table[i].qvalue_fix=Number(data_list[j].csv_table[i].qvalue).toExponential(3)
-                    data_list[j].csv_table[i].padjust_fix=Number(data_list[j].csv_table[i].padjust).toExponential(3)
-                    if((/^rs/).test(data_list[j].variate_id)){
-                        data_list[j].variate_url="https://www.ncbi.nlm.nih.gov/snp/?term="+data_list[j].variate_id
+                    //data_list[j].csv_table[i].pvalue_fix=Number(data_list[j].csv_table[i].pvalue).toExponential(3)
+                    //data_list[j].csv_table[i].qvalue_fix=Number(data_list[j].csv_table[i].qvalue).toExponential(3)
+                    //data_list[j].csv_table[i].padjust_fix=Number(data_list[j].csv_table[i].padjust).toExponential(3)
+                    if((/^rs/).test(data_list[j].variation_id)){
+                        data_list[j].variate_url="https://www.ncbi.nlm.nih.gov/snp/?term="+data_list[j].variation_id
                     }else{
-                        data_list[j].variate_url="https://cancer.sanger.ac.uk/cosmic/search?q="+data_list[j].variate_id
+                        data_list[j].variate_url="https://cancer.sanger.ac.uk/cosmic/search?q="+data_list[j].variation_id
                     }
                 }
             }
@@ -945,7 +945,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $scope.show_emap=0;
         $scope.show_table=1;
         $scope.enrich_table=1;
-        if(e.dot_file){$scope.show_dot=1}
+        if(Number(e.go_pathway_count)>5){$scope.show_dot=1}
        
         $('#enrich_table').addClass('active')
         $("#enrich_dot").removeClass('active')

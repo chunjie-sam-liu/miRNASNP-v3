@@ -2309,7 +2309,7 @@ class ClinvarInfo(Resource):
 api.add_resource(ClinvarInfo, '/api/clinvarinfo')
 
 csv_table={
-    'ontology':fields.String(attribute='ONTOLOGY'),
+    'op':fields.String(attribute='ONTOLOGY_pathway'),
     'id':fields.String(attribute='ID'),
     'description':fields.String(attribute='Description'),
     'gene_ratio':fields.String(attribute='GeneRatio'),
@@ -2319,21 +2319,20 @@ csv_table={
     'qvalue':fields.String,
     'gene_id':fields.String(attribute='geneID'),
     'gene_count':fields.String(attribute='Count'),
-    'csv':fields.String
+    'csv_file':fields.String
 }
 
 enrich_line={
     'mirna_id':fields.String,
-    'variate_id':fields.String,
+    'variation_id':fields.String,
     'alt':fields.String,
     'ref':fields.String,
     'enrich_type':fields.String,
-    'effection':fields.String,
+    'effect':fields.String,
     'csv_file':fields.String,
     'dot_file':fields.String,
-    'chet_file':fields.String,
-    'emap_file':fields.String,
     'csv_table':fields.Nested(csv_table),
+    'go_pathway_count':fields.String
 }
 
 enrich_result_list={
@@ -2358,18 +2357,18 @@ class EnrichResult(Resource):
             }}
         if args['variate_id']:
             search=1
-            condition['variate_id']=args['variate_id']
-            match['$match']['variate_id']=args['variate_id']
+            condition['variation_id']=args['variate_id']
+            match['$match']['variation_id']=args['variate_id']
         lookup_csv={'$lookup':{
-                'from':'enrich_csv',
+                'from':'enrichment_csv_v2',
                 'localField':'csv_file',
-                'foreignField':'csv',
+                'foreignField':'csv_file',
                 'as':'csv_table'
             }}
         if search:
             pipline=[match,lookup_csv]
-            enrich_result_list = mongo.db.enrich_summary.aggregate(pipline)
-            enrich_result_count = mongo.db.enrich_summary.find(condition).count()
+            enrich_result_list = mongo.db.enrichment_summary_v2.aggregate(pipline)
+            enrich_result_count = mongo.db.enrichment_summary_v2.find(condition).count()
         else:
             enrich_result_list={}
             enrich_result_count=0

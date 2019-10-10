@@ -353,7 +353,7 @@
 <div ng-show="four">
 <div class="panel panel-info"  id="section-4">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with SNPs in 3'UTR region causes miRNA:mRNA gains</strong>
+            <strong >{$ query_mirna $} with variations in seed region causes miRNA:mRNA gains</strong>
         <form class="form-inline pull-right">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="gene" id="search_gene_gain_mut" style="height: 24px">
@@ -428,7 +428,7 @@
 <div ng-show="five">
 <div class="panel panel-info" ng-show="five" id="section-5">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with SNPs in 3'UTR region causes miRNA:mRNA losses</strong>
+            <strong >{$ query_mirna $} with variations in seed region causes miRNA:mRNA losses</strong>
             <form class="form-inline pull-right">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_mut" style="height: 24px">
@@ -541,7 +541,7 @@
             <tbody>
                 <tr ng-repeat="e in enrich_result_list">
                     <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ e.mirna_id $}</a></td>
-                    <td><a target="_blank" href="{$e.variate_url$}">{$ e.variate_id $}</td>
+                    <td><a target="_blank" href="{$e.variate_url$}">{$ e.variation_id $}</td>
                     <td>
                         <span ng-if="e.ref">{$ e.ref $}</span>
                         <span ng-if="!e.ref">-</span>
@@ -550,7 +550,7 @@
                             <span ng-if="e.alt">{$ e.alt $}</span>
                             <span ng-if="!e.alt">-</span>
                     </td>
-                    <td>{$ e.effection $}</td>
+                    <td>{$ e.effect $}</td>
                     <td>{$ e.enrich_type $}</td>
                     <td>
                         <button class="btn btn-success" data-toggle="modal" data-target="#enrichment_plot"
@@ -806,20 +806,21 @@
                 </ul>
                 <div ng-show="enrich_table">
                         <div class="panel panel-info" ng-show="enrich_table" id="section-7-table">
-                                <div class="panel-heading">enrichment analysis for target {$enrich_item.effection$} caused by {$enrich_item.variate_id$} in {$enrich_item.mirna_id$} 
+                                <div class="panel-heading">enrichment analysis for target {$enrich_item.effect$} caused by {$enrich_item.variation_id$} in {$enrich_item.mirna_id$} 
                                 </div>
-                                <div class="panel-body">
-                                    <table class="table table-bordered">
+                                <div class="panel-body" >
+                                        <div class="pre-scrollable">
+                                            <table id="gain_table" ts-wrapper class="table table-bordered table-condensed table-hover table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Description</th>
-                                                    <th>GeneRatio</th>
-                                                    <th>BgRatio</th>
-                                                    <th>P.value</th>
-                                                    <th>P.adjust</th>
-                                                    <th>Q.value</th>
-                                                    <th>GeneCount</th>
+                                                    <th style="width: 7%">ID</th>
+                                                    <th style="width: 20%">Description</th>
+                                                    <th style="width: 5%">GeneRatio</th>
+                                                    <th style="width: 5%">BgRatio</th>
+                                                    <th style="width: 10%">P value</th>
+                                                    <th style="width: 10%">P adjust</th>
+                                                    <th style="width: 10%">Q value</th>
+                                                    <th style="width: 8%">Gene Count</th>
                                                 </tr>
                                                 </thead>
                                             <tbody>
@@ -830,24 +831,25 @@
                                                     <td>
                                                        {$ e.bg_ratio$}
                                                     </td>
-                                                    <td>{$ e.pvalue_fix $}</td>
-                                                    <td>{$ e.padjust_fix $}</td>
-                                                    <td>{$ e.qvalue_fix $}</td>
+                                                    <td>{$ e.pvalue $}</td>
+                                                    <td>{$ e.padjust $}</td>
+                                                    <td>{$ e.qvalue $}</td>
                                                     <td>
                                                        {$ e.gene_count  $}
                                                     </td>
                                                 </tr>
                                             </tbody>
                                     </table>
+                                    </div>
                                 </div>
                 </div>
                 </div>
                 <div ng-show="enrich_dot">
                     <div class="panel panel-info" ng-show="enrich_dot" id="section-7-dot">
                        
-                        <div class="panel-heading">Enrichment analysis for target {$enrich_item.effection$} caused by {$enrich_item.variate_id$} in {$enrich_item.mirna_id$} </div>
-                    <div>
-                    <img src="static/miRNASNP3/img/enrichment/{$enrich_item.dot_file$}" width="95%" style="margin: auto" >
+                        <div class="panel-heading">Enrichment analysis for target {$enrich_item.effect$} caused by {$enrich_item.variation_id$} in {$enrich_item.mirna_id$} </div>
+                    <div align="center">
+                    <img src="static/miRNASNP3/img/enrichment_v2/{$enrich_item.effect$}/{$enrich_item.dot_file$}" width="80%" height="80%" style="margin: auto;" >
                     </div>
                     <!--p>In <strong>dot plot </strong>, each point in the figure represents an enriched pathway, the dot color range from blue to red indicating an decreasing of the value of padjust.</p-->
                 </div>

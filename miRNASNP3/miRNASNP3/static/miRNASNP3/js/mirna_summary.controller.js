@@ -221,7 +221,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             condition['pre_id']=mirna_id
         $http({
             url:base_url+'/api/primir_summary',
-            //url:base_url++base_url+'/api/primir_summary',
+            //url:base_url+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
