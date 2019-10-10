@@ -843,8 +843,8 @@ class MirSummary(Resource):
             condition['mir_chr']=chrome
         if mirna_id:
             condition['mir_id']={'$regex':mirna_id,'$options':'$i'}
-        mirna_summary_list = mongo.db.mirna_summary.find(condition).skip(record_skip).limit(per_page)
-        mirna_summary_count=mongo.db.mirna_summary.find(condition).count()
+        mirna_summary_list = mongo.db.mirna_summary_sort.find(condition).skip(record_skip).limit(per_page)
+        mirna_summary_count=mongo.db.mirna_summary_sort.find(condition).count()
         return {'mirna_summary_list':list(mirna_summary_list),
                 'mirna_summary_count':mirna_summary_count}
 
@@ -972,8 +972,8 @@ class PrimirSummary(Resource):
         skip = {'$skip': record_skip}
         piplines = pipline+[group, skip, limit]
         pip_sum=pipline+[group,group_sum]
-        primir_summary_list = mongo.db.pri_mir_summary.aggregate(piplines)
-        primir_summary_count = mongo.db.pri_mir_summary.aggregate(pip_sum)
+        primir_summary_list = mongo.db.pri_mir_summary_sort.aggregate(piplines)
+        primir_summary_count = mongo.db.pri_mir_summary_sort.aggregate(pip_sum)
         #print(pip_sum)
         #print(pipline)
         return {'primir_summary_list': list(primir_summary_list),'primir_summary_count':list(primir_summary_count)}
