@@ -1,13 +1,16 @@
 
 <div class="bs-callout bs-callout-info">
     <div class="description" style="margin-left: 7px;">
-    <h4>Variations in human mature miRNAs</h4>
+    <h4>Variation in human mature miRNA</h4>
     <!--p>There are <span class="badge alert-info">2,652</span> mature miRNA derived from <span class="badge alert-info">1,913</span> pre-miRNA collected from mirBase v22. 
         You can click on your interest mature miRNA in the following table to see target gained/lost detail by SNPs/mutations.</p-->
-    <p>In this module, we provide information on the distribution of variations(dbSNP, COSMIC, ClinVar) in mature miRNAs. 
+    <!--p>In this module, we provide information on the distribution of variations(dbSNP, COSMIC, ClinVar) in mature miRNAs. 
         There are <span class="badge alert-info" style="color: white;background-color: #47899c;">2,652</span> mature miRNAs collected from mirBase v22. 
-        You can click on the mature miRNA you are interested in in the table below to see target gained/lost detail caused by variations.</p>
-    </div>
+        User can click on the mature miRNA you are interested in in the table below to see target gained/lost detail caused by variations.</p>
+    </div-->
+    <p>This module list a total of <span class="badge alert-info">19,100</span> SNPs/PRVs in <span class="badge alert-info">2,652</span> mature miRNAs, of which <span class="badge alert-info">5,199</span> SNPs/PRVs are 
+    mapped to <span class="badge alert-info">2,624</span> miRNA seed region. Red link in table presents the details of the mature miRNA and it's precurser miRNA, while blue link in table redirect
+the source of miRNA. </p>
 </div>
 
 
@@ -126,7 +129,7 @@
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
                                 data-content="Number of SNP in mature miRNA seed regions/Number of SNP in mature miRNAs."></span>
                         </th>
-                        <th ts-criteria="mutation_sum|parseInt">Mutation Number
+                        <th ts-criteria="mutation_sum|parseInt">Variation Number
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
                                 data-content="Number of mutation(COSMIC Mutations and ClinVar variations) in mature miRNAs."></span>
