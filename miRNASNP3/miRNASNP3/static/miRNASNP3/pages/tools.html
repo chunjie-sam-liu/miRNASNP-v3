@@ -1,14 +1,14 @@
 <div class="panel panel-primary">
     <div class="panel-heading"><strong>1.Predict the impact of variant in gene 3'UTR on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
-        <p>There are two textboxes below, you can input your wild  sequence and mutant sequence in them, separately. If only wild sequence is provided, you will
-            get result about miRNA targets on this sequence, if wild sequence and mutant sequence are provided, you will get miRNA target loss/gain induced by variant.(It takes few minutes for prediction)</p>
+        <p>This part is provided users to predict the loss and gain of miRNA:mRNA binding sites by the variation in 3'UTR, you can input your wild-type sequence and SNP-type sequence, separately. If only wild-type sequence is provided, it will predict miRNAs which target this sequence.
+            If wild-type sequence and SNP-type sequence are provided, you will get miRNA target loss/gain induced by the variant. (Notice:It takes few minutes for prediction)</p>
         <div class="alert alert-danger" ng-show="flash_message">
             <button type="button" class="close" ng-click="flash_message = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message $}
-        </div> <h5><strong>Wild Sequence (Required):</strong></h5>
+        </div> <h5><strong>Wild sequence (Required):</strong></h5>
         <textarea id="wildutr_sequence" rows="3" class=" form-control input-xs" style="border: solid; border-color: #5bc0de" placeholder="TTCTTTCTATTTTATTATCTGGGACATATTTAAATACAAACATATTCAGA"></textarea>
-        <h5><strong>Mutant Sequence (Optional):</strong></h5>
+        <h5><strong>Mutant sequence (Optional):</strong></h5>
         <textarea id="snputr_sequence" rows="3" class=" form-control input-xs" style="border: solid; border-color: #5bc0de" placeholder="TTCTTTCTATTTTATTATCTGGGACGTATTTAAATACAAACATATTCAGA"></textarea>
         <div class="form-group" style="margin-top: 3px">
             <div class="pull-right">
@@ -22,15 +22,14 @@
 <div class="panel panel-primary">
     <div class="panel-heading"><strong>2.Predict the impact of variant in miRNA on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
-        <p>There are two text boxes below, you can input your wild  sequence and mutant sequence in them, separately. If only wild sequence is provided, you will
-            get result about miRNA targets on this sequence, if wild sequence and mutant sequence are provided, you will get miRNA target loss/gain induced by variant.<br>
-            <strong style="color: red">Warning:</strong>It takes long time for analysing single miRNA sequence,be sure to keep the website on if you really want to take the prediction.</p>
+        <p> This tool is to predict the loss and gain of miRNA:mRNA binding sites by the variation in miRNA, you can input your wild-type sequence and SNP-type sequence, separately. If only wild-type sequence is provided,
+            it will predict target genes of the miRNA. If wild-type sequence and SNP-type sequence are provided, you will get gene target loss/gain induced by the variant. (Notice:This tool takes a while for predicting. please be patient.)</p>
             <div class="alert alert-danger" ng-show="flash_message1">
             <button type="button" class="close" ng-click="flash_message1 = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message1 $}
-        </div> <h5><strong>Wild Sequence (Required):</strong></h5>
+        </div> <h5><strong>Wild sequence (Required):</strong></h5>
         <textarea id="wildmir_sequence" rows="3" class=" form-control input-xs" style="border: solid; border-color: #5bc0de" placeholder="CCUGCUGGUCAGGAGUGGAUACUG"></textarea>
-        <h5><strong>Mutant Sequence (Optional):</strong></h5>
+        <h5><strong>SNP sequence (Required):</strong></h5>
         <textarea id="snpmir_sequence" rows="3" class=" form-control input-xs" style="border: solid; border-color: #5bc0de" placeholder="CCUGCUAGUCAGGAGUGGAUACUG"></textarea>
         <div class="form-group" style="margin-top: 3px">
             <div class="pull-right">
@@ -42,17 +41,16 @@
 </div>
 
 <div class="panel panel-primary">
-    <div class="panel-heading"><strong>3.Predict the impact of variant in primary miRNA on miRNA structure</strong></div>
+    <div class="panel-heading"><strong>3.Predict the impact of variant in pre-miRNA on miRNA structure</strong></div>
     <div class="panel-body">
-        <p>Secondary structure and Minimum free energy are calculated by RNAfold, please input your SNP file and sequence file.<br>Input format:
-        <strong>SNP file</strong> must contain the list of SNPs that are given in separate lines. The SNPs are described as, wild-type nucleotide followed by nucleotide position followed by mutant nucleotide.
-        <strong>Sequence file</strong> should in Fasta format</p>
+        <p>This tool is provdied users to explore the impact of variant in pre-miRNA on pre-miRNA secondary structure. A SNP list and wild-type pre-miRNA sequence are required.<br>Input format:
+        The list of SNPs must be given in separate lines. The SNPs are described as, wild-type nucleotide followed by nucleotide position followed by mutant nucleotide.
             <div class="alert alert-danger" ng-show="flash_message2">
             <button type="button" class="close" ng-click="flash_message2 = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message2 $}
         </div> <h5><strong>SNPs (Optional):</strong></h5>
         <textarea id="snps" rows="3" class=" form-control input-xs" style="border: solid; border-color: #5bc0de" placeholder="G15C"></textarea>
-        <h5><strong>Wild Sequence (Required):</strong></h5>
+        <h5><strong>Wild sequence (Required):</strong></h5>
         <textarea id="wildmir_str_seq" rows="3" class=" form-control input-xs" style="border: solid; border-color: #5bc0de" placeholder="CCUGCUAGUCAGGAGUGGAUACUG"></textarea>
         <div class="form-group" style="margin-top: 3px">
             <div class="pull-right">
