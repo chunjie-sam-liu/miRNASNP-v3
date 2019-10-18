@@ -2,7 +2,7 @@
     <div class="panel-heading"><strong>1.Predict the impact of variant in gene 3'UTR on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
         <p>This part is provided users to predict the loss and gain of miRNA:mRNA binding sites by the variation in 3'UTR, you can input your wild-type sequence and SNP-type sequence, separately. If only wild-type sequence is provided, it will predict miRNAs which target this sequence.
-            If wild-type sequence and SNP-type sequence are provided, you will get miRNA target loss/gain induced by the variant.(<strong>Notice</strong>:It takes few minutes for prediction)</p>
+            If wild-type sequence and SNP-type sequence are provided, you will get miRNA target loss/gain induced by the variant. (Notice:It takes few minutes for prediction)</p>
         <div class="alert alert-danger" ng-show="flash_message">
             <button type="button" class="close" ng-click="flash_message = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message $}
@@ -23,7 +23,7 @@
     <div class="panel-heading"><strong>2.Predict the impact of variant in miRNA on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
         <p> This tool is to predict the loss and gain of miRNA:mRNA binding sites by the variation in miRNA, you can input your wild-type sequence and SNP-type sequence, separately. If only wild-type sequence is provided,
-            it will predict target genes of the miRNA. If wild-type sequence and SNP-type sequence are provided, you will get gene target loss/gain induced by the variant.<strong>(Notice:</strong>This tool takes a while for predicting. please be patient.)</p>
+            it will predict target genes of the miRNA. If wild-type sequence and SNP-type sequence are provided, you will get gene target loss/gain induced by the variant. (Notice:This tool takes a while for predicting. please be patient.)</p>
             <div class="alert alert-danger" ng-show="flash_message1">
             <button type="button" class="close" ng-click="flash_message1 = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message1 $}

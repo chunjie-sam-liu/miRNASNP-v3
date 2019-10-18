@@ -140,6 +140,6 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
     ])
 .service('miRNASNP3Service',function(){
     this.getAPIBaseUrl=function () {
-        return "/miRNASNP3"
+        return "/miRNASNP"
     }
 });

@@ -6,17 +6,17 @@
 
 <ul class="nav nav-tabs"  ng-show="mirna_summary_count">
     <li id="one" ng-click="show_one('one')" ng-show="mirna_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>miRNA Details</strong></a> </li>
+        class="active" ><a data-toggle="tab"><strong>miRNA Detail</strong></a> </li>
     <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNPs in seed</strong></a> </li>
+        class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNP in seed</strong></a> </li>
     <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_three" ><a data-toggle="tab"><strong>Loss targets with SNPs in seed</strong></a> </li>
+        class="class_three" ><a data-toggle="tab"><strong>Lose targets with SNPs in seed</strong></a> </li>
     <li id="four" ng-click="show_one('four')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_four" ><a data-toggle="tab"><strong>Gain targets with mutations in seed</strong></a> </li>
+        class="class_four" ><a data-toggle="tab"><strong>Gain targets with variation in seed</strong></a> </li>
     <li id="five" ng-click="show_one('five')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_five" ><a data-toggle="tab"><strong>Loss targets with mutations in seed</strong></a> </li>
+        class="class_five" ><a data-toggle="tab"><strong>Lose targets with variation in seed</strong></a> </li>
     <li id="six" ng-click="show_one('six')" ng-show="enrich_result_count"  style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_six" ><a data-toggle="tab"><strong>Target Genes Enrichment Analysis</strong></a> </li>
+        class="class_six" ><a data-toggle="tab"><strong>Target genes Enrichment Analysis</strong></a> </li>
     <!--li id="six" ng-click="show_one('six')" ng-show="ld_list_lenth" style="background-color:white;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>SNP in LD Region</strong></a> </li-->
 </ul>
@@ -88,8 +88,8 @@
                                         <th>Precursor ID</th>
                                         <th>Precursor accession</th>
                                         <th>Precursor position</th>
-                                        <th>Precursor sequence</th>
                                         <th>mature miRNA position</th>
+                                        <th>Precursor sequence</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -99,13 +99,13 @@
                                         <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_acc$}</a></td>
                                         <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.pre_chr $}%3A{$ mirna_summary_alias.pre_start $}%2D{$ mirna_summary_alias.pre_end$}">
                                             {$v.pre_chr$}:{$v.pre_start$}-{$v.pre_end$}({$v.mir_strand$})</a></td>
-                                        <td style="word-break:break-all">
-                                            <button type="button" class="btn btn-default" aria-label="Left Align" data-toggle="modal" data-target="#myModal_seq" ng-click="premir_sequence(v)">
-                                               FASTA
-                                            </button>
-                                        </td>
                                         <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
                                             {$v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</a></td>
+                                            <td style="word-break:break-all">
+                                                    <button type="button" class="btn btn-default" aria-label="Left Align" data-toggle="modal" data-target="#myModal_seq" ng-click="premir_sequence(v)">
+                                                       FASTA
+                                                    </button>
+                                                </td>
                                     </tr>
                                     </tbody>
                                     </table>
@@ -118,7 +118,7 @@
                                           style="color: #5bc0de"></span>
                                     </dt>
                                     <dd>{$ mirna_expression.exp_mean $}</dd>
-                                    <dt>miRNA expression:
+                                    <dt>miRNA expression
                                         <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                           data-trigger="hover"
                                           data-content="The average expression levels in different cancer types from TCGA"
@@ -128,7 +128,8 @@
                                         <button data-toggle="collapse" data-target="#abbr" aria-expanded="true" aria-controls="abbr" class="btn btn-default btn-sm collapsed">cancer types</button>
                                     </dd><dt></dt>
                                     <dd style="margin-left: 140px">
-                                        <div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div>
+                                        <!--div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div-->
+                                         <div class="col-lg-3" id="mirna_expression" style="height: 350px;width: 1000px;border: 0px"></div>
                                         <div class="panel panel-primary collapse" id="abbr" style="width: 900px; margin-top: 350px; margin-left: 50px; height: 1.97917px;" align="left" aria-expanded="false">
                                                 <div class="panel-body">
                                                     <strong>ACC:</strong>Adrenocortical carcinoma<br>
@@ -181,7 +182,7 @@
 <div ng-show="two">
     <div class="panel panel-info" id="section-2">
         <div class="panel-heading">
-            <strong >{$ query_mirna $} with SNPs in seed region causes miRNA:mRNA gains</strong>
+            <strong >{$ query_mirna $} with SNPs in seed region gains targets</strong>
             <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain" style="height: 24px" >
@@ -256,7 +257,7 @@
 <div ng-show="three">
 <div class="panel panel-info" id="section-3">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with SNPs in seed region causes miRNA:mRNA losses</strong>
+            <strong >{$ query_mirna $} with SNPs in seed region loses targets</strong>
          <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_loss" style="height: 24px">
@@ -353,7 +354,7 @@
 <div ng-show="four">
 <div class="panel panel-info"  id="section-4">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with variations in seed region causes miRNA:mRNA gains</strong>
+            <strong >{$ query_mirna $} with variations in seed region gains targets</strong>
         <form class="form-inline pull-right">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="gene" id="search_gene_gain_mut" style="height: 24px">
@@ -428,7 +429,7 @@
 <div ng-show="five">
 <div class="panel panel-info" ng-show="five" id="section-5">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with variations in seed region causes miRNA:mRNA losses</strong>
+            <strong >{$ query_mirna $} with variations in seed region losses targets</strong>
             <form class="form-inline pull-right">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_mut" style="height: 24px">
@@ -583,7 +584,7 @@
                     <tr>
                         <th>miRNA</th>
                         <td colspan="2">{$modal_site.mirna_id$}</td>
-                        <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}](miRNA seed region)</td>
+                        <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}]<br>(seed region)</td>
                     </tr>
                     <tr>
                         <th>SNP</th>
@@ -592,7 +593,7 @@
                     </tr>
                     <tr>
                         <th>Gene</th>
-                        <td colspan="2">{$modal_site.gene_symbol$}({$modal_site.utr_info.enst_id$})</td>
+                        <td colspan="2"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$modal_site.gene_symbol$}">{$modal_site.gene_symbol$}</a><!--({$modal_site.utr_info.enst_id$})--></td>
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
@@ -640,10 +641,10 @@
                     <tr>
                         <td class="warning" colspan="4">
                             <span ng-if="target_gain">
-                                    <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                                    <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} 5' </pre>
                             </span>
                             <span ng-if="target_loss">
-                            <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                            <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} 5'</pre>
                             </span>
                         </td>
                         <!--td class="warning" colspan="3">
@@ -671,17 +672,17 @@
                     <table class="table table-bordered table-hover table-condensed">
                         <tr>
                             <th>miRNA</th>
-                            <td colspan="2">{$modal_site.mirna_id$}({$modal_site.utr_info.enst_id$})</td>
-                            <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}](miRNA seed region)</td>
+                            <td colspan="2">{$modal_site.mirna_id$}</td>
+                            <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}]<br>(seed region)</td>
                         </tr>
                         <tr>
-                            <th>Mutation</th>
+                            <th>Variation</th>
                             <td colspan="2">{$modal_site.mut_info.mut_id$}({$modal_site.mut_info.ref$}/{$modal_site.mut_info.curalt$})</td>
                             <td colspan="3" align="center">{$modal_site.mut_info.chr$}:{$modal_site.mut_info.position$}</td>
                         </tr>
                         <tr>
                             <th>Gene</th>
-                            <td colspan="2">{$modal_site.gene_symbol$}({$modal_site.utr_info.enst_id$})</td>
+                            <td colspan="2"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$modal_site.gene_symbol$}">{$modal_site.gene_symbol$}</a><!--({$modal_site.utr_info.enst_id$})--></td>
                             <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                         </tr>
                         <tr>
@@ -730,10 +731,10 @@
                           
                                 <td class="warning" colspan="4">
                                         <span ng-if="target_gain">
-                                                <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                                                <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} 5'</pre>
                                         </span>
                                         <span ng-if="target_loss">
-                                        <pre align="left">3'UTR: {$modal_site.site_info.align6$}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} </pre>
+                                        <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} 5'</pre>
                                         </span>
                                     </td>
                             <!--td class="warning" colspan="3">
