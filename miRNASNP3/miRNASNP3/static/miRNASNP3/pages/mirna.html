@@ -8,13 +8,13 @@
     <li id="one" ng-click="show_one('one')" ng-show="mirna_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>miRNA Detail</strong></a> </li>
     <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_two" ><a data-toggle="tab"><strong>Gain targets with SNP in seed</strong></a> </li>
+        class="class_two" ><a data-toggle="tab"><strong>Target gain with SNP in seed</strong></a> </li>
     <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_three" ><a data-toggle="tab"><strong>Lose targets with SNPs in seed</strong></a> </li>
+        class="class_three" ><a data-toggle="tab"><strong>Target loss with SNPs in seed</strong></a> </li>
     <li id="four" ng-click="show_one('four')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_four" ><a data-toggle="tab"><strong>Gain targets with variation in seed</strong></a> </li>
+        class="class_four" ><a data-toggle="tab"><strong>Target gain with variation in seed</strong></a> </li>
     <li id="five" ng-click="show_one('five')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_five" ><a data-toggle="tab"><strong>Lose targets with variation in seed</strong></a> </li>
+        class="class_five" ><a data-toggle="tab"><strong>Target loss with variation in seed</strong></a> </li>
     <li id="six" ng-click="show_one('six')" ng-show="enrich_result_count"  style="background-color:#EBEBEB;margin-right: 3px "
         class="class_six" ><a data-toggle="tab"><strong>Target genes Enrichment Analysis</strong></a> </li>
     <!--li id="six" ng-click="show_one('six')" ng-show="ld_list_lenth" style="background-color:white;margin-right: 3px "
@@ -95,11 +95,11 @@
                                     <tbody>
                                     <tr ng-repeat="v in mirna_summary_list">
                                         
-                                        <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_id$}</a></td>
-                                        <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.pre_acc $}">{$v.pre_acc$}</a></td>
-                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.pre_chr $}%3A{$ mirna_summary_alias.pre_start $}%2D{$ mirna_summary_alias.pre_end$}">
+                                        <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.pre_acc $}">{$v.pre_id$}</a></td>
+                                        <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.pre_acc $}">{$v.pre_acc$}</a></td>
+                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v.pre_chr $}%3A{$ v.pre_start $}%2D{$ v.pre_end$}">
                                             {$v.pre_chr$}:{$v.pre_start$}-{$v.pre_end$}({$v.mir_strand$})</a></td>
-                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ mirna_summary_alias.mir_chr $}%3A{$ mirna_summary_alias.mir_start $}%2D{$ mirna_summary_alias.mir_end$}">
+                                        <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v.mir_chr $}%3A{$ v.mir_start $}%2D{$ v.mir_end$}">
                                             {$v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</a></td>
                                             <td style="word-break:break-all">
                                                     <button type="button" class="btn btn-default" aria-label="Left Align" data-toggle="modal" data-target="#myModal_seq" ng-click="premir_sequence(v)">

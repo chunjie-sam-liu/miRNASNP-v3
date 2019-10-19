@@ -91,6 +91,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     function checkAnnotationInput(annotation, obj, url) {
         console.log("checkAnnotationInput")
         url=base_url+'/api/mutation_summary_gene?gene=';
+        //url='/api/mutation_summary_gene?gene=';
         $.getJSON(url+annotation, function(data){
             console.log(data)
             if(data.gene_query.length > 0){
@@ -132,7 +133,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
             autoFocus: true,
             source: function(request, response){
                 var  url= base_url+'/api/mutation_summary_gene?gene=' + request.term.trim();
-                //url = '/api/mutation_summary_gene?gene=' + request.term.trim();
+                //var url = '/api/mutation_summary_gene?gene=' + request.term.trim();
                 $.getJSON(
                     url,
                     function(data){
