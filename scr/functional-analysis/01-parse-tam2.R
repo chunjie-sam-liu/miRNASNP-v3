@@ -2,25 +2,29 @@
 # Library -----------------------------------------------------------------
 
 library(magrittr)
-
+library(ggplot2)
 # Path --------------------------------------------------------------------
 
-path_tam <- '/home/liucj/data/refdata/tam2.0/mirset_v9.txt'
-path_snps <- '/home/liucj/data/refdata/tam2.0/mature_pre_var.txt'
-path_snps_pre <- '/home/liucj/data/refdata/tam2.0/precursor_var.txt'
+path_tam <- '/home/liucj/data/refdata/tam2.0/mirset_v9.txt.rds.gz'
+# path_snps <- '/home/liucj/data/refdata/tam2.0/mature_pre_var.txt'
+# path_snps_pre <- '/home/liucj/data/refdata/tam2.0/precursor_var.txt'
+path_snps <- '/home/liucj/data/refdata/tam2.0/snp_in_mature_maf_anno.txt'
+
 
 # Load data ---------------------------------------------------------------
 
-data_tam <- readr::read_lines(file = path_tam)
-data_snps <- readr::read_tsv(file = path_snps) %>% 
-  dplyr::select(`mature-mirna` = mature_id, `pre-mirna` = precurser_id, snp_num = num_of_snp_in_mature)
-data_snps_pre <- readr::read_tsv(file = path_snps_pre) %>% 
-  dplyr::select(`mature-mirna` = mature_id, `pre-mirna` = precurser_id, `pre-length` = hairpin_seq_length,
-                `num_snp_pre` = num_of_snp_in_pre) %>% 
-  dplyr::select(-`mature-mirna`) %>% 
-  dplyr::distinct() %>% 
-  dplyr::mutate(prop = num_snp_pre / `pre-length`) %>% 
-  dplyr::arrange(-prop)
+# data_tam <- readr::read_lines(file = path_tam)
+data_snps <- readr::read_tsv(file = path_snps, col_names = F, skip = 1)
+names(data_snps) <- c('pre-mirna', 'mature-mirna', 'pre-total', 'pre-rare', 'pre-common', 'mature-total', 'mature-rare', 'mature-common')
+tb_tam <- readr::read_rds(path = path_tam)
+
+# data_snps_pre <- readr::read_tsv(file = path_snps_pre) %>% 
+#   dplyr::select(`mature-mirna` = mature_id, `pre-mirna` = precurser_id, `pre-length` = hairpin_seq_length,
+#                 `num_snp_pre` = num_of_snp_in_pre) %>% 
+#   dplyr::select(-`mature-mirna`) %>% 
+#   dplyr::distinct() %>% 
+#   dplyr::mutate(prop = num_snp_pre / `pre-length`) %>% 
+#   dplyr::arrange(-prop)
 
 
 # Function ----------------------------------------------------------------
@@ -38,10 +42,10 @@ fn_parse_lines <- function(.line) {
 
 # Parse text file to tibble -----------------------------------------------
 
-data_tam %>%
-  purrr::map_df(.f = fn_parse_lines) ->
-  tb_tam
-
+# data_tam %>%
+#   purrr::map_df(.f = fn_parse_lines) ->
+#   tb_tam
+# readr::write_rds(x = tb_tam, path = '/home/liucj/data/refdata/tam2.0/mirset_v9.txt.rds.gz', compress = 'gz')
 
 data_snps %>% 
   dplyr::group_by(`pre-mirna`) %>% 
@@ -55,12 +59,14 @@ data_snps_pre %>%
     dplyr::between(x = prop, left = 0.4, 0.6) ~ '0.4-0.6',
     dplyr::between(x = prop, left = 0.6, 0.8) ~ '0.6-0.8',
     dplyr::between(x = prop, left = 0.8, 1) ~ '0.8-1'
-  )) ->
+  )) %>% 
+  dplyr::mutate(group = factor(x = group, levels = c('0-0.2', '0.2-0.4', '0.4-0.6', '0.6-0.8', '0.8-1')))->
   data_snps_pre
 
 data_snps_pre %>% 
-  dplyr::arrange(-prop) %>% 
-  dplyr::filter(`pre-mirna` == 'hsa-mir-3939')
+  ggplot(aes(x = group)) +
+  geom_bar()
+
 # Function ----------------------------------------------------------------
 
 
@@ -72,7 +78,7 @@ tb_tam_func_snps_pre <- tb_tam %>%
 tb_tam_func_snps_pre %>% 
   dplyr::group_by(name) %>% 
   dplyr::summarise(median_prop = median(prop)) %>% 
-  dplyr::arrange(median_prop)
+  dplyr::arrange(-median_prop)
 
 tb_tam_func_snps_pre %>% 
   dplyr::filter(name == 'Collagen Formation')
