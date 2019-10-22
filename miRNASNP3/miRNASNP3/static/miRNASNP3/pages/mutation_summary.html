@@ -1,14 +1,14 @@
 <div class="bs-callout-primary">
     <div class="description" style="margin-left: 7px;">
-        <h4>Phenotype-related variation in miRNA and gene 3'UTR</h4>
+        <h4>Disease-related variation in miRNA and gene 3'UTR</h4>
         <!--p>
             There are<span class="badge alert-warning">175,985</span> mutations from COSMIC, <span
                 class="badge alert-warning">32,136</span> variations from ClinVar and 235,148 SNPs, are collected in miRNASNP3,some of
             these muttaions share the same genome position with SNPs.
         </p-->
-        <p> Phenotype related variations(PRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">175,985</span> mutations from COSMIC, 
+        <p> Disease related variations(DRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">175,985</span> mutations from COSMIC, 
             disease information of <span class="badge alert-primary" style="background-color: #2e6da4;">32,136</span> variations from ClinVar and disease/trait information of <span class="badge alert-primary" style="background-color: #2e6da4;">235,148</span> SNPs from GWAS catalog to construct this module.  
-            You may browse PRVs by tissues or enter the phenotype you are interested in to get the highest match PRVs.</p>
+            You may browse DRVs by tissues or enter the disease you are interested in to get the highest match DRVs.</p>
     </div>
 </div>
 
@@ -116,7 +116,7 @@
                 </div>
                 <!--/div>
             <div class="form-group"-->
-                <label class="control-label col-lg-2">Phenotype:</label>
+                <label class="control-label col-lg-2">Disease:</label>
                 <div class="col-lg-3">
                     <div id="query_phenotype_summary-div" class=" ui-widget has-feedback inner-addon right-addon"
                         style="height: 34px">
@@ -283,7 +283,11 @@
                     <th ts-criteria="mut_id" style="width: 15%">Variation ID</th>
                     <th style="width: 12%">Position</th>
                     <th style="width:6%">Ref/Alt</th>
-                    <th style="width: 20%">Phenotype</th>
+                    <th style="width: 20%">Disease
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                                data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                                data-content="Also some phenotype annotated in GWAS included in this catalog"></span>
+                    </th>
                     <th style="width: 7%">Region</th>
 
                     <!--th>SNP Related</th-->
@@ -475,7 +479,11 @@
                     <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
                     <th style="width: 12%">Position</th>
                     <th style="width:6%">Ref/Alt</th>
-                    <th style="width: 18%">Phenotype</th>
+                    <th style="width: 20%">Disease
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                                data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                                data-content="Also some phenotype annotated in GWAS included in this catalog"></span>
+                    </th>
                     <th style="width: 7%">Region
                         <!--span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
@@ -584,7 +592,11 @@
                     <th style="width: 12%">Position</th>
 
                     <th style="width:6%">Ref/Alt</th>
-                    <th style="width: 25%">Pathology</th>
+                    <th style="width: 20%">Disease
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                                data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                                data-content="Also some phenotype annotated in GWAS included in this catalog"></span>
+                    </th>
                     <th style="width: 7%">Region</th>
 
                     <!--th>SNP Related</th-->
