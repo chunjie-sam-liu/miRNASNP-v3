@@ -19,7 +19,31 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
             params:{search_ids:$scope.search_ids}
         }).then(function (response) {
             console.log(response);
+            $scope.premir_fun=0;
+            $scope.premir_disease=0;
             $scope.premir_info = response.data.premir_info[0];
+            if($scope.premir_info.mirset_v9.length!=0){
+                var mirset_v9=$scope.premir_info.mirset_v9[0]
+                $scope.premir_info.Function=''
+                $scope.premir_info.HMDD=''
+                if(mirset_v9.Function){
+                    $scope.premir_fun=1
+                    
+                for (var  i=0;i<mirset_v9.Function.length;i++){
+                    $scope.premir_info.Function+=(mirset_v9.Function[i]+'; ')
+                }}
+                if(mirset_v9.HMDD){
+                    $scope.premir_disease=1
+                   
+                for (var  i=0;i<mirset_v9.HMDD.length;i++){
+                    $scope.premir_info.HMDD+=(mirset_v9.HMDD[i]+'; ')
+                }}
+                console.log($scope.premir_fun)
+                console.log($scope.premir_disease)
+                $scope.premir_info.function=$scope.premir_info.Function.slice(0,$scope.premir_info.Function.length-2)
+                $scope.premir_info.disease=$scope.premir_info.HMDD.slice(0,$scope.premir_info.HMDD.length-2)
+
+            }
             var mature_position=$scope.premir_info.mature_position;
             var color_option="1-"+String($scope.premir_info.sequence.length)+":lime";
             for(var i=0;i<mature_position.length;i++) {

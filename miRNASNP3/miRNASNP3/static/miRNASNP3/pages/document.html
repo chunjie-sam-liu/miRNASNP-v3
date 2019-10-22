@@ -28,8 +28,19 @@
 					SNPs on pre-miRNAs or target sites will affect miRNA expression or functions. -->
 					The completion of international projects (1000 genome project, TCGA, ExAC et al.) introduced a large amount of new single nucleotide polymorphism (SNPs). 
 					These SNPs in miRNA can impact the secondary structure and targets. miRNASNP-v3 characterized SNPs in miRNA and gene 3'UTR and predict the effect of miRNA:mRNA interaction and secondary structure. 
-					Also, miRNASNP-v3 identified disease and phenotype related variations (PRVs). 
+					Also, miRNASNP-v3 identified disease and phenotype related variations (PRVs).
 			</p>
+			<p>
+				Updated the previous database with latest data set:
+			</p>
+			<ul>
+				<li>SNPs in pre-miRNAs and their impacts on miRNAs.</li>
+				<li>Targets gain/loss by SNPs in miRNA seed and gene 3'UTR.</li>
+				<li>Online tools to predict novel SNP effect on miRNA function.</li>
+				<li>Experiment validated miRNA:gene interaction.</li>
+				<li>Expression and correlation of miRNAs and genes.</li>
+			</ul>
+			<p>New features are added to miRNASNP-v3:</p>
 			
 			<ul>
 				<li><span class="glyphicon glyphicon-star" aria-hidden="true" style="font: 2px"></span> Gene enrichment of miRNA targets gain and loss.</li>
@@ -69,6 +80,7 @@
 			</p>
 			<p>
 					We downloaded all experimentally verified human miRNA targets from the databases of <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>, <a href="http://starbase.sysu.edu.cn/">starBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a>, <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> and <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>.
+
 			</p>
 		</div>
 
@@ -175,8 +187,9 @@
 				Then, we used two target prediction tools (<a href="http://www.targetscan.org/vert_72/">TargetScan</a> and <a href="https://mirmap.ezlab.org/">miRmap</a>) to predict their target sites respectively. 
 				Four categories of results are recorded as wild <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild <a href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST), SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM). If one target site shows in both WT and WM, but not in either ST or SM, we called that the gene lost this target site. 
 				On the contrary, if one target both show in ST and SM, but not in either WT or WM, we called the gene gained one target site.</p>
-						<embed src="/static/miRNASNP3/img/gain_loss_method.png" style="display:block;width:500px">
-					</div>
+				<div align="center">		
+					<embed src="/static/miRNASNP3/img/gain_loss_method.png" style="display:block;width:500px">
+				</div>
 	</div>
 
 	<div>
