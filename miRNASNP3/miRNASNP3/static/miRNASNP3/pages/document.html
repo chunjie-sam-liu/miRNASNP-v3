@@ -76,11 +76,23 @@
 			</div>
 		<div>
 			<p>
-				<span  class="document">miRNA:mRNA interaction</span>
+				<span  class="document"> Experimentally verified microRNA-target interactions (MTIs) </span>
 			</p>
 			<p>
-					We downloaded all experimentally verified human miRNA targets from the databases of <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>, <a href="http://starbase.sysu.edu.cn/">starBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a>, <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> and <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>.
+					We integrated experimentally verified microRNA-target interactions (MTIs)  from  the databases of <a href="http://starbase.sysu.edu.cn/">starBase</a>, <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>,
+					<a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a> and <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>.
+					 We downloaded 370,058 MTIs with supporting CLIP-seq (HITS-CLIP, PAR-CLIP, iCLIP, CLASH) experiments (>5) from <a href="http://starbase.sysu.edu.cn/">starBase</a>. 
+					 422,390 and 37,490 MTIs were collected from <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a> and <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> respectively, 
+					 they are validated by report assay, western blot  and high-throughput experiment.  We also integrated 240 MTIs from <a href="http://mirecords.biolead.org/">miRecords</a> experimentally verified by literature curation, 
+					 and 641 MTIs from <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a> by Luciferase reporter assay. Generally, 1027355 experimentally verified MTIs were included in miRNASNP-v3. 
+					 It should be noted that, miRNA names were uniformed by miRBase nomenclature, while gene name was used the gene symbol.
+
 			</p>
+			<!--p>
+					We downloaded all experimentally verified human miRNA targets from the databases of <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>,
+					 <a href="http://starbase.sysu.edu.cn/">starBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a>, <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> and <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>.
+
+			</p-->
 		</div>
 
 		<div>
@@ -109,13 +121,19 @@
 						</p>
 			<p>
 					In the disease-related variations module, we integrated pathological information of 175,985 mutations from <a href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 32,136 variations from <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
-					 and disease/trait information of 235,148 SNPs from <a href="https://www.ebi.ac.uk/gwas/">GWAS catalog</a>.
+					 and disease/trait information of 235,148 SNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>.
 					We divided these variations into three categories based on their location. For variation in miRNA seed regions and gene 3'UTRs, target gain/loss information was presented.
-					For variations in pre-miRNAs, we provided the minimum free energy change of pre-miRNA second structure caused by the variation, users can click the pre-miRNA to look into pre-miRNA details.
+					For variations in pre-miRNAs, we provided the minimum free energy change of pre-miRNA secondary structure caused by the variation, users can click the pre-miRNA to look into pre-miRNA details.
 					In this module, users can screen for variations associated with a particular disease by selecting a tissue of interest or typing in a description of the disease.
 			</p>
+			<p>
+					To look into GWAS SNPs, we downloaded all the tagSNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a> with the LD information between the tagSNP
+					 and the surrounding SNPs (D'>0.98, a LD mesurement to show the degree of linkage disequilibrium between the selected variant and other variants) of 26 populations. 
+					 Then, a genome block between the minimum and maximum coordination of the sorrounded SNPs was defined as the GWAS identified trait associated regions of each tagSNP in each population. 
+					 Finally, we identified 3,602 tagSNPs and 236,251 SNPs in LD region, and for each SNP, a plot of the GWAS  identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP position).  
+			</p>
 			<div align="center">
-				<img src="/static/miRNASNP3/img/phenotype-panel.png" style="width: 100%;margin-top: 30px;">
+				<img src="/static/miRNASNP3/img/phenotype_panel.png" style="width: 100%;margin-top: 30px;">
 				<img src="/static/miRNASNP3/img/phenotype-gwas.png" style="width: 100%;margin-bottom: 30px">
 			</div>
 				
@@ -186,8 +204,9 @@
 				Then, we used two target prediction tools (<a href="http://www.targetscan.org/vert_72/">TargetScan</a> and <a href="https://mirmap.ezlab.org/">miRmap</a>) to predict their target sites respectively. 
 				Four categories of results are recorded as wild <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild <a href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST), SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM). If one target site shows in both WT and WM, but not in either ST or SM, we called that the gene lost this target site. 
 				On the contrary, if one target both show in ST and SM, but not in either WT or WM, we called the gene gained one target site.</p>
-						<embed src="/static/miRNASNP3/img/gain_loss_method.png" style="display:block;width:500px">
-					</div>
+				<div align="center">		
+					<embed src="/static/miRNASNP3/img/gain_loss_method.png" style="display:block;width:500px;margin-top: 30px;margin-bottom: 30px">
+				</div>
 	</div>
 
 	<div>
@@ -259,7 +278,7 @@
 					</tr>
 					<tr>
 						<td>StarBase v3</td>
-						<td><a href="http://www.sysu.edu.cn/">http://www.sysu.edu.cn/</a></td>
+						<td><a href="http://starbase.sysu.edu.cn/tutorialAPI.php">http://starbase.sysu.edu.cn/tutorialAPI.php</a></td>
 					</tr>
 					
 				</tbody>
@@ -283,7 +302,7 @@
 						</tr>
 						<tr>
 							<td>VennaRNA</td>
-							<td>pre-miRNA second structure prediction </td>
+							<td>pre-miRNA secondary structure prediction </td>
 							<td><a href="https://www.tbi.univie.ac.at/RNA/index.html">https://www.tbi.univie.ac.at/RNA/index.html</a></td>
 						</tr>
 						</tbody>

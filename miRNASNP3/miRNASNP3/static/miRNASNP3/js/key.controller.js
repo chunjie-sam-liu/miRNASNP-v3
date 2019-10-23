@@ -10,7 +10,7 @@ function KeyController($scope,$routeParams,$http,$filter,$window,miRNASNP3Servic
     $scope.fetch_mirna_list=function(){
         $http({
             url:base_url+'/api/mirna_key',
-            //url:+base_url+'/api/mirna_key',
+            //url:base_url+'/api/mirna_key',
             method:'GET',
             params:{mirna_id:$scope.query_mirna}
         }).then(function (response) {

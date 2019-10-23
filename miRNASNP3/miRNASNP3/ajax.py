@@ -860,7 +860,7 @@ class MirInfo(Resource):
         condition = {}
         print(search_ids)
         if search_ids:
-            condition['mir_id']={'$regex':search_ids,'$options':'$i'}
+            condition['mir_id']={'$regex':''.join(['^',search_ids,'$']),'$options':'$i'}
             mirna_summary_list = mongo.db.pri_mir_summary.find(condition)
             mirna_summary_count=mongo.db.pri_mir_summary.find(condition).count()
         else:
@@ -1010,6 +1010,11 @@ premir_cluster={
     'cluster10k_id':fields.String,
     'cluster5k_id':fields.String
 }
+mirset_v9_item={
+    'Function':fields.List(fields.String),
+    'precurser_id':fields.String,
+    'HMDD':fields.List(fields.String)
+}
 premir_info={
     'pre_id':fields.String,
     'cluster10k_id':fields.String,
@@ -1025,7 +1030,8 @@ premir_info={
     'cluster10k':fields.Nested(premir_cluster),
     'cluster5k':fields.Nested(premir_cluster),
     'mirinfo':fields.Nested(mir_summary),
-    'mature_position':fields.List(fields.List(fields.String))
+    'mature_position':fields.List(fields.List(fields.String)),
+    'mirset_v9':fields.Nested(mirset_v9_item)
 }
 premir_info_list={
     'premir_info':fields.Nested(premir_info)
@@ -1062,7 +1068,14 @@ class PremirInfo(Resource):
                 'foreignField':'pre_id',
                 'as':'mirinfo'
             }}
-            pipline=[match,lookup_cluster5k,lookup_cluster10k,lookup_mirinfo]
+            lookup_function={'$lookup':{
+                'from':'mirset_v9',
+                'localField':'pre_id',
+                'foreignField':'precurser_id',
+                'as':'mirset_v9'
+            }}
+            pipline=[match,lookup_cluster5k,lookup_cluster10k,lookup_mirinfo,lookup_function]
+            print(pipline)
             premir_info=mongo.db.premir_info.aggregate(pipline)
         else:
             premir_info={}
