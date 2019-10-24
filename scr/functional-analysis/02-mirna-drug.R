@@ -48,12 +48,33 @@ data_snps_mature %>%
 
 data_snps_mature_drug %>% 
   dplyr::arrange(-prop) %>% 
-  dplyr::filter(prop == 0) -> d
+  dplyr::filter(prop < 0.05) %>% 
+  dplyr::mutate(color = ifelse(prop == 0, 'red', 'black')) -> d
 
 drug_ccle_compound %>% 
-  dplyr::filter(`mature-mirna` %in% d$`mature-mirna`) %>% 
+  dplyr::inner_join(d, by = 'mature-mirna') -> 
+  drug_ccle_compound_for_plot
+
+drug_ccle_compound_for_plot %>% 
+  dplyr::group_by(`mature-mirna`) %>% 
+  dplyr::summarise(sum_cor = sum(cor)) %>% 
+  dplyr::left_join(d, by = 'mature-mirna') %>% 
+  dplyr::arrange(sum_cor) ->
+  drug_ccle_compound_for_plot_rank_mirna
+  
+drug_ccle_compound_for_plot %>% 
+  dplyr::group_by(Compound) %>% 
+  dplyr::summarise(sum_cor = sum(cor)) %>% 
+  dplyr::arrange(-sum_cor) ->
+  drug_ccle_compound_for_plot_rank_Compound
+
+drug_ccle_compound_for_plot %>% 
   ggplot(aes(x = `mature-mirna`, y = Compound, color = cor, size = pval)) +
   geom_point() +
+  scale_x_discrete(
+    limits = drug_ccle_compound_for_plot_rank_mirna$`mature-mirna`
+  ) +
+  scale_y_discrete(limits = drug_ccle_compound_for_plot_rank_Compound$Compound) +
   scale_color_gradient2(
     name = "Spearman Correlation",
     high = "red",
@@ -64,9 +85,9 @@ drug_ccle_compound %>%
     panel.background = element_rect(color = "black", fill = "white", size = 0.1),
     panel.grid = element_line(colour = "grey", linetype = "dashed"),
     panel.grid.major = element_line(colour = "grey", linetype = "dashed", size = 0.2),
-    
     axis.title = element_blank(),
-    axis.text.x = element_text(size = 9, angle = 90, hjust = 1, vjust = 0.5),
+    axis.text.x = element_text(size = 9, angle = 90, hjust = 1, vjust = 0.5, color = drug_ccle_compound_for_plot_rank_mirna$color),
+    axis.text.y = element_text(size = 10),
     axis.ticks = element_line(color = "black"),
     legend.position = "bottom",
     legend.direction = "horizontal",
