@@ -137,6 +137,14 @@ drug_ccle_compound_for_plot %>%
   drug_ccle_compound_for_plot_rank_Compound
 
 drug_ccle_compound_for_plot %>% 
+  ggplot(aes(x = Compound, y = `mature-mirna`, color = cor)) +
+  
+
+drug_ccle_compound_for_plot %>% 
+  dplyr::mutate(cor = ifelse(cor < -0.3, -0.3, cor)) %>% 
+  dplyr::mutate(cor = ifelse(cor > 0.25, 0.25, cor)) %>% 
+  # dplyr::mutate(log_fdr = ifelse(log_fdr > 5, 5, log_fdr)) %>% 
+  # dplyr::mutate(log_fdr = ifelse(log_fdr < 1.5, 1.5, log_fdr)) %>% 
   ggplot(aes(x = Compound, y = `mature-mirna`, color = cor, size = log_fdr)) +
   geom_point() +
   scale_y_discrete(
@@ -147,7 +155,9 @@ drug_ccle_compound_for_plot %>%
     name = "Spearman Correlation",
     high = "red",
     mid = "white",
-    low = "blue"
+    low = "blue",
+    breaks = seq(-0.3, 0.2,by =  0.1),
+    labels = seq(-0.3, 0.2, by = 0.1)
   ) +
   theme(
     panel.background = element_rect(color = "black", fill = "white", size = 0.1),
@@ -179,7 +189,7 @@ ggsave(
   plot = drug_ccle_compound_for_plot_all,
   device = 'pdf',
   path = path_drug,
-  width = 8, height = 30
+  width = 8, height = 8
 )
 
 
