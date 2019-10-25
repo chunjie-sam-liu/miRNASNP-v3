@@ -136,15 +136,13 @@ drug_ccle_compound_for_plot %>%
   dplyr::arrange(-sum_cor) ->
   drug_ccle_compound_for_plot_rank_Compound
 
-drug_ccle_compound_for_plot %>% 
-  ggplot(aes(x = Compound, y = `mature-mirna`, color = cor)) +
-  
+
 
 drug_ccle_compound_for_plot %>% 
   dplyr::mutate(cor = ifelse(cor < -0.3, -0.3, cor)) %>% 
-  dplyr::mutate(cor = ifelse(cor > 0.25, 0.25, cor)) %>% 
-  # dplyr::mutate(log_fdr = ifelse(log_fdr > 5, 5, log_fdr)) %>% 
-  # dplyr::mutate(log_fdr = ifelse(log_fdr < 1.5, 1.5, log_fdr)) %>% 
+  dplyr::mutate(cor = ifelse(cor > 0.2, 0.2, cor)) %>% 
+  dplyr::mutate(log_fdr = ifelse(log_fdr > 5, 5, log_fdr)) %>%
+  dplyr::mutate(log_fdr = ifelse(log_fdr < 1.5, 1.5, log_fdr)) %>%
   ggplot(aes(x = Compound, y = `mature-mirna`, color = cor, size = log_fdr)) +
   geom_point() +
   scale_y_discrete(
@@ -157,31 +155,39 @@ drug_ccle_compound_for_plot %>%
     mid = "white",
     low = "blue",
     breaks = seq(-0.3, 0.2,by =  0.1),
-    labels = seq(-0.3, 0.2, by = 0.1)
+    labels = c('-0.3', '-0.2', '-0.1', '0', '0.1', '0.2')
+  ) +
+  scale_size(
+    name = '-log10(FDR)',
+    breaks = c(2, 3, 5),
+    labels = c(2, 3, 5)
   ) +
   theme(
     panel.background = element_rect(color = "black", fill = "white", size = 0.1),
     panel.grid = element_line(colour = "grey", linetype = "dashed"),
     panel.grid.major = element_line(colour = "grey", linetype = "dashed", size = 0.2),
-    axis.title = element_blank(),
+    # axis.title = element_blank(),
     axis.text.x = element_text(size = 9, angle = 90, hjust = 1, vjust = 0.5),
     axis.text.y = element_text(size = 10),
     axis.ticks = element_line(color = "black"),
-    legend.position = "bottom",
-    legend.direction = "horizontal",
+    legend.position = "right",
+    legend.direction = "vertical",
     legend.text = element_text(size = 10),
-    legend.title = element_text(size = 10),
-    # legend.key.width = unit(1,"cm"),
-    # legend.key.heigh = unit(0.3,"cm"),
-    legend.key = element_rect(fill = "white", colour = "black")
+    legend.title = element_text(size = 10, angle = 90),
+    legend.key = element_rect(fill = NA, colour = "black"),
+    plot.title = element_text(hjust = 0.5)
   ) + guides(
     color = guide_colorbar(
-      title.position = "top",
-      title.hjust = 0.5,
-      barheight = 0.5,
-      barwidth = 10
+      title.position = "left",
+      title.hjust = -1,
+      barheight = 6,
+      barwidth = 0.5
+    ),
+    size = guide_legend(
+      title.position = 'left'
     )
-  ) -> 
+  ) +
+  labs(title = 'highly mutated miRNA correlates with drugs', x = 'Compound', y = 'miRNA') -> 
   drug_ccle_compound_for_plot_all
 
 ggsave(
@@ -189,7 +195,7 @@ ggsave(
   plot = drug_ccle_compound_for_plot_all,
   device = 'pdf',
   path = path_drug,
-  width = 8, height = 8
+  width = 5.5, height = 7.5
 )
 
 
