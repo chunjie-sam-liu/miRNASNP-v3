@@ -182,10 +182,123 @@ dplyr::bind_rows(
   ) ->
   density_pre_flank
 
-density_pre_flank %>% dplyr::group_by(type) %>% dplyr::summarise(m = median(density))
+density_pre_flank %>% 
+  dplyr::group_by(type) %>% 
+  dplyr::summarise(m = median(density))
 
 density_pre_flank %>% 
-  ggplot(aes(x = type, y =  density)) +
+  ggplot(aes(x = type, y = density)) +
+  geom_boxplot()
+
+
+# common
+
+dplyr::bind_rows(
+  # pre-mirna
+  tibble::tibble(
+    density = data_snps_pre$`pre-prop-common`,
+    type = 'Pre-miRNA'
+  ),
+  # flank51
+  tibble::tibble(
+    density = data_snps_flank51$`flank51-prop-common`,
+    type = 'Flank5-1'
+  ),
+  # flank52
+  tibble::tibble(
+    density = data_snps_flank52$`flank52-prop-common`,
+    type = 'Flank5-2'
+  ),
+  # flank53
+  tibble::tibble(
+    density = data_snps_flank53$`flank53-prop-common`,
+    type = 'Flank5-3'
+  ),
+  # flank31
+  tibble::tibble(
+    density = data_snps_flank31$`flank31-prop-common`,
+    type = 'Flank3-1'
+  ),
+  # flank32
+  tibble::tibble(
+    density = data_snps_flank32$`flank32-prop-common`,
+    type = 'Flank3-2'
+  ),
+  # flank33
+  tibble::tibble(
+    density = data_snps_flank33$`flank33-prop-common`,
+    type = 'Flank3-3'
+  )
+) %>% 
+  dplyr::mutate(type = factor(
+    x = type, 
+    levels = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 
+               'Flank3-1', 'Flank3-2', 'Flank3-3'))
+  ) %>% 
+  dplyr::mutate(density = density * 1000) ->
+  density_pre_flank_common
+
+density_pre_flank_common %>% 
+  dplyr::group_by(type) %>% 
+  dplyr::summarise(m = mean(density))
+
+density_pre_flank_common %>% 
+  ggplot(aes(x = type, y = density)) +
+  geom_boxplot()
+
+
+# rare
+
+dplyr::bind_rows(
+  # pre-mirna
+  tibble::tibble(
+    density = data_snps_pre$`pre-prop-rare`,
+    type = 'Pre-miRNA'
+  ),
+  # flank51
+  tibble::tibble(
+    density = data_snps_flank51$`flank51-prop-rare`,
+    type = 'Flank5-1'
+  ),
+  # flank52
+  tibble::tibble(
+    density = data_snps_flank52$`flank52-prop-rare`,
+    type = 'Flank5-2'
+  ),
+  # flank53
+  tibble::tibble(
+    density = data_snps_flank53$`flank53-prop-rare`,
+    type = 'Flank5-3'
+  ),
+  # flank31
+  tibble::tibble(
+    density = data_snps_flank31$`flank31-prop-rare`,
+    type = 'Flank3-1'
+  ),
+  # flank32
+  tibble::tibble(
+    density = data_snps_flank32$`flank32-prop-rare`,
+    type = 'Flank3-2'
+  ),
+  # flank33
+  tibble::tibble(
+    density = data_snps_flank33$`flank33-prop-rare`,
+    type = 'Flank3-3'
+  )
+) %>% 
+  dplyr::mutate(type = factor(
+    x = type, 
+    levels = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 
+               'Flank3-1', 'Flank3-2', 'Flank3-3'))
+  ) ->
+  density_pre_flank_rare
+
+density_pre_flank_rare %>% 
+  dplyr::group_by(type) %>% 
+  dplyr::summarise(m = median(density))
+
+density_pre_flank_rare %>% 
+  ggplot(aes(x = type, y = density)) +
   geom_boxplot()
 
 
