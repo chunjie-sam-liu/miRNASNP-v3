@@ -53,7 +53,7 @@ data_snps <- readr::read_tsv(file = path_snps) %>%
   )
 tb_tam <- readr::read_rds(path = path_tam)
 
-readr::write_rds(x = data_snps, path = '/home/liucj/data/refdata/tam2.0/data_snps.rds.gz')
+# readr::write_rds(x = data_snps, path = '/home/liucj/data/refdata/tam2.0/data_snps.rds.gz')
 
 # Function ----------------------------------------------------------------
 
@@ -185,7 +185,7 @@ dplyr::bind_rows(
 density_pre_flank %>% dplyr::group_by(type) %>% dplyr::summarise(m = median(density))
 
 density_pre_flank %>% 
-  ggplot(aes(x = type, y = density)) +
+  ggplot(aes(x = type, y =  density)) +
   geom_boxplot()
 
 
