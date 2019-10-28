@@ -10,9 +10,12 @@ path_tam <- '/home/liucj/data/refdata/tam2.0/mirset_v9.txt.rds.gz'
 # path_snps_pre <- '/home/liucj/data/refdata/tam2.0/precursor_var.txt'
 path_snps_exonic <- '/home/liucj/data/refdata/tam2.0/mir_anno_pre1913_addintronic.txt'
 path_snps <- '/home/liucj/data/refdata/tam2.0/mir_anno_pre1913_fixlength.txt'
+path_mirna_context <- '/workspace/liucj/refdata/mirna-genomic-context/mirna-genomic-context.rds.gz'
 
 
 # Load data ---------------------------------------------------------------
+mirna_context <- readr::read_rds(path = path_mirna_context) %>% 
+  dplyr::rename(`pre-mirna` = miRNA)
 data_snps_exonic <- readr::read_tsv(file = path_snps_exonic)
 # data_tam <- readr::read_lines(file = path_tam)
 data_snps <- readr::read_tsv(file = path_snps) %>% 
@@ -50,7 +53,8 @@ data_snps <- readr::read_tsv(file = path_snps) %>%
     'seed-total' = 'seed_total',
     'seed-common' = 'seed_common',
     'seed-rare' = 'seed_rare'
-  )
+  ) %>% 
+  dplyr::filter(`pre-mirna` %in% exon$`pre-mirna`)
 tb_tam <- readr::read_rds(path = path_tam)
 
 # readr::write_rds(x = data_snps, path = '/home/liucj/data/refdata/tam2.0/data_snps.rds.gz')
@@ -137,6 +141,19 @@ data_snps %>%
   dplyr::mutate('pre-prop-rare' = `pre-rare`/`pre-length`) %>% 
   dplyr::mutate('pre-prop-common' = `pre-common`/`pre-length`) ->
   data_snps_pre
+
+data_snps_pre %>% 
+  dplyr::inner_join(mirna_context, by = 'pre-mirna') %>% 
+  dplyr::mutate(Region = ifelse(is.na(Region), 'Intergenic', Region)) -> d
+  
+d %>% 
+  ggplot(aes(x = Region, y = `pre-prop-total`)) +
+  geom_boxplot()
+d %>% dplyr::filter(Region == 'Exonic') -> exon
+d %>% dplyr::filter(Region == 'Intronic') -> intronic
+d %>% dplyr::filter(Region == 'Intergenic') -> intergenic
+
+t.test(exon$`pre-prop-total`, intronic$`pre-prop-total`)
 
 dplyr::bind_rows(
   # pre-mirna
