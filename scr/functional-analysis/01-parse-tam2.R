@@ -8,14 +8,15 @@ library(ggplot2)
 path_tam <- '/home/liucj/data/refdata/tam2.0/mirset_v9.txt.rds.gz'
 # path_snps <- '/home/liucj/data/refdata/tam2.0/mature_pre_var.txt'
 # path_snps_pre <- '/home/liucj/data/refdata/tam2.0/precursor_var.txt'
-path_snps_exonic <- '/home/liucj/data/refdata/tam2.0/mir_anno_pre1913_addintronic.txt'
-path_snps <- '/home/liucj/data/refdata/tam2.0/mir_anno_pre1913_fixlength.txt'
+# path_snps_exonic <- '/home/liucj/data/refdata/tam2.0/mir_anno_pre1913_addintronic.txt'
+path_snps <- '/home/liucj/data/refdata/tam2.0/variation_seed28_anno.txt'
 path_mirna_context <- '/workspace/liucj/refdata/mirna-genomic-context/mirna-genomic-context.rds.gz'
 
 
 # Load data ---------------------------------------------------------------
 mirna_context <- readr::read_rds(path = path_mirna_context) %>% 
-  dplyr::rename(`pre-mirna` = miRNA)
+  dplyr::rename(name = miRNA) %>% 
+  dplyr::mutate(Region = ifelse(is.na(Region), 'Intergenic', Region))
 data_snps_exonic <- readr::read_tsv(file = path_snps_exonic)
 # data_tam <- readr::read_lines(file = path_tam)
 data_snps <- readr::read_tsv(file = path_snps) %>% 
@@ -53,8 +54,7 @@ data_snps <- readr::read_tsv(file = path_snps) %>%
     'seed-total' = 'seed_total',
     'seed-common' = 'seed_common',
     'seed-rare' = 'seed_rare'
-  ) %>% 
-  dplyr::filter(`pre-mirna` %in% exon$`pre-mirna`)
+  ) 
 tb_tam <- readr::read_rds(path = path_tam)
 
 # readr::write_rds(x = data_snps, path = '/home/liucj/data/refdata/tam2.0/data_snps.rds.gz')
@@ -75,13 +75,13 @@ fn_parse_lines <- function(.line) {
 # Parse text file to tibble -----------------------------------------------
 
 
-
 data_snps %>% 
   dplyr::select(`pre-mirna`, `pre-length`, `flank5-1-total`, `flank5-1-rare`, `flank5-1-common`) %>% 
   dplyr::distinct() %>% 
   dplyr::mutate('flank51-prop-total' = `flank5-1-total`/`pre-length`) %>% 
   dplyr::mutate('flank51-prop-rare' = `flank5-1-rare`/`pre-length`) %>% 
-  dplyr::mutate('flank51-prop-common' = `flank5-1-common`/`pre-length`) ->
+  dplyr::mutate('flank51-prop-common' = `flank5-1-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_flank51
 
 data_snps %>% 
@@ -89,7 +89,8 @@ data_snps %>%
   dplyr::distinct() %>% 
   dplyr::mutate('flank52-prop-total' = `flank5-2-total`/`pre-length`) %>% 
   dplyr::mutate('flank52-prop-rare' = `flank5-2-rare`/`pre-length`) %>% 
-  dplyr::mutate('flank52-prop-common' = `flank5-2-common`/`pre-length`) ->
+  dplyr::mutate('flank52-prop-common' = `flank5-2-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_flank52
 
 data_snps %>% 
@@ -97,7 +98,8 @@ data_snps %>%
   dplyr::distinct() %>% 
   dplyr::mutate('flank53-prop-total' = `flank5-3-total`/`pre-length`) %>% 
   dplyr::mutate('flank53-prop-rare' = `flank5-3-rare`/`pre-length`) %>% 
-  dplyr::mutate('flank53-prop-common' = `flank5-3-common`/`pre-length`) ->
+  dplyr::mutate('flank53-prop-common' = `flank5-3-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_flank53
 
 
@@ -106,7 +108,8 @@ data_snps %>%
   dplyr::distinct() %>% 
   dplyr::mutate('flank31-prop-total' = `flank3-1-total`/`pre-length`) %>% 
   dplyr::mutate('flank31-prop-rare' = `flank3-1-rare`/`pre-length`) %>% 
-  dplyr::mutate('flank31-prop-common' = `flank3-1-common`/`pre-length`) ->
+  dplyr::mutate('flank31-prop-common' = `flank3-1-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_flank31
 
 data_snps %>% 
@@ -114,7 +117,8 @@ data_snps %>%
   dplyr::distinct() %>% 
   dplyr::mutate('flank32-prop-total' = `flank3-2-total`/`pre-length`) %>% 
   dplyr::mutate('flank32-prop-rare' = `flank3-2-rare`/`pre-length`) %>% 
-  dplyr::mutate('flank32-prop-common' = `flank3-2-common`/`pre-length`) ->
+  dplyr::mutate('flank32-prop-common' = `flank3-2-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_flank32
 
 data_snps %>% 
@@ -122,73 +126,85 @@ data_snps %>%
   dplyr::distinct() %>% 
   dplyr::mutate('flank33-prop-total' = `flank3-3-total`/`pre-length`) %>% 
   dplyr::mutate('flank33-prop-rare' = `flank3-3-rare`/`pre-length`) %>% 
-  dplyr::mutate('flank33-prop-common' = `flank3-3-common`/`pre-length`) ->
+  dplyr::mutate('flank33-prop-common' = `flank3-3-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_flank33
 
 
 data_snps %>% 
-  # dplyr::group_by(`pre-mirna`, `pre-length`, `pre-total`, `pre-rare`, `pre-common`) %>%
-  # tidyr::nest() %>%
-  # dplyr::mutate(mature = purrr::map(.x = data, .f = function(.x) {
-  #   .x %>% dplyr::summarise('mature-total' = sum(`mature-total`), 'mature-rare' = sum(`mature-rare`), 'mature-common' = sum(`mature-common`), 'mature-length' = sum(`mature-length`))
-  # })) %>%
-  # dplyr::select(-data) %>%
-  # tidyr::unnest() %>%
-  # dplyr::mutate(`pre-length` = `pre-length` - `mature-length`, `pre-total` = `pre-total` - `mature-total`, `pre-rare` = `pre-rare` - `mature-rare`, `pre-common` = `pre-common` - `mature-common`) %>%
   dplyr::select(`pre-mirna`, `pre-length`, `pre-total`, `pre-rare`, `pre-common`) %>%
   dplyr::distinct() %>% 
   dplyr::mutate('pre-prop-total' = `pre-total`/`pre-length`) %>% 
   dplyr::mutate('pre-prop-rare' = `pre-rare`/`pre-length`) %>% 
-  dplyr::mutate('pre-prop-common' = `pre-common`/`pre-length`) ->
+  dplyr::mutate('pre-prop-common' = `pre-common`/`pre-length`) %>% 
+  dplyr::mutate(name = stringr::str_split(`pre-mirna`, pattern = ":", simplify = T)[,5]) ->
   data_snps_pre
 
 data_snps_pre %>% 
-  dplyr::inner_join(mirna_context, by = 'pre-mirna') %>% 
-  dplyr::mutate(Region = ifelse(is.na(Region), 'Intergenic', Region)) -> d
-  
-d %>% 
-  ggplot(aes(x = Region, y = `pre-prop-total`)) +
-  geom_boxplot()
-d %>% dplyr::filter(Region == 'Exonic') -> exon
-d %>% dplyr::filter(Region == 'Intronic') -> intronic
-d %>% dplyr::filter(Region == 'Intergenic') -> intergenic
+  dplyr::inner_join(mirna_context, by = 'name') ->
+  data_snps_pre_context
 
-t.test(exon$`pre-prop-total`, intronic$`pre-prop-total`)
+data_snps_pre_context %>% 
+  dplyr::group_by(Region) %>% 
+  dplyr::summarise(m = mean(`pre-prop-rare`))
+
+data_snps_pre_context %>% 
+  ggplot(aes(x = Region, y = `pre-prop-rare`)) +
+  geom_boxplot()
+
+data_snps_pre_context %>% dplyr::filter(Region == 'Exonic') -> exon
+data_snps_pre_context %>% dplyr::filter(Region == 'Intronic') -> intronic
+data_snps_pre_context %>% dplyr::filter(Region == 'Intergenic') -> intergenic
+
 
 dplyr::bind_rows(
   # pre-mirna
   tibble::tibble(
-    density = data_snps_pre$`pre-prop-total`,
+    density = data_snps_pre %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`pre-prop-total`),
     type = 'Pre-miRNA'
   ),
   # flank51
   tibble::tibble(
-    density = data_snps_flank51$`flank51-prop-total`,
+    density = data_snps_flank51 %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`flank51-prop-total`),
     type = 'Flank5-1'
   ),
   # flank52
   tibble::tibble(
-    density = data_snps_flank52$`flank52-prop-total`,
+    density = data_snps_flank52 %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`flank52-prop-total`),
     type = 'Flank5-2'
   ),
   # flank53
   tibble::tibble(
-    density = data_snps_flank53$`flank53-prop-total`,
+    density = data_snps_flank53 %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`flank53-prop-total`),
     type = 'Flank5-3'
   ),
   # flank31
   tibble::tibble(
-    density = data_snps_flank31$`flank31-prop-total`,
+    density = data_snps_flank31 %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`flank31-prop-total`),
     type = 'Flank3-1'
   ),
   # flank32
   tibble::tibble(
-    density = data_snps_flank32$`flank32-prop-total`,
+    density = data_snps_flank32 %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`flank32-prop-total`),
     type = 'Flank3-2'
   ),
   # flank33
   tibble::tibble(
-    density = data_snps_flank33$`flank33-prop-total`,
+    density = data_snps_flank33 %>% 
+      # dplyr::filter(`pre-mirna` %in% intronic$`pre-mirna`) %>%
+      dplyr::pull(`flank33-prop-total`),
     type = 'Flank3-3'
   )
 ) %>% 
@@ -201,11 +217,14 @@ dplyr::bind_rows(
 
 density_pre_flank %>% 
   dplyr::group_by(type) %>% 
-  dplyr::summarise(m = median(density))
+  dplyr::summarise(m = mean(density))
 
 density_pre_flank %>% 
   ggplot(aes(x = type, y = density)) +
   geom_boxplot()
+
+
+# Pre common and rare -----------------------------------------------------
 
 
 # common
@@ -319,11 +338,15 @@ density_pre_flank_rare %>%
   geom_boxplot()
 
 
+# pre no mature mirna ------------------------------------------------------------
+
+
 data_snps %>% 
   dplyr::group_by(`pre-mirna`, `pre-length`, `pre-total`, `pre-rare`, `pre-common`) %>%
   tidyr::nest() %>%
   dplyr::mutate(mature = purrr::map(.x = data, .f = function(.x) {
-    .x %>% dplyr::summarise('mature-total' = sum(`mature-total`), 'mature-rare' = sum(`mature-rare`), 'mature-common' = sum(`mature-common`), 'mature-length' = sum(`mature-length`))
+    .x %>% 
+      dplyr::summarise('mature-total' = sum(`mature-total`), 'mature-rare' = sum(`mature-rare`), 'mature-common' = sum(`mature-common`), 'mature-length' = sum(`mature-length`))
   })) %>%
   dplyr::select(-data) %>%
   tidyr::unnest() %>%
@@ -336,7 +359,7 @@ data_snps %>%
   data_snps_pre_no_mature
 
 data_snps %>% 
-  dplyr::mutate(`mature-total` = `mature-total` - `seed-total`, `mature-rare` = `mature-rare` - `seed-rare`, `mature-common` = `mature-common` - `seed-common`) %>% 
+  dplyr::mutate(`mature-total` = `mature-total` - `seed-total`, `mature-rare` = `mature-rare` - `seed-rare`, `mature-common` = `mature-common` - `seed-common`, `mature-length` = `mature-length` - 7) %>%
   dplyr::select(`pre-mirna`, `mature-mirna`, `mature-length`, `mature-total`, `mature-rare`, `mature-common`) %>% 
   dplyr::distinct() %>% 
   dplyr::mutate('mature-prop-total' = `mature-total`/`mature-length`) %>% 
@@ -379,7 +402,7 @@ dplyr::bind_rows(
   ) ->
   density_total_mature
 
-density_total_mature %>% dplyr::group_by(type) %>% dplyr::summarise(m = median(density))
+density_total_mature %>% dplyr::group_by(type) %>% dplyr::summarise(m = mean(density))
 density_total_mature %>% 
   ggplot(aes(x = type, y = density)) +
   geom_boxplot()
