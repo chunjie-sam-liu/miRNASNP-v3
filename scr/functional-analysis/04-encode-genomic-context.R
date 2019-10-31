@@ -53,12 +53,54 @@ fn_parse_protein <- function(.x) {
     .r
   .r
 }
+
+fn_filter_multiple_context <- function(.x) {
+  .protein_coding <- .x %>% 
+    dplyr::filter(`host gene type` == 'protein_coding') %>% 
+    dplyr::mutate(region = ifelse(
+      test = stringr::str_detect(string = region, pattern = 'intron'),
+      'Intronic',
+      region
+    ))
+  if (nrow(.protein_coding) > 0) {
+    .protein_coding %>% 
+      dplyr::filter(!grepl(pattern = '^AC[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
+      dplyr::filter(!grepl(pattern = '^AL[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
+      dplyr::filter(!grepl(pattern = '^AF[[:digit:]]+.[[:digit:]]*$', x = `host gene`))->
+      .mis
+    if ('Exonic' %in% .mis$region) {
+      .mis %>% dplyr::filter(region == 'Exonic')
+    } else {
+      .mis
+    }
+  } else {
+    .x %>% 
+      dplyr::filter(!`host gene type` %in% c('pseudogene', 'ncRNA', 'others')) %>% 
+      dplyr::filter(!grepl(pattern = '^AC[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
+      dplyr::filter(!grepl(pattern = '^AL[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
+      dplyr::filter(!grepl(pattern = '^AF[[:digit:]]+.[[:digit:]]*$', x = `host gene`))
+  }
+}
+fn_merge_context <- function(.x) {
+  if (nrow(.x) > 1) {
+    .x %>% 
+      dplyr::summarise_all(.funs = paste0, collapse = ';') 
+  } else if (nrow(.x) == 0) {
+    tibble::tibble(
+      'gene_id' = '-',
+      'host gene' = '-',
+      'direction' = '-',
+      'host gene type' = '-',
+      'region' = 'Intergenic'
+    )
+  } else {
+    .x
+  }
+}
 # Parse -------------------------------------------------------------------
 
 genecode_inter %>% 
-  dplyr::mutate(
-    gene_id = gsub(pattern = '.*;gene_id=(ENSG.*?);.*', replacement = "\\1", x = X9),
-  ) ->
+  dplyr::mutate(gene_id = gsub(pattern = '.*;gene_id=(ENSG.*?);.*', replacement = "\\1", x = X9)) ->
   genecode_inter_gene_id
 
 
@@ -72,22 +114,34 @@ genecode_inter_gene_id %>%
   tidyr::unnest(context) ->
   genecode_inter_gene_id_context
 
-%>% 
-  dplyr::mutate(gene_type = ifelse(
-    stringr::str_detect(string = gene_type, pattern = 'pseudogene'),
+genecode_inter_gene_id_context %>% 
+  dplyr::mutate(`host gene type` = ifelse(
+    stringr::str_detect(string = `host gene type`, pattern = 'pseudogene'),
     'pseudogene',
-    gene_type
+    `host gene type`
   )) %>% 
-  dplyr::mutate(gene_type = ifelse(
-    stringr::str_detect(string = gene_type, pattern = 'RNA'),
+  dplyr::mutate(`host gene type` = ifelse(
+    stringr::str_detect(string = `host gene type`, pattern = 'RNA'),
     'ncRNA',
-    gene_type
+    `host gene type`
   )) %>% 
-  dplyr::mutate(gene_type = ifelse(
-    test = gene_type %in% c('ncRNA', 'protein_coding', 'pseudogene'),
-    gene_type,
+  dplyr::mutate(`host gene type` = ifelse(
+    test = `host gene type` %in% c('ncRNA', 'protein_coding', 'pseudogene'),
+    `host gene type`,
     'others'
-  )) 
+  )) %>% 
+  dplyr::group_by(`pre-mirna`) %>% 
+  tidyr::nest() %>% 
+  dplyr::mutate(data = purrr::map(.x = data, .f = fn_filter_multiple_context)) %>%
+  dplyr::mutate(data = purrr::map(.x = data, .f = fn_merge_context)) %>% 
+  tidyr::unnest() ->
+  genecode_inter_gene_id_context_merge
+
+
+genecode_inter_gene_id_context_merge
+
+
+
 
 # Save image --------------------------------------------------------------
 
