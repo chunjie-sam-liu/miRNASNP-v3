@@ -3,7 +3,7 @@
 angular.module('miRNASNP3')
     .controller('MutationSummaryController',MutationSummaryController);
 
-function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
+function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service) {
     console.log('MutationSummaryController loaded');
     $("[data-toggle='popover']").popover();
     $(document).ready(function () {
@@ -13,7 +13,11 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     var condition={};
     var base_url = miRNASNP3Service.getAPIBaseUrl();
     var gene=$routeParams.gene
- 
+    var seed=$routeParams.seed
+    var premir=$routeParams.premir
+    var utr3=$routeParams.utr3
+    var redirect=0
+
     $scope.initial=1;
     $scope.flag_identifier=0;
     console.log(gene)
@@ -56,6 +60,13 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
         }
     }
 
+    if(seed||premir||utr3){
+        redirect=1
+   }
+
+    if(seed){$scope.show_one('seed');$('#seed').addClass('active')}
+    else if(premir){$scope.show_one('premir');$('#premir').addClass('active');console.log('show premir')}
+    else if(utr3){$scope.show_one('utr3');$('#utr3').addClass('active')}
 
     //for input genes 
     function addAnnotationInputKeyupHandler(){
@@ -163,7 +174,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
            autoFocus: true,
            source: function(request, response){
                var url = base_url+'/api/mutation_summary_phenotype?phenotype=' + request.term.trim();
-               //url = '/api/mutation_summary_gene?gene=' + request.term.trim();
+               //var url = '/api/mutation_summary_gene?gene=' + request.term.trim();
                $.getJSON(
                    url,
                    function(data){
@@ -186,8 +197,11 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
    }
    check_input_autocomplete_phenotype()
     $scope.fetch_mutation_summary=function(){
+        if(redirect==0){
+            renew_mut_summary_tab()
+            $scope.clear();
+        }
         $scope.mutation_summary_count=0;
-        $scope.clear()
         $scope.seed_count=0;
         $scope.mature_count=0;
         $scope.premir_count=0;
@@ -269,7 +283,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 //$scope.initial=0;
                 console.log(response)
                 $scope.seed_list=response.data.mutation_seed_list;
-                if(response.data.mutation_seed_count.length!=0){
+                if(response.data.mutation_seed_count.length!=0 & redirect==0){
                     $scope.seed_count=response.data.mutation_seed_count[0].count;
                     $scope.clear()
                     renew_mut_summary_tab()
@@ -323,7 +337,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 $scope.premir_list=response.data.mutation_premir_list;
                 if(response.data.mutation_premir_count.length!=0){$scope.premir_count=response.data.mutation_premir_count[0].count;}
                 else{$scope.premir_nonitem=1}
-                if($scope.premir_count>0 & $scope.seed_count==0){
+                if($scope.premir_count>0 & $scope.seed_count==0& redirect==0){
                     $scope.utr3=0;
                     $('#utr3').removeClass('active')
                     $scope.premir=1;
@@ -352,7 +366,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
                 $scope.utr3_list=response.data.mutation_utr3_list;
                 if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
                 else{$scope.utr3_nonitem=1}
-                if($scope.utr3_count>0&$scope.seed_count==0&$scope.premir_count==0){
+                if($scope.utr3_count>0&$scope.seed_count==0&$scope.premir_count==0& redirect==0){
                     $scope.utr3=1
                     $('#utr3').addClass('active')
                 }
@@ -518,6 +532,7 @@ function MutationSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Se
     }
 
     $scope.reset=function(){
+        $route.reload('#!/mutation_summary');
         condition=[]
         $scope.clear()
         renew_mut_summary_tab()

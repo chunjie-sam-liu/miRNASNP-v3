@@ -1,12 +1,12 @@
 <div class="bs-callout-primary">
     <div class="description" style="margin-left: 7px;">
-        <h4>Disease-related variation in miRNA and gene 3'UTR</h4>
+        <h4>Disease related variation in miRNA and gene 3'UTR</h4>
         <!--p>
             There are<span class="badge alert-warning">175,985</span> mutations from COSMIC, <span
                 class="badge alert-warning">32,136</span> variations from ClinVar and 235,148 SNPs, are collected in miRNASNP3,some of
             these muttaions share the same genome position with SNPs.
         </p-->
-        <p> Disease related variations(DRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">175,985</span> mutations from COSMIC, 
+        <p> Disease related variations (DRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">175,985</span> mutations from COSMIC, 
             disease information of <span class="badge alert-primary" style="background-color: #2e6da4;">32,136</span> variations from ClinVar and disease/trait information of <span class="badge alert-primary" style="background-color: #2e6da4;">235,148</span> SNPs from GWAS catalog to construct this module.  
             You may browse DRVs by tissues or enter the disease you are interested in to get the highest match DRVs.</p>
     </div>
@@ -256,16 +256,15 @@
     </div>
     <ul class="nav nav-tabs">
         <li id="seed" ng-click="show_one('seed')" ng-show="seed_count"
-            style="background-color:#EBEBEB;margin-right: 3px " class="class_seed"><a data-toggle="tab"><strong>Variation
-                    in seed</strong></a> </li>
+            style="background-color:#EBEBEB;margin-right: 3px " class="class_seed"><a data-toggle="tab"><strong>DRV in seed</strong></a> </li>
         <!--li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px "
             class="class_mature" ><a data-toggle="tab"><strong>Mutation on mature miRNA</strong></a> </li-->
         <li id="premir" ng-click="show_one('premir')" ng-show="premir_count"
             style="background-color:#EBEBEB;margin-right: 3px" class="class_premir"><a data-toggle="tab"><strong
-                    id="premir_tab">Variation in pre-miRNA</strong></a> </li>
+                    id="premir_tab">DRV in pre-miRNA</strong></a> </li>
         <li id="utr3" ng-click="show_one('utr3')" ng-show="utr3_count"
             style="background-color:#EBEBEB;margin-right: 3px " class="class_utr3"><a data-toggle="tab"><strong
-                    id="utr3_tab">Variation in 3'UTR</strong></a> </li>
+                    id="utr3_tab">DRV in 3'UTR</strong></a> </li>
     </ul>
 
     <div ng-show="seed">

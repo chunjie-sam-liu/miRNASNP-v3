@@ -1,13 +1,33 @@
 <div ng-show="option_key">
-    <div class="well">Your query item is {$query_mirna$}</div>
-    <div class="well">
-        <table width="100%" border="0" cellpadding="0" style="table-layout: fixed">
-            <tbody>
-            <tr ng-repeat="mir in mirna_keys" style="display: inline">
-                <td><a href="#!/mirna?mirna_id={$mir$}">
-                    <span style="margin-right: 20px">{$mir$}</span>
-                </a> </td>
-            </tr>
+    <div class="panel panel-primary">
+            <div class="panel-heading">
+                    <strong>Your query item is {$query_mirna$}</strong>
+            </div>
+            <div class="panel-body">
+                <table id="pre" class="table table-condensed table-bordered" style="word-break:break-all; word-wrap:break-all;">
+                    <tbody>
+                    <tr>
+                        <td colspan="2" class="default" style="text-align: center;font-size: 16px;font-weight: bold;width: 22%">
+                              Mature miRNA
+                            </td>
+                            <td style="text-align: justify">
+                             
+                                            <span ng-repeat="v in mirna_keys">                                                                                                              
+                                                    <a href="#!/mirna?mirna_id={$v$}" style="color:#f227e1"><button>{$v$}</button></a>
+                                         
+                            </td>
+                        </tr>
+                        <tr>
+                                <td colspan="2" class="default" style="text-align: center;font-size: 16px;font-weight: bold;width: 22%" >
+                                  Precurser miRNA
+                                </td>
+                                <td style="text-align: justify">
+                                                <span ng-repeat="v in premir_keys">                                                                                                              
+                                                        <a href="#!/premir_detail?search_ids={$v$}" style="color: red"><button>{$v$}</button></a>
+                                                </span>
+                                </td>
+                            </tr>
+           
             </tbody>
         </table>
     </div>

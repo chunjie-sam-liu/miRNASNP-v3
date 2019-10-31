@@ -23,6 +23,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     var seed=$routeParams.seed
     var premir=$routeParams.premir
     var utr3=$routeParams.utr3
+    var redirect=0
 
     console.log(seed)
     console.log(premir)
@@ -71,6 +72,16 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
           //  tab_click($obj)
         }
     }
+    if(seed||premir||utr3){
+         redirect=1
+    }
+    console.log("redirect:"+redirect)
+    if(seed){$scope.show_one('seed');$('#seed').addClass('active')}
+    else if(premir){$scope.show_one('premir');$('#premir').addClass('active');console.log('show premir')}
+    else if(utr3){$scope.show_one('utr3');$('#utr3').addClass('active')}
+    console.log($scope.seed)
+    console.log($scope.premir)
+   
     /*if(seed){$scope.show_one('seed');$('#seed').addClass('active');$scope.seed=1}
             else if(premir){
                 $scope.show_one('premir');
@@ -92,8 +103,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         $query_iden_summary.keyup(function () {
             console.log("addAnnotationInputKeyupHandler");
             clearValidationStyles(this);
-            //var query_iden_summary = this.value.trim();
-            var query_iden_summary = $.trim($('#query_iden_summary').val())
+            var query_iden_summary = this.value.trim();
+            //var query_iden_summary = $.trim($('#query_iden_summary').val())
             if (query_iden_summary != '') {
                 checkAnnotationInput(query_iden_summary.toLowerCase(), this);
             }
@@ -164,7 +175,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         $("#query_iden_summary").autocomplete({
             autoFocus: true,
             source: function(request, response){
-               // var url = '/api/snp_summary_gene?gene=' + request.term.trim();
+                //var url = '/api/snp_summary_gene?gene=' + request.term.trim();
                 var url =  base_url+'/api/snp_summary_gene?gene=' + request.term.trim();
                 $.getJSON(
                     url,
@@ -191,8 +202,11 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
 
 
     $scope.fetch_snp_summary=function(){
-        $scope.clear();
-        renew_snp_summary_tab()
+        
+        if(redirect==0){
+            renew_snp_summary_tab()
+            $scope.clear();
+        }
         var flag_snp=0;
         //var flag_identifier=0;
         $scope.initial=1;
@@ -268,7 +282,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 $scope.initial=0;
                 var seed_list=response.data.snp_seed_list;
                 $scope.seed_count=response.data.snp_seed_count;
-                if($scope.seed_count>0){
+                if($scope.seed_count>0 & redirect==0){
                     renew_snp_summary_tab()
                     $scope.clear()
                     $scope.seed=1
@@ -314,7 +328,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 $scope.initial=0;
                 var premir_list=response.data.snp_premir_list;
                 $scope.premir_count=response.data.snp_premir_count;
-                if($scope.premir_count>0&$scope.seed_count==0){
+                if($scope.premir_count>0&$scope.seed_count==0&redirect==0){
                     $('#utr3').removeClass('active')
                     $scope.utr3=0;
                     $scope.premir=1
@@ -341,7 +355,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 console.log($scope.initial)
                 var utr3_list=response.data.snp_utr3_list;
                 $scope.utr3_count=response.data.snp_utr3_count;
-                if($scope.utr3_count>0&$scope.seed_count==0&$scope.premir_count==0){
+                if($scope.utr3_count>0&$scope.seed_count==0&$scope.premir_count==0&redirect==0){
                     $scope.utr3=1;
                     $('#utr3').addClass('active')
                 }    
@@ -358,6 +372,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 }
                 $scope.utr3_list=utr3_list
             })
+
+          
         }
     }
     
@@ -495,8 +511,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 case 'mirseed':
                     {
                         $http({
-                            url:base_url
-        +'/api/snp_summary_seed',
+                            url:base_url+'/api/snp_summary_seed',
                             method:'GET',
                             params:condition
                         }).then(function(response){
@@ -518,7 +533,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 /*case 'mature':
                     {
                         $http({
-                            url:base_url
+                            url:base_url+base_url
         +'/api/snp_summary_mature',
                             method:'GET',
                             params:condition
@@ -537,8 +552,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 case 'pre-miRNA':
                     {
                         $http({
-                            url:base_url
-        +'/api/snp_summary_premir',
+                            url:base_url+'/api/snp_summary_premir',
                             method:'GET',
                             params:condition
                         }).then(function(response){
@@ -556,8 +570,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 case 'UTR3':
                     {
                         $http({
-                            url:base_url
-        +'/api/snp_summary_utr3',
+                            url:base_url+'/api/snp_summary_utr3',
                             method:'GET',
                             params:condition
                         }).then(function(response){
@@ -587,8 +600,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         condition=[]
         clearValidationStyles($('#query_iden_summary'))
         $http({
-            //url:base_ur+ip_address,
-            url:base_ur+'/api/snp_summary_seed',
+            //url:base_url+base_ur+ip_address,
+            url:base_url+'/api/snp_summary_seed',
             method:'GET',
             params:condition,
         }).then(function(response){
@@ -606,8 +619,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
             $scope.seed_list=seed_list;
         })
         $http({
-            //url:base_ur+ip_address,
-            url:base_ur+'/api/snp_summary_premir',
+            //url:base_url+base_ur+ip_address,
+            url:base_url+'/api/snp_summary_premir',
             method:'GET',
             params:condition,
         }).then(function(response){
@@ -623,8 +636,8 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
 
         })
         $http({
-            //url:base_ur+ip_address,
-            url:base_ur+'/api/snp_summary_utr3',
+            //url:base_url+base_ur+ip_address,
+            url:base_url+'/api/snp_summary_utr3',
             method:'GET',
             params:condition,
         }).then(function(response){

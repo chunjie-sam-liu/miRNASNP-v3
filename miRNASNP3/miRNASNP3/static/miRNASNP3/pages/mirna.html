@@ -110,6 +110,50 @@
                                     </tbody>
                                     </table>
                     </dd>
+                    <dt>Variation in miRNA:</dt>
+                    <dd>
+                            <table style="text-align: center" ts-wrapper id="mirna-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
+                                    <thead>
+                                    <tr>
+                                        <!--th>miRNA accession</th-->
+                                        <th>SNP in seed</th>
+                                        <th>SNP in mature miRNA</th>
+                                        <th>DRV in seed
+                                                <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                                data-trigger="hover"
+                                                data-content="Disease related variation in miRNA seed region"
+                                                style="color: #5bc0de"></span>
+                                               
+                                        </th>
+                                        <th>DRV in mature miRNA
+                                                <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                                data-trigger="hover"
+                                                data-content="Disease related variation in mature miRNA"
+                                                style="color: #5bc0de"></span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>
+                                            <span ng-if="mirna_summary_alias.snp_in_seed">
+                                            <a href="#!/snp_summary?gene={$ mirna_summary_alias.mir_id $}&seed='1'" style="color: red">{$mirna_summary_alias.snp_in_seed$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.snp_in_seed">0</span></td>
+                                        <td>
+                                                <span ng-if="mirna_summary_alias.snp_in_matue">
+                                            <a href="#!/snp_summary?gene={$ mirna_summary_alias.mir_id $}&premir='1'" style="color: red">{$mirna_summary_alias.snp_in_matue$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.snp_in_matue">0</span>
+                                        </td>
+                                        <td>
+                                                <span ng-if="mirna_summary_alias.variation_in_seed">
+                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&seed='1'" style="color: red">{$mirna_summary_alias.variation_in_seed$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.variation_in_seed">0</span></td>
+                                        <td>
+                                                <span ng-if="mirna_summary_alias.variation_in_mature">
+                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&premir='1'" style="color: red">{$mirna_summary_alias.variation_in_mature$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.variation_in_mature">0</span></td>
+                                        </tbody>
+                                        </table>
+                    </dd>
                     <div ng-show="mirna_expression_show">
                                     <dt>Average expression:
                                     <span class="glyph icon glyph icon-question-sign" data-toggle="popover" data-container="body"
@@ -173,6 +217,61 @@
                                              style="background-color: {$c.color$}" ng-repeat="c in mirna_profile"></div>
                                     </div-->
                                 </div>
+                            <div ng-show="mirna_drug_show" style="display:inline-block;width: 100%">
+                                <dt>Drug sensitivity:</dt>
+                                <dd>
+                                    <div class="panel panel-primary" style="width: 48%;float:left;" ng-show="mirna_ccle_show">
+                                        <div class="panel-heading" style="height: 32px;">
+                                            <strong>Spearman correlation between drug and miRNA in CCLE</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="scrollable pre-scrollable">
+                                                <table style="text-align: center" ts-wrapper id="mirna-ccle-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" style="height:450px;display:block;overflow:scroll">
+                                                    <tr>
+                                            <th>Drug compound</th>
+                                            <th>Spearman corr.</th>
+                                            <th>P-value</th>
+                                            <th>FDR</th>
+                                                    </tr>
+                                        <tr ng-repeat="v in mirna_ccle">
+                                            <td>{$v.Compound$}</td>
+                                            <td>{$v.cor$}</td>
+                                            <td>{$v.pv$}</td>
+                                            <td>{$v.fdr$}</td>
+                                        </tr>
+                                    </table>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div ng-show="mirna_ccle_show" style="width: 4%;float:left;">
+                                        <hr size="300" width="1">
+                                </div>
+                                <div class="panel panel-primary" style="width: 48%;float:left;" ng-show="mirna_nci60_show">
+                                        <div class="panel-heading" style="height: 32px;">
+                                            <strong>Spearman correlation between drug and miRNA in NCI60</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="scrollable pre-scrollable">
+                                                <table style="text-align: center" ts-wrapper id="mirna-ccle-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" style="height:450px;display:block;overflow:scroll">
+                                                    <tr>
+                                            <th>NSC ID</th>
+                                            <th>Spearman corr.</th>
+                                            <th>P-value</th>
+                                            <th>FDR</th>
+                                                    </tr>
+                                        <tr ng-repeat="v in mirna_nci60">
+                                            <td><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/compound/{$v.pubchem$}">{$v.NSC$}</a></td>
+                                            <td>{$v.cor$}</td>
+                                            <td>{$v.pv$}</td>
+                                            <td>{$v.fdr$}</td>
+                                        </tr>
+                                    </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                                </dd>
+                            </div>
 
                 </dl>
         </div>

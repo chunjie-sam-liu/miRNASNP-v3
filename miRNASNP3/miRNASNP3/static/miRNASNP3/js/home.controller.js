@@ -115,7 +115,8 @@ function HomeController($scope,$http,$routeParams,$window,miRNASNP3Service,$rout
             }).then(function (response) {
                 console.log(response);
                 $scope.mirna_key_list=response.data.mirna_key_list;
-                if ($scope.mirna_key_list.length==0){
+                $scope.premir_key_list=response.data.premir_key_list;
+                if ($scope.mirna_key_list.length==0 & $scope.premir_key_list.length==0){
                     console.log('noitem!')
                     $scope.alert_nonitem=1;
                     $("#alert_nonitem").show()
