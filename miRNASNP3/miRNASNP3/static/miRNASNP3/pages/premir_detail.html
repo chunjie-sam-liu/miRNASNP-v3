@@ -8,16 +8,16 @@
             <table id="pre" class="table table-condensed table-bordered" style="word-break:break-all; word-wrap:break-all;">
                 <tbody>
                 <tr>
-                    <td colspan="2" class="default" style="text-align: center">
+                    <td colspan="7" class="default" style="text-align: center">
                     <span style="font-size: 20px">
                         <strong>Precursor miRNA</strong>
                     </span>
                     </td>
                 <tr>
-                    <td style="font-size: 18px;" width="200px">
+                    <td style="font-size: 18px;" width="200px" >
                         <strong>Precursor ID</strong>
                     </td>
-                    <td style="text-align: left">{$premir_info.pre_id$}
+                    <td style="text-align: left" colspan="6">{$premir_info.pre_id$}
                         <span style="float:right;clear;">
                             <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}"
                                title="miRBase" target="blank">
@@ -30,13 +30,13 @@
                     <td style="font-size: 18px;">
                         <strong>Accession</strong>
                     </td>
-                    <td style="text-align: left"><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}">{$premir_info.pre_acc_list$}</a>
+                    <td style="text-align: left" colspan="6"><a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$premir_info.mirinfo[0].pre_acc$}">{$premir_info.pre_acc_list$}</a>
                     </td>
                 </tr>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Genome Position
                     </td>
-                    <td style="text-align: left">
+                    <td style="text-align: left" colspan="6">
                             <!--a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].pre_chr$}%3A{$premir_info.mirinfo[0].pre_start$}%2D{$premir_info.mirinfo[0].pre_end$}">
                             {$premir_info.mirinfo[0].pre_chr$}:{$premir_info.mirinfo[0].pre_start$}-{$premir_info.mirinfo[0].pre_end$}({$premir_info.mirinfo[0].pre_strand$})</a-->
                             {$premir_info.pre_pos_list$}
@@ -45,7 +45,7 @@
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Host Gene
                     </td>
-                    <td style="text-align: left">
+                    <td style="text-align: left" colspan="6">
                         <!--span ng-if="premir_info.host_gene != 'NA'">{$premir_info.host_gene$}</span>
                         <span ng-if="premir_info.host_gene == 'NA' ">intergenic</span-->
                             {$premir_info.host$}
@@ -55,7 +55,7 @@
                     <td style="font-size: 18px;font-weight: bold">
                         Cluster
                     </td>
-                    <td style="text-align: left">10kb:{$premir_info.cluster10k$}
+                    <td style="text-align: left" colspan="6">10kb:{$premir_info.cluster10k$}
                         <!--span ng-if="premir_info.cluster10k.length">
                             <span ng-repeat="v in premir_info.cluster10k">{$v.pre_id$},</span></span>
                         <span ng-if="!premir_info.cluster10k.length">Null</span-->
@@ -68,11 +68,11 @@
                 </tr>
                 <tr>
                     <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                    <td style="text-align: left">{$premir_info.sequence$}</td>
+                    <td style="text-align: left" colspan="6">{$premir_info.sequence$}</td>
                 </tr>
                                      <tr>
                                              <td style="font-size: 18px;font-weight: bold"> Function</td>
-                                             <td style="text-align: left">
+                                             <td style="text-align: left" colspan="6">
                                                 <span ng-if="premir_fun">{$premir_info.function$}</span>
                                                 <span ng-if="!premir_fun">Null</span>
                                             </td>
@@ -81,13 +81,25 @@
                          <tr>
                                 <td style="font-size: 18px;font-weight: bold"> HMDD
                                 </td>
-                                <td style="text-align: left">
+                                <td style="text-align: left" colspan="6">
                                     <span ng-if="premir_disease">{$premir_info.disease$}</span>
                                     <span ng-if="!premir_disease">Null</span>
                                     </td>
                          </tr>
-                        
-                 </div>
+                <!--div ng-if="mirnago_count">       
+                 <tr>   
+                        <th style="font-size: 18px;font-weight: bold" rowspan={$mirnago_count$}> QuickGo function</th>
+                        <th colspan="2" class="info" style="width: 25%">GO term</th>
+                        <th colspan="3" class="info" style="width: 45%">GO name</th>
+                        <th colspan="4" class="info" style="width: 25%">Reference</th>
+                 </tr>
+                 <tr>
+                     <td colspan="2">{$v.go_id$}</td>
+                     <td colspan="3">{$v.go_name$}</td>
+                     <td colspan="4">{$v.reference$}</td>
+                    
+                 </tr>
+                 </div-->
             </tbody>
             </table>
         
