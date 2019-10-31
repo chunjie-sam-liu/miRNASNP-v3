@@ -46,21 +46,6 @@ fn_parse_protein <- function(.x) {
       'host gene type' = gsub(pattern = '.*;gene_type=(.*?);.*', replacement = "\\1", x = X9),
       direction = paste(X16, X7, sep = '')
     ) %>%
-    # dplyr::mutate(`host gene type` = ifelse(
-    #   stringr::str_detect(string = `host gene type`, pattern = 'pseudogene'),
-    #   'pseudogene',
-    #   `host gene type`
-    # )) %>% 
-    # dplyr::mutate(`host gene type` = ifelse(
-    #   stringr::str_detect(string = `host gene type`, pattern = 'RNA'),
-    #   'ncRNA',
-    #   `host gene type`
-    # )) %>% 
-    # dplyr::mutate(`host gene type` = ifelse(
-    #   test = `host gene type` %in% c('ncRNA', 'protein_coding', 'pseudogene'),
-    #   `host gene type`,
-    #   'others'
-    # )) %>% 
     dplyr::group_by(`pre-mirna`, `host gene`, direction, `host gene type`) %>% 
     tidyr::nest() %>% 
     dplyr::mutate(region = purrr::map_chr(.x = data, .f = fn_check_exon)) %>% 
@@ -73,8 +58,21 @@ fn_parse_protein <- function(.x) {
 genecode_inter %>% 
   dplyr::mutate(
     gene_id = gsub(pattern = '.*;gene_id=(ENSG.*?);.*', replacement = "\\1", x = X9),
-    gene_type = gsub(pattern = '.*;gene_type=(.*?);.*', replacement = "\\1", x = X9)
-  ) %>% 
+  ) ->
+  genecode_inter_gene_id
+
+
+# all ---------------------------------------------------------------------
+
+genecode_inter_gene_id %>% 
+  dplyr::group_by(gene_id) %>% 
+  tidyr::nest() %>% 
+  plyr::mutate(context = purrr::map(.x = data, .f = fn_parse_protein)) %>% 
+  dplyr::select(-data) %>% 
+  tidyr::unnest(context) ->
+  genecode_inter_gene_id_context
+
+%>% 
   dplyr::mutate(gene_type = ifelse(
     stringr::str_detect(string = gene_type, pattern = 'pseudogene'),
     'pseudogene',
@@ -89,80 +87,7 @@ genecode_inter %>%
     test = gene_type %in% c('ncRNA', 'protein_coding', 'pseudogene'),
     gene_type,
     'others'
-  )) ->
-  genecode_inter_gene_id
-
-
-
-# Protein coding context --------------------------------------------------
-
-genecode_inter_gene_id %>% 
-  dplyr::filter(gene_type == 'protein_coding') %>% 
-  dplyr::group_by(gene_id) %>% 
-  tidyr::nest() ->
-  genecode_inter_gene_id_protein_coding
-
-genecode_inter_gene_id_protein_coding %>% 
-  dplyr::mutate(context = purrr::map(.x = data, .f = fn_parse_protein)) %>% 
-  dplyr::select(-data) %>% 
-  tidyr::unnest(context) ->
-  genecode_inter_gene_id_protein_coding_context
-
-
-# pseudogene --------------------------------------------------------------
-
-genecode_inter_gene_id %>% 
-  dplyr::filter(gene_type == 'pseudogene') %>% 
-  dplyr::group_by(gene_id) %>% 
-  tidyr::nest() ->
-  genecode_inter_gene_id_pseudogene
-
-genecode_inter_gene_id_pseudogene %>% 
-  dplyr::mutate(context = purrr::map(.x = data, .f = fn_parse_protein)) %>% 
-  dplyr::select(-data) %>% 
-  tidyr::unnest(context) ->
-  genecode_inter_gene_id_pseudogene_context
-
-# others ------------------------------------------------------------------
-
-genecode_inter_gene_id %>% 
-  dplyr::filter(gene_type == 'others') %>% 
-  dplyr::group_by(gene_id) %>% 
-  tidyr::nest() ->
-  genecode_inter_gene_id_others
-
-genecode_inter_gene_id_others %>% 
-  dplyr::mutate(context = purrr::map(.x = data, .f = fn_parse_protein)) %>% 
-  dplyr::select(-data) %>% 
-  tidyr::unnest(context) ->
-  genecode_inter_gene_id_others_context
-
-# ncRNA -------------------------------------------------------------------
-
-genecode_inter_gene_id %>% 
-  dplyr::filter(gene_type == 'ncRNA') %>% 
-  dplyr::group_by(gene_id) %>% 
-  tidyr::nest() ->
-  genecode_inter_gene_id_ncRNA
-
-genecode_inter_gene_id_ncRNA %>% 
-  dplyr::mutate(context = purrr::map(.x = data, .f = fn_parse_protein)) %>% 
-  dplyr::select(-data) %>% 
-  tidyr::unnest(context) ->
-  genecode_inter_gene_id_ncRNA
-
-
-# all ---------------------------------------------------------------------
-
-genecode_inter_gene_id %>% 
-  dplyr::group_by(gene_id) %>% 
-  tidyr::nest() %>% 
-  plyr::mutate(context = purrr::map(.x = data, .f = fn_parse_protein)) %>% 
-  dplyr::select(-data) %>% 
-  tidyr::unnest(context) ->
-  genecode_inter_gene_id_context
-
-
+  )) 
 
 # Save image --------------------------------------------------------------
 
