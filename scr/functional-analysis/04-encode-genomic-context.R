@@ -14,7 +14,9 @@ genecode_inter <- readr::read_tsv(file = path_gencode, col_names = FALSE)
 mirna_context <- readr::read_rds(path = path_mirna_context) %>% 
   dplyr::rename(name = miRNA) %>% 
   dplyr::mutate(Region = ifelse(is.na(Region), 'Intergenic', Region))
-
+data_snps <- readr::read_tsv(file = '/home/liucj/data/refdata/tam2.0/variation_seed28_anno.txt') %>% 
+  dplyr::select(`pre-mirna` = precurser_id) %>% 
+  dplyr::distinct()
 # Function ----------------------------------------------------------------
 fn_parse_X9 <- function(.a) {
   strsplit(x = .a, split = ';')[[1]] %>% 
@@ -164,7 +166,17 @@ genecode_inter_gene_id_context %>%
   genecode_inter_gene_id_context_merge
 
 
+data_snps %>% dplyr::filter(!`pre-mirna` %in% genecode_inter_gene_id_context_merge$`pre-mirna`) %>% 
+  dplyr::mutate(
+    gene_id = '-',
+    `host gene` = '-',
+    direction = '-',
+    `host gene type` = '-',
+    region = 'Intergenic'
+  ) ->
+  mirna_context_sup
 genecode_inter_gene_id_context_merge %>% 
+  dplyr::bind_rows(mirna_context_sup) %>% 
   readr::write_rds(path = '/workspace/liucj/refdata/mirna-genomic-context/encode-genomic-context.rds.gz', compress = 'gz')
 
 
