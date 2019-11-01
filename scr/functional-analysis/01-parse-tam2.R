@@ -185,7 +185,7 @@ fn_mirna_context_proption_sankey <- function() {
   data_snps_pre %>% 
     dplyr::mutate(
       density = dplyr::case_when(
-        `pre-prop-total` < 0.2 ~ '<0.2',
+        `pre-prop-total` <= 0.2 ~ '<0.2',
         `pre-prop-total` > 0.2 & `pre-prop-total` <= 0.3 ~ '0.2~0.3',
         `pre-prop-total` > 0.3 & `pre-prop-total` <= 0.4 ~ '0.3~0.4',
         `pre-prop-total` > 0.4 & `pre-prop-total` <=0.6 ~ '0.4~0.6',
