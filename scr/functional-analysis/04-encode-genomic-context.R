@@ -95,6 +95,10 @@ fn_filter_multiple_context <- function(.x) {
 }
 fn_merge_context <- function(.x) {
   if (nrow(.x) > 1) {
+    if (length(intersect(.x$region, c('Exonic', 'Intronic', 'Intergenic'))) > 1 && 'Exonic' %in% .x$region) {
+      return(dplyr::filter(.x, region == 'Exonic'))
+    }
+    
     .x %>% 
       dplyr::group_by(`host gene type`, `region`) %>% 
       dplyr::summarise_at(.vars = dplyr::vars('gene_id', 'host gene', 'direction'), .funs = paste0, collapse = ';') %>% 
