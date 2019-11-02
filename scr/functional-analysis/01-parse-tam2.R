@@ -118,12 +118,40 @@ fn_pre_vs_flank <- function() {
     ) ->
     density_pre_flank
   
+  t.test(
+    x = density_pre_flank %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_flank %>% dplyr::filter(type == 'Flank3-1') %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_flank31
+  
+  t.test(
+    x = density_pre_flank %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_flank %>% dplyr::filter(type == 'Flank5-1') %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_flank51
+  
+  t.test(
+    x = density_pre_flank %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_flank %>% dplyr::filter(type %in% c('Flank3-2', 'Flank3-3')) %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_flank323
+  
+  t.test(
+    x = density_pre_flank %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_flank %>% dplyr::filter(type %in% c('Flank5-2', 'Flank5-3')) %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_flank523
+  
   density_pre_flank %>% 
     dplyr::group_by(type) %>% 
     dplyr::summarise(m = mean(density))
   
   density_pre_flank %>% 
-    ggplot(aes(x = type, y = density),) +
+    ggplot(aes(x = type, y = density)) +
     geom_boxplot()
   
 }
