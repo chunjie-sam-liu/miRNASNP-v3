@@ -69,6 +69,73 @@ fn_parse_lines <- function(.line) {
   )
 }
 
+fn_mirna_context_proption_sankey <- function() {
+  data_snps_pre %>% 
+    dplyr::mutate(
+      density = dplyr::case_when(
+        `pre-prop-total` <= 0.2 ~ '<0.2',
+        `pre-prop-total` > 0.2 & `pre-prop-total` <= 0.3 ~ '0.2~0.3',
+        `pre-prop-total` > 0.3 & `pre-prop-total` <= 0.4 ~ '0.3~0.4',
+        `pre-prop-total` > 0.4 & `pre-prop-total` <=0.6 ~ '0.4~0.6',
+        `pre-prop-total` > 0.6 ~ '>0.6'
+      )
+    )  ->
+    data_snps_pre_density
+}
+
+fn_mirna_context_pie <- function() {
+  data_snps_pre %>% 
+    dplyr::group_by(region) %>% 
+    dplyr::count() %>% 
+    dplyr::ungroup() %>% 
+    dplyr::mutate(percent = n / sum(n) * 100) %>% 
+    dplyr::mutate(label = glue::glue('{region}: {n} ({round(percent, 1)}%)')) -> 
+    data_snps_pre_for_pie_plot
+  
+  data_snps_pre_for_pie_plot %>% 
+    ggplot(aes(x = '', y = n, fill = region)) +
+    geom_bar(width = 1, stat = 'identity') +
+    scale_fill_manual(name = 'Region', values=c('#f4ff00', '#f0ba7e', '#e3e2ac')) +
+    theme(
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      
+      panel.background = element_rect(fill = NA, color = NA),
+      plot.background = element_rect(fill = NA, color = NA),
+      
+      legend.position = 'None'
+      
+    ) +
+    annotate(
+      geom = 'text', x = 1, 
+      y = data_snps_pre_for_pie_plot$n[3]/2, 
+      label = data_snps_pre_for_pie_plot$label[3],
+      size = 6
+    ) +
+    annotate(
+      geom = 'text', x = 1, 
+      y = data_snps_pre_for_pie_plot$n[2]/2 + data_snps_pre_for_pie_plot$n[3] + 50,
+      label = data_snps_pre_for_pie_plot$label[2],
+      size = 6
+    ) +
+    annotate(
+      geom = 'text', x = 1.45, 
+      y = data_snps_pre_for_pie_plot$n[1]/2 + data_snps_pre_for_pie_plot$n[2] + data_snps_pre_for_pie_plot$n[3] - 35,
+      label = data_snps_pre_for_pie_plot$label[1],
+      size = 6
+    ) +
+    coord_polar(theta = 'y') ->
+    .pie_plot
+  ggsave(
+    filename = 'mirna-genomic-context.pdf',
+    plot = .pie_plot,
+    device = 'pdf',
+    path = path_out,
+    width = 6, height = 6
+  )
+  .pie_plot
+}
 
 fn_pre_vs_flank <- function() {
   # dbSNP v151 689966785/3000000000 = 0.23
@@ -167,7 +234,7 @@ fn_pre_vs_flank <- function() {
     scale_x_discrete(labels = c('3', '2', '1', 'pre-miRNA\nregions', '1', '2', '3')) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.7, by = 0.1), snp_density))) +
     scale_fill_manual(values = c('#9bcade', '#c8efab', '#2c8629')) +
-    labs(x = '', y = 'SNP Density') +
+    labs(x = '', y = 'SNP density') +
     theme(
       panel.background = element_rect(fill = NA, color = 'black'),
       plot.background = element_rect(fill = NA),
@@ -243,71 +310,81 @@ fn_pre_vs_flank <- function() {
   )
 }
 
-fn_mirna_context_pie <- function() {
-  data_snps_pre %>% 
-    dplyr::group_by(region) %>% 
-    dplyr::count() %>% 
-    dplyr::ungroup() %>% 
-    dplyr::mutate(percent = n / sum(n) * 100) %>% 
-    dplyr::mutate(label = glue::glue('{region}: {n} ({round(percent, 1)}%)')) -> 
-    data_snps_pre_for_pie_plot
+fn_mirna_exon_intron_density <- function() {
+  snp_density <- 689966785/3000000000 # dbSNP v151
   
-  data_snps_pre_for_pie_plot %>% 
-    ggplot(aes(x = '', y = n, fill = region)) +
-    geom_bar(width = 1, stat = 'identity') +
-    scale_fill_manual(name = 'Region', values=c('#f4ff00', '#f0ba7e', '#e3e2ac')) +
+  t.test(
+    x = data_snps_pre %>% dplyr::filter(region == 'Exonic') %>% dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre %>% dplyr::filter(region %in% c('Intergenic', 'Intronic')) %>% dplyr::pull(`pre-prop-total`)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_exon_intron_inter
+  
+  t.test(
+    x = data_snps_pre %>% dplyr::filter(region == 'Intergenic') %>% dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre %>% dplyr::filter(region == 'Intronic') %>% dplyr::pull(`pre-prop-total`)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_intron_inter
+  
+  data_snps_pre %>% 
+    dplyr::mutate(density = ifelse(`pre-prop-total` > 0.7, 0.7, `pre-prop-total`)) %>%
+    ggplot(aes(x = region, y = density, fill = region)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(labels = c('Exon', 'Intron', 'Intergenic')) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
+    scale_fill_manual(values = c('#bb0655', '#63bd98', '#b97835')) +
+    labs(x = '', y = 'SNP density') +
     theme(
-      axis.title = element_blank(),
-      axis.text = element_blank(),
-      axis.ticks = element_blank(),
-      
-      panel.background = element_rect(fill = NA, color = NA),
-      plot.background = element_rect(fill = NA, color = NA),
-      
-      legend.position = 'None'
-      
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black'),
+      legend.position = 'none'
     ) +
+    
+    annotate(geom = 'segment', x = 2, xend = 3, y = 0.63, yend = 0.63) +
+    annotate(geom = 'segment', x = 2, xend = 2, y = 0.62, yend = 0.63) + 
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.62, yend = 0.63) +
     annotate(
-      geom = 'text', x = 1, 
-      y = data_snps_pre_for_pie_plot$n[3]/2, 
-      label = data_snps_pre_for_pie_plot$label[3],
-      size = 6
+      geom = 'text', x = 2.5, y = 0.64,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_intron_inter$p.value)
+      )
     ) +
+    
+    annotate(geom = 'segment', x = 1, xend = 2.5, y = 0.72, yend = 0.72) +
+    annotate(geom = 'segment', x = 1, xend = 1, y = 0.71, yend = 0.72) +
+    annotate(geom = 'segment', x = 2.5, xend = 2.5, y = 0.71, yend = 0.72) +
     annotate(
-      geom = 'text', x = 1, 
-      y = data_snps_pre_for_pie_plot$n[2]/2 + data_snps_pre_for_pie_plot$n[3] + 50,
-      label = data_snps_pre_for_pie_plot$label[2],
-      size = 6
-    ) +
-    annotate(
-      geom = 'text', x = 1.45, 
-      y = data_snps_pre_for_pie_plot$n[1]/2 + data_snps_pre_for_pie_plot$n[2] + data_snps_pre_for_pie_plot$n[3] - 35,
-      label = data_snps_pre_for_pie_plot$label[1],
-      size = 6
-    ) +
-    coord_polar(theta = 'y') ->
-    .pie_plot
+      geom = 'text', x = 1.75, y = 0.735,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_exon_intron_inter$p.value)
+      )
+    ) ->
+    density_exon_intron_inter_plot
+  
   ggsave(
-    filename = 'mirna-genomic-context.pdf',
-    plot = .pie_plot,
+    filename = 'snp-density-exon-intron-integenic-region.pdf',
+    plot = density_exon_intron_inter_plot,
     device = 'pdf',
     path = path_out,
     width = 6, height = 6
   )
-  .pie_plot
-}
-fn_mirna_context_proption_sankey <- function() {
+  
   data_snps_pre %>% 
-    dplyr::mutate(
-      density = dplyr::case_when(
-        `pre-prop-total` <= 0.2 ~ '<0.2',
-        `pre-prop-total` > 0.2 & `pre-prop-total` <= 0.3 ~ '0.2~0.3',
-        `pre-prop-total` > 0.3 & `pre-prop-total` <= 0.4 ~ '0.3~0.4',
-        `pre-prop-total` > 0.4 & `pre-prop-total` <=0.6 ~ '0.4~0.6',
-        `pre-prop-total` > 0.6 ~ '>0.6'
-      )
-    )  ->
-    data_snps_pre_density
+    dplyr::group_by(region) %>% 
+    dplyr::summarise(m = mean(`pre-prop-total`)) %>% 
+    dplyr::rename('Mean SNP density' = m, Region = region) ->
+    density_exon_intron_inter_table
+  
+  list(
+    density_exon_intron_inter_table = density_exon_intron_inter_table,
+    density_exon_intron_inter_plot = density_exon_intron_inter_plot
+  )
+  
 }
 # Split data_snps to regions-----------------------------------------------
 
@@ -422,8 +499,13 @@ data_snps %>%
 
 # Pre-miRNA vs. Flank region ----------------------------------------------
 
-density_pre_flank <- fn_pre_vs_flank()
 
+density_pre_flank_plot_table <- fn_pre_vs_flank()
+
+# miRNA region SNP density ------------------------------------------------
+
+fn_mirna_context_pie()
+density_exon_intron_inter_plot_table <- fn_mirna_exon_intron_density()
 
 
 # Pre common and rare -----------------------------------------------------
