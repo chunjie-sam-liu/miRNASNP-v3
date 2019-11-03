@@ -57,6 +57,17 @@ tb_tam <- readr::read_rds(path = path_tam)
 
 # readr::write_rds(x = data_snps, path = '/home/liucj/data/refdata/tam2.0/data_snps.rds.gz')
 
+color_palletes <- c(
+  'Exonic' = '#eaff00', 
+  'Intronic' = '#dee8a9', 
+  'Intergenic' = '#e3c17b', 
+  'Pre-miRNA' = '#bb0655', 
+  'Mature miRNA' = '#63bd98', 
+  'Seed' = '#b97835',
+  'Flank3' = '#9bcade',
+  'Flank5' = '#c8efab'
+  )
+
 # Function ----------------------------------------------------------------
 
 fn_parse_lines <- function(.line) {
@@ -231,9 +242,12 @@ fn_pre_vs_flank <- function() {
     stat_boxplot(geom = 'errorbar', width = 0.3) +
     geom_boxplot(outlier.colour = NA, width = 0.5) +
     geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
-    scale_x_discrete(labels = c('3', '2', '1', 'pre-miRNA\nregions', '1', '2', '3')) +
+    scale_x_discrete(
+      limits = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 'Flank3-1','Flank3-2', 'Flank3-3'),
+      labels = c('3', '2', '1', 'pre-miRNA\nregions', '1', '2', '3')
+      ) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.7, by = 0.1), snp_density))) +
-    scale_fill_manual(values = c('#9bcade', '#c8efab', '#2c8629')) +
+    scale_fill_manual(values = color_palletes[c('Flank3', 'Flank5', 'Pre-miRNA')]) +
     labs(x = '', y = 'SNP density') +
     theme(
       panel.background = element_rect(fill = NA, color = 'black'),
@@ -310,6 +324,115 @@ fn_pre_vs_flank <- function() {
   )
 }
 
+fn_pre_vs_mature_vs_seed <- function() {
+  data_snps_pre_no_mature
+  data_snps_mature_no_seed
+  data_snps_seed
+  
+  dplyr::bind_rows(
+    # pre-mirna
+    tibble::tibble(
+      density = data_snps_pre_no_mature$`pre-prop-total`,
+      type = 'Pre-miRNA'
+    ),
+    # mature 
+    tibble::tibble(
+      density = data_snps_mature_no_seed$`mature-prop-total`,
+      type = 'Mature miRNA'
+    ),
+    # seed
+    tibble::tibble(
+      density = data_snps_seed$`seed-prop-total`,
+      type = 'Seed'
+    )
+  ) %>% 
+    dplyr::mutate(type = factor(
+      x = type, 
+      levels = c('Pre-miRNA', 'Mature miRNA', 'Seed'))
+    ) ->
+    density_pre_mature_seed
+
+  t.test(
+    x = density_pre_mature_seed %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_mature_seed %>% dplyr::filter(type == 'Mature miRNA') %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_mature
+  
+  t.test(
+    x = density_pre_mature_seed %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_mature_seed %>% dplyr::filter(type == 'Seed') %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_seed
+  
+  t.test(
+    x = density_pre_mature_seed %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
+    y = density_pre_mature_seed %>% dplyr::filter(type == 'Mature miRNA') %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_mature
+  
+  t.test(
+    x = density_pre_mature_seed %>% dplyr::filter(type == 'Seed') %>% dplyr::pull(density),
+    y = density_pre_mature_seed %>% dplyr::filter(type == 'Mature miRNA') %>% dplyr::pull(density)
+  ) %>% 
+    broom::tidy() ->
+    t_test_mature_seed
+  
+  density_pre_mature_seed %>% 
+    dplyr::mutate(density = ifelse(density > 0.7, 0.7, density)) %>%
+    ggplot(aes(x = type, y = density, fill = type)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(
+      limits = c('Pre-miRNA', 'Mature miRNA', 'Seed'),
+      labels = c('pre-miRNA', 'Mature miRNA', 'Seed region')
+    ) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
+    scale_fill_manual(values = color_palletes[c('Pre-miRNA', 'Mature miRNA', 'Seed')]) +
+    labs(x = '', y = 'SNP density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black'),
+      legend.position = 'none'
+    ) +
+    annotate(geom = 'segment', x = 2.1, xend = 3, y = 0.71, yend = 0.71) +
+    annotate(geom = 'segment', x = 2.1, xend = 2.1, y = 0.705, yend = 0.71) + 
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.705, yend = 0.71) +
+    annotate(
+      geom = 'text', x = 2.5, y = 0.72,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_mature_seed$p.value)
+      )
+    ) +
+    annotate(geom = 'segment', x = 1, xend = 1.9, y = 0.71, yend = 0.71) +
+    annotate(geom = 'segment', x = 1, xend = 1, y = 0.705, yend = 0.71) + 
+    annotate(geom = 'segment', x = 1.9, xend = 1.9, y = 0.705, yend = 0.71) +
+    annotate(
+      geom = 'text', x = 1.5, y = 0.72,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_mature$p.value)
+      )
+    ) +
+    annotate(geom = 'segment', x = 1, xend = 3, y = 0.74, yend = 0.74) +
+    annotate(geom = 'segment', x = 1, xend = 1, y = 0.73, yend = 0.74) + 
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.73, yend = 0.74) +
+    annotate(
+      geom = 'text', x = 2, y = 0.75,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_seed$p.value)
+      )
+    ) 
+  
+  density_pre_mature_seed %>% 
+    dplyr::group_by(type) %>% 
+    dplyr::summarise(m = mean(density))
+}
+
 fn_mirna_exon_intron_density <- function() {
   snp_density <- 689966785/3000000000 # dbSNP v151
   
@@ -333,9 +456,12 @@ fn_mirna_exon_intron_density <- function() {
     stat_boxplot(geom = 'errorbar', width = 0.3) +
     geom_boxplot(outlier.colour = NA, width = 0.5) +
     geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
-    scale_x_discrete(labels = c('Exon', 'Intron', 'Intergenic')) +
+    scale_x_discrete(
+      limits = c('Exonic', 'Intronic', 'Intergenic'),
+      labels = c('Exon', 'Intron', 'Intergenic')
+    ) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
-    scale_fill_manual(values = c('#bb0655', '#63bd98', '#b97835')) +
+    scale_fill_manual(values = color_palletes[c('Exonic', 'Intronic', 'Intergenic')]) +
     labs(x = '', y = 'SNP density') +
     theme(
       panel.background = element_rect(fill = NA, color = 'black'),
@@ -502,7 +628,13 @@ data_snps %>%
 
 density_pre_flank_plot_table <- fn_pre_vs_flank()
 
-# miRNA region SNP density ------------------------------------------------
+
+# Pre-miRNA vs. mature-miRNA vs. Seed -------------------------------------
+
+
+
+
+# Pre-miRNA vs. Exon ----------------------------------------------------
 
 fn_mirna_context_pie()
 density_exon_intron_inter_plot_table <- fn_mirna_exon_intron_density()
