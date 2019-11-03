@@ -3,6 +3,11 @@
 
 library(magrittr)
 library(ggplot2)
+
+# Source ------------------------------------------------------------------
+
+source(file = 'utils.R')
+
 # Path --------------------------------------------------------------------
 
 path_tam <- '/home/liucj/data/refdata/tam2.0/mirset_v9.txt.rds.gz'
@@ -115,7 +120,12 @@ fn_pre_vs_flank <- function() {
       x = type, 
       levels = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 
                  'Flank3-1', 'Flank3-2', 'Flank3-3'))
-    ) ->
+    ) %>% 
+    dplyr::mutate(color = dplyr::case_when(
+      grepl(pattern = 'Flank5', x = type) ~ 'Flank5',
+      grepl(pattern = 'Flank3', x = type) ~ 'Flank3',
+      grepl(pattern = 'miRNA', x = type) ~ 'Pre-miRNA'
+    )) ->
     density_pre_flank
   
   t.test(
@@ -146,14 +156,91 @@ fn_pre_vs_flank <- function() {
     broom::tidy() ->
     t_test_pre_flank523
   
+  snp_density <- 689966785/3000000000 # dbSNP v151
+  
+  density_pre_flank %>% 
+    dplyr::mutate(density = ifelse(density > 0.7, 0.7, density)) %>% 
+    ggplot(aes(x = type, y = density, fill = color)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(labels = c('3', '2', '1', 'pre-miRNA\nregions', '1', '2', '3')) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.7, by = 0.1), snp_density))) +
+    scale_fill_manual(values = c('#9bcade', '#c8efab', '#2c8629')) +
+    labs(x = '', y = 'SNP Density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black'),
+      legend.position = 'none'
+    ) +
+    annotate(geom = 'segment', x = 3, xend = 3.93, y = 0.63, yend = 0.63) +
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.62, yend = 0.63) +
+    annotate(geom = 'segment', x = 3.93, xend = 3.93, y = 0.62, yend = 0.63) +
+    annotate(
+      geom = 'text', x = 3.4, y = 0.65,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank51$p.value)
+      )
+    ) +
+    
+    annotate(geom = 'segment', x = 4.03, xend = 5, y = 0.63, yend = 0.63) +
+    annotate(geom = 'segment', x = 4.03, xend = 4.03, y = 0.62, yend = 0.63) +
+    annotate(geom = 'segment', x = 5, xend = 5, y = 0.62, yend = 0.63) +
+    annotate(
+      geom = 'text', x = 4.7, y = 0.65,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank31$p.value)
+      )
+    ) +
+    
+    annotate(geom = 'segment', x = 1, xend = 2, y = 0.55, yend = 0.55) +
+    annotate(geom = 'segment', x = 1.5, xend = 3.93, y = 0.67, yend = 0.67) +
+    annotate(geom = 'segment', x = 1.5, xend = 1.5, y = 0.55, yend = 0.67) +
+    annotate(geom = 'segment', x = 3.93, xend = 3.93, y = 0.665, yend = 0.67) +
+    annotate(
+      geom = 'text', x = 2.8, y = 0.69,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank523$p.value)
+      )
+    ) +
+    
+    annotate(geom = 'segment', x = 6, xend = 7, y = 0.55, yend = 0.55) +
+    annotate(geom = 'segment', x = 4.03, xend = 6.5, y = 0.67, yend = 0.67) +
+    annotate(geom = 'segment', x = 4.03, xend = 4.03, y = 0.665, yend = 0.67) +
+    annotate(geom = 'segment', x = 6.5, xend = 6.5, y = 0.55, yend = 0.67) +
+    annotate(
+      geom = 'text', x = 5.5, y = 0.69,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank323$p.value)
+      )
+    ) +
+    coord_cartesian(xlim=c(1,7), ylim=c(0,0.72), clip="off") +
+    annotate(geom = 'segment', x = 1, xend = 3, y = -0.065, yend = -0.065) +
+    annotate(geom = 'text', x = 2, y = -0.08, label = "5' flanking regions") +
+    
+    annotate(geom = 'segment', x = 5, xend = 7, y = -0.065, yend = -0.065) +
+    annotate(geom = 'text', x = 6, y = -0.08, label = "3' flanking regions") ->
+    density_pre_flank_plot
+  
+  ggsave(
+    filename = 'snp-density-pre-mirna-flanking-region.pdf',
+    plot = density_pre_flank_plot,
+    device = 'pdf',
+    path = path_out,
+    width = 6, height = 6
+  )
   density_pre_flank %>% 
     dplyr::group_by(type) %>% 
-    dplyr::summarise(m = mean(density))
+    dplyr::summarise(m = mean(density)) %>% 
+    dplyr::rename('Mean SNP density' = m, Region = type) ->
+    density_pre_flank_table
   
-  density_pre_flank %>% 
-    ggplot(aes(x = type, y = density)) +
-    geom_boxplot()
-  
+  list(
+    density_pre_flank_table = density_pre_flank_table,
+    density_pre_flank_plot = density_pre_flank_plot
+  )
 }
 
 fn_mirna_context_pie <- function() {
@@ -205,7 +292,7 @@ fn_mirna_context_pie <- function() {
     plot = .pie_plot,
     device = 'pdf',
     path = path_out,
-    width = 7, height = 7
+    width = 6, height = 6
   )
   .pie_plot
 }
@@ -335,24 +422,7 @@ data_snps %>%
 
 # Pre-miRNA vs. Flank region ----------------------------------------------
 
-fn_pre_vs_flank()
-
-
-data_snps_pre %>% 
-  dplyr::inner_join(mirna_context, by = 'pre-mirna') ->
-  data_snps_pre_context
-
-data_snps_pre_context %>% 
-  dplyr::group_by(region) %>% 
-  dplyr::summarise(m = mean(`pre-prop-rare`))
-
-data_snps_pre_context %>% 
-  ggplot(aes(x = region, y = `pre-prop-rare`)) +
-  geom_boxplot()
-
-data_snps_pre_context %>% dplyr::filter(region == 'Exonic') -> exon
-data_snps_pre_context %>% dplyr::filter(region == 'Intronic') -> intronic
-data_snps_pre_context %>% dplyr::filter(region == 'Intergenic') -> intergenic
+density_pre_flank <- fn_pre_vs_flank()
 
 
 
