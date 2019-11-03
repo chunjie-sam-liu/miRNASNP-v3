@@ -94,6 +94,7 @@ fn_mirna_context_proption_sankey <- function() {
     data_snps_pre_density
 }
 
+
 fn_mirna_context_pie <- function() {
   data_snps_pre %>% 
     dplyr::group_by(region) %>% 
@@ -106,7 +107,7 @@ fn_mirna_context_pie <- function() {
   data_snps_pre_for_pie_plot %>% 
     ggplot(aes(x = '', y = n, fill = region)) +
     geom_bar(width = 1, stat = 'identity') +
-    scale_fill_manual(name = 'Region', values=c('#f4ff00', '#f0ba7e', '#e3e2ac')) +
+    scale_fill_manual(name = 'Region', values = color_palletes[c('Exonic', 'Intergenic', 'Intronic')]) +
     theme(
       axis.title = element_blank(),
       axis.text = element_blank(),
@@ -138,6 +139,7 @@ fn_mirna_context_pie <- function() {
     ) +
     coord_polar(theta = 'y') ->
     .pie_plot
+  
   ggsave(
     filename = 'mirna-genomic-context.pdf',
     plot = .pie_plot,
@@ -426,11 +428,27 @@ fn_pre_vs_mature_vs_seed <- function() {
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_seed$p.value)
       )
-    ) 
+    ) ->
+    density_pre_mature_seed_plot
   
   density_pre_mature_seed %>% 
     dplyr::group_by(type) %>% 
-    dplyr::summarise(m = mean(density))
+    dplyr::summarise(m = mean(density))  %>% 
+    dplyr::rename('Mean SNP density' = m, Region = type) ->
+    density_pre_mature_seed_table
+  
+  ggsave(
+    filename = 'snp-density-pre-mature-seed-region.pdf',
+    plot = density_pre_mature_seed_plot,
+    device = 'pdf',
+    path = path_out,
+    width = 6, height = 6
+  )
+  
+  list(
+    density_pre_mature_seed_table = density_pre_mature_seed_table,
+    density_pre_mature_seed_plot = density_pre_mature_seed_plot
+  )
 }
 
 fn_mirna_exon_intron_density <- function() {
@@ -631,7 +649,7 @@ density_pre_flank_plot_table <- fn_pre_vs_flank()
 
 # Pre-miRNA vs. mature-miRNA vs. Seed -------------------------------------
 
-
+density_pre_mature_seed_plot_table <- fn_pre_vs_mature_vs_seed()
 
 
 # Pre-miRNA vs. Exon ----------------------------------------------------
