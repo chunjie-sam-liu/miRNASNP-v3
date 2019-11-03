@@ -94,10 +94,69 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     $scope.mirna_table=0
                 }
                 $scope.mirna_summary_alias=$scope.mirna_summary_list[0]
+                $scope.mirna_summary_alias.snp_in_seed=Number($scope.mirna_summary_alias.snp_in_seed)
+                $scope.mirna_summary_alias.snp_in_mature=Number($scope.mirna_summary_alias.snp_in_mature)
+                $scope.mirna_summary_alias.variation_in_seed=Number($scope.mirna_summary_alias.cosmic_in_seed)+Number($scope.mirna_summary_alias.clinvar_in_seed)+Number($scope.mirna_summary_alias.snp_gwas_in_seed_singlepre)
+                $scope.mirna_summary_alias.variation_in_mature=Number($scope.mirna_summary_alias.cosmic_in_matue)+Number($scope.mirna_summary_alias.clinvar_in_matue)+Number($scope.mirna_summary_alias.snp_gwas_in_mature_singlepre)
             });
     };
     $scope.fetch_mirna_details();
 
+    $scope.fetch_mirna_drug=function(){
+        $scope.mirna_drug_show=1
+        $http({
+            url:base_url+'/api/mirdrug',
+            method:'GET',
+            params:{mature_id:$scope.query_mirna}
+        }).then(function(response){
+            console.log(response)
+            $scope.mirna_ccle=response.data.ccle_list
+            $scope.mirna_ccle_count=response.data.ccle_count
+            $scope.mirna_nci60=response.data.nci60_list
+            //$scope.mirna_nci60=
+            if(($scope.mirna_ccle.length+$scope.mirna_nci60.length)==0){
+                $scope.mirna_drug_show=0
+            }else{
+                if($scope.mirna_ccle.length!=0){
+                    $scope.mirna_ccle_show=1;
+                    var dataset=$scope.mirna_ccle
+                    for (var i=0;i<dataset.length;i++){
+                        dataset[i].cor=Number(dataset[i].cor).toFixed(3)
+                        if(Number(dataset[i].pv).toFixed(3)==0.000){
+                            dataset[i].pv=Number(dataset[i].pv).toExponential(3)
+                        }else{
+                            dataset[i].pv=Number(dataset[i].pv).toFixed(3)
+                        }
+                        if(Number(dataset[i].fdr).toFixed(3)==0.000){
+                            dataset[i].fdr=Number(dataset[i].fdr).toExponential(3)
+                        }else{
+                            dataset[i].fdr=Number(dataset[i].fdr).toFixed(3)
+                        }
+                    }
+                    $scope.mirna_ccle=dataset
+                }
+                if($scope.mirna_nci60.length!=0){
+                    $scope.mirna_nci60_show=1;
+                    var dataset=$scope.mirna_nci60
+                    for (var i=0;i<dataset.length;i++){
+                        dataset[i].cor=Number(dataset[i].cor).toFixed(3)
+                        if(Number(dataset[i].pv).toFixed(3)==0.000){
+                            dataset[i].pv=Number(dataset[i].pv).toExponential(3)
+                        }else{
+                            dataset[i].pv=Number(dataset[i].pv).toFixed(3)
+                        }
+                        if(Number(dataset[i].fdr).toFixed(3)==0.000){
+                            dataset[i].fdr=Number(dataset[i].fdr).toExponential(3)
+                        }else{
+                            dataset[i].fdr=Number(dataset[i].fdr).toFixed(3)
+                        }
+                    }
+                    $scope.mirna_nci60=dataset
+                }
+            }
+        })
+    }
+    $scope.fetch_mirna_drug()
     $scope.fetch_mirna_expression=function(){
         $scope.mirna_expression_show=1;
         $http({
