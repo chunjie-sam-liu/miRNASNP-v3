@@ -15,7 +15,6 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
 
     var selectedchr="All";
     var page=1;
-    var ip_address='/api/mirna_summary';
     var base_url = miRNASNP3Service.getAPIBaseUrl();
     //$('#query_mirna_summary').val("hsa-let-7a-3p");
     $scope.initial=1;
@@ -51,8 +50,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             condition['mirna_id']=mirna_id.replace(/r/g,"R")
         console.log(mirna_id);
         $http({
-            url:base_url+ip_address,
-            //url:base_url++base_url+'api/mirna_summary',
+           url:base_url+'/api/mirna_summary',
+            //url:base_url+base_url++base_url+'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -68,7 +67,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.mirna_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
-                    data_list[i].mutation_sum= Number(data_list[i].cosmic_in_matue)+Number(data_list[i].clinvar_in_matue)
+                    data_list[i].mutation_seed_sum= Number(data_list[i].cosmic_in_seed_singlepre)+Number(data_list[i].clinvar_in_seed_singlepre)+Number(data_list[i].snp_gwas_in_seed_singlepre)
+                    data_list[i].mutation_mature_sum=Number(data_list[i].cosmic_in_mature_singlepre)+Number(data_list[i].clinvar_in_mature_singlepre)+Number(data_list[i].snp_gwas_in_mature_singlepre)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
             }
@@ -102,8 +102,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             condition['mirna_id']=mirna_id.replace(/R/g,"r")
         console.log(mirna_id);
         $http({
-            url:base_url+ip_address,
-            //url:base_url++base_url+'api/mirna_summary',
+           url:base_url+'/api/mirna_summary',
+            //url:base_url+base_url++base_url+'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -115,7 +115,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.mirna_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
-                    data_list[i].mutation_sum= Number(data_list[i].cosmic_in_matue)+Number(data_list[i].clinvar_in_matue)
+                    data_list[i].mutation_seed_sum= Number(data_list[i].cosmic_in_seed_singlepre)+Number(data_list[i].clinvar_in_seed_singlepre)+Number(data_list[i].snp_gwas_in_seed_singlepre)
+                    data_list[i].mutation_mature_sum=Number(data_list[i].cosmic_in_mature_singlepre)+Number(data_list[i].clinvar_in_mature_singlepre)+Number(data_list[i].snp_gwas_in_mature_singlepre)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
             }
@@ -173,8 +174,8 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            url:base_url+ip_address,
-            //url:base_url++base_url+'/api/primir_summary',
+           url:base_url+ip_address,
+            //url:base_url+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -190,7 +191,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.primir_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
-                    data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)
+                    data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)+Number(data_list[i]._id.snp_gwas_in_pre)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
             }
@@ -220,7 +221,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            url:base_url+'/api/primir_summary',
+           url:base_url+'/api/primir_summary',
             //url:base_url+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
@@ -233,7 +234,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.primir_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
-                    data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)
+                    data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)+Number(data_list[i]._id.snp_gwas_in_pre)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
             }

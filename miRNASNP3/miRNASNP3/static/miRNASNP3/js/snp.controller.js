@@ -128,6 +128,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     if(Number(data_list[i].ref_freq)==0.0){data_list[i].ref_freq=0}
                     if(data_list[i].location=='mirseed'){$scope.head_identifier='miRNA';data_list[i].location='seed';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
                     if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR";$scope.identifier_url="https://www.genecards.org/cgi-bin/carddisp.pl?gene="+data_list[i].identifier}
+                    if(data_list[i].location=='pre-miRNA'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
+                    if(data_list[i].location=='mature'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
                     $scope.position_list.push(data_list[i].snp_chr+':'+data_list[i].snp_coordinate)
                 }
                 for(var i=0;i<data_list.length;i++){

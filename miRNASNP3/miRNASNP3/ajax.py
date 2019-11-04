@@ -817,6 +817,18 @@ mir_summary = {
     'cosmic_in_pri':fields.String,
     'clinvar_in_pri':fields.String,
     'pre_strand':fields.String,
+    'snp_in_seed_singlepre':fields.String,
+    'snp_in_mature_singlepre':fields.String,
+    'snp_in_pre':fields.String,
+    'cosmic_in_seed_singlepre':fields.String,
+    'cosmic_in_mature_singlepre':fields.String,
+    'cosmic_in_pre':fields.String,
+    'clinvar_in_seed_singlepre':fields.String,
+    'clinvar_in_mature_singlepre':fields.String,
+    'clinvar_in_pre':fields.String,
+    'snp_gwas_in_seed_singlepre':fields.String,
+    'snp_gwas_in_mature_singlepre':fields.String,
+    'snp_gwas_in_pre':fields.String
 }
 
 mirna_summary_list = {
@@ -843,8 +855,10 @@ class MirSummary(Resource):
             condition['mir_chr']=chrome
         if mirna_id:
             condition['mir_id']={'$regex':mirna_id,'$options':'$i'}
-        mirna_summary_list = mongo.db.mirna_summary_sort.find(condition).skip(record_skip).limit(per_page)
-        mirna_summary_count=mongo.db.mirna_summary_sort.find(condition).count()
+        #mirna_summary_list = mongo.db.mirna_summary_sort.find(condition).skip(record_skip).limit(per_page)
+        #mirna_summary_count=mongo.db.mirna_summary_sort.find(condition).count()
+        mirna_summary_list = mongo.db.seed_mature_pre_DRV.find(condition).skip(record_skip).limit(per_page)
+        mirna_summary_count=mongo.db.seed_mature_pre_DRV.find(condition).count()
         return {'mirna_summary_list':list(mirna_summary_list),
                 'mirna_summary_count':mirna_summary_count}
 
@@ -861,8 +875,8 @@ class MirInfo(Resource):
         print(search_ids)
         if search_ids:
             condition['mir_id']={'$regex':''.join(['^',search_ids,'$']),'$options':'$i'}
-            mirna_summary_list = mongo.db.pri_mir_summary.find(condition)
-            mirna_summary_count=mongo.db.pri_mir_summary.find(condition).count()
+            mirna_summary_list = mongo.db.seed_mature_pre_DRV.find(condition)
+            mirna_summary_count=mongo.db.seed_mature_pre_DRV.find(condition).count()
         else:
             mirna_summary_list={}
             mirna_summary_count=0
@@ -871,8 +885,58 @@ class MirInfo(Resource):
 
 api.add_resource(MirInfo,'/api/mirinfo')
 
+ccle_drug_item={
+    'mature-mirna':fields.String,
+    'cor':fields.String,
+    'pv':fields.String,
+    'Compound':fields.String,
+    'fdr':fields.String
+}
+
+nci60_item={
+    'miRNA':fields.String,
+    'NSC':fields.String,
+    'pubchem':fields.String,
+    'cor':fields.String,
+    'pv':fields.String,
+    'fdr':fields.String
+}
+drug_cor={
+    'ccle_list':fields.Nested(ccle_drug_item),
+    'ccle_count':fields.Integer,
+    'nci60_list':fields.Nested(nci60_item),
+    'nci60_count':fields.Integer
+}
+
+class MirDrug(Resource):
+    @marshal_with(drug_cor)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mature_id', type=str)
+        args = parser.parse_args()
+        mature_id = args['mature_id']
+        condition_ccle = {}
+        condition_nci60={}
+        if mature_id:
+            condition_ccle['mature-mirna']=mature_id
+            condition_nci60['miRNA']=mature_id
+            condition_nci60['pv']={'$lt':'0.05'}
+            condition_nci60['fdr']={'$lt':'0.05'}
+            ccle_list=mongo.db.ccle_drug_correlation.find(condition_ccle)
+            ccle_count=mongo.db.ccle_drug_correlation.find(condition_ccle).count()
+            nci60_list=mongo.db.nci60_drug_correlation.find(condition_nci60)
+            nci60_count=mongo.db.nci60_drug_correlation.find(condition_nci60).count()
+        else:
+            ccle_list=[]
+            ccle_count=0
+            nci60_list=[]
+            nci60_count=0
+        return{'ccle_list':list(ccle_list),'ccle_count':ccle_count,'nci60_list':list(nci60_list),'nci60_count':nci60_count}
+api.add_resource(MirDrug,'/api/mirdrug')
+
 mirna_key_list={
-    'mirna_key_list':fields.Nested(mir_summary)
+    'mirna_key_list':fields.Nested(mir_summary),
+    'premir_key_list':fields.Nested(mir_summary)
 }
 
 class MirnaKey(Resource):
@@ -883,13 +947,18 @@ class MirnaKey(Resource):
         args = parser.parse_args()
         mirna_id = args['mirna_id']
         condition = {}
+        condition_pre={}
         if mirna_id:
             condition['mir_id']={'$regex':mirna_id,'$options':'$i'}
+            condition_pre['pre_id']={'$regex':mirna_id,'$options':'$i'}
             print(condition)
             mirna_key_list = mongo.db.pri_mir_summary.find(condition)
+            premir_key_list=mongo.db.pri_mir_summary.find(condition_pre)
         else:
             mirna_key_list = {}
-        return {'mirna_key_list':list(mirna_key_list)}
+            premir_key_list={}
+        
+        return {'mirna_key_list':list(mirna_key_list),'premir_key_list':list(premir_key_list)}
 api.add_resource(MirnaKey,'/api/mirna_key')
 
 pri_id={
@@ -902,6 +971,10 @@ pri_id={
     'snv_in_pri':fields.String,
     'cosmic_in_pri':fields.String,
     'clinvar_in_pri':fields.String,
+    'cosmic_in_pre':fields.String,
+    'clinvar_in_pre':fields.String,
+    'snp_in_pre':fields.String,
+    'snp_gwas_in_pre':fields.String
 }
 
 mature_info={
@@ -957,7 +1030,11 @@ class PrimirSummary(Resource):
                 'pre_strand':'$pre_strand',
                 'snv_in_pri':'$snv_in_pri',
                 'cosmic_in_pri':'$cosmic_in_pri',
-                'clinvar_in_pri':'$clinvar_in_pri'
+                'clinvar_in_pri':'$clinvar_in_pri',
+                'cosmic_in_pre':'$cosmic_in_pre',
+                'clinvar_in_pre':'$clinvar_in_pre',
+                'snp_in_pre':'$snp_in_pre',
+                'snp_gwas_in_pre':'$snp_gwas_in_pre'
             },
             'mature_info':{'$push':{
                 'mir_id':'$mir_id',
@@ -972,8 +1049,8 @@ class PrimirSummary(Resource):
         skip = {'$skip': record_skip}
         piplines = pipline+[group, skip, limit]
         pip_sum=pipline+[group,group_sum]
-        primir_summary_list = mongo.db.pri_mir_summary_sort.aggregate(piplines)
-        primir_summary_count = mongo.db.pri_mir_summary_sort.aggregate(pip_sum)
+        primir_summary_list = mongo.db.seed_mature_pre_DRV.aggregate(piplines)
+        primir_summary_count = mongo.db.seed_mature_pre_DRV.aggregate(pip_sum)
         #print(pip_sum)
         #print(pipline)
         return {'primir_summary_list': list(primir_summary_list),'primir_summary_count':list(primir_summary_count)}
@@ -1017,18 +1094,15 @@ mirset_v9_item={
 }
 premir_info={
     'pre_id':fields.String,
-    'cluster10k_id':fields.String,
-    'cluster5k_id':fields.String,
+    'cluster10k_id':fields.List(fields.List(fields.String)),
+    'cluster5k_id':fields.List(fields.List(fields.String)),
     'sequence':fields.String,
     'dotfold':fields.String,
     'cosmic':fields.List(fields.String),
     'clinvar':fields.List(fields.String),
     'snv':fields.List(fields.String),
-    'resouce':fields.String,
     'mfe':fields.String,
-    'host_gene':fields.String,
-    'cluster10k':fields.Nested(premir_cluster),
-    'cluster5k':fields.Nested(premir_cluster),
+    'host_gene':fields.List(fields.String),
     'mirinfo':fields.Nested(mir_summary),
     'mature_position':fields.List(fields.List(fields.String)),
     'mirset_v9':fields.Nested(mirset_v9_item)
@@ -1050,18 +1124,6 @@ class PremirInfo(Resource):
             match={'$match':{
                 'pre_id':search_ids
             }}
-            lookup_cluster10k={'$lookup':{
-                'from':'premir_cluster_10k',
-                'localField':'cluster10k_id',
-                'foreignField':'cluster10k_id',
-                'as':'cluster10k'
-            }}
-            lookup_cluster5k={'$lookup':{
-                'from':'premir_cluster_5k',
-                'localField':'cluster5k_id',
-                'foreignField':'cluster5k_id',
-                'as':'cluster5k'
-            }}
             lookup_mirinfo={'$lookup':{
                 'from':'pri_mir_summary',
                 'localField':'pre_id',
@@ -1074,7 +1136,7 @@ class PremirInfo(Resource):
                 'foreignField':'precurser_id',
                 'as':'mirset_v9'
             }}
-            pipline=[match,lookup_cluster5k,lookup_cluster10k,lookup_mirinfo,lookup_function]
+            pipline=[match,lookup_mirinfo,lookup_function]
             print(pipline)
             premir_info=mongo.db.premir_info.aggregate(pipline)
         else:
