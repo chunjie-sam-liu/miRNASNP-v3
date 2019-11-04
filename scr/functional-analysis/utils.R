@@ -16,13 +16,22 @@ human_read <- function(.x){
   ifelse(.sign, paste0('-',.xx), .xx)
 }
 
-human_read_latex_pval <- function(.x, .s = 'p') {
-  .s <- ifelse(.s == 'p', 'p', paste0(.s, ', p'))
+human_read_latex_pval <- function(.x, .s = NA) {
   
-  if (grepl(pattern = "e", x = .x)) {
-    sub("-0", "-", strsplit(split = "e", x = .x, fixed = TRUE)[[1]]) -> .xx
-    latex2exp::TeX(glue::glue("<<.s>>=$<<.xx[1]>> \\times 10^{<<.xx[2]>>}$", .open = "<<", .close = ">>"))
+  if (is.na(.s)) {
+    if (grepl(pattern = "e", x = .x)) {
+      sub("-0", "-", strsplit(split = "e", x = .x, fixed = TRUE)[[1]]) -> .xx
+      latex2exp::TeX(glue::glue("$\\textit{P}=<<.xx[1]>> \\times 10^{<<.xx[2]>>}$", .open = "<<", .close = ">>"))
+    } else {
+      latex2exp::TeX(glue::glue("$\\textit{P}=<<.x>>$", .open = "<<", .close = ">>"))
+    }
   } else {
-    latex2exp::TeX(glue::glue("{.s}={.x}"))
+    if (grepl(pattern = "e", x = .x)) {
+      sub("-0", "-", strsplit(split = "e", x = .x, fixed = TRUE)[[1]]) -> .xx
+      latex2exp::TeX(glue::glue("<<.s>>, $\\textit{P}=<<.xx[1]>> \\times 10^{<<.xx[2]>>}$", .open = "<<", .close = ">>"))
+    } else {
+      latex2exp::TeX(glue::glue("<<.s>>, $\\textit{P}=<<.x>>$", .open = "<<", .close = ">>"))
+    }
   }
+  
 }
