@@ -50,8 +50,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             condition['mirna_id']=mirna_id.replace(/r/g,"R")
         console.log(mirna_id);
         $http({
-            url:base_url+'/api/mirna_summary',
-            //url:base_url++base_url+'api/mirna_summary',
+           url:base_url+'/api/mirna_summary',
+            //url:base_url+base_url++base_url+'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -102,8 +102,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
             condition['mirna_id']=mirna_id.replace(/R/g,"r")
         console.log(mirna_id);
         $http({
-            url:base_url+'/api/mirna_summary',
-            //url:base_url++base_url+'api/mirna_summary',
+           url:base_url+'/api/mirna_summary',
+            //url:base_url+base_url++base_url+'api/mirna_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -174,8 +174,8 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            url:base_url+ip_address,
-            //url:base_url+'/api/primir_summary',
+           url:base_url+ip_address,
+            //url:base_url+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(
@@ -221,8 +221,8 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
         if(flag_pri==0){
             condition['pre_id']=mirna_id
         $http({
-            url:base_url+'/api/primir_summary',
-            //url:base_url+'/api/primir_summary',
+           url:base_url+'/api/primir_summary',
+            //url:base_url+base_url+'/api/primir_summary',
             method:'GET',
             params:condition,
         }).then(

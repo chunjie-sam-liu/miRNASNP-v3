@@ -129,6 +129,31 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                 $scope.color_option=color_option;
 
         });
+        $http({
+            url:base_url+'/api/mirnago',
+            method:'GET',
+            params:{precursor_id:$scope.search_ids}
+        }).then(function(response){
+            console.log(response)
+            $scope.mirnago_list=response.data.mirnago_list;
+            $scope.mirnago_count=response.data.mirnago_count;
+            if($scope.mirnago_count){
+                $(function(){
+                    $("#pre").append("<tr>"+
+                    "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan="+String($scope.mirnago_count+1)+"> QuickGo function</th>"+
+                    "<th colspan="+"2"+" class="+"info"+" style="+"width: 25%"+">GO term</th>"+
+                    "<th colspan="+"3"+" class="+"info"+" style="+"width: 45%"+">GO name</th>"+
+                    "<th colspan="+"4"+" class="+"info"+" style="+"width: 25%"+">Reference</th>"+   
+                    "</tr>")
+                    for(var i=0;i<$scope.mirnago_count;i++){
+                        $("#pre").append("<tr>"+
+                        "<td colspan="+"2"+"><a target=\"blank\" href=\"http://amigo.geneontology.org/amigo/term/"+$scope.mirnago_list[i].go_id+"\"</a>"+$scope.mirnago_list[i].go_id+"</td>"+
+                        "<td colspan="+"3"+">"+$scope.mirnago_list[i].go_name+"</td>"+
+                        "<td colspan="+"4"+">"+$scope.mirnago_list[i].reference+"</td>")+"</tr>"
+                    }
+                })
+            }
+        })
     };
     $scope.fetch_premir();
 
