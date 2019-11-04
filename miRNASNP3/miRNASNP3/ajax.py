@@ -939,6 +939,35 @@ mirna_key_list={
     'premir_key_list':fields.Nested(mir_summary)
 }
 
+mirnago_item={
+    'go_name':fields.String,
+    'go_id':fields.String,
+    'precursor_id':fields.String,
+    'reference':fields.String
+}
+mirnago_list={
+    'mirnago_list':fields.Nested(mirnago_item),
+    'mirnago_count':fields.Integer
+}
+
+class MirnaGo(Resource):
+    @marshal_with(mirnago_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('precursor_id', type=str)
+        args = parser.parse_args()
+        precursor_id = args['precursor_id']
+        condition={}
+        if precursor_id:
+            condition['precursor_id']=precursor_id
+            mirnago_list=mongo.db.mirnago.find(condition)
+            mirnago_count=mongo.db.mirnago.find(condition).count()
+        else:
+            mirnago_list=[]
+            mirnago_count=0
+        return({'mirnago_list':list(mirnago_list),'mirnago_count':mirnago_count})
+api.add_resource(MirnaGo,'/api/mirnago')
+
 class MirnaKey(Resource):
     @marshal_with(mirna_key_list)
     def get(self):
