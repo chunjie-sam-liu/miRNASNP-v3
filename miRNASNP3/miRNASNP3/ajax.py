@@ -828,7 +828,10 @@ mir_summary = {
     'clinvar_in_pre':fields.String,
     'snp_gwas_in_seed_singlepre':fields.String,
     'snp_gwas_in_mature_singlepre':fields.String,
-    'snp_gwas_in_pre':fields.String
+    'snp_gwas_in_pre':fields.String,
+    'indel_in_seed':fields.String,
+    'indel_in_mature':fields.String,
+    'indel_in_premir':fields.String
 }
 
 mirna_summary_list = {
@@ -1003,7 +1006,8 @@ pri_id={
     'cosmic_in_pre':fields.String,
     'clinvar_in_pre':fields.String,
     'snp_in_pre':fields.String,
-    'snp_gwas_in_pre':fields.String
+    'snp_gwas_in_pre':fields.String,
+    'indel_in_premir':fields.String
 }
 
 mature_info={
@@ -1063,7 +1067,8 @@ class PrimirSummary(Resource):
                 'cosmic_in_pre':'$cosmic_in_pre',
                 'clinvar_in_pre':'$clinvar_in_pre',
                 'snp_in_pre':'$snp_in_pre',
-                'snp_gwas_in_pre':'$snp_gwas_in_pre'
+                'snp_gwas_in_pre':'$snp_gwas_in_pre',
+                'indel_in_premir':'$indel_in_premir',
             },
             'mature_info':{'$push':{
                 'mir_id':'$mir_id',
@@ -1121,6 +1126,12 @@ mirset_v9_item={
     'precurser_id':fields.String,
     'HMDD':fields.List(fields.String)
 }
+
+premir_context={
+    'precursor_id':fields.String,
+    'host_gene':fields.String,
+    'region':fields.String
+}
 premir_info={
     'pre_id':fields.String,
     'cluster10k_id':fields.List(fields.List(fields.String)),
@@ -1131,7 +1142,7 @@ premir_info={
     'clinvar':fields.List(fields.String),
     'snv':fields.List(fields.String),
     'mfe':fields.String,
-    'host_gene':fields.List(fields.String),
+    'host_gene':fields.Nested(premir_context),
     'mirinfo':fields.Nested(mir_summary),
     'mature_position':fields.List(fields.List(fields.String)),
     'mirset_v9':fields.Nested(mirset_v9_item)
@@ -1165,7 +1176,13 @@ class PremirInfo(Resource):
                 'foreignField':'precurser_id',
                 'as':'mirset_v9'
             }}
-            pipline=[match,lookup_mirinfo,lookup_function]
+            lookup_context={'$lookup':{
+                'from':'premir_context',
+                'localField':'pre_id',
+                'foreignField':'precursor_id',
+                'as':'host_gene'
+            }}
+            pipline=[match,lookup_mirinfo,lookup_function,lookup_context]
             print(pipline)
             premir_info=mongo.db.premir_info.aggregate(pipline)
         else:
@@ -1962,7 +1979,31 @@ snp_line={
     'loss_count':fields.String,
     'pre_id':fields.String,
     'energy_change':fields.String,
-    'expression_change':fields.String
+    'expression_change':fields.String,
+    'vtype':fields.String,
+}
+'''
+indel_line={
+    'chr':fields.String,
+    'position':fields.String,
+    'snp_id':fields.String,
+    'ref':fields.String,
+    'alt':fields.String,
+    'ref_freq':fields.String,
+    'alt_freq':fields.String,
+    'transcript_chr':fields.String,
+    'trnascript_start':fields.String,
+    'transcript_end':fields.String,
+    'transcript_strand':fields.String,
+    'enst_id':fields.String,
+    'ref_seq':fields.String,
+    'identifier':fields.String,
+    'location':fields.String,
+    'identifier_lower':fields.String,
+    'mir_chr':fields.String,
+    'mir_start':fields.String,
+    'mir_end':fields.String,
+    'mir_strand':fields.String
 }
 
 snp_summary_list={
@@ -1975,8 +2016,27 @@ snp_summary_list={
     'snp_utr3_list':fields.Nested(snp_line),
     'snp_utr3_count':fields.Integer,
     'snp_summary_list':fields.Nested(snp_line),
-    'snp_summary_count':fields.Integer
+    'snp_summary_count':fields.Integer,
+    'indel_seed_list':fields.Nested(indel_line),
+    'indel_seed_count':fields.Integer,
+    'indel_premir_list':fields.Nested(indel_line),
+    'indel_premir_count':fields.Integer,
+    'indel_utr_list':fields.Nested(indel_line),
+    'indel_utr_count':fields.Integer
 
+}
+'''
+snp_summary_list={
+    'snp_seed_list':fields.Nested(snp_line),
+    'snp_seed_count':fields.Integer,
+    'snp_mature_list':fields.Nested(snp_line),
+    'snp_mature_count':fields.Integer,
+    'snp_premir_list':fields.Nested(snp_line),
+    'snp_premir_count':fields.Integer,
+    'snp_utr3_list':fields.Nested(snp_line),
+    'snp_utr3_count':fields.Integer,
+    'snp_summary_list':fields.Nested(snp_line),
+    'snp_summary_count':fields.Integer,
 }
 
 class SnpSummary(Resource):
@@ -2125,10 +2185,13 @@ class SnpSummarySeed(Resource):
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
         pipline=[match,skip,limit]
-        snp_seed_list=mongo.db.snp_summary_mirseed.aggregate(pipline)
+        #snp_seed_list=mongo.db.snp_summary_mirseed.aggregate(pipline)
+        snp_seed_list=mongo.db.snp_summary_mirseed.find(condition).skip(record_skip).limit(per_page)
         snp_seed_count=mongo.db.snp_summary_mirseed.find(condition).count()
+        snp_seed_test=list(snp_seed_list)
+        condition_indel=condition
 
-        return {'snp_seed_list':list(snp_seed_list),'snp_seed_count':snp_seed_count}
+        return {'snp_seed_list':snp_seed_test,'snp_seed_count':snp_seed_count}
 
 api.add_resource(SnpSummarySeed,'/api/snp_summary_seed')
 '''
@@ -2223,9 +2286,8 @@ class SnpSummaryPremir(Resource):
         snp_mature_count=0
         snp_premir_count=0
         snp_utr3_count=0
-        print(args['page'])
-        print(record_skip)
         print(args)
+        print(condition)
         if args['page']:
             page=args['page']
             record_skip = (int(page)-1)*per_page
@@ -2241,12 +2303,13 @@ class SnpSummaryPremir(Resource):
         if args['identifier']:
             #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
             condition['identifier_lower']=args['identifier'].lower()
-        if args['ldsnp']:
+        if args['ldsnp']:   
             condition['ldsnp']=args['ldsnp']
         if args['mutation_rela']:
             condition['mutation_rela']=args['mutation_rela']
         if args['gmaf'] !='All' and args['gmaf']:
             condition['alt_freq']={'$gt':args['gmaf'][1:]}
+        print(condition)
         snp_premir_list=mongo.db.snp_summary_mature_premir.find(condition).skip(record_skip).limit(per_page)
         snp_premir_count=mongo.db.snp_summary_mature_premir.find(condition).count()
 
@@ -2274,6 +2337,7 @@ class SnpSummaryUtr3(Resource):
         per_page = 15
         record_skip = (int(page)-1)*per_page
         condition = {}
+        condition_indel={}
         #condition['location']='UTR3'
         pipline = []
         snp_seed_list={}
@@ -2292,6 +2356,7 @@ class SnpSummaryUtr3(Resource):
             record_skip = (int(page)-1)*per_page
         if args['gene']:
             condition['identifier_lower']=args['gene'].lower()
+            
         #if args['chrome'] != 'All' and args['chrome']:
         #    condition['snp_chr'] = args['chrome']
         #if args['spe_snp_id']:
@@ -2299,9 +2364,11 @@ class SnpSummaryUtr3(Resource):
         if args['snp_id']:
             #condition['snp_id']={'$regex':args['snp_id'],'$options':'$i'}
             condition['snp_id']=args['snp_id']
+            
         if args['identifier']:
             #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
             condition['identifier_lower']=args['identifier'].lower()
+            
         if args['ldsnp']:
             condition['ldsnp']=args['ldsnp']
         #if args['mutation_rela']:
@@ -2314,8 +2381,9 @@ class SnpSummaryUtr3(Resource):
         limit={'$limit':per_page}
         pipline=[match,skip,limit]
         
-        snp_utr3_list=mongo.db.snp_summary_utr3.aggregate(pipline)
-        snp_utr3_count=mongo.db.snp_summary_utr3.find(condition).count()
+        #snp_utr3_list=mongo.db.snp_summary_utr3.aggregate(pipline)
+        snp_utr3_list=mongo.db.snp_summary_utr3_s.find(condition).skip(record_skip).limit(per_page)
+        snp_utr3_count=mongo.db.snp_summary_utr3_s.find(condition).count()
 
         return {'snp_utr3_list':list(snp_utr3_list),'snp_utr3_count':snp_utr3_count}
 
