@@ -53,7 +53,8 @@ data_snps <- readr::read_tsv(file = path_snps) %>%
     'seed-rare' = 'seed_rare'
   ) %>% 
   dplyr::inner_join(mirna_context, by = 'pre-mirna') 
-tb_tam <- readr::read_rds(path = path_tam)
+tb_tam <- readr::read_rds(path = path_tam) %>% 
+  dplyr::rename(mirna = `pre-mirna`)
 
 # readr::write_rds(x = data_snps, path = '/home/liucj/data/refdata/tam2.0/data_snps.rds.gz')
 
@@ -670,6 +671,15 @@ fn_mirna_exon_intron_density <- function() {
   
 }
 
+fn_tam_cluster <- function() {
+  tb_tam_merge
+  tb_tam_merge %>% 
+    dplyr::filter(type == 'Cluster') %>% 
+    dplyr::group_by(name) %>% 
+    dplyr::summarise(mean = mean(`pre-prop-total`), n = dplyr::n()) %>% 
+    dplyr::arrange(-mean) 
+}
+
 # Split data_snps to regions-----------------------------------------------
 
 data_snps %>% 
@@ -798,15 +808,24 @@ density_exon_intron_inter_plot_table <- fn_mirna_exon_intron_density()
 
 # Functional --------------------------------------------------------------
 
-data_snps_pre
+data_snps_pre %>% 
+  dplyr::mutate(mirna = purrr::map_chr(
+    .x = `pre-mirna`,
+    .f = function(.x) {
+      gsub(pattern = '.*:(.*)', replacement = '\\1', x = .x)
+    }
+  )) ->
+  data_snps_pre_name
+
 tb_tam %>% 
-  dplyr::inner_join(data_snps_pre, by = 'pre-mirna') ->
+  dplyr::inner_join(data_snps_pre_name, by = 'mirna') %>% 
+  dplyr::select(type, name, mirna, `pre-prop-total`, region) ->
   tb_tam_merge
 
-tb_tam_merge %>% 
-  dplyr::filter(type == 'Function') %>% 
-  dplyr::group_by(name) %>% 
-  dplyr::summarise(`median_total` = median(`pre-prop-total`))
+
+# Cluster -----------------------------------------------------------------
+
+
 
 
 # save image --------------------------------------------------------------
