@@ -616,7 +616,7 @@ fn_mirna_exon_intron_density <- function() {
     geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
     scale_x_discrete(
       limits = c('Exonic', 'Intronic', 'Intergenic'),
-      labels = c('Exon', 'Intron', 'Intergenic')
+      labels = c('Exon\n(200, 10.4%)', 'Intron\n(967, 50.4%)', 'Intergenic\n(791, 39.2%)')
     ) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
     scale_fill_manual(values = color_palletes[c('Exonic', 'Intronic', 'Intergenic')]) +
@@ -674,10 +674,53 @@ fn_mirna_exon_intron_density <- function() {
 fn_tam_cluster <- function() {
   tb_tam_merge
   tb_tam_merge %>% 
-    dplyr::filter(type == 'Cluster') %>% 
+    dplyr::filter(type == 'Cluster') -> 
+    .cluster
+  
+  # cluster
+  data_snps_pre_name %>% 
+    dplyr::filter(!mirna %in% .cluster$mirna) %>% 
+    dplyr::select(mirna, `pre-prop-total`) ->
+    .individual_mirna
+  
+  t.test(.cluster$`pre-prop-total`, .individual_mirna$`pre-prop-total`) %>% 
+    broom::tidy()
+  
+  # disease
+  tb_tam_merge %>% 
+    dplyr::filter(type == 'HMDD') %>% 
+    dplyr::select(mirna, `pre-prop-total`, region) %>% 
+    dplyr::distinct() ->
+    .hmdd
+  
+  data_snps_pre_name %>% 
+    dplyr::filter(!mirna %in% .hmdd$mirna) %>% 
+    dplyr::select(mirna, `pre-prop-total`) ->
+    .non_hmdd
+  
+  t.test(.hmdd$`pre-prop-total`, .non_hmdd$`pre-prop-total`) %>% 
+    broom::tidy()
+  
+  # Family
+  tb_tam_merge %>% 
+    dplyr::filter(type == 'Family') %>% 
     dplyr::group_by(name) %>% 
     dplyr::summarise(mean = mean(`pre-prop-total`), n = dplyr::n()) %>% 
-    dplyr::arrange(-mean) 
+    dplyr::arrange(mean) %>% View()
+  
+  tb_tam_merge %>% 
+    dplyr::filter(type == 'Family') %>% 
+    dplyr::select(mirna, `pre-prop-total`, region) %>% 
+    dplyr::distinct() ->
+    .family
+  
+  data_snps_pre_name %>% 
+    dplyr::filter(!mirna %in% .hmdd$mirna) %>% 
+    dplyr::select(mirna, `pre-prop-total`) ->
+    .non_family
+  
+  t.test(.family$`pre-prop-total`, .non_family$`pre-prop-total`) %>% 
+    broom::tidy()
 }
 
 # Split data_snps to regions-----------------------------------------------
