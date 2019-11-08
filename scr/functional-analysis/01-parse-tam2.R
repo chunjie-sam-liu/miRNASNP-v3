@@ -461,6 +461,10 @@ fn_pre_vs_flank_common <- function() {
     dplyr::rename('Mean common SNP density (SNPs/kb)' = mean, Region = type) ->
     density_pre_flank_table
   
+  density_pre_flank_table %>% 
+    ggplot(aes(x = Region, y = `Mean common SNP density (SNPs/kb)`)) +
+    geom_bar(stat = "identity")
+  
   list(
     density_pre_flank_table = density_pre_flank_table,
     snp_density = snp_density
