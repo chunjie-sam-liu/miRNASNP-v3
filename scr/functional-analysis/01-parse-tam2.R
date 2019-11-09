@@ -70,7 +70,25 @@ color_palletes <- c(
   )
 
 # Function ----------------------------------------------------------------
-
+fn_create_conservation_score_files <- function() {
+  data_snps_pre %>% 
+    dplyr::select(1) %>% 
+    dplyr::mutate(z = `pre-mirna`) %>% 
+    tidyr::separate(`pre-mirna`, c('a', 'b', 'c', 'd', 'e'), sep = ':') %>% 
+    dplyr::mutate(f = glue::glue('{a}:{b}-{c}')) %>% 
+    dplyr::select(f, z) ->
+    d
+  
+    d %>% readr::write_tsv(path = '/home/liucj/data/refdata/tam2.0/regions-for-conservation-score.tsv')
+  
+    d %>% 
+    dplyr::slice(1:1000) %>% 
+    readr::write_tsv(path = '/home/liucj/data/refdata/tam2.0/regions-for-conservation-score-1-1000.tsv')
+  
+    d %>% 
+    dplyr::slice(1001:nrow(data_snps_pre)) %>% 
+    readr::write_tsv(path = '/home/liucj/data/refdata/tam2.0/regions-for-conservation-score-1001-1918.tsv')
+}
 fn_parse_lines <- function(.line) {
   # type name pre-mirna
   .v <- stringr::str_split(string = .line, pattern = '\t')[[1]]
