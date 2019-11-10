@@ -5,8 +5,8 @@ library(magrittr)
 # Path --------------------------------------------------------------------
 
 path_out <- '/home/liucj/data/refdata/tam2.0/'
-path_ucsc1 <- file.path(path_out, 'ucsc-table-browse-1-1000.tsv')
-path_ucsc2 <- file.path(path_out, 'ucsc-table-browse-1001-1918.tsv')
+path_ucsc1 <- file.path(path_out, 'ucsc-table-browse-1-1000-2.tsv')
+path_ucsc2 <- file.path(path_out, 'ucsc-table-browse-1001-1918-2.tsv')
 path_mirna <- file.path(path_out, 'regions-for-conservation-score.tsv')
 
 
@@ -22,14 +22,25 @@ fn_parse_chunk <- function(.x, .y, .v) {
   .pos <- paste(.chrom, .range, sep = ':')
   
   .v_score <- .sv[(.ind_variableStep+1):length(.sv)]
-  stringr::str_split(string = .v_score, pattern = '\t', simplify = T)[,2] %>% 
-    as.numeric() ->
-    .score
   
-  tibble::tibble(
-    position = .pos,
-    score = list(.score)
-  )
+  if (length(.pos) > 1) {
+    .second_chrom <- grep(pattern = 'chrom specified', x = .v_score)
+    .v_score <- .v_score[1:(.second_chrom[1]-1)]
+  }
+  
+  stringr::str_split(string = .v_score, pattern = '\t', simplify = T)[,2] %>% as.numeric() -> .score
+  
+  if (length(.pos) > 1) {
+    tibble::tibble(
+      position = .pos,
+      score = list(.score, rep(NULL, length(.pos) -1))
+    )
+  } else {
+    tibble::tibble(
+      position = .pos,
+      score = list(.score)
+    )
+  }
   
 }
 fn_parse_read_lines <- function(.v) {
@@ -51,7 +62,6 @@ fn_parse_read_lines <- function(.v) {
 
 # Load data ---------------------------------------------------------------
 
-
 v_ucsc1 <- readr::read_lines(file = path_ucsc1, skip = 1)
 v_ucsc2 <- readr::read_lines(file = path_ucsc2, skip = 1)
 
@@ -67,7 +77,9 @@ mirna_conservation_score <- dplyr::bind_rows(data_ucsc1, data_ucsc2)
 mirna_conservation_score %>% 
   dplyr::left_join(mirna_pos, by = 'position') %>% 
   dplyr::select(`pre-mirna`, score) %>% 
-  dplyr::mutate(ave_score = purrr::map_dbl(.x = score, .f = mean)) %>% 
+  dplyr::mutate(ave_score = purrr::map_dbl(.x = score, .f = function(.x) {
+    if (is.null(.x)) {-1} else {mean(.x)}
+  })) %>% 
   dplyr::select(`pre-mirna`, ave_score) %>% 
   dplyr::distinct() ->
   mirna_conservation_score_final
