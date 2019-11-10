@@ -5,8 +5,8 @@ library(magrittr)
 # Path --------------------------------------------------------------------
 
 path_out <- '/home/liucj/data/refdata/tam2.0/'
-path_ucsc1 <- file.path(path_out, 'ucsc-table-browse-1-1000-2.tsv')
-path_ucsc2 <- file.path(path_out, 'ucsc-table-browse-1001-1918-2.tsv')
+path_ucsc1 <- file.path(path_out, 'ucsc-table-browse-1-1000.tsv')
+path_ucsc2 <- file.path(path_out, 'ucsc-table-browse-1001-1918.tsv')
 path_mirna <- file.path(path_out, 'regions-for-conservation-score.tsv')
 
 
