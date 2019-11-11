@@ -193,6 +193,8 @@ genecode_inter_gene_id_context_merge %>%
   dplyr::bind_rows(mirna_context_sup) %>% 
   dplyr::mutate(region = ifelse(grepl(pattern = 'Exonic', x = region), 'Exonic', region)) %>% 
   dplyr::mutate(region = ifelse(grepl(pattern = 'Intronic', x = region), 'Intronic', region)) %>% 
+  dplyr::mutate(region = ifelse(region == 'five_prime_UTR', "5'UTR", region)) %>% 
+  dplyr::mutate(region = ifelse(region == 'three_prime_UTR', "3'UTR", region)) %>% 
   readr::write_rds(path = '/workspace/liucj/refdata/mirna-genomic-context/encode-genomic-context.rds.gz', compress = 'gz')
 
 
