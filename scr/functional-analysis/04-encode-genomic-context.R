@@ -191,6 +191,8 @@ data_snps %>%
   mirna_context_sup
 genecode_inter_gene_id_context_merge %>% 
   dplyr::bind_rows(mirna_context_sup) %>% 
+  dplyr::mutate(region = ifelse(grepl(pattern = 'Exonic', x = region), 'Exonic', region)) %>% 
+  dplyr::mutate(region = ifelse(grepl(pattern = 'Intronic', x = region), 'Intronic', region)) %>% 
   readr::write_rds(path = '/workspace/liucj/refdata/mirna-genomic-context/encode-genomic-context.rds.gz', compress = 'gz')
 
 
