@@ -29,6 +29,7 @@ fn_parse_X9 <- function(.a) {
 }
 fn_check_exon <- function(.b) {
   .exon <- dplyr::filter(.b, X3 == 'exon')
+  
   .region <- if (nrow(.exon) == 0) {
     # 'Intronic'
     .b %>% 
@@ -38,6 +39,7 @@ fn_check_exon <- function(.b) {
       purrr::map_chr(.f = 'transcript_type') ->
       .transcript_type
     ifelse("protein_coding" %in% .transcript_type, 'Intronic', paste0(.transcript_type, ';'))
+    
   } else {
     .exon$X9 %>% 
       purrr::map(.f = fn_parse_X9) %>% 
@@ -45,6 +47,8 @@ fn_check_exon <- function(.b) {
       .transcript_type
     ifelse("protein_coding" %in% .transcript_type, 'Exonic', paste0(.transcript_type, ';'))
   }
+  .region <- if (any(grepl(pattern = 'three_prime_UTR', .b$X3))) {'three_prime_UTR'} else {.region}
+  .region <- if (any(grepl(pattern = 'five_prime_UTR', .b$X3))) {'five_prime_UTR'} else {.region}
   .region
 }
 fn_parse_protein <- function(.x) {
@@ -73,15 +77,15 @@ fn_filter_multiple_context <- function(.x) {
     ))
   if (nrow(.protein_coding) > 0) {
     .protein_coding %>% 
-      dplyr::mutate(region = ifelse(!region %in% c('Exonic', 'Intronic'), 'Intergenic', region)) %>% 
+      dplyr::mutate(region = ifelse(!region %in% c('Exonic', 'Intronic', 'three_prime_UTR', 'five_prime_UTR'), 'Intergenic', region)) %>% 
       dplyr::filter(!grepl(pattern = '^AC[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
       dplyr::filter(!grepl(pattern = '^AL[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
       dplyr::filter(!grepl(pattern = '^AF[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>% 
       dplyr::filter(!grepl(pattern = '^AP[[:digit:]]+.[[:digit:]]*$', x = `host gene`)) %>%
       dplyr::filter(!grepl(pattern = '-', x = `host gene`)) ->
       .mis
-    if (length(intersect(c('Exonic', 'Intronic'), .mis$region)) > 0) {
-      .mis %>% dplyr::filter(region %in% c('Intronic', 'Exonic'))
+    if (length(intersect(c('Exonic', 'Intronic', 'three_prime_UTR', 'five_prime_UTR'), .mis$region)) > 0) {
+      .mis %>% dplyr::filter(region %in% c('Intronic', 'Exonic', 'three_prime_UTR', 'five_prime_UTR'))
     } else {
       .mis
     }
@@ -97,15 +101,24 @@ fn_filter_multiple_context <- function(.x) {
 }
 fn_merge_context <- function(.x) {
   if (nrow(.x) > 1) {
-    if (length(intersect(.x$region, c('Exonic', 'Intronic', 'Intergenic'))) > 1 && 'Exonic' %in% .x$region) {
-      return(dplyr::filter(.x, region == 'Exonic'))
-    }
     
-    .x %>% 
-      dplyr::group_by(`host gene type`, `region`) %>% 
-      dplyr::summarise_at(.vars = dplyr::vars('gene_id', 'host gene', 'direction'), .funs = paste0, collapse = ';') %>% 
-      dplyr::ungroup() %>% 
-      dplyr::select(gene_id, `host gene`, direction, `host gene type`, region)
+    if (length(unique(.x$region)) > 1) {
+      .x %>% 
+        dplyr::arrange(region) %>% 
+        dplyr::group_by(`host gene type`) %>% 
+        dplyr::summarise_at(.vars = dplyr::vars('gene_id', 'host gene', 'direction', 'region'), .funs = paste0, collapse = ';') %>% 
+        dplyr::ungroup() %>% 
+        dplyr::select(gene_id, `host gene`, direction, `host gene type`, region)
+    } else {
+      .x %>% 
+        dplyr::arrange(region) %>% 
+        dplyr::group_by(`host gene type`, region) %>% 
+        dplyr::summarise_at(.vars = dplyr::vars('gene_id', 'host gene', 'direction'), .funs = paste0, collapse = ';') %>% 
+        dplyr::ungroup() %>% 
+        dplyr::select(gene_id, `host gene`, direction, `host gene type`, region)
+    }
+
+    
   } else if (nrow(.x) == 0) {
     tibble::tibble(
       'gene_id' = '-',
@@ -166,7 +179,8 @@ genecode_inter_gene_id_context %>%
   genecode_inter_gene_id_context_merge
 
 
-data_snps %>% dplyr::filter(!`pre-mirna` %in% genecode_inter_gene_id_context_merge$`pre-mirna`) %>% 
+data_snps %>% 
+  dplyr::filter(!`pre-mirna` %in% genecode_inter_gene_id_context_merge$`pre-mirna`) %>% 
   dplyr::mutate(
     gene_id = '-',
     `host gene` = '-',
@@ -197,3 +211,4 @@ genecode_inter_gene_id_context_merge_mut %>%
 # Save image --------------------------------------------------------------
 
 save.image(file = '/workspace/liucj/refdata/mirna-genomic-context/04-encode-genomic-context.rda')
+load('/workspace/liucj/refdata/mirna-genomic-context/04-encode-genomic-context.rda')
