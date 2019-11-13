@@ -1365,55 +1365,26 @@ fn_mirna_exon_intron_density_conservation <- function() {
 }
 
 fn_tam_cluster <- function() {
-  tb_tam_merge
-  tb_tam_merge %>% 
-    dplyr::filter(type == 'Cluster') -> 
-    .cluster
-  
-  # cluster
-  data_snps_pre_name %>% 
-    dplyr::filter(!mirna %in% .cluster$mirna) %>% 
-    dplyr::select(mirna, `pre-prop-total`) ->
-    .individual_mirna
-  
-  t.test(.cluster$`pre-prop-total`, .individual_mirna$`pre-prop-total`) %>% 
-    broom::tidy()
-  
-  # disease
-  tb_tam_merge %>% 
-    dplyr::filter(type == 'HMDD') %>% 
-    dplyr::select(mirna, `pre-prop-total`, region) %>% 
-    dplyr::distinct() ->
-    .hmdd
+  tb_tam %>% dplyr::filter(type == 'Cluster') %>% dplyr::select(-1) -> tb_tam_cluster
   
   data_snps_pre_name %>% 
-    dplyr::filter(!mirna %in% .hmdd$mirna) %>% 
-    dplyr::select(mirna, `pre-prop-total`) ->
-    .non_hmdd
+    dplyr::left_join(tb_tam_cluster, by = 'mirna') %>% 
+    dplyr::select(-c(2, 3, 4, 5, 6, 7, 8, 13, 14, 15)) %>% 
+    dplyr::mutate(cluster = ifelse(is.na(name), 'Individual', 'Cluster')) -> 
+    .d
   
-  t.test(.hmdd$`pre-prop-total`, .non_hmdd$`pre-prop-total`) %>% 
-    broom::tidy()
+  t.test(
+    x = .d %>% 
+      dplyr::filter(cluster == 'Individual') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = .d %>% 
+      dplyr::filter(cluster == 'Cluster') %>% 
+      dplyr::pull(`pre-prop-total`)
+  )
   
-  # Family
-  tb_tam_merge %>% 
-    dplyr::filter(type == 'Family') %>% 
-    dplyr::group_by(name) %>% 
-    dplyr::summarise(mean = mean(`pre-prop-total`), n = dplyr::n()) %>% 
-    dplyr::arrange(mean) %>% View()
-  
-  tb_tam_merge %>% 
-    dplyr::filter(type == 'Family') %>% 
-    dplyr::select(mirna, `pre-prop-total`, region) %>% 
-    dplyr::distinct() ->
-    .family
-  
-  data_snps_pre_name %>% 
-    dplyr::filter(!mirna %in% .hmdd$mirna) %>% 
-    dplyr::select(mirna, `pre-prop-total`) ->
-    .non_family
-  
-  t.test(.family$`pre-prop-total`, .non_family$`pre-prop-total`) %>% 
-    broom::tidy()
+  .d %>% 
+    ggplot(aes(x = cluster, y = `pre-prop-total`)) +
+    geom_boxplot()
 }
 
 fn_tam_disease <- function() {
@@ -1508,8 +1479,74 @@ fn_tam_disease <- function() {
       )
     ) ->
     disease_snp_density
+  ggsave(
+    filename = 'disease-snp-density.pdf',
+    plot = disease_snp_density,
+    device = 'pdf',
+    path = path_out,
+    width = 6, height = 5
+  )
   
+}
+fn_tam_function <- function() {
+  tb_tam %>% dplyr::filter(type == 'Function') %>% dplyr::select(-1) -> tb_tam_func
   
+  data_snps_pre_name %>% 
+    dplyr::left_join(tb_tam_func, by = 'mirna') %>% 
+    dplyr::select(-c(2, 3, 4, 5, 6, 7, 8, 13, 14, 15)) %>% 
+    dplyr::mutate(name = ifelse(is.na(name), 'Non-function', name)) %>% 
+    dplyr::group_by(name) %>% 
+    dplyr::summarise(m = mean(`pre-prop-total`)) %>% 
+    dplyr::arrange(m) %>% View()
+    dplyr::group_by(`pre-mirna`, region, ave_score, score_range, `pre-prop-total`) %>% 
+    tidyr::nest() %>% 
+    dplyr::mutate(n_func = purrr::map_dbl(.x = data, .f = function(.x) {
+      if (all(is.na(.x$name))) {
+        0
+      } else {
+        .x %>% dplyr::distinct() %>% nrow()
+      }
+    })) %>% 
+    dplyr::select(-data) %>% 
+    dplyr::mutate(
+      func = dplyr::case_when(
+        n_func == 0 ~ 'Non',
+        n_func <= 3 ~ 'Few',
+        n_func > 3 ~ 'Many'
+      )
+    )  %>% 
+    dplyr::mutate(func = factor(x = func, levels = c('Many', 'Few', 'Non')))-> 
+    data_snps_pre_name_func
+  data_snps_pre_name_func$func %>% table()
+  
+  t.test(
+    x = data_snps_pre_name_func %>% 
+      dplyr::filter(func == 'Non') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre_name_func %>% 
+      dplyr::filter(func == 'Few') %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) -> 
+    t_test_func_few_non
+  
+  t.test(
+    x = data_snps_pre_name_func %>% 
+      dplyr::filter(func == 'Many') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre_name_func %>% 
+      dplyr::filter(func == 'Few') %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) ->
+    t_test_func_few_many
+  snp_density <- 689966785/3000000000 # dbSNP v151
+  data_snps_pre_name_func %>% 
+    dplyr::group_by(func) %>% 
+    dplyr::summarise(m = mean(`pre-prop-total`))
+  
+  data_snps_pre_name_func %>% 
+    dplyr::filter(n_func != 0) %>% 
+    ggplot(aes(x = n_func, y = `pre-prop-total`)) +
+    geom_point()
   
 }
 # Split data_snps to regions-----------------------------------------------
@@ -1665,7 +1702,7 @@ tb_tam %>%
 tb_tam
 
 # Disease -----------------------------------------------------------------
-
+fn_tam_disease()
 
 
 
