@@ -78,6 +78,7 @@ color_palletes <- c(
   'Seed' = '#b97835',
   'Flank3' = '#9bcade',
   'Flank5' = '#c8efab',
+  'Human' = '#63bd98',
   'High' = '#e9266d',
   'Low' = '#74e501',
   'Mid' = '#eaff00'
@@ -107,12 +108,15 @@ fn_conservation_score_correlation <- function() {
   data_snps_pre %>% 
     dplyr::mutate(ave_score = ifelse(ave_score < 0, 0, ave_score)) %>% 
     dplyr::mutate(score_range = dplyr::case_when(
-      ave_score <= 0.02 ~ 'Low',
+      ave_score == 0 ~ 'Human',
+      ave_score <= 0.02 & ave_score > 0 ~ 'Low',
       ave_score < 0.98 & ave_score > 0.02 ~ 'Mid',
       ave_score >= 0.98 ~ 'High'
     )) %>% 
     dplyr::select(`pre-mirna`, `pre-prop-total`, `pre-prop-common`, `pre-prop-rare`, ave_score, region, score_range) ->
     data_snps_pre_cons_score
+  
+  conservation_name <- c('Non-conserved\n(617)', 'Lowly conserved\n(1058)', 'Highly conserved\n(243)')
   
   data_snps_pre_cons_score %>% 
     ggplot(aes(x = ave_score)) +
@@ -137,19 +141,19 @@ fn_conservation_score_correlation <- function() {
       geom = 'segment', x = 0.01, xend = 0.18, y = 1.8, yend = 2.2, arrow = arrow( type = 'closed', length = unit(0.05, 'inches'))
     ) +
     annotate(
-      geom = 'text', x = 0.22, y = 2.2, label = 'Low', size = 5
+      geom = 'text', x = 0.22, y = 2.2, label = conservation_name[1], size = 5
     ) +
     annotate(
       geom = 'segment', x = 0.15, xend = 0.3, y = 0.3, yend = 1.1, arrow = arrow( type = 'closed', length = unit(0.05, 'inches'))
     ) +
     annotate(
-      geom = 'text', x = 0.37, y = 1.1, label = 'Middle', size = 5
+      geom = 'text', x = 0.37, y = 1.1, label = conservation_name[2], size = 5
     ) +
     annotate(
       geom = 'segment', x = 0.98, xend = 0.8, y = 0.5, yend = 0.8, arrow = arrow( type = 'closed', length = unit(0.05, 'inches'))
     ) +
     annotate(
-      geom = 'text', x = 0.75, y = 0.8, label = 'High', size = 5
+      geom = 'text', x = 0.75, y = 0.8, label = conservation_name[3], size = 5
     ) -> 
     mirna_density_conservation_score_plot
   
@@ -163,6 +167,7 @@ fn_conservation_score_correlation <- function() {
     
   
   # boxplot
+  conservation_name <- c('Human Specific\n(18)', 'Non-conserved\n(599)', 'Lowly conserved\n(1058)', 'Highly conserved\n(243)')
   
   t.test(
     x = data_snps_pre_cons_score %>% 
@@ -184,6 +189,16 @@ fn_conservation_score_correlation <- function() {
   ) ->
     t_test_high_lowmid
   
+  t.test(
+    x = data_snps_pre_cons_score %>% 
+      dplyr::filter(score_range %in% c('Low', 'Mid')) %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre_cons_score %>% 
+      dplyr::filter(score_range == 'Human') %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) ->
+    t_test_human_lowmid
+  
   snp_density <- 689966785/3000000000 # dbSNP v151
   data_snps_pre_cons_score %>% 
     dplyr::mutate(`pre-prop-total` = ifelse(`pre-prop-total` > 0.7, 0.7, `pre-prop-total`)) %>% 
@@ -192,11 +207,11 @@ fn_conservation_score_correlation <- function() {
     geom_boxplot(outlier.colour = NA, width = 0.5) +
     geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
     scale_x_discrete(
-      limits = c('Low', 'Mid', 'High'),
-      labels = c('Non-conserved', 'Lowly conserved', 'High conserved')
+      limits = c('Human', 'Low', 'Mid', 'High'),
+      labels = conservation_name
     ) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
-    scale_fill_manual(values = color_palletes[c("High", "Low", 'Mid' )]) +
+    scale_fill_manual(values = color_palletes[c("High", 'Human', "Low", 'Mid')]) +
     labs(x = '', y = 'SNP density') +
     theme(
       panel.background = element_rect(fill = NA, color = 'black'),
@@ -205,24 +220,33 @@ fn_conservation_score_correlation <- function() {
       axis.text.x = element_text(color = 'black'),
       legend.position = 'none'
     ) +
-    annotate(geom = 'segment', x = 1, xend = 2, y = 0.66, yend = 0.66) +
-    annotate(geom = 'segment', x = 1, xend = 1, y = 0.65, yend = 0.66) +
-    annotate(geom = 'segment', x = 2, xend = 2, y = 0.65, yend = 0.66) +
+    annotate(geom = 'segment', x = 2, xend = 3, y = 0.64, yend = 0.64) +
+    annotate(geom = 'segment', x = 2, xend = 2, y = 0.63, yend = 0.64) +
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.63, yend = 0.64) +
     annotate(
-      geom = 'text', x = 1.5, y = 0.67,
+      geom = 'text', x = 2.5, y = 0.65,
       label = human_read_latex_pval(
         .x = human_read(t_test_low_mid$p.value)
       )
     ) +
-    annotate(geom = 'segment', x = 1.5, xend = 3, y = 0.69, yend = 0.69) +
-    annotate(geom = 'segment', x = 1.5, xend = 1.5, y = 0.68, yend = 0.69) +
-    annotate(geom = 'segment', x = 3, xend = 3, y = 0.68, yend = 0.69) +
+    annotate(geom = 'segment', x = 2.7, xend = 4, y = 0.69, yend = 0.69) +
+    annotate(geom = 'segment', x = 2.7, xend = 2.7, y = 0.68, yend = 0.69) +
+    annotate(geom = 'segment', x = 4, xend = 4, y = 0.68, yend = 0.69) +
     annotate(
-      geom = 'text', x = 2.25, y = 0.705,
+      geom = 'text', x = 3.5, y = 0.705,
       label = human_read_latex_pval(
         .x = human_read(t_test_high_lowmid$p.value)
       )
-    )  ->
+    )  +
+    annotate(geom = 'segment', x = 1, xend = 2.3, y = 0.69, yend = 0.69) +
+    annotate(geom = 'segment', x = 1, xend = 1, y = 0.68, yend = 0.69) +
+    annotate(geom = 'segment', x = 2.3, xend = 2.3, y = 0.68, yend = 0.69) +
+    annotate(
+      geom = 'text', x = 1.5, y = 0.705,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_human_lowmid$p.value)
+      )
+    ) ->
     mirna_snp_density_conservation_plot
   ggsave(
     filename = 'mirna-snp-density-conservation.pdf',
@@ -541,6 +565,322 @@ fn_pre_vs_flank <- function() {
     density_pre_flank_plot = density_pre_flank_plot
   )
 }
+fn_pre_vs_flank_conservation_high <- function() {
+  # dbSNP v151 689966785/3000000000 = 0.23
+  dplyr::bind_rows(
+    # pre-mirna
+    tibble::tibble(
+      density = data_snps_pre_no_mature %>% 
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`pre-prop-total`),
+      type = 'Pre-miRNA'
+    ),
+    # mature mirna
+    tibble::tibble(
+      density = data_snps_mature_no_seed %>% 
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`mature-prop-total`),
+      type = 'Mature miRNA'
+    ),
+    # seed
+    tibble::tibble(
+      density = data_snps_seed %>% 
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`seed-prop-total`),
+      type = 'Seed'
+    ),
+    # flank51
+    tibble::tibble(
+      density = data_snps_flank51 %>%
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`flank51-prop-total`),
+      type = 'Flank5-1'
+    ),
+    # flank52
+    tibble::tibble(
+      density = data_snps_flank52 %>%
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`flank52-prop-total`),
+      type = 'Flank5-2'
+    ),
+    # flank53
+    tibble::tibble(
+      density = data_snps_flank53 %>%
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`flank53-prop-total`),
+      type = 'Flank5-3'
+    ),
+    # flank31
+    tibble::tibble(
+      density = data_snps_flank31 %>%
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`flank31-prop-total`),
+      type = 'Flank3-1'
+    ),
+    # flank32
+    tibble::tibble(
+      density = data_snps_flank32 %>%
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`flank32-prop-total`),
+      type = 'Flank3-2'
+    ),
+    # flank33
+    tibble::tibble(
+      density = data_snps_flank33 %>%
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`flank33-prop-total`),
+      type = 'Flank3-3'
+    )
+  ) %>% 
+    dplyr::mutate(type = factor(
+      x = type, 
+      levels = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 'Mature miRNA', 'Seed',
+                 'Flank3-1', 'Flank3-2', 'Flank3-3'))
+    ) %>% 
+    dplyr::mutate(color = dplyr::case_when(
+      grepl(pattern = 'Flank5', x = type) ~ 'Flank5',
+      grepl(pattern = 'Flank3', x = type) ~ 'Flank3',
+      grepl(pattern = 'Pre', x = type) ~ 'Pre-miRNA',
+      grepl(pattern = 'Mature', x = type) ~ 'Mature miRNA',
+      grepl(pattern = 'Seed', x = type) ~ 'Seed'
+    )) %>% 
+    dplyr::mutate(color = factor(color, levels = c('Flank5', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3'))) ->
+    density_pre_flank
+  
+  t.test(
+    x = density_pre_flank %>% 
+      dplyr::filter(color %in% c('Pre-miRNA', 'Mature miRNA', 'Seed')) %>% 
+      dplyr::pull(density),
+    y = density_pre_flank %>% 
+      dplyr::filter(type == 'Flank3-1') %>% 
+      dplyr::pull(density)
+  ) %>%
+    broom::tidy() ->
+    t_test_pre_flank31
+  
+  t.test(
+    x = density_pre_flank %>% 
+      dplyr::filter(color %in% c('Pre-miRNA', 'Mature miRNA', 'Seed')) %>% 
+      dplyr::pull(density),
+    y = density_pre_flank %>% 
+      dplyr::filter(type == 'Flank5-1') %>% 
+      dplyr::pull(density)
+  ) %>%
+    broom::tidy() ->
+    t_test_pre_flank51
+  
+  t.test(
+    x = density_pre_flank %>% 
+      dplyr::filter(color %in% c('Pre-miRNA', 'Mature miRNA', 'Seed')) %>% 
+      dplyr::pull(density),
+    y = density_pre_flank %>% 
+      dplyr::filter(type %in% c('Flank3-2', 'Flank3-3')) %>% 
+      dplyr::pull(density)
+  ) %>%
+    broom::tidy() ->
+    t_test_pre_flank323
+  
+  t.test(
+    x = density_pre_flank %>% 
+      dplyr::filter(color %in% c('Pre-miRNA', 'Mature miRNA', 'Seed')) %>% 
+      dplyr::pull(density),
+    y = density_pre_flank %>% 
+      dplyr::filter(type %in% c('Flank5-2', 'Flank5-3')) %>% 
+      dplyr::pull(density)
+  ) %>%
+    broom::tidy() ->
+    t_test_pre_flank523
+  
+  snp_density <- 689966785/3000000000 # dbSNP v151
+  
+  density_pre_flank %>% 
+    dplyr::mutate(density = ifelse(density > 0.7, 0.7, density)) %>% 
+    ggplot(aes(x = type, y = density, fill = color)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(
+      limits = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3-1','Flank3-2', 'Flank3-3'),
+      labels = c('3', '2', '1', 'Precusor', 'Mature', 'Seed', '1', '2', '3')
+    ) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
+    scale_fill_manual(values = color_palletes[c('Flank5', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3' )]) +
+    labs(x = '', y = 'SNP density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black'),
+      legend.position = 'none'
+    ) +
+    # miRNA
+    annotate(geom = 'segment', x = 3.7, xend = 6.3, y = 0.71, yend = 0.71) +
+    # flank51
+    annotate(geom = 'segment', x = 3, xend = 4.93, y = 0.72, yend = 0.72) +
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.6, yend = 0.72) +
+    annotate(geom = 'segment', x = 2.9, xend = 3.1, y = 0.6, yend = 0.6) +
+    annotate(geom = 'segment', x = 4.93, xend = 4.93, y = 0.71, yend = 0.72) +
+    annotate(
+      geom = 'text', x = 4, y = 0.74,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank51$p.value)
+      )
+    ) +
+    # flank31
+    annotate(geom = 'segment', x = 5.03, xend = 7, y = 0.72, yend = 0.72) +
+    annotate(geom = 'segment', x = 5.03, xend = 5.03, y = 0.71, yend = 0.72) +
+    annotate(geom = 'segment', x = 7, xend = 7, y = 0.6, yend = 0.72) +
+    annotate(geom = 'segment', x= 6.9, xend = 7.1, y = 0.6, yend = 0.6) +
+    annotate(
+      geom = 'text', x = 6.2, y = 0.74,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank31$p.value)
+      )
+    ) +
+    # flank5 32
+    annotate(geom = 'segment', x = 0.7, xend = 2.3, y = 0.6, yend = 0.6) +
+    annotate(geom = 'segment', x = 1.5, xend = 4.93, y = 0.77, yend = 0.77) +
+    annotate(geom = 'segment', x = 1.5, xend = 1.5, y = 0.6, yend = 0.77) +
+    annotate(geom = 'segment', x = 4.93, xend = 4.93, y = 0.76, yend = 0.77) +
+    annotate(
+      geom = 'text', x = 3, y = 0.79,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank523$p.value)
+      )
+    ) +
+    # flank3 32
+    annotate(geom = 'segment', x = 7.7, xend = 9.3, y = 0.6, yend = 0.6) +
+    annotate(geom = 'segment', x = 5.03, xend = 8.5, y = 0.77, yend = 0.77) +
+    annotate(geom = 'segment', x = 5.03, xend = 5.03, y = 0.76, yend = 0.77) +
+    annotate(geom = 'segment', x = 8.5, xend = 8.5, y = 0.6, yend = 0.77) +
+    annotate(
+      geom = 'text', x = 7, y = 0.79,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_flank323$p.value)
+      )
+    ) +
+    coord_cartesian(xlim=c(1,9), ylim=c(0,0.83), clip="off") +
+    annotate(geom = 'segment', x = 0.8, xend = 3.2, y = -0.075, yend = -0.075) +
+    annotate(geom = 'text', x = 2, y = -0.09, label = "5' flanking regions") +
+    
+    annotate(geom = 'segment', x = 6.8, xend = 9.2, y = -0.075, yend = -0.075) +
+    annotate(geom = 'text', x = 8, y = -0.09, label = "3' flanking regions") +
+    
+    annotate(geom = 'segment', x = 3.5, xend = 6.3, y = -0.075, yend = -0.075) +
+    annotate(geom = 'text', x = 5, y = -0.09, label = "miRNA regions") ->
+    density_pre_flank_plot
+  
+  ggsave(
+    filename = 'snp-density-pre-mirna-flanking-region-new-high-conservation.pdf',
+    plot = density_pre_flank_plot,
+    device = 'pdf',
+    path = path_out,
+    width = 6, height = 6
+  )
+  
+  density_pre_flank %>% 
+    dplyr::group_by(type) %>% 
+    dplyr::summarise(m = mean(density), s = sd(density)) %>% 
+    dplyr::rename('Average SNP density' = m, 'SD SNP density' = s, Region = type) ->
+    density_pre_flank_table
+  
+  list(
+    density_pre_flank_table = density_pre_flank_table,
+    density_pre_flank_plot = density_pre_flank_plot
+  )
+}
+fn_pre_vs_flank_conservation <- function() {
+  # dbSNP v151 689966785/3000000000 = 0.23
+  dplyr::bind_rows(
+    # pre-mirna
+    tibble::tibble(
+      density = data_snps_pre_no_mature %>% 
+        dplyr::pull(`pre-prop-total`),
+      type = 'Pre-miRNA',
+      ave_score = data_snps_pre_no_mature %>% 
+        dplyr::pull(ave_score)
+    ),
+    # mature mirna
+    tibble::tibble(
+      density = data_snps_mature_no_seed %>% 
+        dplyr::pull(`mature-prop-total`),
+      type = 'Mature miRNA',
+      ave_score = data_snps_mature_no_seed %>% 
+        dplyr::pull(ave_score)
+    ),
+    # seed
+    tibble::tibble(
+      density = data_snps_seed %>% 
+        dplyr::pull(`seed-prop-total`),
+      type = 'Seed',
+      ave_score = data_snps_seed %>% 
+        dplyr::pull(ave_score)
+    )
+  ) %>% 
+    dplyr::mutate(type = factor(
+      x = type, 
+      levels = c('Pre-miRNA', 'Mature miRNA', 'Seed'))
+    ) %>% 
+    dplyr::mutate(color = dplyr::case_when(
+      grepl(pattern = 'Pre', x = type) ~ 'Pre-miRNA',
+      grepl(pattern = 'Mature', x = type) ~ 'Mature miRNA',
+      grepl(pattern = 'Seed', x = type) ~ 'Seed'
+    )) %>% 
+    dplyr::mutate(color = factor(color, levels = c('Pre-miRNA', 'Mature miRNA', 'Seed'))) %>% 
+    dplyr::mutate(score_range = dplyr::case_when(
+      ave_score == 0 ~ 'Human',
+      ave_score <= 0.02 & ave_score > 0 ~ 'Low',
+      ave_score < 0.98 & ave_score > 0.02 ~ 'Mid',
+      ave_score >= 0.98 ~ 'High'
+    )) %>% 
+    dplyr::mutate(score_range = factor(score_range, levels = c('Human', 'Low', 'Mid', 'High')))->
+    density_pre_flank
+  
+  snp_density <- 689966785/3000000000 # dbSNP v151
+  
+  density_pre_flank %>% 
+    dplyr::mutate(density = ifelse(density > 0.7, 0.7, density)) %>% 
+    ggplot(aes(x = type, y = density, fill = color)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(
+      limits = c('Pre-miRNA', 'Mature miRNA', 'Seed'),
+      labels = c('Precusor', 'Mature', 'Seed')
+    ) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
+    scale_fill_manual(values = color_palletes[c('Pre-miRNA', 'Mature miRNA', 'Seed')]) +
+    labs(x = '', y = 'SNP density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black', angle = 45, vjust = 1, hjust = 1),
+      legend.position = 'none',
+      strip.background = element_rect(fill = NA, color = 'black')
+    ) +
+    facet_grid(.~score_range, labeller = as_labeller(conservation_name)) ->
+    density_pre_flank_plot
+  
+  ggsave(
+    filename = 'snp-density-pre-mirna-flanking-region-new-conservation.pdf',
+    plot = density_pre_flank_plot,
+    device = 'pdf',
+    path = path_out,
+    width = 7, height = 4
+  )
+  
+  density_pre_flank %>% 
+    dplyr::group_by(type) %>% 
+    dplyr::summarise(m = mean(density), s = sd(density)) %>% 
+    dplyr::rename('Average SNP density' = m, 'SD SNP density' = s, Region = type) ->
+    density_pre_flank_table
+  
+  list(
+    density_pre_flank_table = density_pre_flank_table,
+    density_pre_flank_plot = density_pre_flank_plot
+  )
+}
 fn_pre_vs_flank_common <- function() {
   # dbSNP v151 689966785/3000000000 = 0.23
   dplyr::bind_rows(
@@ -670,17 +1010,23 @@ fn_pre_vs_mature_vs_seed <- function() {
   dplyr::bind_rows(
     # pre-mirna
     tibble::tibble(
-      density = data_snps_pre_no_mature$`pre-prop-total`,
+      density = data_snps_pre_no_mature %>% 
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`pre-prop-total`),
       type = 'Pre-miRNA'
     ),
     # mature 
     tibble::tibble(
-      density = data_snps_mature_no_seed$`mature-prop-total`,
+      density = data_snps_mature_no_seed %>% 
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`mature-prop-total`),
       type = 'Mature miRNA'
     ),
     # seed
     tibble::tibble(
-      density = data_snps_seed$`seed-prop-total`,
+      density = data_snps_seed %>% 
+        dplyr::filter(score_range == 'High') %>% 
+        dplyr::pull(`seed-prop-total`) ,
       type = 'Seed'
     )
   ) %>% 
@@ -691,29 +1037,45 @@ fn_pre_vs_mature_vs_seed <- function() {
     density_pre_mature_seed
 
   t.test(
-    x = density_pre_mature_seed %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
-    y = density_pre_mature_seed %>% dplyr::filter(type == 'Mature miRNA') %>% dplyr::pull(density)
+    x = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Pre-miRNA') %>% 
+      dplyr::pull(density),
+    y = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Mature miRNA') %>% 
+      dplyr::pull(density)
   ) %>% 
     broom::tidy() ->
     t_test_pre_mature
   
   t.test(
-    x = density_pre_mature_seed %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
-    y = density_pre_mature_seed %>% dplyr::filter(type == 'Seed') %>% dplyr::pull(density)
+    x = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Pre-miRNA') %>% 
+      dplyr::pull(density),
+    y = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Seed') %>% 
+      dplyr::pull(density)
   ) %>% 
     broom::tidy() ->
     t_test_pre_seed
   
   t.test(
-    x = density_pre_mature_seed %>% dplyr::filter(type == 'Pre-miRNA') %>% dplyr::pull(density),
-    y = density_pre_mature_seed %>% dplyr::filter(type == 'Mature miRNA') %>% dplyr::pull(density)
+    x = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Pre-miRNA') %>% 
+      dplyr::pull(density),
+    y = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Mature miRNA') %>% 
+      dplyr::pull(density)
   ) %>% 
     broom::tidy() ->
     t_test_pre_mature
   
   t.test(
-    x = density_pre_mature_seed %>% dplyr::filter(type == 'Seed') %>% dplyr::pull(density),
-    y = density_pre_mature_seed %>% dplyr::filter(type == 'Mature miRNA') %>% dplyr::pull(density)
+    x = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Seed') %>% 
+      dplyr::pull(density),
+    y = density_pre_mature_seed %>% 
+      dplyr::filter(type == 'Mature miRNA') %>% 
+      dplyr::pull(density)
   ) %>% 
     broom::tidy() ->
     t_test_mature_seed
@@ -787,42 +1149,76 @@ fn_pre_vs_mature_vs_seed <- function() {
   )
 }
 fn_mirna_exon_intron_density <- function() {
+  
   snp_density <- 689966785/3000000000 # dbSNP v151
   
   t.test(
     x = data_snps_pre %>% 
+  
       dplyr::filter(region == "3'UTR") %>% 
       dplyr::pull(`pre-prop-total`),
     y = data_snps_pre %>% 
+  
       dplyr::filter(region %in% c('Intergenic', 'Intronic')) %>% 
       dplyr::pull(`pre-prop-total`)
   ) %>% 
     broom::tidy() ->
-    t_test_pre_exon_intron_inter
+    t_test_pre_3utr_intron_inter
   
   t.test(
     x = data_snps_pre %>% 
+  
       dplyr::filter(region == 'Exonic') %>% 
       dplyr::pull(`pre-prop-total`),
     y = data_snps_pre %>% 
-      dplyr::filter(region %in% c('Intergenic', 'Intronic')) %>% 
+  
+      dplyr::filter(region == "3'UTR") %>% 
       dplyr::pull(`pre-prop-total`)
   ) %>% 
     broom::tidy() ->
-    t_test_pre_exon_intron_inter
+    t_test_pre_exon_3utr
   
   t.test(
     x = data_snps_pre %>% 
+  
+      dplyr::filter(region == 'Exonic') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre %>% 
+  
+      dplyr::filter(region == "5'UTR") %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_exon_5utr
+  
+  t.test(
+    x = data_snps_pre %>% 
+  
       dplyr::filter(region == 'Intergenic') %>% 
       dplyr::pull(`pre-prop-total`),
     y = data_snps_pre %>% 
+  
       dplyr::filter(region == 'Intronic') %>% 
       dplyr::pull(`pre-prop-total`)
   ) %>% 
     broom::tidy() ->
     t_test_pre_intron_inter
   
+  t.test(
+    x = data_snps_pre %>% 
+  
+      dplyr::filter(region == 'Exonic') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre %>% 
+  
+      dplyr::filter(region %in% c('Intergenic', 'Intronic')) %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) %>% 
+    broom::tidy() ->
+    t_test_pre_exon_intron_inter
+  
   data_snps_pre %>% 
+
     dplyr::mutate(density = ifelse(`pre-prop-total` > 0.7, 0.7, `pre-prop-total`)) %>%
     ggplot(aes(x = region, y = density, fill = region)) +
     stat_boxplot(geom = 'errorbar', width = 0.3) +
@@ -842,22 +1238,52 @@ fn_mirna_exon_intron_density <- function() {
       axis.text.x = element_text(color = 'black'),
       legend.position = 'none'
     ) +
-    
+    # intergenic intron
     annotate(geom = 'segment', x = 4, xend = 5, y = 0.61, yend = 0.61) +
-    annotate(geom = 'segment', x = 4, xend = 4, y = 0.60, yend = 0.61) + 
-    annotate(geom = 'segment', x = 5, xend = 5, y = 0.60, yend = 0.61) +
+    annotate(geom = 'segment', x = 4, xend = 4, y = 0.605, yend = 0.61) + 
+    annotate(geom = 'segment', x = 5, xend = 5, y = 0.605, yend = 0.61) +
     annotate(
       geom = 'text', x = 4.5, y = 0.62,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_intron_inter$p.value)
       )
     ) +
-    
-    annotate(geom = 'segment', x = 2, xend = 4.5, y = 0.66, yend = 0.66) +
-    annotate(geom = 'segment', x = 2, xend = 2, y = 0.65, yend = 0.66) +
-    annotate(geom = 'segment', x = 4.5, xend = 4.5, y = 0.65, yend = 0.66) +
+    # 3'utr intergenic intron
+    annotate(geom = 'segment', x = 3, xend = 4.5, y = 0.64, yend = 0.64) +
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.635, yend = 0.64) + 
+    annotate(geom = 'segment', x = 4.5, xend = 4.5, y = 0.635, yend = 0.64) +
     annotate(
-      geom = 'text', x = 3.5, y = 0.67,
+      geom = 'text', x = 3.75, y = 0.65,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_3utr_intron_inter$p.value)
+      )
+    ) +
+    # 5'utr exon
+    annotate(geom = 'segment', x = 1, xend = 2, y = 0.71, yend = 0.71) +
+    annotate(geom = 'segment', x = 1, xend = 1, y = 0.705, yend = 0.71) +
+    annotate(geom = 'segment', x = 2, xend = 2, y = 0.705, yend = 0.71) +
+    annotate(
+      geom = 'text', x = 1.5, y = 0.72,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_exon_5utr$p.value)
+      )
+    ) + 
+    # 3'utr exon
+    annotate(geom = 'segment', x = 2, xend = 3, y = 0.66, yend = 0.66) +
+    annotate(geom = 'segment', x = 2, xend = 2, y = 0.655, yend = 0.66) +
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.655, yend = 0.66) +
+    annotate(
+      geom = 'text', x = 2.5, y = 0.67,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_pre_exon_3utr$p.value)
+      )
+    ) +
+    # intergenic intron exon
+    annotate(geom = 'segment', x = 2.1, xend = 4.5, y = 0.71, yend = 0.71) +
+    annotate(geom = 'segment', x = 2.1, xend = 2.1, y = 0.705, yend = 0.71) +
+    annotate(geom = 'segment', x = 4.5, xend = 4.5, y = 0.705, yend = 0.71) +
+    annotate(
+      geom = 'text', x = 3.25, y = 0.72,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_exon_intron_inter$p.value)
       )
@@ -870,6 +1296,61 @@ fn_mirna_exon_intron_density <- function() {
     device = 'pdf',
     path = path_out,
     width = 6, height = 6
+  )
+  
+  data_snps_pre %>% 
+    dplyr::group_by(region) %>% 
+    dplyr::summarise(m = mean(`pre-prop-total`), s = sd(`pre-prop-total`)) %>% 
+    dplyr::rename('Mean SNP density' = m, 'SD SNP density' = s, Region = region) ->
+    density_exon_intron_inter_table
+  
+  list(
+    density_exon_intron_inter_table = density_exon_intron_inter_table,
+    density_exon_intron_inter_plot = density_exon_intron_inter_plot
+  )
+  
+}
+fn_mirna_exon_intron_density_conservation <- function() {
+  
+  snp_density <- 689966785/3000000000 # dbSNP v151
+  conservation_name <- c('Human' = 'Human specific', 'Low' = 'Non-conserved', 'Mid' = 'Lowly conserved', 'High' = 'Highly conserved')
+  data_snps_pre %>% 
+    dplyr::mutate(score_range = dplyr::case_when(
+      ave_score == 0 ~ 'Human',
+      ave_score <= 0.02 & ave_score > 0 ~ 'Low',
+      ave_score < 0.98 & ave_score > 0.02 ~ 'Mid',
+      ave_score >= 0.98 ~ 'High'
+    )) %>% 
+    dplyr::mutate(score_range = factor(score_range, levels = c('Human', 'Low', 'Mid', 'High'))) %>% 
+    dplyr::mutate(density = ifelse(`pre-prop-total` > 0.7, 0.7, `pre-prop-total`)) %>%
+    ggplot(aes(x = region, y = density, fill = region)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(
+      limits = c("5'UTR", 'Exonic', "3'UTR", 'Intronic', 'Intergenic'),
+      labels = c("5'UTR", 'Exon',"3'UTR" , 'Intron', 'Intergenic')
+    ) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
+    scale_fill_manual(values = color_palletes[c("5'UTR", 'Exonic', 'Intronic', "3'UTR", 'Intergenic')]) +
+    labs(x = '', y = 'SNP density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black', angle = 45, hjust = 1, vjust = 1),
+      legend.position = 'none',
+      strip.background = element_rect(fill = NA, color = 'black')
+    ) +
+    facet_grid(.~score_range, labeller = as_labeller(conservation_name)) ->
+    density_exon_intron_inter_plot
+  
+  ggsave(
+    filename = 'snp-density-exon-intron-integenic-region-conservation.pdf',
+    plot = density_exon_intron_inter_plot,
+    device = 'pdf',
+    path = path_out,
+    width = 7, height = 4
   )
   
   data_snps_pre %>% 
@@ -1012,7 +1493,7 @@ data_snps %>%
   dplyr::select(-data) %>%
   tidyr::unnest() %>%
   dplyr::mutate(`pre-length` = `pre-length` - `mature-length`, `pre-total` = `pre-total` - `mature-total`, `pre-rare` = `pre-rare` - `mature-rare`, `pre-common` = `pre-common` - `mature-common`) %>%
-  dplyr::select(`pre-mirna`, `pre-length`, `pre-total`, `pre-rare`, `pre-common`, gene_id, `host gene`, direction, region) %>%
+  dplyr::select(`pre-mirna`, `pre-length`, `pre-total`, `pre-rare`, `pre-common`, gene_id, `host gene`, direction, region, ave_score, score_range) %>%
   dplyr::distinct() %>% 
   dplyr::mutate('pre-prop-total' = `pre-total`/`pre-length`) %>% 
   dplyr::mutate('pre-prop-rare' = `pre-rare`/`pre-length`) %>% 
@@ -1051,6 +1532,12 @@ data_snps %>%
 # Pre-miRNA vs. Flank region ----------------------------------------------
 
 density_pre_flank_plot_table <- fn_pre_vs_flank()
+
+
+
+# Conservation ------------------------------------------------------------
+
+fn_conservation_score_correlation()
 
 # Pre-miRNA vs. mature-miRNA vs. Seed -------------------------------------
 
