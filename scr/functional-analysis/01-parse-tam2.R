@@ -167,7 +167,7 @@ fn_conservation_score_correlation <- function() {
     
   
   # boxplot
-  conservation_name <- c('Human Specific\n(18)', 'Non-conserved\n(599)', 'Lowly conserved\n(1058)', 'Highly conserved\n(243)')
+  conservation_name <- c('Human Specific\n(18, 1%)', 'Non-conserved\n(599, 21.2%)', 'Lowly conserved\n(1058, 55.1%)', 'Highly conserved\n(243, 12.7%)')
   
   t.test(
     x = data_snps_pre_cons_score %>% 
@@ -224,13 +224,13 @@ fn_conservation_score_correlation <- function() {
     annotate(geom = 'segment', x = 2, xend = 2, y = 0.63, yend = 0.64) +
     annotate(geom = 'segment', x = 3, xend = 3, y = 0.63, yend = 0.64) +
     annotate(
-      geom = 'text', x = 2.5, y = 0.65,
+      geom = 'text', x = 2.5, y = 0.655,
       label = human_read_latex_pval(
         .x = human_read(t_test_low_mid$p.value)
       )
     ) +
-    annotate(geom = 'segment', x = 2.7, xend = 4, y = 0.69, yend = 0.69) +
-    annotate(geom = 'segment', x = 2.7, xend = 2.7, y = 0.68, yend = 0.69) +
+    annotate(geom = 'segment', x = 2.55, xend = 4, y = 0.69, yend = 0.69) +
+    annotate(geom = 'segment', x = 2.55, xend = 2.55, y = 0.68, yend = 0.69) +
     annotate(geom = 'segment', x = 4, xend = 4, y = 0.68, yend = 0.69) +
     annotate(
       geom = 'text', x = 3.5, y = 0.705,
@@ -238,15 +238,15 @@ fn_conservation_score_correlation <- function() {
         .x = human_read(t_test_high_lowmid$p.value)
       )
     )  +
-    annotate(geom = 'segment', x = 1, xend = 2.3, y = 0.69, yend = 0.69) +
+    annotate(geom = 'segment', x = 1, xend = 2.45, y = 0.69, yend = 0.69) +
     annotate(geom = 'segment', x = 1, xend = 1, y = 0.68, yend = 0.69) +
-    annotate(geom = 'segment', x = 2.3, xend = 2.3, y = 0.68, yend = 0.69) +
+    annotate(geom = 'segment', x = 2.45, xend = 2.45, y = 0.68, yend = 0.69) +
     annotate(
       geom = 'text', x = 1.5, y = 0.705,
       label = human_read_latex_pval(
         .x = human_read(t_test_human_lowmid$p.value)
       )
-    ) ->
+    )->
     mirna_snp_density_conservation_plot
   ggsave(
     filename = 'mirna-snp-density-conservation.pdf',
@@ -1011,21 +1011,18 @@ fn_pre_vs_mature_vs_seed <- function() {
     # pre-mirna
     tibble::tibble(
       density = data_snps_pre_no_mature %>% 
-        dplyr::filter(score_range == 'High') %>% 
         dplyr::pull(`pre-prop-total`),
       type = 'Pre-miRNA'
     ),
     # mature 
     tibble::tibble(
       density = data_snps_mature_no_seed %>% 
-        dplyr::filter(score_range == 'High') %>% 
         dplyr::pull(`mature-prop-total`),
       type = 'Mature miRNA'
     ),
     # seed
     tibble::tibble(
       density = data_snps_seed %>% 
-        dplyr::filter(score_range == 'High') %>% 
         dplyr::pull(`seed-prop-total`) ,
       type = 'Seed'
     )
@@ -1148,6 +1145,7 @@ fn_pre_vs_mature_vs_seed <- function() {
     density_pre_mature_seed_plot = density_pre_mature_seed_plot
   )
 }
+
 fn_mirna_exon_intron_density <- function() {
   
   snp_density <- 689966785/3000000000 # dbSNP v151
@@ -1243,7 +1241,7 @@ fn_mirna_exon_intron_density <- function() {
     annotate(geom = 'segment', x = 4, xend = 4, y = 0.605, yend = 0.61) + 
     annotate(geom = 'segment', x = 5, xend = 5, y = 0.605, yend = 0.61) +
     annotate(
-      geom = 'text', x = 4.5, y = 0.62,
+      geom = 'text', x = 4.5, y = 0.625,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_intron_inter$p.value)
       )
@@ -1253,17 +1251,17 @@ fn_mirna_exon_intron_density <- function() {
     annotate(geom = 'segment', x = 3, xend = 3, y = 0.635, yend = 0.64) + 
     annotate(geom = 'segment', x = 4.5, xend = 4.5, y = 0.635, yend = 0.64) +
     annotate(
-      geom = 'text', x = 3.75, y = 0.65,
+      geom = 'text', x = 3.75, y = 0.655,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_3utr_intron_inter$p.value)
       )
     ) +
     # 5'utr exon
-    annotate(geom = 'segment', x = 1, xend = 2, y = 0.71, yend = 0.71) +
+    annotate(geom = 'segment', x = 1, xend = 1.95, y = 0.71, yend = 0.71) +
     annotate(geom = 'segment', x = 1, xend = 1, y = 0.705, yend = 0.71) +
-    annotate(geom = 'segment', x = 2, xend = 2, y = 0.705, yend = 0.71) +
+    annotate(geom = 'segment', x = 1.95, xend = 1.95, y = 0.705, yend = 0.71) +
     annotate(
-      geom = 'text', x = 1.5, y = 0.72,
+      geom = 'text', x = 1.5, y = 0.725,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_exon_5utr$p.value)
       )
@@ -1273,17 +1271,17 @@ fn_mirna_exon_intron_density <- function() {
     annotate(geom = 'segment', x = 2, xend = 2, y = 0.655, yend = 0.66) +
     annotate(geom = 'segment', x = 3, xend = 3, y = 0.655, yend = 0.66) +
     annotate(
-      geom = 'text', x = 2.5, y = 0.67,
+      geom = 'text', x = 2.5, y = 0.675,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_exon_3utr$p.value)
       )
     ) +
     # intergenic intron exon
-    annotate(geom = 'segment', x = 2.1, xend = 4.5, y = 0.71, yend = 0.71) +
-    annotate(geom = 'segment', x = 2.1, xend = 2.1, y = 0.705, yend = 0.71) +
+    annotate(geom = 'segment', x = 2.05, xend = 4.5, y = 0.71, yend = 0.71) +
+    annotate(geom = 'segment', x = 2.05, xend = 2.05, y = 0.705, yend = 0.71) +
     annotate(geom = 'segment', x = 4.5, xend = 4.5, y = 0.705, yend = 0.71) +
     annotate(
-      geom = 'text', x = 3.25, y = 0.72,
+      geom = 'text', x = 3.25, y = 0.725,
       label = human_read_latex_pval(
         .x = human_read(t_test_pre_exon_intron_inter$p.value)
       )
@@ -1418,6 +1416,102 @@ fn_tam_cluster <- function() {
     broom::tidy()
 }
 
+fn_tam_disease <- function() {
+  tb_tam %>% dplyr::filter(type == 'HMDD') %>% dplyr::select(-1) -> tb_tam_hmdd
+  
+  data_snps_pre_name %>% 
+    dplyr::left_join(tb_tam_hmdd, by = 'mirna') %>% 
+    dplyr::select(-c(2, 3, 4, 5, 6, 7, 8, 13, 14, 15)) %>% 
+    dplyr::group_by(`pre-mirna`, region, ave_score, score_range, `pre-prop-total`) %>% 
+    tidyr::nest() %>% 
+    dplyr::mutate(n_hmdd = purrr::map_dbl(.x = data, .f = function(.x) {
+      if (all(is.na(.x$name))) {
+        0
+      } else {
+        .x %>% dplyr::distinct() %>% nrow()
+      }
+    })) %>% 
+    dplyr::select(-data) %>% 
+    dplyr::mutate(
+      disease = dplyr::case_when(
+        n_hmdd == 0 ~ 'Non-disease',
+        n_hmdd == 1 ~ 'Few',
+        n_hmdd > 1 ~ 'Many'
+      )
+    ) %>% 
+    dplyr::mutate(disease = factor(x = disease, levels = c('Many', 'Few', 'Non-disease')))-> 
+    data_snps_pre_name_hmdd
+  data_snps_pre_name_hmdd$disease %>% table()
+  
+  t.test(
+    x = data_snps_pre_name_hmdd %>% 
+      dplyr::filter(disease == 'Non-disease') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre_name_hmdd %>% 
+      dplyr::filter(disease == 'Few') %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) -> 
+    t_test_hmdd_few_non
+  
+  t.test(
+    x = data_snps_pre_name_hmdd %>% 
+      dplyr::filter(disease == 'Many') %>% 
+      dplyr::pull(`pre-prop-total`),
+    y = data_snps_pre_name_hmdd %>% 
+      dplyr::filter(disease == 'Few') %>% 
+      dplyr::pull(`pre-prop-total`)
+  ) ->
+    t_test_few_many
+  snp_density <- 689966785/3000000000 # dbSNP v151
+  data_snps_pre_name_hmdd %>% 
+    dplyr::group_by(disease) %>% 
+    dplyr::summarise(m = mean(`pre-prop-total`))
+  
+  data_snps_pre_name_hmdd %>% 
+    dplyr::mutate(`pre-prop-total` = ifelse(`pre-prop-total` > 0.7, 0.7, `pre-prop-total`)) %>% 
+    ggplot(aes(x = disease, y = `pre-prop-total`, fill = `disease`)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
+    scale_x_discrete(
+      limits = c('Many', 'Few', 'Non-disease'),
+      labels = c('>1-disease\n(583, 30.4%)', '1-disease\n(238, 12.4%)', '0-disease\n(1097, 57.2%)')
+    ) +
+    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
+    scale_fill_manual(values = unname(color_palletes[c('Pre-miRNA', 'Mature miRNA', 'Seed')])) +
+    labs(x = '', y = 'SNP density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black'),
+      legend.position = 'none'
+    ) +
+    # Many few
+    annotate(geom = 'segment', x = 1, xend = 1.95, y = 0.615, yend = 0.615) +
+    annotate(geom = 'segment', x = 1, xend = 1, y = 0.61, yend = 0.615) + 
+    annotate(geom = 'segment', x = 1.95, xend = 1.95, y = 0.61, yend = 0.615) +
+    annotate(
+      geom = 'text', x = 1.5, y = 0.63,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_few_many$p.value)
+      )
+    ) +
+    #  few non
+    annotate(geom = 'segment', x = 2.05, xend = 3, y = 0.615, yend = 0.615) +
+    annotate(geom = 'segment', x = 2.05, xend = 2.05, y = 0.61, yend = 0.615) + 
+    annotate(geom = 'segment', x = 3, xend = 3, y = 0.61, yend = 0.615) +
+    annotate(
+      geom = 'text', x = 2.5, y = 0.63,
+      label = human_read_latex_pval(
+        .x = human_read(t_test_hmdd_few_non$p.value)
+      )
+    ) ->
+    disease_snp_density
+  
+  
+  
+}
 # Split data_snps to regions-----------------------------------------------
 
 data_snps %>% 
@@ -1532,7 +1626,7 @@ data_snps %>%
 # Pre-miRNA vs. Flank region ----------------------------------------------
 
 density_pre_flank_plot_table <- fn_pre_vs_flank()
-
+density_pre_flank_plot_table_conservation <- fn_pre_vs_flank_conservation()
 
 
 # Conservation ------------------------------------------------------------
@@ -1543,11 +1637,11 @@ fn_conservation_score_correlation()
 
 density_pre_mature_seed_plot_table <- fn_pre_vs_mature_vs_seed()
 
-
 # Pre-miRNA vs. Exon ----------------------------------------------------
 
 fn_mirna_context_pie()
 density_exon_intron_inter_plot_table <- fn_mirna_exon_intron_density()
+fn_mirna_exon_intron_density_conservation()
 
 
 # Functional --------------------------------------------------------------
@@ -1568,6 +1662,10 @@ tb_tam %>%
 
 
 # Cluster -----------------------------------------------------------------
+tb_tam
+
+# Disease -----------------------------------------------------------------
+
 
 
 
