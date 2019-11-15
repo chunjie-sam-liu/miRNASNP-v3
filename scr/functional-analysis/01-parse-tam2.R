@@ -1412,7 +1412,11 @@ fn_tam_disease <- function() {
     ) %>% 
     dplyr::mutate(disease = factor(x = disease, levels = c('Many', 'Few', 'Non-disease')))-> 
     data_snps_pre_name_hmdd
-  data_snps_pre_name_hmdd$disease %>% table()
+  
+  data_snps_pre_name_hmdd %>% 
+    ggplot(aes(x = disease, y = score_range)) +
+    geom_jitter()
+  
   
   t.test(
     x = data_snps_pre_name_hmdd %>% 
@@ -1495,9 +1499,6 @@ fn_tam_function <- function() {
     dplyr::left_join(tb_tam_func, by = 'mirna') %>% 
     dplyr::select(-c(2, 3, 4, 5, 6, 7, 8, 13, 14, 15)) %>% 
     dplyr::mutate(name = ifelse(is.na(name), 'Non-function', name)) %>% 
-    dplyr::group_by(name) %>% 
-    dplyr::summarise(m = mean(`pre-prop-total`)) %>% 
-    dplyr::arrange(m) %>% View()
     dplyr::group_by(`pre-mirna`, region, ave_score, score_range, `pre-prop-total`) %>% 
     tidyr::nest() %>% 
     dplyr::mutate(n_func = purrr::map_dbl(.x = data, .f = function(.x) {
