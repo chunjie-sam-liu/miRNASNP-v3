@@ -1417,7 +1417,6 @@ fn_tam_disease <- function() {
     ggplot(aes(x = disease, y = score_range)) +
     geom_jitter()
   
-  
   t.test(
     x = data_snps_pre_name_hmdd %>% 
       dplyr::filter(disease == 'Non-disease') %>% 
