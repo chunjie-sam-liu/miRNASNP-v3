@@ -416,3 +416,13 @@ span.document {
   padding-bottom: 3px;
   border-bottom: 2px solid red;
 }
+.alert-info-mature {
+  color: #f9f9f9;
+  background-color: #47899c;
+  border-color: #47899c;
+}
+.alert-danger-pre {
+  color: #f9f9f9;
+  background-color: #a94442;
+  border-color: #a94442;
+}

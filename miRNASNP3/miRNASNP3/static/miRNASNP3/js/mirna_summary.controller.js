@@ -67,6 +67,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.mirna_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
+                    data_list[i].snp_seed_sum=Number(data_list[i].snp_in_seed_singlepre)+Number(data_list[i].indel_in_seed)
+                    data_list[i].snp_mature_sum=Number(data_list[i].snp_in_mature_singlepre)+Number(data_list[i].indel_in_mature)
                     data_list[i].mutation_seed_sum= Number(data_list[i].cosmic_in_seed_singlepre)+Number(data_list[i].clinvar_in_seed_singlepre)+Number(data_list[i].snp_gwas_in_seed_singlepre)
                     data_list[i].mutation_mature_sum=Number(data_list[i].cosmic_in_mature_singlepre)+Number(data_list[i].clinvar_in_mature_singlepre)+Number(data_list[i].snp_gwas_in_mature_singlepre)
                     //console.log(data_list[i]['cosmic_in_mature'])
@@ -115,6 +117,8 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.mirna_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
+                    data_list[i].snp_seed_sum=Number(data_list[i].snp_in_seed_singlepre)+Number(data_list[i].indel_in_seed)
+                    data_list[i].snp_mature_sum=Number(data_list[i].snp_in_mature_singlepre)+Number(data_list[i].indel_in_mature)
                     data_list[i].mutation_seed_sum= Number(data_list[i].cosmic_in_seed_singlepre)+Number(data_list[i].clinvar_in_seed_singlepre)+Number(data_list[i].snp_gwas_in_seed_singlepre)
                     data_list[i].mutation_mature_sum=Number(data_list[i].cosmic_in_mature_singlepre)+Number(data_list[i].clinvar_in_mature_singlepre)+Number(data_list[i].snp_gwas_in_mature_singlepre)
                     //console.log(data_list[i]['cosmic_in_mature'])
@@ -191,6 +195,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.primir_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
+                    data_list[i].snp_sum=Number(data_list[i]._id.snp_in_pre)+Number(data_list[i]._id.indel_in_premir)
                     data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)+Number(data_list[i]._id.snp_gwas_in_pre)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }
@@ -234,6 +239,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                 var data_list=$scope.primir_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
+                    data_list[i].snp_sum=Number(data_list[i]._id.snv_in_pre)+Number(data_list[i]._id.indel_in_premir)
                     data_list[i].mutation_sum= Number(data_list[i]._id.cosmic_in_pri)+Number(data_list[i]._id.clinvar_in_pri)+Number(data_list[i]._id.snp_gwas_in_pre)
                     //console.log(data_list[i]['cosmic_in_mature'])
                 }

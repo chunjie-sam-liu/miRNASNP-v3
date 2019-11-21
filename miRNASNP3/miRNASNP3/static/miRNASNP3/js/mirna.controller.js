@@ -88,14 +88,24 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 console.log(response);
                 $scope.mirna_summary_list = response.data.mirna_summary_list;
                 $scope.mirna_summary_count=response.data.mirna_summary_count;
+                var indel_in_seed=0
+                var indel_in_mature=0
+                for(var i=0;i<$scope.mirna_summary_list.length;i++){
+                    indel_in_seed+=Number($scope.mirna_summary_list[i].indel_in_seed)
+                    indel_in_mature+=Number($scope.mirna_summary_list[i].indel_in_mature)
+                }
                 if($scope.mirna_summary_list.length>1){
                     $scope.mirna_table=1
                 }else{
                     $scope.mirna_table=0
                 }
                 $scope.mirna_summary_alias=$scope.mirna_summary_list[0]
-                $scope.mirna_summary_alias.snp_in_seed=Number($scope.mirna_summary_alias.snp_in_seed)
-                $scope.mirna_summary_alias.snp_in_mature=Number($scope.mirna_summary_alias.snp_in_mature)
+                $scope.mirna_summary_alias.snp_in_seed=Number($scope.mirna_summary_alias.snp_in_seed)+indel_in_seed
+                $scope.mirna_summary_alias.snp_in_matue=Number($scope.mirna_summary_alias.snp_in_matue)+indel_in_mature
+                console.log(indel_in_seed)
+                console.log(indel_in_mature)
+                console.log($scope.mirna_summary_alias.snp_in_seed)
+                console.log($scope.mirna_summary_alias.snp_in_mature)
                 $scope.mirna_summary_alias.variation_in_seed=Number($scope.mirna_summary_alias.cosmic_in_seed)+Number($scope.mirna_summary_alias.clinvar_in_seed)+Number($scope.mirna_summary_alias.snp_gwas_in_seed_singlepre)
                 $scope.mirna_summary_alias.variation_in_mature=Number($scope.mirna_summary_alias.cosmic_in_matue)+Number($scope.mirna_summary_alias.clinvar_in_matue)+Number($scope.mirna_summary_alias.snp_gwas_in_mature_singlepre)
             });

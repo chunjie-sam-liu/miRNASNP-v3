@@ -46,9 +46,8 @@
                     <td style="font-size: 18px;font-weight: bold">Host Gene
                     </td>
                     <td style="text-align: left" colspan="6">
-                        <!--span ng-if="premir_info.host_gene != 'NA'">{$premir_info.host_gene$}</span>
-                        <span ng-if="premir_info.host_gene == 'NA' ">intergenic</span-->
-                            {$premir_info.host$}
+                        <span ng-if="premir_info.host_gene[0].host_gene == '-'">{$premir_info.host_gene[0].region$}</span>
+                        <span ng-if="premir_info.host_gene[0].host_gene != '-' ">{$premir_info.host_gene[0].host_gene$}:{$premir_info.host_gene[0].region$}</span>
                     </td>
                 </tr>
                 <tr>

@@ -42,16 +42,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                 $scope.premir_info.cluster10k.substring(0,$scope.premir_info.cluster10k.length-1)
             }
             console.log($scope.premir_info.cluster10k)
-            if($scope.premir_info.host_gene.length==0){
-                $scope.premir_info.host='Intergenic'
-            }else{
-                $scope.premir_info.host=''
-                for(var i=0;i<$scope.premir_info.host_gene.length;i++){
-                    $scope.premir_info.host+=$scope.premir_info.host_gene[i]+'; '
-                }
-                $scope.premir_info.host.substring(0,$scope.premir_info.host.length-1)
-            }
-            console.log($scope.premir_info.host)
+            
             var pre_acc=[]
             var pre_pos=[]
             var mature={}
