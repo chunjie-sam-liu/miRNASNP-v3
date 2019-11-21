@@ -6,9 +6,9 @@
         You can click on your interest pre-miRNA in the following table to see details, including miRNA basic information and structure effect caused by SNPs/mutations in the pre-miRNA.
     </p-->
     <!--p>In this module, we provide information on the distribution of variations(dbSNP, COSMIC, ClinVar) in precursor miRNAs(pre-miRNAs). 
-        There are <span style="color: white;background-color: #c10808;" class="badge alert-danger">1,913</span> pre-miRNAs collected from mirBase v22. 
+        There are <span style="color: white;background-color: #c10808;" class="badge alert-danger-pre">1,913</span> pre-miRNAs collected from mirBase v22. 
         User can click on the pre-miRNA you are interested in in the table below to see the structure changes caused by variations.</p-->
-    <p>In this module, <span class="badge alert-danger">48,024,100</span> SNPs/PRVs in <span class="badge alert-danger">1,913</span> precurser miRNAs was listed below. Red link in table presents the details of the precurser miRNA, including the secondary structure of pre-miRNA and variation impact on it. Blue link in table redirect
+    <p>In this module, <span class="badge alert-danger-pre">46,826</span> SNPs and <span class="badge alert-danger-pre">6,003</span> DRVs in <span class="badge alert-danger-pre">1,913</span> precurser miRNAs was listed below. Red link in table presents the details of the precurser miRNA, including the secondary structure of pre-miRNA and variation impact on it. Blue link in table redirect
     the source of miRNA. </p>
     </div>
 </div>
@@ -122,10 +122,10 @@
             </thead>
             <tbody>
                 <tr ng-repeat="v in primir_summary_list" ts-repeat>
-                    <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000"><strong>{$v._id.pre_id$}</strong></a></td>
+                    <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$v._id.pre_id$}</a></td>
                     <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}">{$ v._id.pre_acc$}</a></td>
                     <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v._id.pre_chr $}%3A{$ v._id.pre_start $}%2D{$ v._id.pre_end$}">{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
-                    <td>{$ v._id.snv_in_pri$}</td>
+                    <td>{$ v.snp_sum $}</td>
                     <td>{$ v.mutation_sum $}</td>
                     <td>
                         <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}"
