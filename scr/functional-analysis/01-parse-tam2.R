@@ -15,11 +15,13 @@ path_snps <- '/home/liucj/data/refdata/tam2.0/variation_seed28_anno.txt'
 path_mirna_context <- '/workspace/liucj/refdata/mirna-genomic-context/encode-genomic-context.rds.gz'
 path_mirna_conservation_score <- '/home/liucj/data/refdata/tam2.0/mirna-conservation-scores.rds.gz'
 path_out <- '/home/liucj/data/refdata/tam2.0/'
+path_mirna_confidnece <- '/workspace/liucj/refdata/tam2.0/mirna-confidence.rds'
 
 
 # Load data ---------------------------------------------------------------
 mirna_conservation_score <- readr::read_rds(path = path_mirna_conservation_score)
 mirna_context <- readr::read_rds(path = path_mirna_context) 
+mirna_confidence <- readr::read_rds(path = path_mirna_confidnece)
 data_snps <- readr::read_tsv(file = path_snps) %>% 
   dplyr::select(
     'pre-mirna' = 'precurser_id',
@@ -61,7 +63,8 @@ data_snps <- readr::read_tsv(file = path_snps) %>%
     ave_score <= 0.02 ~ 'Low',
     ave_score < 0.98 & ave_score > 0.02 ~ 'Mid',
     ave_score >= 0.98 ~ 'High'
-  ))
+  )) %>% 
+  dplyr::left_join(mirna_confidence, by = 'pre-mirna')
 tb_tam <- readr::read_rds(path = path_tam) %>% 
   dplyr::rename(mirna = `pre-mirna`)
 
@@ -85,6 +88,14 @@ color_palletes <- c(
   )
 
 # Function ----------------------------------------------------------------
+fn_ratio <- function(.d, .ind) {
+  .ratio <- mean(.d$`pre-prop-total`[.ind]) / mean(.d$`prop-mean-53`[.ind])
+}
+fn_boot_ratio <- function(.d) {
+  .b <- boot::boot(data = .d, statistic = fn_ratio, R = 1000) 
+  broom::tidy(.b)
+}
+
 fn_create_conservation_score_files <- function() {
   data_snps_pre %>% 
     dplyr::select(1) %>% 
@@ -350,6 +361,50 @@ fn_mirna_context_pie <- function() {
   .pie_plot
 }
 
+fn_pre_snp_distribution <- function() {
+  data_snps_pre %>% 
+    ggplot(aes(x = `pre-prop-total`, y = region)) +
+    ggridges::geom_density_ridges(aes(fill = region)) 
+  
+  
+  
+  data_snps_pre %>% 
+    dplyr::mutate(cut = dplyr::case_when(
+      `pre-prop-total` ==  0 ~ '0',
+      `pre-prop-total` <= 0.1 ~ '0~0.1',
+      `pre-prop-total` <= 0.2 ~ '0.1~0.2',
+      `pre-prop-total` <= 0.3 ~ '0.2~0.3',
+      `pre-prop-total` <= 0.4 ~ '0.3~0.4',
+      `pre-prop-total` <= 0.5 ~ '0.4~0.5',
+      TRUE ~ '>0.5'
+    )) %>% 
+    dplyr::mutate(cut = factor(x = cut, levels = c('0', '0~0.1', '0.1~0.2', '0.2~0.3', '0.3~0.4', '0.4~0.5', '>0.5'))) ->
+    .d
+  .d %>% 
+    ggplot(aes(x = cut)) +
+    geom_bar()
+  
+  .d %>% 
+    
+  data_snps_pre_cons_score %>% dplyr::filter(region == "5'UTR") -> .dd
+  
+  data_snps %>% 
+    dplyr::select(`pre-mirna`, `pre-length`, `pre-total`, `flank5-1-total`, `flank5-2-total`, `flank5-3-total`, `flank3-1-total`, `flank3-2-total`, `flank3-3-total`,cpm, Confidence) %>% 
+    dplyr::distinct() %>% 
+    dplyr::mutate(
+      pred = `pre-total` / `pre-length`, 
+      pre51 = `flank5-1-total` /`pre-length`,
+      pre52 = `flank5-2-total` /`pre-length`,
+      pre53 = `flank5-3-total` /`pre-length`,
+      pre31 = `flank3-1-total` /`pre-length`,
+      pre32 = `flank3-2-total` /`pre-length`,
+      pre33 = `flank3-3-total` /`pre-length`
+      ) -> .d
+  .d %>% dplyr::filter(cpm > 100) -> .dd
+  
+  t.test(.dd$pred, .dd$pre33)
+  
+}
 fn_pre_vs_flank <- function() {
   # dbSNP v151 689966785/3000000000 = 0.23
   dplyr::bind_rows(
@@ -422,6 +477,30 @@ fn_pre_vs_flank <- function() {
     )) %>% 
     dplyr::mutate(color = factor(color, levels = c('Flank5', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3'))) ->
     density_pre_flank
+  
+  # density_pre_flank %>% 
+  #   dplyr::mutate(density = ifelse(density > 0.6, 0.6, density)) %>% 
+  #   ggplot(aes(x = density, y = type)) +
+  #   ggridges::geom_density_ridges_gradient(aes(fill = ..x..), size = 0.1) +
+  #   scale_fill_gradientn(
+  #     colours = c("#0D0887FF", "#CC4678FF", "#F0F921FF"),
+  #     name = "Temp. [F]"
+  #   ) +
+  #   geom_vline(xintercept = 0.23) +
+  #   geom_vline(xintercept = 0.1) +
+  #   geom_vline(xintercept = 0.35) +
+  #   geom_vline(xintercept = 0.5)
+  #   
+  # data_snps_seed %>% 
+  #   dplyr::mutate(cut = dplyr::case_when(
+  #     `seed-total` == 0 ~ '0',
+  #     `seed-total` == 1 ~ '1',
+  #     `seed-total` == 2 ~ '2',
+  #     `seed-total` == 3 ~ '3',
+  #     `seed-total` == 4 ~ '4',
+  #     `seed-prop-total` > 0.5 ~ '>0.5'
+  #   )) -> .d
+  # .d %>% dplyr::filter(cut == '1') ->.dd
   
   t.test(
     x = density_pre_flank %>% 
@@ -1216,7 +1295,6 @@ fn_mirna_exon_intron_density <- function() {
     t_test_pre_exon_intron_inter
   
   data_snps_pre %>% 
-
     dplyr::mutate(density = ifelse(`pre-prop-total` > 0.7, 0.7, `pre-prop-total`)) %>%
     ggplot(aes(x = region, y = density, fill = region)) +
     stat_boxplot(geom = 'errorbar', width = 0.3) +
@@ -1362,6 +1440,76 @@ fn_mirna_exon_intron_density_conservation <- function() {
     density_exon_intron_inter_plot = density_exon_intron_inter_plot
   )
   
+}
+fn_mirna_exon_intron_blank_ratio <- function() {
+  data_snps_flank31 %>% dplyr::select(`pre-mirna`, `flank31-prop-total`) -> .data_snps_flank31_prop
+  data_snps_flank51 %>% dplyr::select(`pre-mirna`, `flank51-prop-total`) -> .data_snps_flank51_prop
+  data_snps_pre %>% 
+    dplyr::left_join(.data_snps_flank51_prop, by = 'pre-mirna') %>% 
+    dplyr::left_join(.data_snps_flank31_prop, by = 'pre-mirna') %>% 
+    dplyr::mutate('prop-mean-53' = (`flank51-prop-total` + `flank31-prop-total`) / 2) %>% 
+    dplyr::mutate(ratio = `pre-prop-total` / `prop-mean-53`) %>% 
+    dplyr::filter(!(is.nan(ratio)|is.infinite(ratio))) %>% 
+    dplyr::filter(!(is.nan(cpm)|is.infinite(cpm))) %>% 
+    dplyr::mutate(score_range = dplyr::case_when(
+      ave_score == 0 ~ 'Human',
+      ave_score <= 0.02 & ave_score > 0 ~ 'Low',
+      ave_score < 0.98 & ave_score > 0.02 ~ 'Mid',
+      ave_score >= 0.98 ~ 'High'
+    )) %>% 
+    dplyr::mutate(score_range = factor(score_range, levels = c('Human', 'Low', 'Mid', 'High'))) %>% 
+    dplyr::mutate(cpm_group = dplyr::case_when(
+      cpm == 0 ~ 'None',
+      cpm > 0 & cpm <= 10 ~ 'Low', 
+      cpm > 10 & cpm <= 100 ~ 'Mid',
+      cpm > 100 ~ 'High'
+    )) ->
+    data_snps_pre_flank_ratio
+  fit <- lm(`ratio`~cpm_group+region+score_range, data = data_snps_pre_flank_ratio)
+  summary(fit)
+  car::Anova(fit)
+  
+  # data_snps_pre_flank_ratio %>% 
+  #   dplyr::group_by(region) %>% 
+  #   tidyr::nest() %>% 
+  #   dplyr::mutate(ratio = purrr::map(.x = data, .f = fn_boot_ratio)) %>% 
+  #   dplyr::select(-data) %>% 
+  #   tidyr::unnest()
+  t.test(
+    x = data_snps_pre_flank_ratio %>% 
+      dplyr::filter(region == 'Intergenic') %>% 
+      dplyr::pull(ratio),
+    y = data_snps_pre_flank_ratio %>% 
+      dplyr::filter(region != 'Intergenic') %>% 
+      dplyr::pull(ratio)
+  )
+  
+  data_snps_pre_flank_ratio %>% 
+    dplyr::mutate(ratio = ifelse(ratio > 2, 2, ratio)) %>% 
+    ggplot(aes(x = region, y = ratio, fill = region)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = 1, color = 'red', linetype = "dashed") +
+    scale_x_discrete(
+      limits = c("5'UTR", 'Exonic', "3'UTR", 'Intronic', 'Intergenic'),
+      labels = c("5'UTR\n(63, 3.3%)", 'Exon\n(73, 3.8%)',"3'UTR\n(62, 3.2%)" , 'Intron\n(973, 50.7%)', 'Intergenic\n(747, 38.9%)')
+    ) +
+    scale_fill_manual(values = color_palletes[c("5'UTR", 'Exonic', 'Intronic', "3'UTR", 'Intergenic')]) +
+    labs(x = '', y = 'SNP density') +
+    theme(
+      panel.background = element_rect(fill = NA, color = 'black'),
+      plot.background = element_rect(fill = NA),
+      axis.text.y = element_text(color = 'black'),
+      axis.text.x = element_text(color = 'black'),
+      legend.position = 'none'
+    )
+  
+  data_snps_pre_flank_ratio %>% 
+    dplyr::mutate(ratio = ifelse(ratio > 2, 2, ratio)) %>% 
+    ggplot(aes(x = score_range, y = ratio, fill = score_range)) +
+    stat_boxplot(geom = 'errorbar', width = 0.3) +
+    geom_boxplot(outlier.colour = NA, width = 0.5) +
+    geom_hline(yintercept = 1, color = 'red', linetype = "dashed") 
 }
 
 fn_tam_cluster <- function() {
