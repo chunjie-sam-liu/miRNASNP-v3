@@ -21,7 +21,7 @@ path_mirna_confidnece <- '/workspace/liucj/refdata/tam2.0/mirna-confidence.rds'
 
 # Load data ---------------------------------------------------------------
 mirna_conservation_score <- readr::read_rds(path = path_mirna_conservation_score)
-mirna_conservation_score_by_species <- readr::read_rds(path = path_mirna_conservation_score_by_species)
+mirna_conservation_score_by_species <- readr::read_rds(path = path_mirna_conservation_score_by_species) 
 mirna_context <- readr::read_rds(path = path_mirna_context) 
 mirna_confidence <- readr::read_rds(path = path_mirna_confidnece)
 data_snps <- readr::read_tsv(file = path_snps) %>% 
@@ -484,7 +484,7 @@ fn_pre_vs_flank <- function() {
     geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") +
     scale_x_discrete(
       limits = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3-1','Flank3-2', 'Flank3-3'),
-      labels = c('3', '2', '1', 'Precusor', 'Mature', 'Seed', '1', '2', '3')
+      labels = c('3', '2', '1', 'Precusor*', 'Mature*', 'Seed', '1', '2', '3')
     ) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
     scale_fill_manual(values = color_palletes[c('Flank5', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3' )]) +
@@ -658,7 +658,7 @@ fn_mirna_conservation <- function() {
       labels = data_snps_pre_conserve$label %>% rev()
     ) +
     scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
-    labs(x = 'miRNA conservation', y = 'SNP density') +
+    labs(x = 'pre-miRNA conservation', y = 'SNP density') +
     theme(
       panel.background = element_rect(fill = NA, color = 'black'),
       plot.background = element_rect(fill = NA),
@@ -682,6 +682,7 @@ fn_mirna_conservation <- function() {
     annotate(geom = 'segment', x = 3, xend = 3, y = 0.675, yend = 0.68) +
     annotate(geom = 'text', x = 2, y = 0.69, label = human_read_latex_pval(.x = human_read(t_test_high_non$p.value))) ->
     .mirna_snp_density_between_conservation_plot
+  
   ggsave(
     filename = 'mirna-conservation-snp-density.pdf',
     plot = .mirna_snp_density_between_conservation_plot,
@@ -695,7 +696,7 @@ fn_mirna_conservation <- function() {
   )
 }
 
-fn_pre_vs_flank_conservation <- function() {
+fn_mirna_conservation_pre_mature_seed <- function() {
   # dbSNP v151 689966785/3000000000 = 0.23
   dplyr::bind_rows(
     # pre-mirna
@@ -734,6 +735,8 @@ fn_pre_vs_flank_conservation <- function() {
   
   snp_density <- 689966785/3000000000 # dbSNP v151
   
+  density_pre_flank
+  
   density_pre_flank %>% 
     dplyr::mutate(density = ifelse(density > 0.7, 0.7, density)) %>% 
     ggplot(aes(x = type, y = density, fill = color)) +
@@ -769,7 +772,8 @@ fn_pre_vs_flank_conservation <- function() {
   density_pre_flank %>% 
     dplyr::group_by(type, conserve) %>% 
     dplyr::summarise(m = mean(density), s = sd(density)) %>% 
-    dplyr::rename('Average SNP density' = m, 'SD SNP density' = s, Region = type) ->
+    dplyr::rename('Average SNP density' = m, 'SD SNP density' = s, Region = type) %>% 
+    dplyr::arrange(`Average SNP density`)->
     density_pre_flank_table
   
   list(
@@ -1949,9 +1953,9 @@ density_pre_flank_plot_table <- fn_pre_vs_flank()
 
 # miRNA conservation ------------------------------------------------------
 
-mirna_conservation_plot <- fn_mirna_conservation()
+mirna_conservation_plot_table <- fn_mirna_conservation()
+mirna_conservation_pre_mature_seed_plot <- fn_mirna_conservation_pre_mature_seed()
 
-fn_conservation_score_correlation()
 
 # Pre-miRNA vs. mature-miRNA vs. Seed -------------------------------------
 
