@@ -93,6 +93,38 @@ fn_parse_mirbase_html <- function(.acc) {
 }
 
 
+fn_mirna_gene_family <- function(.f) {
+  # http://www.mirbase.org/cgi-bin/get_summary_json.pl?_=1574995049945&fam=MIPF0002123
+   
+   
+   .d <- tryCatch(
+     expr = {
+       .base_url <- 'http://www.mirbase.org/cgi-bin/get_summary_json.pl?_=1574995049945&fam='
+       .url <- paste(.base_url, .f, sep = '')
+       .response <- httr::GET(url = .url)
+       .content <- httr::content(x = .response, type = 'application/json', as = 'parsed')
+       
+       .family <- .content$title
+       .content$data[[1]] %>% 
+         purrr::map(.f = function(.x) {
+           data.frame(.x) %>% tibble::as_tibble() %>% dplyr::select('accession', 'id')
+         }) %>% 
+         dplyr::bind_rows() ->
+         .id
+       
+       tibble::tibble(
+         family = .family,
+         data = list(.id)
+       )
+     },
+     error = function(e) {
+       return(NULL)
+     }
+   )
+   .d
+   
+}
+
 # Parse from html ---------------------------------------------------------
 n_cluster <- 23
 # new cluster
@@ -145,6 +177,83 @@ captured %>%
   mirna_confidence
 
 readr::write_rds(x = mirna_confidence, path = '/workspace/liucj/refdata/tam2.0/mirna-confidence.rds', compress = 'gz')
+
+
+fams <- tibble::tibble(mipf = paste('MIPF000', sprintf("%04d", 1:2123), sep = ''), group = sample(x = 1:20, size = 2123, replace = T))
+
+n_cluster <- 20
+# new cluster
+cluster <- multidplyr::new_cluster(n = n_cluster)
+# add library
+multidplyr::cluster_library(cluster, packages = 'magrittr')
+# assign values
+multidplyr::cluster_assign(cluster, "fn_mirna_gene_family" = fn_mirna_gene_family)
+
+
+fams %>% 
+  dplyr::group_by(group) %>% 
+  multidplyr::partition(cluster = cluster) ->
+  fams_party
+
+
+
+fams_party %>% 
+  dplyr::mutate(mirbase_fams = purrr::map(.x = mipf, .f = fn_mirna_gene_family)) %>% 
+  dplyr::collect() %>% 
+  dplyr::ungroup() ->
+  fams_party_results
+
+readr::write_rds(x = fams_party_results, path = '/workspace/liucj/refdata/tam2.0/mirna-family.rds', compress = 'gz')
+
+fams_party_results %>% 
+  dplyr::filter(!purrr::map_lgl(mirbase_fams, is.null)) -> 
+  fams_party_results_not_null
+
+fams_party_results_not_null %>% 
+  tidyr::unnest(mirbase_fams) %>% 
+  dplyr::mutate(human = purrr::map_lgl(
+    .x = data,
+    .f = function(.x) {
+      any(stringr::str_detect(string = .x$id, pattern = 'hsa'))
+    }
+  )) %>% 
+  dplyr::filter(human)  %>% 
+  dplyr::mutate(conserv = purrr::map(
+    .x = data,
+    .f = function(.x) {
+      stringr::str_split(string = .x$id, pattern = '-', simplify = T)[, 1] %>% unique
+    }
+  )) %>% 
+  dplyr::mutate(n_species = purrr::map_int(.x = conserv, .f = length)) %>% 
+  dplyr::mutate(n_other_species = n_species -1) %>% 
+  dplyr::mutate(human_mirna = purrr::map(.x = data, .f = function(.x) {
+    dplyr::filter(.data = .x, grepl(pattern = 'hsa', x = id))
+  })) ->
+  fams_party_results_not_null_conserved
+
+fams_party_results_not_null_conserved %>% 
+  dplyr::mutate(data_new = purrr::map2(.x = human_mirna, .y = n_other_species, .f = function(.x, .y) {
+    .x %>% 
+      dplyr::mutate(n_other_species = .y)
+  })) %>% 
+  dplyr::select(data_new) %>% 
+  tidyr::unnest(data_new) %>% 
+  dplyr::rename(acc = accession) ->
+  mirna_conserved_in_other_species
+
+mirna_acc %>% 
+  dplyr::mutate(`pre-mirna` = paste('chr', `pre-mirna`, sep = '')) %>% 
+  dplyr::left_join(mirna_conserved_in_other_species, by = 'acc') %>% 
+  dplyr::mutate(n_other_species = ifelse(is.na(n_other_species), 0, n_other_species)) %>% 
+  dplyr::select(`pre-mirna`, acc, n_other_species) %>% 
+  dplyr::mutate(conserve = dplyr::case_when(
+    n_other_species == 0 ~ 'Non',
+    n_other_species < 10 ~ 'Low',
+    n_other_species >= 10 ~ 'High'
+  )) ->
+  mirna_acc_conserved
+
+readr::write_rds(x = mirna_acc_conserved, path = '/workspace/liucj/refdata/tam2.0/mirna_acc_conserved.rds.gz', compress = 'gz')
 
 # Save image --------------------------------------------------------------
 
