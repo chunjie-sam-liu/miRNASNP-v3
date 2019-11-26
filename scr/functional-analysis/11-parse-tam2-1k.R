@@ -239,98 +239,16 @@ fn_pre_vs_flank <- function() {
     ggplot(aes(x = type, y = density, fill = color)) +
     stat_boxplot(geom = 'errorbar', width = 0.3) +
     geom_boxplot(outlier.colour = NA, width = 0.5) +
-    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") 
-    scale_x_discrete(
-      limits = c('Flank5-3', 'Flank5-2', 'Flank5-1', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3-1','Flank3-2', 'Flank3-3'),
-      labels = c('3', '2', '1', 'Precusor*', 'Mature*', 'Seed', '1', '2', '3')
-    ) +
-    scale_y_continuous(breaks = sort(c(seq(0, 0.8, by = 0.1), snp_density))) +
-    scale_fill_manual(values = color_palletes[c('Flank5', 'Pre-miRNA', 'Mature miRNA', 'Seed', 'Flank3' )]) +
-    labs(x = '', y = 'SNP density') +
-    theme(
-      panel.background = element_rect(fill = NA, color = 'black'),
-      plot.background = element_rect(fill = NA),
-      axis.text.y = element_text(color = 'black'),
-      axis.text.x = element_text(color = 'black'),
-      legend.position = 'none'
-    ) +
-    # miRNA
-    annotate(geom = 'segment', x = 3.7, xend = 6.3, y = 0.71, yend = 0.71) +
-    # flank51
-    annotate(geom = 'segment', x = 3, xend = 4.93, y = 0.72, yend = 0.72) +
-    annotate(geom = 'segment', x = 3, xend = 3, y = 0.6, yend = 0.72) +
-    annotate(geom = 'segment', x = 2.9, xend = 3.1, y = 0.6, yend = 0.6) +
-    annotate(geom = 'segment', x = 4.93, xend = 4.93, y = 0.71, yend = 0.72) +
-    annotate(
-      geom = 'text', x = 4, y = 0.74,
-      label = human_read_latex_pval(
-        .x = human_read(t_test_pre_flank51$p.value)
-      )
-    ) +
-    # flank31
-    annotate(geom = 'segment', x = 5.03, xend = 7, y = 0.72, yend = 0.72) +
-    annotate(geom = 'segment', x = 5.03, xend = 5.03, y = 0.71, yend = 0.72) +
-    annotate(geom = 'segment', x = 7, xend = 7, y = 0.6, yend = 0.72) +
-    annotate(geom = 'segment', x= 6.9, xend = 7.1, y = 0.6, yend = 0.6) +
-    annotate(
-      geom = 'text', x = 6.2, y = 0.74,
-      label = human_read_latex_pval(
-        .x = human_read(t_test_pre_flank31$p.value)
-      )
-    ) +
-    # flank5 32
-    annotate(geom = 'segment', x = 0.7, xend = 2.3, y = 0.6, yend = 0.6) +
-    annotate(geom = 'segment', x = 1.5, xend = 4.93, y = 0.77, yend = 0.77) +
-    annotate(geom = 'segment', x = 1.5, xend = 1.5, y = 0.6, yend = 0.77) +
-    annotate(geom = 'segment', x = 4.93, xend = 4.93, y = 0.76, yend = 0.77) +
-    annotate(
-      geom = 'text', x = 3, y = 0.79,
-      label = human_read_latex_pval(
-        .x = human_read(t_test_pre_flank523$p.value)
-      )
-    ) +
-    # flank3 32
-    annotate(geom = 'segment', x = 7.7, xend = 9.3, y = 0.6, yend = 0.6) +
-    annotate(geom = 'segment', x = 5.03, xend = 8.5, y = 0.77, yend = 0.77) +
-    annotate(geom = 'segment', x = 5.03, xend = 5.03, y = 0.76, yend = 0.77) +
-    annotate(geom = 'segment', x = 8.5, xend = 8.5, y = 0.6, yend = 0.77) +
-    annotate(
-      geom = 'text', x = 7, y = 0.79,
-      label = human_read_latex_pval(
-        .x = human_read(t_test_pre_flank323$p.value)
-      )
-    ) +
-    coord_cartesian(xlim=c(1,9), ylim=c(0,0.8), clip="off") +
-    annotate(geom = 'segment', x = 0.8, xend = 3.2, y = -0.075, yend = -0.075) +
-    annotate(geom = 'text', x = 2, y = -0.09, label = "5' flanking regions") +
-    
-    annotate(geom = 'segment', x = 6.8, xend = 9.2, y = -0.075, yend = -0.075) +
-    annotate(geom = 'text', x = 8, y = -0.09, label = "3' flanking regions") +
-    
-    annotate(geom = 'segment', x = 3.5, xend = 6.3, y = -0.075, yend = -0.075) +
-    annotate(geom = 'text', x = 5, y = -0.09, label = "miRNA regions") ->
-    density_pre_flank_plot
-  
+    geom_hline(yintercept = snp_density, color = 'red', linetype = "dashed") -> 
+    density_pre_flank_531k_plot
   ggsave(
-    filename = 'snp-density-pre-mirna-flanking-region-new.pdf',
-    plot = density_pre_flank_plot,
-    device = 'pdf',
-    path = path_out,
-    width = 6, height = 6
+    filename = 'density-pre-flank-531k.pdf',
+    plot = density_pre_flank_531k_plot,
+    device = 'pdf', 
+    path = path_out
   )
+    
   
-  density_pre_flank %>% 
-    dplyr::group_by(type) %>% 
-    dplyr::summarise(m = mean(density), s = sd(density)) %>% 
-    dplyr::rename('Average SNP density' = m, 'SD SNP density' = s, Region = type) ->
-    density_pre_flank_table
-  
-  list(
-    density_pre_flank_table = density_pre_flank_table,
-    density_pre_flank_plot = density_pre_flank_plot
-  )
-}
-
 # Split data_snps to regions-----------------------------------------------
 
 data_snps %>% 
@@ -464,5 +382,4 @@ density_pre_flank_plot_table <- fn_pre_vs_flank()
 
 # save image --------------------------------------------------------------
 
-save.image(file = '/home/liucj/data/refdata/tam2.0/parse-tam2.rda')
-load(file = '/home/liucj/data/refdata/tam2.0/parse-tam2.rda')
+save.image(file = '/home/liucj/data/refdata/tam2.0/11-parse-tam2-1k.rda')
