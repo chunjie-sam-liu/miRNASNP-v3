@@ -247,7 +247,7 @@ fn_pre_vs_flank <- function() {
     device = 'pdf', 
     path = path_out
   )
-    
+}    
   
 # Split data_snps to regions-----------------------------------------------
 
