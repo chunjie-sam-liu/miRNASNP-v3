@@ -22,12 +22,17 @@ fn_load <- function(.x) {
   .d
 }
 
+# Analysis ----------------------------------------------------------------
+
+
 maffiles %>% 
   purrr::map(.f = fn_load) %>% 
   dplyr::bind_rows() ->
   tcga_mirna_mutation
 
 names(tcga_mirna_mutation) <- head_name
+
+
 
 
 tcga_mirna_mutation %>% 
