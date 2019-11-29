@@ -121,67 +121,67 @@ mirna_mutation_statistics %>%
   dplyr::mutate(exp = purrr::pmap(
     .l = list(.x = mirna, .y = cancers, .z = data),
     .f = function(.x, .y, .z) {
-      .x <- .d$mirna[[1]]
-      .y <- .d$cancers[[1]]
-      .z <- .d$data[[1]]
+      # .x <- .d$mirna[[1]]
+      # .y <- .d$cancers[[1]]
+      # .z <- .d$data[[1]]
       .m <- stringr::str_split(string = .x, pattern = ':', simplify = T)[,5]
       
       mirna_expression %>% 
         dplyr::filter(cancers == .y) %>% 
         dplyr::mutate(mut = ifelse(barcode %in% .z$barcode, 'mut', 'no_mut')) %>% 
+        dplyr::mutate(mut = ifelse(stringr::str_sub(string = barcode, start = 14, end = 15) == '11', 'normal', mut)) %>% 
         dplyr::mutate(expr = purrr::map_dbl(.x = expr, .f = function(.a) {
           .a %>% dplyr::filter(miRNA_ID == .m) %>% dplyr::pull(reads_per_million_miRNA_mapped)
         })) -> 
         .expr
       .expr
     }
-  )) ->
+  )) %>% 
+  dplyr::select(-data) ->
   mirna_mutation_statistics_expr
 
-tcga_mirna_mutation %>% 
-  dplyr::group_by(mirna) %>% 
-  dplyr::count() %>% 
-  dplyr::filter(n > 1) %>% 
-  dplyr::arrange(-n) %>% 
-  print(n = 30)
-mirna_expression %>% dplyr::select(cancers, sample) -> .cancers
-
-.d %>% 
-  dplyr::group_by(mirna, cancers) %>% 
-  dplyr::count() %>% 
-  dplyr::arrange(-n) ->
-  .dd
-
-.d %>% dplyr::filter(mirna == 'chr17:58331232:58331318:-:hsa-mir-142', cancers == 'TCGA-DLBC') -> .cand
-
-mirna_expression %>% 
-  dplyr::filter(cancers == 'TCGA-DLBC') %>% 
-  dplyr::mutate(expr = purrr::map(.x = expr, .f = function(.x) {
-    .x %>% dplyr::filter(miRNA_ID == 'hsa-mir-142')
+mirna_mutation_statistics_expr %>% 
+  dplyr::mutate(test = purrr::map(.x = exp, .f = function(.x) {
+    
+    t.test(
+      x = .x %>% 
+        dplyr::filter(mut == 'mut') %>% 
+        dplyr::pull(expr),
+      y = .x %>% 
+        dplyr::filter(mut == 'no_mut') %>% 
+        dplyr::pull(expr)
+    ) %>% 
+      broom::tidy() %>% 
+      dplyr::select('mut-no_mut' = estimate, mut = estimate1, no_mut = estimate2, pval.mut_vs_no = p.value) ->
+      mut_vs_no
+    
+    no_vs_normal <- tryCatch(
+      expr = {
+        t.test(
+          x = .x %>% 
+            dplyr::filter(mut == 'no_mut') %>% 
+            dplyr::pull(expr),
+          y = .x %>% 
+            dplyr::filter(mut == 'normal') %>% 
+            dplyr::pull(expr)
+        ) %>% 
+          broom::tidy() %>% 
+          dplyr::select('no_mut-normal' = estimate, no_mut.n = estimate1, normal = estimate2, pval.no_mut_vs_normal = p.value)
+      },
+      error = function(e) {
+        tibble::tibble('no_mut-normal' = 1, no_mut.n = 1, normal = 1, pval.no_mut_vs_normal = 1
+        )
+      }
+    )
+    
+    dplyr::bind_cols(mut_vs_no, no_vs_normal)
+    
   })) %>% 
-  tidyr::unnest() %>% 
-  dplyr::mutate(mut = ifelse(barcode %in% .cand$barcode, 'mut', 'no_mut')) %>% 
-  dplyr::mutate(mut = ifelse(type == 'Solid Tissue Normal', 'normal', mut))->
-  .skcm
+  tidyr::unnest(test) ->
+  mirna_mutation_statistics_expr_test
+  
+mirna_mutation_statistics_expr_test %>% 
+  dplyr::filter(`mut-no_mut` < 0, pval.mut_vs_no < 0.05) %>% 
+  dplyr::select(-exp) %>% 
+  dplyr::arrange(`mut-no_mut`) %>% View
 
-t.test(
-  x = .skcm %>% 
-    dplyr::filter(mut == 'mut') %>% 
-    dplyr::pull(reads_per_million_miRNA_mapped),
-  y = .skcm %>% 
-    dplyr::filter(mut == 'no_mut') %>% 
-    dplyr::pull(reads_per_million_miRNA_mapped)
-)
-
-t.test(
-  x = .skcm %>% 
-    dplyr::filter(mut == 'normal') %>% 
-    dplyr::pull(reads_per_million_miRNA_mapped),
-  y = .skcm %>% 
-    dplyr::filter(mut == 'no_mut') %>% 
-    dplyr::pull(reads_per_million_miRNA_mapped)
-)
-
-.skcm %>% 
-  ggplot(aes(x = mut, y = reads_per_million_miRNA_mapped)) +
-  geom_boxplot()
