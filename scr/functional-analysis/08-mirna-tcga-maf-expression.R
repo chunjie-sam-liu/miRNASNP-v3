@@ -180,8 +180,9 @@ mirna_mutation_statistics_expr %>%
       my_comparisons <- if (.x$mut %>% unique() %>% length == 2) list(c(1,2)) else list(c(1,2), c(2, 3), c(1,3))
       
       .x %>% 
-        dplyr::mutate(mut = plyr::revalue(x = mut, replace = c('mut' = "Mutant", 'no_mut' = 'Wild', 'normal' = 'Normal'))) %>% 
-        dplyr::mutate(mut = factor(mut, levels = c('Mutant', 'Wild', 'Normal'))) -> 
+        dplyr::mutate(mut = plyr::revalue(x = mut, replace = c('mut' = "Mutant", 'no_mut' = 'Wild', 'normal' = 'Normal'))) %>%
+        dplyr::mutate(mut = factor(mut, levels = c('Mutant', 'Wild', 'Normal'))) %>% 
+        dplyr::mutate(expr = ifelse(expr > sort(expr, decreasing = T)[5], sort(expr, decreasing = T)[5], expr)) -> 
         .xx
       
       .xx %>% 
@@ -195,10 +196,10 @@ mirna_mutation_statistics_expr %>%
       .xx %>% 
         ggpubr::ggboxplot(
           x = 'mut', y = 'expr', fill = 'mut', bxp.errorbar = T, bxp.errorbar.width = 0.2, width = 0.5, outlier.colour = NA,
-          xlab = 'Type', ylab = 'miRNA expression (rpm)', title = glue::glue('{.mirna} mutant vs. wild expression in {.cancer}')
+          xlab = '', ylab = '', title = glue::glue('{.cancer} {.mirna}')
         ) +
         ggpubr::stat_compare_means(comparisons = my_comparisons) +
-        scale_x_discrete(label = .xx_label$label) +
+        # scale_x_discrete(label = .xx_label$label) +
         ggsci::scale_fill_rickandmorty() +
         theme(
           legend.position = 'none'
@@ -208,12 +209,15 @@ mirna_mutation_statistics_expr %>%
       dplyr::bind_cols(mut_vs_no, no_vs_normal) %>% 
         dplyr::mutate(plot = list(.plot))
       
-      
   })) %>% 
   tidyr::unnest(test) ->
   mirna_mutation_statistics_expr_test
   
 mirna_mutation_statistics_expr_test %>% 
-  dplyr::filter(mut > 1) %>% 
+  dplyr::filter(mut > 1.5) %>% 
   dplyr::arrange(`mut-no_mut`) -> .d
+
+gridExtra::arrangeGrob(
+  grobs = .d$plot, nrow = 2, bottom = '', left = 'mRNA expression (RPM)'
+) %>% plot
 
