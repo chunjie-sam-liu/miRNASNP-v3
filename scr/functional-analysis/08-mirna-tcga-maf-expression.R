@@ -9,7 +9,10 @@ path_mirna_mutation <- '/home/liucj/data/refdata/tcga-somatic-mutation-and-mirna
 path_maf_stat <- '/home/liucj/data/refdata/tcga-somatic-mutation-and-mirna-expression-grch38/snv/mirna-mutation/maf-sample-statistics.rds.gz'
 maffiles <- list.files(path = path_mirna_mutation, pattern = '*maf.premir.format')
 path_out <- '/home/liucj/data/refdata/tam2.0/'
+path_clinical <- '/workspace/liucj/project/06-autophagy/TCGA/TCGA_pancan_cancer_cell_survival_time.rds.gz'
+
 # Load data ---------------------------------------------------------------
+
 head_name <- readr::read_tsv(file = file.path(path_mirna_mutation, 'headnames.txt'), skip = 5, col_names = F) %>% 
   unlist() %>% unname()
 head_name <- c('mirna', head_name)
@@ -30,6 +33,7 @@ maffiles %>%
 
 names(tcga_mirna_mutation) <- head_name
 
+clinical <- readr::read_rds(path = path_clinical)
 # Function ----------------------------------------------------------------
 
 
