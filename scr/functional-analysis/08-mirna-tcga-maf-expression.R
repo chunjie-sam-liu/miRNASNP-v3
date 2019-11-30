@@ -84,7 +84,7 @@ mirna_mutation_statistics %>%
     breaks = seq(0.01, 0.03, 0.01),
     label = c("1", "2", "3"),
     high = "red", mid = 'yellow',low = 'blue',
-    na.value = "#8B1A1A"
+    na.value = "#7FFF00"
   ) +
   coord_fixed(ratio = 1) +
   labs(x = "", y = "") +
@@ -107,11 +107,11 @@ ggsave(
   plot = mirna_mutation_tcga_plot,
   device = 'pdf',
   path = path_out,
-  width = 10, height = 4
+  width = 11, height = 4
 )
 
 
-# -------------------------------------------------------------------------
+# expression-------------------------------------------------------------------------
 
 mirna_mutation_statistics %>% 
   dplyr::left_join(tcga_mirna_mutation_cancer_types, by = c('mirna', 'cancers')) %>% 
@@ -196,7 +196,7 @@ mirna_mutation_statistics_expr %>%
       .xx %>% 
         ggpubr::ggboxplot(
           x = 'mut', y = 'expr', fill = 'mut', bxp.errorbar = T, bxp.errorbar.width = 0.2, width = 0.5, outlier.colour = NA,
-          xlab = '', ylab = '', title = glue::glue('{.cancer} {.mirna}')
+          xlab = '', ylab = '', title = glue::glue('{.cancer}, {.mirna}')
         ) +
         ggpubr::stat_compare_means(comparisons = my_comparisons) +
         # scale_x_discrete(label = .xx_label$label) +
@@ -219,5 +219,20 @@ mirna_mutation_statistics_expr_test %>%
 
 gridExtra::arrangeGrob(
   grobs = .d$plot, nrow = 2, bottom = '', left = 'mRNA expression (RPM)'
-) %>% plot
+) %>% 
+  ggsave(
+    filename = 'tcga-mirna-mutation-expression.pdf',
+    plot = .,
+    device = 'pdf',
+    path = path_out,
+    width = 16, height = 8
+  )
 
+
+# Clinical ----------------------------------------------------------------
+
+
+
+# save image --------------------------------------------------------------
+
+save.image(file = '/home/liucj/data/refdata/tam2.0/08-mirna-tcga-maf-expression.rda')
