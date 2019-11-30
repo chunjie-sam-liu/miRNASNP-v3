@@ -136,52 +136,84 @@ mirna_mutation_statistics %>%
         .expr
       .expr
     }
-  )) %>% 
-  dplyr::select(-data) ->
+  )) ->
   mirna_mutation_statistics_expr
 
 mirna_mutation_statistics_expr %>% 
-  dplyr::mutate(test = purrr::map(.x = exp, .f = function(.x) {
-    
-    t.test(
-      x = .x %>% 
-        dplyr::filter(mut == 'mut') %>% 
-        dplyr::pull(expr),
-      y = .x %>% 
-        dplyr::filter(mut == 'no_mut') %>% 
-        dplyr::pull(expr)
-    ) %>% 
-      broom::tidy() %>% 
-      dplyr::select('mut-no_mut' = estimate, mut = estimate1, no_mut = estimate2, pval.mut_vs_no = p.value) ->
-      mut_vs_no
-    
-    no_vs_normal <- tryCatch(
-      expr = {
-        t.test(
-          x = .x %>% 
-            dplyr::filter(mut == 'no_mut') %>% 
-            dplyr::pull(expr),
-          y = .x %>% 
-            dplyr::filter(mut == 'normal') %>% 
-            dplyr::pull(expr)
-        ) %>% 
-          broom::tidy() %>% 
-          dplyr::select('no_mut-normal' = estimate, no_mut.n = estimate1, normal = estimate2, pval.no_mut_vs_normal = p.value)
-      },
-      error = function(e) {
-        tibble::tibble('no_mut-normal' = 1, no_mut.n = 1, normal = 1, pval.no_mut_vs_normal = 1
-        )
-      }
-    )
-    
-    dplyr::bind_cols(mut_vs_no, no_vs_normal)
-    
+  dplyr::mutate(test = purrr::pmap(
+    .l = list(.x = exp, .y = mirna, .z = cancers),
+    .f = function(.x, .y, .z) {
+      .mirna <- stringr::str_split(string = .y, pattern = ':', simplify = T)[, 5]
+      .cancer <- gsub(pattern = 'TCGA-', replacement = '', x = .z)
+      
+      t.test(
+        x = .x %>% 
+          dplyr::filter(mut == 'mut') %>% 
+          dplyr::pull(expr),
+        y = .x %>% 
+          dplyr::filter(mut == 'no_mut') %>% 
+          dplyr::pull(expr)
+      ) %>% 
+        broom::tidy() %>% 
+        dplyr::select('mut-no_mut' = estimate, mut = estimate1, no_mut = estimate2, pval.mut_vs_no = p.value) ->
+        mut_vs_no
+      
+      no_vs_normal <- tryCatch(
+        expr = {
+          t.test(
+            x = .x %>% 
+              dplyr::filter(mut == 'no_mut') %>% 
+              dplyr::pull(expr),
+            y = .x %>% 
+              dplyr::filter(mut == 'normal') %>% 
+              dplyr::pull(expr)
+          ) %>% 
+            broom::tidy() %>% 
+            dplyr::select('no_mut-normal' = estimate, no_mut.n = estimate1, normal = estimate2, pval.no_mut_vs_normal = p.value)
+        },
+        error = function(e) {
+          tibble::tibble('no_mut-normal' = 1, no_mut.n = 1, normal = 1, pval.no_mut_vs_normal = 1
+          )
+       }
+      )
+      
+      my_comparisons <- if (.x$mut %>% unique() %>% length == 2) list(c(1,2)) else list(c(1,2), c(2, 3), c(1,3))
+      
+      .x %>% 
+        dplyr::mutate(mut = plyr::revalue(x = mut, replace = c('mut' = "Mutant", 'no_mut' = 'Wild', 'normal' = 'Normal'))) %>% 
+        dplyr::mutate(mut = factor(mut, levels = c('Mutant', 'Wild', 'Normal'))) -> 
+        .xx
+      
+      .xx %>% 
+        dplyr::group_by(mut) %>% 
+        dplyr::count() %>%
+        dplyr::ungroup() %>% 
+        dplyr::mutate(percent = n / sum(n) * 100) %>% 
+        dplyr::mutate(label = glue::glue('{mut}\n({n}, {round(percent,2)}%)')) ->
+        .xx_label
+      
+      .xx %>% 
+        ggpubr::ggboxplot(
+          x = 'mut', y = 'expr', fill = 'mut', bxp.errorbar = T, bxp.errorbar.width = 0.2, width = 0.5, outlier.colour = NA,
+          xlab = 'Type', ylab = 'miRNA expression (rpm)', title = glue::glue('{.mirna} mutant vs. wild expression in {.cancer}')
+        ) +
+        ggpubr::stat_compare_means(comparisons = my_comparisons) +
+        scale_x_discrete(label = .xx_label$label) +
+        ggsci::scale_fill_rickandmorty() +
+        theme(
+          legend.position = 'none'
+        )-> 
+        .plot
+      
+      dplyr::bind_cols(mut_vs_no, no_vs_normal) %>% 
+        dplyr::mutate(plot = list(.plot))
+      
+      
   })) %>% 
   tidyr::unnest(test) ->
   mirna_mutation_statistics_expr_test
   
 mirna_mutation_statistics_expr_test %>% 
-  dplyr::filter(`mut-no_mut` < 0, pval.mut_vs_no < 0.05) %>% 
-  dplyr::select(-exp) %>% 
-  dplyr::arrange(`mut-no_mut`) %>% View
+  dplyr::filter(mut > 1) %>% 
+  dplyr::arrange(`mut-no_mut`) -> .d
 
