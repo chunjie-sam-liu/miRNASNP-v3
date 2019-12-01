@@ -219,10 +219,11 @@ mirna_mutation_statistics_expr %>%
   
 mirna_mutation_statistics_expr_test %>% 
   dplyr::filter(mut > 1.5) %>% 
-  dplyr::arrange(`mut-no_mut`) -> .d
+  dplyr::arrange(`mut-no_mut`) -> 
+  mirna_mutation_statistics_expr_test_filter
 
 gridExtra::arrangeGrob(
-  grobs = .d$plot, nrow = 2, bottom = '', left = 'mRNA expression (RPM)'
+  grobs = mirna_mutation_statistics_expr_test_filter$plot, nrow = 2, bottom = '', left = 'mRNA expression (RPM)'
 ) %>% 
   ggsave(
     filename = 'tcga-mirna-mutation-expression.pdf',
@@ -235,6 +236,62 @@ gridExtra::arrangeGrob(
 
 # Clinical ----------------------------------------------------------------
 
+mirna_mutation_statistics_expr_test_filter %>% 
+  dplyr::select(mirna, type = cancers, mut = data) %>% 
+  dplyr::mutate(type = gsub(pattern = 'TCGA-', replacement = '', x = type)) %>% 
+  dplyr::left_join(y = clinical, by = 'type') ->
+  mirna_mutation_statistics_expr_test_filter_merge
+
+mirna_mutation_statistics_expr_test_filter_merge %>% 
+  dplyr::mutate(plot = purrr::map2(
+    .x = mut, .y = data,
+    .f = function(.x, .y) {
+      .y %>% 
+        dplyr::select(sample = bcr_patient_barcode, status = PFI.1, time = PFI.time.1) %>% 
+        dplyr::mutate(group = factor(ifelse(sample %in% .x$sample, 'Mutant', 'Wild'))) %>% 
+        dplyr::filter(!is.na(time), time > 0, !is.na(status)) -> 
+        .yy
+      
+      .d_diff <- survival::survdiff(survival::Surv(time, status) ~ group, data = .yy)
+      .kmp <- 1 - pchisq(.d_diff$chisq, df = length(levels(as.factor(.yy$group))) - 1)
+      .fit_x <- survival::survfit(survival::Surv(time, status) ~ group, data = .yy , na.action = na.exclude)
+      .plot <- survminer::ggsurvplot(
+        fit_x, data = .yy, pval=T, pval.method = T,
+        xlab = "Survival in days",
+        ylab = 'Probability of survival')
+      tibble::tibble(
+        kmp = .kmp,
+        plot = list(.plot$plot)
+      )
+    }
+  )) %>% 
+  tidyr::unnest(plot) -> 
+  mirna_mutation_statistics_expr_test_filter_ind
+
+clinical %>% 
+  dplyr::filter(type == 'UCEC') %>% 
+  tidyr::unnest(data) %>% 
+  dplyr::select(type, sample = bcr_patient_barcode, status = PFI.1, time = PFI.time.1) %>% 
+  dplyr::filter(!is.na(time), time > 0, !is.na(status)) %>% 
+  dplyr::mutate(group = factor(
+    ifelse(
+      sample %in% (
+        mirna_mutation_statistics_expr_test_filter_merge %>%
+          dplyr::filter(mirna %in% c('chr2:176150303:176150412:+:hsa-mir-10b', 'chr14:101055419:101055491:+:hsa-mir-485')) %>% 
+          dplyr::filter(type == 'UCEC') %>% 
+          dplyr::select(mirna, mut) %>% 
+          tidyr::unnest(mut) %>% 
+          dplyr::pull(sample)
+      ), 'Mutant', 'Wild'))) -> .d
+
+
+.d_diff <- survival::survdiff(survival::Surv(time, status) ~ group, data = .d)
+.kmp <- 1 - pchisq(.d_diff$chisq, df = length(levels(as.factor(.d$group))) - 1)
+.fit_x <- survival::survfit(survival::Surv(time, status) ~ group, data = .d , na.action = na.exclude)
+.plot <- survminer::ggsurvplot(
+  fit_x, data = .d, pval=T, pval.method = T,
+  xlab = "Survival in days",
+  ylab = 'Probability of survival')
 
 
 # save image --------------------------------------------------------------
