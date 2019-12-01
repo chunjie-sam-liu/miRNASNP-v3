@@ -336,6 +336,7 @@ mirna_mutation_statistics %>%
     
     .mirna_start <- as.integer(.mirna[,2])
     .mirna_end <- as.integer(.mirna[,3])
+    .mirna_name <- .mirna[,5]
     
     # sample mutation
     tcga_mirna_mutation_with_sample %>% 
@@ -346,33 +347,49 @@ mirna_mutation_statistics %>%
       dplyr::ungroup() -> 
       .sample_for_plot
     
-    .sample_for_plot %>% 
-      ggplot(aes(x = start, y = n)) +
-      geom_segment(aes(x=start, xend=start, y=0, yend=n), color = 'grey') +
-      geom_point(size = 3, color = 'orange') +
-      scale_x_continuous(limits = c(.mirna_start, .mirna_end), labels = scales::math_format(10^.x)) +
-      scale_y_continuous(limits = c(-1, max(.sample_for_plot$n) + 3)) +
+    # x axis ticks
+    .x_axis_ticks <- tibble::tibble(x = as.integer(seq(.mirna_start, .mirna_end, length.out = 5)))
+    # y axis ticks
+    .y_axis_ticks <- tibble::tibble(y = seq(0, max(.sample_for_plot$n) + 3, by = 1))
+    
+    ggplot() +
+      geom_segment(mapping = aes(x=start, xend=start, y=0, yend=n), data = .sample_for_plot, color = 'grey') +
+      geom_point(mapping = aes(x = start, y = n), data = .sample_for_plot, size = 5, color = 'orange') +
+      scale_x_continuous(limits = c(.mirna_start-10, .mirna_end+10), labels = scales::math_format(10^.x)) +
+      scale_y_continuous(limits = c(-2, max(.sample_for_plot$n) + 5)) +
       theme(
-        panel.background = element_rect(fill = NA, colour = 'black'),
-        # axis.line = element_blank(),
-        axis.ticks.length = unit(0.1, units = 'cm')
-        
+        panel.background = element_rect(fill = NA, colour = NA),
+        axis.line = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank()
       ) +
-      # x axis
-      geom_segment(x = .mirna_start, xend = .mirna_end, y = -0.5,yend = -0.5) +
-      # y axis
-      geom_segment(x=.mirna_start-1,xend=.mirna_start-1,y = 0, yend=max(.sample_for_plot$n) + 3) +
       # mirna structure
-      geom_segment(x = .mirna_start, xend = .mirna_end, y = 0, yend = 0, size = 12, color = 'grey', alpha = 0.7, lineend = 'butt') +
+      # geom_segment(x = .mirna_start, xend = .mirna_end, y = -0.25, yend = -0.25, size = 13, color = 'grey', alpha = 0.7, lineend = 'butt') +
+      geom_rect(data =.sample_for_plot, xmin = .mirna_start, xmax = .mirna_end, ymin = 0, ymax = -0.5, fill = 'grey',alpha = 0.7) +
       # mature mirna 
-      geom_segment(mapping = aes(x = start, xend = end), data = .mature, y = 0, yend = 0, size = 12, color = 'green') +
-      geom_text(mapping = aes(x = (start + end)/2, y = -1, label = mature), data = .mature, size = 6) +
+      # geom_segment(mapping = aes(x = start, xend = end), data = .mature, y = -0.25, yend = -0.25, size = 13, color = '#248b21') +
+      geom_rect(mapping = aes(xmin = start, xmax = end, ymin = 0, ymax = -0.5), data = .mature, fill = '#248b21') +
       # seed
-      geom_segment(mapping = aes(x = start, xend = end), data = .seed, y = 0, yend = 0, size = 12, color = 'red')
-      
+      # geom_segment(mapping = aes(x = start, xend = end), data = .seed, y = -0.25, yend = -0.25, size = 13, color = '#fed700') +
+      geom_rect(mapping = aes(xmin = start, xmax = end, ymin = 0, ymax = -0.5), data = .seed, fill = '#fed700') +
+      # x axis
+      geom_segment(data =.sample_for_plot, x = .mirna_start, xend = .mirna_end, y = -0.6, yend = -0.6, size = 0.5) +
+      geom_segment(mapping = aes(x = x, xend = x), data = .x_axis_ticks, y = -0.6, yend = -0.7, size = 0.5) +
+      geom_text(mapping = aes(x = x, label = x), data = .x_axis_ticks, y = -1) +
+      # y axis
+      geom_segment(data =.sample_for_plot, x= .mirna_start-1, xend= .mirna_start-1, y = 0, yend = max(.sample_for_plot$n) + 3, size = 0.5) +
+      geom_segment(mapping = aes(y = y, yend = y), data = .y_axis_ticks, x = .mirna_start-1, xend = .mirna_start-1.5, size = 0.5) +
+      geom_text(mapping = aes(y = y, label = y), data = .y_axis_ticks, x = .mirna_start - 3, vjust = 0.4) +
+      geom_text(data = .sample_for_plot, x = .mirna_start - 7, y = (max(.sample_for_plot$n) + 3) / 2, label = 'Number of mutations', size = 6, angle = 90) +
+      # mature mirna label
+      geom_text(mapping = aes(x = (start + end)/2, y = -1.6, label = mature), data = .mature, size = 6) +
+      # premirna
+      geom_text(data =.sample_for_plot, x = (.mirna_start + .mirna_end) / 2, y = max(.sample_for_plot$n) + 2, label = .mirna_name, size = 8) ->
+      .lolipop
     
-    
-  }))
+  })) ->
+  .d
 
 
 
