@@ -10,8 +10,10 @@ path_maf_stat <- '/home/liucj/data/refdata/tcga-somatic-mutation-and-mirna-expre
 maffiles <- list.files(path = path_mirna_mutation, pattern = '*maf.premir.format')
 path_out <- '/home/liucj/data/refdata/tam2.0/'
 path_clinical <- '/workspace/liucj/project/06-autophagy/TCGA/TCGA_pancan_cancer_cell_survival_time.rds.gz'
-
+path_snps <- '/home/liucj/data/refdata/tam2.0/variation_seed28_anno.txt'
 # Load data ---------------------------------------------------------------
+data_snps <- readr::read_tsv(file = path_snps) %>% 
+  dplyr::select('pre-mirna' = 'precurser_id', 'mature-mirna' = 'mature_id')
 
 head_name <- readr::read_tsv(file = file.path(path_mirna_mutation, 'headnames.txt'), skip = 5, col_names = F) %>% 
   unlist() %>% unname()
@@ -38,7 +40,7 @@ clinical <- readr::read_rds(path = path_clinical)
 
 
 
-# Analysis ----------------------------------------------------------------
+# Mutation ----------------------------------------------------------------
 
 tcga_mirna_mutation %>% 
   dplyr::select(mirna, Tumor_Sample_Barcode) %>% 
@@ -284,16 +286,94 @@ clinical %>%
           dplyr::pull(sample)), 'Mutant', 'Wild'))) %>% 
   dplyr::mutate(time = time / 30 / 12) %>% 
   dplyr::filter(time < 10) -> 
-  .d
+  clincal_d
 
 
-.d_diff <- survival::survdiff(survival::Surv(time, status) ~ group, data = .d)
-.kmp <- 1 - pchisq(.d_diff$chisq, df = length(levels(as.factor(.d$group))) - 1)
-.fit_x <- survival::survfit(survival::Surv(time, status) ~ group, data = .d , na.action = na.exclude)
+.d_diff <- survival::survdiff(survival::Surv(time, status) ~ group, data = clincal_d)
+.kmp <- 1 - pchisq(.d_diff$chisq, df = length(levels(as.factor(clincal_d$group))) - 1)
+.fit_x <- survival::survfit(survival::Surv(time, status) ~ group, data = clincal_d , na.action = na.exclude)
 survminer::ggsurvplot(
-  .fit_x, data = .d, pval=T, pval.method = T,
+  .fit_x, data = clincal_d, pval=T, pval.method = T,
   xlab = "Survival in days",
   ylab = 'Probability of survival')
+
+
+
+# miRNA lolipop -----------------------------------------------------------
+
+tcga_mirna_mutation %>% 
+  dplyr::select(mirna, chr=Chromosome, start=Start_Position, end=End_Position, Tumor_Sample_Barcode) %>% 
+  dplyr::mutate(barcode = stringr::str_sub(string = Tumor_Sample_Barcode, start = 1, end= 16)) %>% 
+  dplyr::mutate(sample = stringr::str_sub(string = barcode, start = 1, end = 12)) %>% 
+  dplyr::inner_join(maf_stat %>% dplyr::select(sample, cancers), by = 'sample') %>% 
+  dplyr::select(-c(Tumor_Sample_Barcode, barcode)) ->
+  tcga_mirna_mutation_with_sample
+
+mirna_mutation_statistics %>% 
+  dplyr::group_by(mirna) %>% 
+  tidyr::nest() %>% 
+  dplyr::ungroup() %>% 
+  dplyr::mutate(lolipop = purrr::map2(.x = mirna, .y = data, .f = function(.x, .y) {
+    # .x <- .d$mirna[[1]]
+    # .y <- .d$data[[1]]
+    
+    # mature
+    data_snps %>% 
+      dplyr::filter(`pre-mirna` == .x) %>% 
+      tidyr::separate(col = `mature-mirna`, into = c('chr', 'start', 'end', 'strand', 'mature'), sep = ':') %>% 
+      dplyr::select(start, end, strand, mature) %>% 
+      dplyr::mutate(start = as.integer(start), end = as.integer(end)) ->
+      .mature
+    # seed
+    .seed <- if (.mature$strand[[1]] == '+') {
+      .mature %>% dplyr::mutate(start = start + 1, end = start + 7)
+    } else {
+      .mature %>% dplyr::mutate(start = end - 1, end = end - 7)
+    }
+    
+    # pre-mirna
+    .mirna <- stringr::str_split(string = .x, pattern = ':', simplify = T)
+    
+    .mirna_start <- as.integer(.mirna[,2])
+    .mirna_end <- as.integer(.mirna[,3])
+    
+    # sample mutation
+    tcga_mirna_mutation_with_sample %>% 
+      dplyr::filter(mirna == .x) %>% 
+      dplyr::select(start, end) %>% 
+      dplyr::group_by(start) %>% 
+      dplyr::count() %>% 
+      dplyr::ungroup() -> 
+      .sample_for_plot
+    
+    .sample_for_plot %>% 
+      ggplot(aes(x = start, y = n)) +
+      geom_segment(aes(x=start, xend=start, y=0, yend=n), color = 'grey') +
+      geom_point(size = 3, color = 'orange') +
+      scale_x_continuous(limits = c(.mirna_start, .mirna_end), labels = scales::math_format(10^.x)) +
+      scale_y_continuous(limits = c(-1, max(.sample_for_plot$n) + 3)) +
+      theme(
+        panel.background = element_rect(fill = NA, colour = 'black'),
+        # axis.line = element_blank(),
+        axis.ticks.length = unit(0.1, units = 'cm')
+        
+      ) +
+      # x axis
+      geom_segment(x = .mirna_start, xend = .mirna_end, y = -0.5,yend = -0.5) +
+      # y axis
+      geom_segment(x=.mirna_start-1,xend=.mirna_start-1,y = 0, yend=max(.sample_for_plot$n) + 3) +
+      # mirna structure
+      geom_segment(x = .mirna_start, xend = .mirna_end, y = 0, yend = 0, size = 12, color = 'grey', alpha = 0.7, lineend = 'butt') +
+      # mature mirna 
+      geom_segment(mapping = aes(x = start, xend = end), data = .mature, y = 0, yend = 0, size = 12, color = 'green') +
+      geom_text(mapping = aes(x = (start + end)/2, y = -1, label = mature), data = .mature, size = 6) +
+      # seed
+      geom_segment(mapping = aes(x = start, xend = end), data = .seed, y = 0, yend = 0, size = 12, color = 'red')
+      
+    
+    
+  }))
+
 
 
 # save image --------------------------------------------------------------
