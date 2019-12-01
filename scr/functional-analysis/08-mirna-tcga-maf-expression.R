@@ -249,14 +249,15 @@ mirna_mutation_statistics_expr_test_filter_merge %>%
       .y %>% 
         dplyr::select(sample = bcr_patient_barcode, status = PFI.1, time = PFI.time.1) %>% 
         dplyr::mutate(group = factor(ifelse(sample %in% .x$sample, 'Mutant', 'Wild'))) %>% 
-        dplyr::filter(!is.na(time), time > 0, !is.na(status)) -> 
+        dplyr::filter(!is.na(time), time > 0, !is.na(status)) %>% 
+        dplyr::mutate(time = time / 30 / 12)-> 
         .yy
       
       .d_diff <- survival::survdiff(survival::Surv(time, status) ~ group, data = .yy)
       .kmp <- 1 - pchisq(.d_diff$chisq, df = length(levels(as.factor(.yy$group))) - 1)
       .fit_x <- survival::survfit(survival::Surv(time, status) ~ group, data = .yy , na.action = na.exclude)
       .plot <- survminer::ggsurvplot(
-        fit_x, data = .yy, pval=T, pval.method = T,
+        .fit_x, data = .yy, pval=T, pval.method = T,
         xlab = "Survival in days",
         ylab = 'Probability of survival')
       tibble::tibble(
@@ -275,21 +276,22 @@ clinical %>%
   dplyr::filter(!is.na(time), time > 0, !is.na(status)) %>% 
   dplyr::mutate(group = factor(
     ifelse(
-      sample %in% (
-        mirna_mutation_statistics_expr_test_filter_merge %>%
-          dplyr::filter(mirna %in% c('chr2:176150303:176150412:+:hsa-mir-10b', 'chr14:101055419:101055491:+:hsa-mir-485')) %>% 
+      sample %in% (mirna_mutation_statistics_expr_test_filter_merge %>%
+          # dplyr::filter(mirna %in% c('chr2:176150303:176150412:+:hsa-mir-10b', 'chr14:101055419:101055491:+:hsa-mir-485')) %>%
           dplyr::filter(type == 'UCEC') %>% 
           dplyr::select(mirna, mut) %>% 
           tidyr::unnest(mut) %>% 
-          dplyr::pull(sample)
-      ), 'Mutant', 'Wild'))) -> .d
+          dplyr::pull(sample)), 'Mutant', 'Wild'))) %>% 
+  dplyr::mutate(time = time / 30 / 12) %>% 
+  dplyr::filter(time < 10) -> 
+  .d
 
 
 .d_diff <- survival::survdiff(survival::Surv(time, status) ~ group, data = .d)
 .kmp <- 1 - pchisq(.d_diff$chisq, df = length(levels(as.factor(.d$group))) - 1)
 .fit_x <- survival::survfit(survival::Surv(time, status) ~ group, data = .d , na.action = na.exclude)
-.plot <- survminer::ggsurvplot(
-  fit_x, data = .d, pval=T, pval.method = T,
+survminer::ggsurvplot(
+  .fit_x, data = .d, pval=T, pval.method = T,
   xlab = "Survival in days",
   ylab = 'Probability of survival')
 
