@@ -310,10 +310,10 @@ tcga_mirna_mutation %>%
   tcga_mirna_mutation_with_sample
 
 mirna_mutation_statistics %>% 
-  dplyr::group_by(mirna) %>% 
+  dplyr::group_by(mirna, cancers) %>% 
   tidyr::nest() %>% 
   dplyr::ungroup() %>% 
-  dplyr::mutate(lolipop = purrr::map2(.x = mirna, .y = data, .f = function(.x, .y) {
+  dplyr::mutate(lolipop = purrr::pmap(.l = list(.x = mirna, .y = data, .z = cancers), .f = function(.x, .y, .z) {
     # .x <- .d$mirna[[1]]
     # .y <- .d$data[[1]]
     
@@ -340,7 +340,7 @@ mirna_mutation_statistics %>%
     
     # sample mutation
     tcga_mirna_mutation_with_sample %>% 
-      dplyr::filter(mirna == .x) %>% 
+      dplyr::filter(mirna == .x, cancers == .z) %>% 
       dplyr::select(start, end) %>% 
       dplyr::group_by(start) %>% 
       dplyr::count() %>% 
@@ -387,7 +387,6 @@ mirna_mutation_statistics %>%
       # premirna
       geom_text(data =.sample_for_plot, x = (.mirna_start + .mirna_end) / 2, y = max(.sample_for_plot$n) + 2, label = .mirna_name, size = 8) ->
       .lolipop
-    
   })) ->
   .d
 
