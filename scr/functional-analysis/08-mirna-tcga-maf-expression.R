@@ -279,7 +279,7 @@ clinical %>%
   dplyr::mutate(group = factor(
     ifelse(
       sample %in% (mirna_mutation_statistics_expr_test_filter_merge %>%
-          # dplyr::filter(mirna %in% c('chr2:176150303:176150412:+:hsa-mir-10b', 'chr14:101055419:101055491:+:hsa-mir-485')) %>%
+          dplyr::filter(mirna %in% c('chr2:176150303:176150412:+:hsa-mir-10b', 'chr14:101055419:101055491:+:hsa-mir-485')) %>%
           dplyr::filter(type == 'UCEC') %>% 
           dplyr::select(mirna, mut) %>% 
           tidyr::unnest(mut) %>% 
@@ -395,3 +395,4 @@ mirna_mutation_statistics %>%
 # save image --------------------------------------------------------------
 
 save.image(file = '/home/liucj/data/refdata/tam2.0/08-mirna-tcga-maf-expression.rda')
+load(file = '/home/liucj/data/refdata/tam2.0/08-mirna-tcga-maf-expression.rda')
