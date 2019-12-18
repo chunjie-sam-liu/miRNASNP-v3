@@ -914,6 +914,7 @@ mir_summary = {
     'pre_chr':fields.String,
     'pre_start':fields.String,
     'pre_end':fields.String,
+    'pre_strand':fields.String,
     'harpin_seq':fields.String,
     'snp_in_seed':fields.Integer,
     'snp_in_mature':fields.Integer,

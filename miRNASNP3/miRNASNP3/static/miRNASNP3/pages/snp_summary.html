@@ -203,7 +203,7 @@
                             <!--td><a href="http://www.mirbase.org/textsearch.shtml?q={&v.identifier&}&submit=submit">{$v.identifier$}</a></td-->
                         <td ><a href="#!/snp?snp_id={$v.snp_id$}&location=Seed&one=1" style="color: red">{$v.snp_id$}</a></td>
                         <td >{$v.snp_chr$}:{$v.snp_position$}</td>    
-                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$v.ref$}/{$v.curalt$}</td>
+                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.curalt$}'>{$v.ref$}/{$v.curalt$}</td>
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
@@ -367,7 +367,7 @@
                         <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color: red">{$v.pre_id$}</td>
                         <td >{$v.snp_id$}</td>
                         <td >{$v.snp_chr$}:{$v.snp_position$}</td>   
-                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$v.ref$}/{$v.curalt$}</td>
+                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.curalt$}'>{$v.ref$}/{$v.curalt$}</td>
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
