@@ -50,24 +50,19 @@
                         <span ng-if="premir_info.host_gene[0].host_gene != '-' ">{$premir_info.host_gene[0].host_gene$}:{$premir_info.host_gene[0].region$}</span>
                     </td>
                 </tr>
+
                 <tr>
+                    <td style="font-size: 18px;font-weight: bold">Sequence</td>
+                    <td style="text-align: left" colspan="6">{$premir_info.sequence$}</td>
+                </tr>
+                <!--tr>
                     <td style="font-size: 18px;font-weight: bold">
                         Cluster
                     </td>
                     <td style="text-align: left" colspan="6">10kb:{$premir_info.cluster10k$}
-                        <!--span ng-if="premir_info.cluster10k.length">
-                            <span ng-repeat="v in premir_info.cluster10k">{$v.pre_id$},</span></span>
-                        <span ng-if="!premir_info.cluster10k.length">Null</span-->
                         <br>
                         5kb:{$premir_info.cluster5k$}
-                        <!--span ng-if="premir_info.cluster5k.length">
-                            <span ng-repeat="v in premir_info.cluster5k">{$v.pre_id$},</span></span>
-                        <span ng-if="!premir_info.cluster5k.length">Null</span-->
                     </td>
-                </tr>
-                <tr>
-                    <td style="font-size: 18px;font-weight: bold">Sequence</td>
-                    <td style="text-align: left" colspan="6">{$premir_info.sequence$}</td>
                 </tr>
                                      <tr>
                                              <td style="font-size: 18px;font-weight: bold"> Function</td>
@@ -84,7 +79,7 @@
                                     <span ng-if="premir_disease">{$premir_info.disease$}</span>
                                     <span ng-if="!premir_disease">Null</span>
                                     </td>
-                         </tr>
+                         </tr-->
                 <!--div ng-if="mirnago_count">       
                  <tr>   
                         <th style="font-size: 18px;font-weight: bold" rowspan={$mirnago_count$}> QuickGo function</th>
@@ -243,7 +238,7 @@
         <div class="panel-body"-->
             <div class="panel panel-primary">
                 <div class="panel-heading" >
-                    <strong>pre-miRNA structure of wild type</strong>
+                    <strong>Pre-miRNA structure of wild type</strong>
                 </div>
                 <div class="panel-body">
                 <div ng-show="wild">
@@ -267,33 +262,51 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">
-                                  SNPs in Pre-miRNAs<br> (
+                                  SNPs in pre-miRNAs<!--br> (
                                       <span ng-if="premir_info.snv">{$premir_info.snv.length$}</span>
                                       <span ng-if="!premir_info.snv">0</span>
-                                      )
+                                      )-->
                                 </td>
                                 <td>
                                     <span ng-if="premir_info.snv.length">
                                             
-                                                <span ng-repeat="v in premir_info.snv">                                                                                                              
-                                            <button ng-click="structure_effection_snp(v)">{$v$}&nbsp;</button>
+                                                <span ng-repeat="v in premir_info.snv">
+                                                    <span ng-if="v.structure_analys">
+                                                            <button ng-click="structure_effection_snp(v.mut_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
+                                                    </span>
+                                                    <!--span ng-if="!v.structure_analys">
+                                                        <a href="#!/snp?snp_id={$v.mut_id$}"><button type="button" class="btn btn-danger" style="width: 32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button></a>
+                                    </span-->                                                                                                         
                                                 </span></span>
                                     <span ng-if="!premir_info.snv.length">Null</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">
-                                  DRVs in pre-miRNAs<br> (
-                                    <span ng-if="premir_info.cosmic||premir_info.clinvar"> {$premir_info.cosmic.length+premir_info.clinvar.length$}</span>
-                                    <span ng-if="!premir_info.cosmic && !premir_info.clinvar">0</span>)
+                                  DRVs in pre-miRNAs<!--br> (
+                                    <span ng-if="premir_info.cosmic||premir_info.clinvar">{$premir_info.cosmic.length+premir_info.clinvar.length$}</span>
+                                    <span ng-if="!premir_info.cosmic[0].mut_id && !premir_info.clinvar[0].mut_id">0</span>
+                                    )-->
                                 </td>
                                 <td>
-                                    <span ng-if="premir_info.cosmic.length || premir_info.clinvar.length">
+                                    <span ng-if="premir_info.cosmic.length">
                         <span ng-repeat="v in premir_info.cosmic">
-                            <button ng-click="structure_effection_mut(v)">{$v$}&nbsp;</button></span>
+                            <span ng-if="v.structure_analys">
+                                    <button ng-click="structure_effection_mut(v.mut_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
+                            </span>
+                            <!--span ng-if="!v.structure_analys">
+                                    <a href="#!/mutation?mut_id={$v.mut_id$}" style="color: red;"><button type="button" class="btn btn-danger" style="width: 32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button></a>
+                            </span-->
+                        </span></span>
+                            <span ng-if="premir_info.clinvar.length">
                                     <span ng-repeat="v in premir_info.clinvar">
-                            <button ng-click="structure_effection_mut(v)">{$v$}&nbsp;</button></span>
-                                    </span>
+                                        <span ng-if="v.structure_analys">
+                                                <button ng-click="structure_effection_mut(v)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
+                                        </span>
+                                        <span ng-if="!v.structure_analys">
+                                                <a href="#!/mutation?mut_id={$v.mut_id$}" style="color: red;"><button type="button" class="btn btn-danger" style="width: 32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button></a>
+                                        </span>
+                            </span></span>
                                     <span ng-if="!premir_info.cosmic.length && !premir_info.clinvar.length">
                                         Null
                                     </span>
@@ -310,10 +323,11 @@
                     </div>
                 </div>
             </div>
+        
             <div ng-show="primir_alt_count">
                 <div class="panel panel-primary">
                     <div class="panel-heading" >
-                        <strong>pre-miRNA structure of SNP type</strong>
+                        <strong>Pre-miRNA structure of SNP type</strong>
                         </div>
                     <div class="panel-body">
                         <div style="width: 50%; float:left; display:inline" ng-show="snp_single">
@@ -334,17 +348,16 @@
                                 <td>{$primir_alt_info.snp_chr$}:{$primir_alt_info.snp_position$}</td>
                             </tr>
                             <tr>
-                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP location in pre-miRNA
+                                <td style="font-size: 16px;font-weight: bold" width="200px">SNP location in <br>pre-miRNA
                                 </td>
-                                <td>{$primir_alt_info.rela_loc$}</td>
+                                <!--td>{$primir_alt_info.rela_loc$}</td-->
+                                <td>{$snp_loc$}</td>
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">Ref/Alt</td>
                                 <td>
-                                    {$primir_alt_info.ref$}
-                                    <span ng-if="primir_alt_info.snp_ref_freq!='novalue'">({$primir_alt_info.snp_ref_freq$})</span>
-                                    /{$primir_alt_info.alt$}
-                                    <span ng-if="primir_alt_info.snp_alt_freq!='novalue'">({$primir_alt_info.snp_alt_freq$})</span>
+                                    {$primir_alt_info.ref$}<span ng-if="primir_alt_info.snp_ref_freq!='NA'">({$primir_alt_info.snp_ref_freq$})</span>/{$primir_alt_info.curalt$}
+                                    <span ng-if="primir_alt_info.snp_alt_freq!='NA'">({$primir_alt_info.snp_alt_freq$})</span>
                                 </td>
                             </tr>
                             <tr>
@@ -374,18 +387,16 @@
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">SNP location in pre-miRNA
                                 </td>
-                                <td>{$primir_alt_info.rela_loc$}</td>
+                                <td>{$snp_loc$}</td>
                             </tr>
                             <tr>
                                 <td style="font-size: 16px;font-weight: bold" width="200px">Ref/Alt</td>
                                 <td>
-                                    {$primir_alt_info.ref$}
-                                    <span ng-if="primir_alt_info.snp_ref_freq!='novalue'">({$primir_alt_info.snp_ref_freq$})</span>
-                                    /
-                                    <span ng-repeat="curalt in primir_alt_info.alt">
-                            <button ng-click="structure_effection_snp(primir_alt_info.snp_id,curalt)">{$curalt$}</button>
+                                    {$primir_alt_info.ref$}<span ng-if="primir_alt_info.snp_ref_freq!='NA'">({$primir_alt_info.snp_ref_freq$})</span>/
+                                    <span ng-repeat="item in primir_alt_list">
+                            <button ng-click="structure_effection_snp(item.snp_id,item.curalt)" type="button" class="btn btn-info" style="width:10%;padding:0;margin-bottom: 5px;">{$item.curalt$}</button>
                         </span>
-                                    <span ng-if="primir_alt_info.snp_alt_freq!='novalue'">({$primir_alt_info.snp_alt_freq$})</span>
+                                    <span ng-if="primir_alt_info.snp_alt_freq!='NA'">({$primir_alt_info.snp_alt_freq$})</span>
                                 </td>
                             </tr>
                             <tr>
@@ -403,10 +414,12 @@
                     </div>
                 </div>
             </div>
+           
+            </div>
                 <div ng-show="primir_mut_count">
                     <div class="panel panel-primary">
                     <div class="panel-heading" >
-                        <strong>pre-miRNA structure of variation type</strong>
+                        <strong>Pre-miRNA structure of variation type</strong>
                 </div>
                 <div class="panel-body">
                     <div style="width: 50%; float:left; display:inline">
@@ -424,7 +437,7 @@
                             </tr>
                             <tr>
                                 <td style="font-size: 18px;font-weight: bold" width="200px">Resource</td>
-                                <td>{$primir_mut_list.resource$}</td>
+                                <td>{$primir_mut_list.source$}</td>
                             </tr>
                             <tr>
                                 <td style="font-size: 18px;font-weight: bold" width="200px">Variation position</td>
@@ -433,12 +446,12 @@
                             <tr>
                                 <td style="font-size: 18px;font-weight: bold" width="200px">Variation location in pre-miRNA
                                 </td>
-                                <td>{$primir_mut_list.rela_loc$}</td>
+                                <td>{$snp_loc$}</td>
                             </tr>
                             <tr>
                                 <td style="font-size: 18px;font-weight: bold" width="200px">Ref/Alt</td>
                                 <td>
-                                    {$primir_mut_list.ref$}/{$primir_mut_list.alt$}
+                                    {$primir_mut_list.ref$}/{$primir_mut_list.curalt$}
                                 </td>
                             </tr>
                             <tr>

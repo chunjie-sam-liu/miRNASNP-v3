@@ -24,25 +24,50 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
             $scope.premir_info = response.data.premir_info[0];
             if($scope.premir_info.cluster5k_id.length==0){
                 $scope.premir_info.cluster5k='Null'
+                var c5=0
             }else{
                 $scope.premir_info.cluster5k=''
                 for(var i=0;i<$scope.premir_info.cluster5k_id.length;i++){
                     $scope.premir_info.cluster5k+= $scope.premir_info.cluster5k_id[i].join(', ')+';'
                 }
-                $scope.premir_info.cluster5k.substring(0,$scope.premir_info.cluster5k.length-1)
+                var cluster5k=$scope.premir_info.cluster5k.substring(0,$scope.premir_info.cluster5k.length-1)
+                var c5=1
+
             }
             console.log($scope.premir_info.cluster5k)
             if($scope.premir_info.cluster10k_id.length==0){
                 $scope.premir_info.cluster10k='Null'
+                var c10=0
             }else{
                 $scope.premir_info.cluster10k=''
                 for(var i=0;i<$scope.premir_info.cluster10k_id.length;i++){
                     $scope.premir_info.cluster10k+= $scope.premir_info.cluster10k_id[i].join(', ')+';'
                 }
-                $scope.premir_info.cluster10k.substring(0,$scope.premir_info.cluster10k.length-1)
+                var cluster10k=$scope.premir_info.cluster10k.substring(0,$scope.premir_info.cluster10k.length-1)
+                var c10=1
             }
             console.log($scope.premir_info.cluster10k)
-            
+            if (c5+c10){
+                $(function(){
+                    var cluster5k_line=''
+                    var cluster10k_line=''
+                    if(c5){
+                        cluster5k_line="<td style=\"text-align: left\" colspan=\"6\" >5kb:"+cluster5k+"</td>"
+                    }
+                    if(c10){
+                        cluster10k_line="<td style=\"text-align: left\" colspan=\"6\" >10kb:"+cluster10k+"</td>"
+                    }
+                    if (cluster5k_line && cluster10k_line){
+                        var cl="<tr><td style=\"font-size: 18px;font-weight: bold\" rowspan=\"2\" > Cluster </td>"+cluster5k_line+"</tr><tr>"+cluster10k_line+"</tr>"
+                    }else if(cluster5k_line){
+                        var cl="<tr><td style=\"font-size: 18px;font-weight: bold\" > Cluster </td>"+cluster5k_line+"</tr>"
+                    }else{
+                        var cl="<tr><td style=\"font-size: 18px;font-weight: bold\" > Cluster </td>"+cluster10k_line+"</tr>"
+                    }
+                    $("#pre").append(cl)
+                })
+            }
+
             var pre_acc=[]
             var pre_pos=[]
             var mature={}
@@ -89,23 +114,31 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                     
                 for (var  i=0;i<mirset_v9.Function.length;i++){
                     $scope.premir_info.Function+=(mirset_v9.Function[i]+'; ')
-                }}
+                }
+                $scope.premir_info.function=$scope.premir_info.Function.slice(0,$scope.premir_info.Function.length-2)
+                $(function(){
+                    $("#pre").append("<tr>"+"<td style=\"font-size: 18px;font-weight: bold\"> Function</td >"+
+                    "<td style=\"text-align: left\" colspan=\"6\"><div style=\"overflow-y:auto;max-height:200px\">"+$scope.premir_info.function+"</div></td></tr>")})
+
+            }
                 if(mirset_v9.HMDD){
                     $scope.premir_disease=1
                    
                 for (var  i=0;i<mirset_v9.HMDD.length;i++){
                     $scope.premir_info.HMDD+=(mirset_v9.HMDD[i]+'; ')
-                }}
-                console.log($scope.premir_fun)
-                console.log($scope.premir_disease)
-                $scope.premir_info.function=$scope.premir_info.Function.slice(0,$scope.premir_info.Function.length-2)
+                }
                 $scope.premir_info.disease=$scope.premir_info.HMDD.slice(0,$scope.premir_info.HMDD.length-2)
-
+                $(function(){
+                    $("#pre").append("<tr>"+"<td style=\"font-size: 18px;font-weight: bold\"> HMDD</td >"+
+                    "<td style=\"text-align: left\" colspan=\"6\"><div style=\"overflow-y:auto;max-height:200px\">"+$scope.premir_info.disease+"</div></td></tr>")})
             }
-            var mature_position=$scope.premir_info.mature_position;
+                console.log($scope.premir_fun)
+                console.log($scope.premir_disease)    
+            }
+             $scope.mature_position=$scope.premir_info.mature_position;
             var color_option="1-"+String($scope.premir_info.sequence.length)+":lime";
-            for(var i=0;i<mature_position.length;i++) {
-                var mcolor = String(Number(mature_position[i][0]) + 1) + '-' + String(Number(mature_position[i][1]) + 1) + ':red';
+            for(var i=0;i<$scope.mature_position.length;i++) {
+                var mcolor = String(Number($scope.mature_position[i][0]) + 1) + '-' + String(Number($scope.mature_position[i][1]) + 1) + ':red';
                 color_option = color_option + ' ' + mcolor
             }
                 var container = new fornac.FornaContainer("#rna_ss_wild", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[554,330]});
@@ -131,17 +164,24 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
             if($scope.mirnago_count){
                 $(function(){
                     $("#pre").append("<tr>"+
-                    "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan="+String($scope.mirnago_count+1)+"> QuickGo function</th>"+
-                    "<th colspan="+"2"+" class="+"info"+" style="+"width: 25%"+">GO term</th>"+
-                    "<th colspan="+"3"+" class="+"info"+" style="+"width: 45%"+">GO name</th>"+
-                    "<th colspan="+"4"+" class="+"info"+" style="+"width: 25%"+">Reference</th>"+   
+                   // "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan="+String($scope.mirnago_count+1)+">QuickGo function</th>"+
+                   "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan=2>QuickGo function</th>"+
+                    "<th colspan="+"2"+" class="+"info"+" style="+"width: 20%"+">GO term</th>"+
+                    "<th colspan="+"3"+" class="+"info"+" style="+"width: 60%"+">GO name</th>"+
+                    "<th colspan="+"4"+" class="+"info"+" style="+"width: 20%"+">Reference</th>"+   
                     "</tr>")
+                    var go_in_td=''
                     for(var i=0;i<$scope.mirnago_count;i++){
-                        $("#pre").append("<tr>"+
-                        "<td colspan="+"2"+"><a target=\"blank\" href=\"http://amigo.geneontology.org/amigo/term/"+$scope.mirnago_list[i].go_id+"\"</a>"+$scope.mirnago_list[i].go_id+"</td>"+
-                        "<td colspan="+"3"+">"+$scope.mirnago_list[i].go_name+"</td>"+
-                        "<td colspan="+"4"+">"+$scope.mirnago_list[i].reference+"</td>")+"</tr>"
+                       go_in_td+="<tr>"
+                       go_in_td+="<td style=\"width:27%\"><a target=\"blank\" href=\"http://amigo.geneontology.org/amigo/term/"+$scope.mirnago_list[i].go_id+"\"</a>"+$scope.mirnago_list[i].go_id+"</td>"
+                       go_in_td+="<td style=\"width:32%\">"+$scope.mirnago_list[i].go_name+"</td>"
+                       go_in_td+="<td style=\"width:30%\">"+$scope.mirnago_list[i].reference+"</td></tr>"
                     }
+                    $("#pre").append("<tr><td colspan=\"6\"><div style=\"overflow: auto; max-height: 300px;\">"+
+                    "<table style=\"width:100%\">"+go_in_td+"</table></div></td></tr>")
+                    //$("#pre").append("<tr><td style=\"width:30%\">2</td><td style=\"width:40%\">1</td><td style=\"width:30%\">0</td></tr>")
+                    
+        
                 })
             }
         })
@@ -149,50 +189,76 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     $scope.fetch_premir();
 
     $scope.structure_effection_snp=function (snp_id,click_alt) {
-        $scope.primir_mut_count=0;
+        console.log("curalt:")
+        console.log(click_alt)
+        var snp_id=snp_id
+            $scope.primir_mut_count=0;
         $http({
             //url:base_url+base_url+'/api/primir_altseq',
             url:base_url+'/api/primir_altseq',
             method:'GET',
-            params:{search_ids:snp_id}
+            params:{search_ids:snp_id,pre_id:$scope.search_ids}
         }).then(function (response) {
             console.log(response);
             $scope.primir_alt_list=response.data.primir_alt_list;
             $scope.primir_alt_count=response.data.primir_alt_count;
             //var container = new fornac.FornaContainer("#rna_ss_alt", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[300,300]});
                 //var options = {'sequence':$scope.premirinfo[0].harpin_seq};
-            if($scope.primir_alt_list[0].alt.length==1){
+            //if($scope.primir_alt_list[0].alt.length==1){
+                if($scope.primir_alt_count==1){
                 var index_alt=0;
                 $scope.primir_alt_info=$scope.primir_alt_list[0];
                 $scope.snp_single=1;
                 $scope.snp_multi=0;
             }
             else {
+                var index_alt = 0;
                 $scope.primir_alt_info=$scope.primir_alt_list[0];
                 console.log($scope.primir_alt_info);
-                $scope.primir_alt_info.alt=$scope.primir_alt_info.alt.split(',');
                 $scope.snp_single=0;
                 $scope.snp_multi=1;
                 if (click_alt) {
                     for (var i = 0; i < $scope.primir_alt_list.length; i++) {
                         if ($scope.primir_alt_list[i].curalt == click_alt) {
-                            var index_alt = i;
+                            index_alt = i;
+                            $scope.primir_alt_info=$scope.primir_alt_list[index_alt]
                         }
                     }
                 } else {
                     index_alt = 0
                 }
             }
+            //$scope.primir_alt_info.alt=$scope.primir_alt_info.alt.split(',');
+           
             var container = new fornac.FornaContainer("#rna_ss_alt", {'applyForce': true,'allowPanningAndZooming':true,'initialSize':[554,330]});
             var options = {
                 'structure': $scope.primir_alt_list[index_alt].dotfold,
                 'sequence': $scope.primir_alt_list[index_alt].pre_altseq
             };
-                var color_option=$scope.color_option+' '+$scope.primir_alt_list[index_alt].rela_loc+':yellow'
+            var color_option="1-"+String($scope.primir_alt_list[index_alt].pre_altseq.length)+":lime";
+            for(var i=0;i<$scope.mature_position.length;i++) {
+                if(Number($scope.primir_alt_list[index_alt].alt_start)>Number($scope.mature_position[i][1])){
+                    var mcolor = String(Number($scope.mature_position[i][0]) + 1) + '-' + String(Number($scope.mature_position[i][1]) + 1) + ':red'; 
+                }else if(Number($scope.primir_alt_list[index_alt].alt_start)<Number($scope.mature_position[i][1]) & Number($scope.primir_alt_list[index_alt].alt_start)>Number($scope.mature_position[i][0])){
+                    var mcolor = String(Number($scope.mature_position[i][0]) + 1) + '-' + String(Number($scope.mature_position[i][1]) + 1+Number($scope.primir_alt_list[index_alt].alt_end)-Number($scope.primir_alt_list[index_alt].alt_start)) + ':red';
+                }else{
+                    var alt_len=Number($scope.primir_alt_list[index_alt].alt_end)-Number($scope.primir_alt_list[index_alt].alt_start)
+                    var mcolor = String(Number($scope.mature_position[i][0]) + 1+alt_len) + '-' + String(Number($scope.mature_position[i][1]) + 1+alt_len) + ':red'; 
+                }
+                
+                color_option = color_option + ' ' + mcolor
+            } 
+            if($scope.primir_alt_list[index_alt].alt_end==$scope.primir_alt_list[index_alt].alt_start){
+                var color_option=color_option+' '+$scope.primir_alt_list[index_alt].alt_start+':yellow'
+                $scope.snp_loc=$scope.primir_alt_list[index_alt].alt_start
+            }else{
+                var color_option=color_option+' '+$scope.primir_alt_list[index_alt].alt_start+'-'+String(Number($scope.primir_alt_list[index_alt].alt_end)-1)+':yellow'
+                $scope.snp_loc=$scope.primir_alt_list[index_alt].alt_start+'-'+$scope.primir_alt_list[index_alt].alt_end
+            }
                 container.addRNA(options.structure, options);
                 container.addCustomColorsText(color_option);
         })
-
+        
     };
     $scope.structure_effection_mut=function(mut_id){
         $scope.primir_alt_count=0;
@@ -211,7 +277,27 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                 'structure': $scope.primir_mut_list.dotfold,
                 'sequence': $scope.primir_mut_list.pre_altseq
             };
-                var color_option=$scope.color_option+' '+$scope.primir_mut_list.rela_loc+':yellow';
+            var color_option="1-"+String($scope.primir_mut_list.pre_altseq.length)+":lime";
+            for(var i=0;i<$scope.mature_position.length;i++) {
+                if(Number($scope.primir_mut_list.alt_start)>Number($scope.mature_position[i][1])){
+                    var mcolor = String(Number($scope.mature_position[i][0]) + 1) + '-' + String(Number($scope.mature_position[i][1]) + 1) + ':red'; 
+                }else if(Number($scope.primir_mut_list.alt_start)<Number($scope.mature_position[i][1]) & Number($scope.primir_mut_list.alt_start)>Number($scope.mature_position[i][0])){
+                    var mcolor = String(Number($scope.mature_position[i][0]) + 1) + '-' + String(Number($scope.mature_position[i][1]) + 1+Number($scope.primir_mut_list.alt_end)-Number($scope.primir_mut_list.alt_start)) + ':red';
+                }else{
+                    var alt_len=Number($scope.primir_mut_list.alt_end)-Number($scope.primir_mut_list.alt_start)
+                    var mcolor = String(Number($scope.mature_position[i][0]) + 1+alt_len) + '-' + String(Number($scope.mature_position[i][1]) + 1+alt_len) + ':red'; 
+                }
+                
+                color_option = color_option + ' ' + mcolor
+            }
+            if($scope.primir_mut_list.alt_start==$scope.primir_mut_list.alt_end){
+                color_option=color_option+' '+$scope.primir_mut_list.alt_start+':yellow';
+                $scope.snp_loc=$scope.primir_mut_list.alt_start
+            }else{
+                color_option=color_option+' '+$scope.primir_mut_list.alt_start+'-'+String(Number($scope.primir_mut_list.alt_end)-1)+':yellow';
+                $scope.snp_loc=$scope.primir_mut_list.alt_start+'-'+String(Number($scope.primir_mut_list.alt_end)-1)
+            }
+                console.log(color_option)
                 container.addRNA(options.structure, options);
                 container.addCustomColorsText(color_option);
           }

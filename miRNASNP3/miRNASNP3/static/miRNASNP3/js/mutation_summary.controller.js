@@ -174,7 +174,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
            autoFocus: true,
            source: function(request, response){
                var url = base_url+'/api/mutation_summary_phenotype?phenotype=' + request.term.trim();
-               //var url = '/api/mutation_summary_gene?gene=' + request.term.trim();
+               //var url = '/api/mutation_summary_phenotype?phenotype=' + request.term.trim();
                $.getJSON(
                    url,
                    function(data){
@@ -274,8 +274,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         console.log('Start search')
         console.log($scope.initial)
         if($scope.flag_identifier==0 && $scope.flag_phenotype==0){
-            $http({
-                
+            $http({   
                 url:base_url+'/api/mutation_summary_seed',
                 method:'GET',
                 params:condition
@@ -295,7 +294,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 }
                 var data_list=$scope.seed_list
             for(var i=0;i<data_list.length;i++){
-                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+               // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                 if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
@@ -346,23 +345,25 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 
                 var data_list=$scope.premir_list
             for(var i=0;i<data_list.length;i++){
-                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+               // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                 if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
                 //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                 //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
             })
-            $http({
-                
+            $http({              
                 url:base_url+'/api/mutation_summary_utr3',
                 method:'GET',
                 params:condition
             }).then(function(response){
                 $scope.initial=0;
+                console.log("count UTR3")
                 console.log(response)
+                console.log(response.data.mutation_utr3_list)
                 $scope.utr3_list=response.data.mutation_utr3_list;
                 if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
                 else{$scope.utr3_nonitem=1}
@@ -372,7 +373,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 }
                 var data_list=$scope.utr3_list
             for(var i=0;i<data_list.length;i++){
-                data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                //data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                 if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
@@ -440,7 +441,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                     $scope.seed_count=response.data.mutation_seed_count[0].count;
                     var data_list=$scope.seed_list
                 for(var i=0;i<data_list.length;i++){
-                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                    //data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                     if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                     if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                     //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
@@ -491,10 +492,11 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         $scope.premir_count=response.data.mutation_premir_count[0].count;
                         var data_list=$scope.premir_list
                     for(var i=0;i<data_list.length;i++){
-                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                       // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                         if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                         if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
                         //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
@@ -516,7 +518,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         $scope.utr3_count=response.data.mutation_utr3_count[0].count;
                         var data_list=$scope.utr3_list
                     for(var i=0;i<data_list.length;i++){
-                        data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                       // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                         if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                         if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
@@ -555,7 +557,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             if(response.data.mutation_seed_count.length!=0){$scope.seed_count=response.data.mutation_seed_count[0].count;}
             var data_list=$scope.seed_list
         for(var i=0;i<data_list.length;i++){
-            data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+          //  data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
             //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
@@ -577,9 +579,10 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             if(response.data.mutation_premir_count.length!=0){$scope.premir_count=response.data.mutation_premir_count[0].count;}
             var data_list=$scope.premir_list
         for(var i=0;i<data_list.length;i++){
-            data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+          //  data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+            data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
             //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
             //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
             //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
@@ -597,7 +600,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
             var data_list=$scope.utr3_list
         for(var i=0;i<data_list.length;i++){
-            data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+          //  data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
             if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}

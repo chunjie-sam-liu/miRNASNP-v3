@@ -1,11 +1,6 @@
 <div class="bs-callout-primary">
     <div class="description" style="margin-left: 7px;">
         <h4>Disease related variation in miRNA and gene 3'UTR</h4>
-        <!--p>
-            There are<span class="badge alert-warning">175,985</span> mutations from COSMIC, <span
-                class="badge alert-warning">32,136</span> variations from ClinVar and 235,148 SNPs, are collected in miRNASNP3,some of
-            these muttaions share the same genome position with SNPs.
-        </p-->
         <p> Disease related variations (DRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">175,985</span> mutations from COSMIC, 
             disease information of <span class="badge alert-primary" style="background-color: #2e6da4;">32,136</span> variations from ClinVar and disease/trait information of <span class="badge alert-primary" style="background-color: #2e6da4;">235,148</span> SNPs from GWAS catalog to construct this module.  
             You may browse DRVs by tissues or enter the disease you are interested in to get the highest match DRVs.</p>
@@ -15,48 +10,6 @@
 <div class="panel panel-primary">
     <div class="panel-body">
         <form method="get" id="mutation-summary-form" class="form form-horizontal">
-            <!--div class="form-group">
-            <label class="control-label col-lg-2">Chromosome:</label>
-            <div class="col-lg-2">
-            <select id="chr" class="form-control">
-                <option>All</option>
-                <option>chr1</option>
-                <option>chr2</option>
-                <option>chr3</option>
-                <option>chr4</option>
-                <option>chr5</option>
-                <option>chr6</option>
-                <option>chr7</option>
-                <option>chr8</option>
-                <option>chr9</option>
-                <option>chr10</option>
-                <option>chr11</option>
-                <option>chr12</option>
-                <option>chr13</option>
-                <option>chr14</option>
-                <option>chr15</option>
-                <option>chr16</option>
-                <option>chr17</option>
-                <option>chr18</option>
-                <option>chr19</option>
-                <option>chr20</option>
-                <option>chr21</option>
-                <option>chr22</option>
-                <option>chrX</option>
-                <option>chrY</option>
-            </select>
-            </div>
-            </div>
-            <div class="form-group">
-            <label class="control-label col-lg-2">Region:</label>
-            <div class="col-lg-2">
-                <select id="location" class="form-control">
-                    <option value="All">All</option>
-                    <option value="UTR3">3'UTR</option>
-                    <option value="mirSeed">mature miRNA Seed</option>
-                </select>
-            </div>
-            </div-->
             <div class="form-group">
                 <label class="control-label col-lg-2">Tissue:</label>
                 <div class="col-lg-3">
@@ -114,17 +67,12 @@
                         </select>
                     </div>
                 </div>
-                <!--/div>
-            <div class="form-group"-->
                 <label class="control-label col-lg-2">Disease:</label>
                 <div class="col-lg-3">
                     <div id="query_phenotype_summary-div" class=" ui-widget has-feedback inner-addon right-addon"
                         style="height: 34px">
                         <input name="query_phenotype_summary" type="text" id="query_phenotype_summary"
-                            class="form-control ui-autocomplete-input" placeholder="acne" autocomplete="off"
-                            >
-                        <!--list="phenotype_list"-->
-                        <!--span class="glyphicon form-control-feedback"-->
+                            class="form-control ui-autocomplete-input" placeholder="acne" autocomplete="off">
 
                         <datalist id="phenotype_list">
                             <option value="All">All</option>
@@ -208,15 +156,6 @@
                     </select>
                 </div>
             </div>
-
-            <!--div class="form-group">
-                <div class="checkbox col-sm-offset-3 col-sm-4" data-triggle="hover" data-placement="right">
-                    <label class="control-label checkbox-inline">
-                        <input type="checkbox" id="snp_rela">
-                            <strong id="snp_rela_1">Related to SNP</strong>
-                    </label>
-                </div>
-            </div-->
             <div class="form-group">
                 <div class="col-sm-offset-5">
                     <button class="btn btn-danger" id="search_button" type="submit" ng-click="fetch_mutation_summary()">
@@ -224,9 +163,9 @@
                     </button>
 
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-primary" id="reset_query" type="reset" ng-click=reset()>
+                    <a href="#!/mutation_summary"><button class="btn btn-primary" id="reset_query" type="reset" ng-click=reset()>
                         Reset
-                    </button>
+                    </button></a>
                 </div>
             </div>
         </form>
@@ -257,8 +196,6 @@
     <ul class="nav nav-tabs">
         <li id="seed" ng-click="show_one('seed')" ng-show="seed_count"
             style="background-color:#EBEBEB;margin-right: 3px " class="class_seed"><a data-toggle="tab"><strong>DRV in seed</strong></a> </li>
-        <!--li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px "
-            class="class_mature" ><a data-toggle="tab"><strong>Mutation on mature miRNA</strong></a> </li-->
         <li id="premir" ng-click="show_one('premir')" ng-show="premir_count"
             style="background-color:#EBEBEB;margin-right: 3px" class="class_premir"><a data-toggle="tab"><strong
                     id="premir_tab">DRV in pre-miRNA</strong></a> </li>
@@ -298,46 +235,42 @@
             </thead>
             <tbody>
                 <tr ng-repeat="v in seed_list" ts-repeat>
-                    <td><a href="#!/mirna?mirna_id={$v.identifier$}" style="color: red"><strong>{$v.identifier$}</strong></a></td>
+                    <td><a href="#!/mirna?mirna_id={$v.mature_id$}" style="color: red">{$v.mature_id$}</a></td>
                     <!--td>{$ $index+1 $}</td-->
                     <td>
-                        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
-                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&one=1"
-                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        <span ng-if="v.source=='ClinVar'">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=Seed&one=1"
+                                style="color: red">{$v.source$}:{$ v.mut_id $}</a>
                         </span>
-                        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                        <!--span ng-if="v.resource=='ClinVar'">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&one=1"
-                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
-                        </span>
+                                style="color: red">{$v.source$}:{$ v.mut_id $}</a>
+                        </span-->
 
-                        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
-                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&one=1"
-                                style="color: red">{$ v.mut_id $}</a>
+                        <span ng-if="v.source=='COSMIC'">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=Seed&one=1"style="color: red">{$ v.mut_id $}</a>
                         </span>
-                        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
-                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&one=1" style="color: red">{$
+                        <!--span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=Seed&one=1" style="color: red">{$
                                 v.mut_id $}</a>
-                        </span>
+                        </span-->
                         <!--span ng-if='v.is_tag||v.is_ld'>
                                     <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
                             </span-->
-                        <span ng-if="v.is_tag">
-                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
-                        </span>
-                        <span ng-if="v.is_ld">
+                        <span ng-if="v.source=='GWAS'">
                             <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
                                 $}</a><br-->
-                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
+                            <a href="#!/snp?snp_id={$v.mut_id$}&location=Seed&one=1" style="color: red">{$ v.mut_id $}</a>
                         </span>
                         <!--span ng-if="!v.is_tag && !v.is_ld">
                                     <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
                             </span-->
                     </td>
-                    <td>{$ v.chrome$}:{$ v.position $}</td>
+                    <td>{$ v.mut_chr$}:{$ v.mut_position $}</td>
 
-                    <td>{$ v.ref$}/{$v.alt$}</td>
+                    <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$ v.ref$}/{$v.alt$}</td>
                     <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-                    <td style="word-break:break-all">{$ v.pathology_show$}</td>
+                    <td style="word-break:break-all">{$ v.disease $}</td>
                     <td>{$v.location $}</td>
 
                     <!--td align="center">
@@ -345,124 +278,96 @@
                     <span ng-if="!v.snp_id">-</span>
                 </td-->
                     <td>
-                        <span ng-if="v.is_ld||v.is_tag">
-                            <a target="_blank" href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">GWAS</a><br>
+                        <span ng-if="v.source=='GWAS'">
+                            <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&six=1" style="color: red;">GWAS</a>
                         </span>
-                        <span ng-if="v.resource=='COSMIC'">
-                                <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.resource$}</a>
+                        <span ng-if="v.source=='COSMIC'">
+                                <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.source$}</a>
                             </span>
-                            <span ng-if="v.resource=='ClinVar'">
-                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.resource$}</a>
+                            <span ng-if="v.source=='ClinVar'">
+                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.source$}</a>
                             </span>
                     </td>
                     <td align="center">
-                        <span ng-if="v.pubmed_id"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$v.pubmed_id$}</a></span>
-                        <span ng-if="!v.pubmed_id">-</span>
+                        <span ng-if="v.pubmed_id!='NA'"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$v.pubmed_id$}</a></span>
+                        <span ng-if="v.pubmed_id=='NA'">-</span>
                     </td>
                     <td>
-                        <span ng-if="v.snp_id"><a
-                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&two=1"
-                                style="color: red">
-                                <button class="btn btn-success"
-                                    style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
+                        <span ng-if="!v.analysis">-</span>
+                        <span ng-if="v.analysis">
+                            <span ng-if="v.source=='GWAS'">
+                                <span ng-if="v.gain_count==0">
+                                    <button class="btn btn-success disabled" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button>
+                                </span>
+                                <span ng-if="v.gain_count!=0">
+                                    <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&two=1">
+                                        <button class="btn btn-success" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button></a>
+                                </span>
+                                    
+                            </span>
+                            <span ng-if="v.source!='GWAS'&&!v.snp_id">
+                                <span ng-if="v.gain_count==0">
+                                    <button class="btn btn-success disabled" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button>
+                                </span>
+                                <span ng-if="v.gain_count!=0">
+                                    <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&two=1">
+                                        <button class="btn btn-success" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button></a>
+                                </span>
+                                    
+                            </span>
+                            <span ng-if="v.source!='GWAS'&&v.snp_id">
+                                <span ng-if="v.gain_count==0">
+                                    <button class="btn btn-success disabled" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button>
+                                </span>
+                                <span ng-if="v.gain_count!=0">
+                                    <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&six=1">
+                                        <button class="btn btn-success" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button></a>    
+                                </span>
+                                
+                        </span>
+                            </span>
 
-                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
-                                href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&two=1" style="color: red">
-                                <button class="btn btn-success"
-                                    style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
-
-                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&two=1" style="color: red">
-                                <button class="btn btn-success"
-                                    style="width: 60px;height:30px;text-align: right">{$v.gain_count$}</button></a></span>
                     </td>
                     <td>
-                        <span ng-if="v.snp_id"><a
-                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=mirseed&three=1"
-                                style="color: red">
-                                <button class="btn btn-danger"
-                                    style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
-
-                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
-                                href="#!/mutation?mut_id={$v.mut_id$}&location=mirseed&three=1" style="color: red">
-                                <button class="btn btn-danger"
-                                    style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
-                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&three=1" style="color: red">
-                                <button class="btn btn-danger"
-                                    style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                        <span ng-if="!v.analysis">-</span>
+                        <span ng-if="v.analysis">
+                            <span ng-if="v.source=='GWAS'">
+                                <span ng-if="v.loss_count==0">
+                                    <button class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button>
+                                </span>
+                                <span ng-if="v.loss_count!=0">
+                                    <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&three=1"> 
+                                        <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a>
+                                </span>
+                                    
+                            </span>
+                            <span ng-if="v.source!='GWAS'&&!v.snp_id">
+                                <span ng-if="v.loss_count==0">
+                                    <button class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button>
+                                </span>
+                                <span ng-if="v.loss_count!=0">
+                                    <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&three=1"> 
+                                        <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a>
+                                </span>
+                                    
+                            </span>
+                            <span ng-if="v.source!='GWAS'&&v.snp_id">
+                                <span ng-if="v.loss_count==0">
+                                    <button class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button>
+                                </span>
+                                <span ng-if="v.loss_count!=0">
+                                    <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&seven=1"> 
+                                        <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a>    
+                                </span>
+                                
+                        </span>
+                            </span>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <!--div ng-show="mature">
-
-            <div paging
-                             page="currentPage_mature"
-                             page-size=15
-                             total="mature_count"
-                             scroll-top="true"
-                             hide-if-empty="true"
-                             show-prev-next="true"
-                             show-first-last="true"
-                             text-title-page="Page {page} Hover Over"
-                             text-title-first="First hover"
-                             text-title-last="Last hover"
-                             text-title-next="Next hover"
-                             text-title-prev="Prev hover"
-                             show-prev-next="true"
-                             show-first-last="true"
-                             ul-class="pagination"
-                             active-class="active"
-                             disabled-class="disabled"
-                             paging-action="update_page(page,'mature')"
-                        ></div>
-
-<table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-<thead>
-    <tr>
-        <th style="width: 12%">Position</th>
-        <th ts-criteria="mut_id" style="width: 16%">Mutation ID</th>
-        <th style="width:6%">Ref/Alt</th>
-        <th style="width: 25%">Pathology</th>
-        <th style="width: 7%">Region</th>
-        <th style="width: 8%">Gene</th>
-        
-        <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed ID</th>
-    </tr>
-</thead>
-<tbody>
-    <tr ng-repeat="v in mature_list" ts-repeat>
-         
-        <td>{$ v.chrome$}:{$ v.position $}</td>
-        <td>
-                <span ng-if="v.is_tag">
-                        <a href="https://www.ebi.ac.uk/gwas/variants/{$v.mut_id$}" >Tag:{$ v.mut_id $}</a>
-                </span>
-                <span ng-if="v.is_ld">
-                        <a href="https://www.ebi.ac.uk/gwas/variants/{$v.mut_id$}">TagSNP:{$ v.rela_tag_snp $}</a><br>
-                            <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">SNP:{$ v.mut_id $}</a>
-                </span>
-                <span ng-if="!v.is_tag && !v.is_ld">
-                        <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
-                </span>
-                </td>
-        <td>{$ v.ref$}/{$v.alt$}</td>
-        <td style="word-break:break-all">{$ v.pathology_show$}</td>
-        <td>{$v.location $}</td>
-        <td><a href="#!/mirna?mirna_id={$v.identifier$}" style="color: red">{$v.identifier$}</a></td>
-        <td align="center">
-            <span ng-if="v.snp_id"><a href="#!/snp?snp_id={$v.snp_id$}">{$ v.snp_id $}</span>
-            <span ng-if="!v.snp_id">-</span>
-        </td>
-        <td align="center">
-            <span ng-if="v.pubmed_id"><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$ v.pubmed_id$}</a></span>
-            <span ng-if="!v.pubmed_id">-</span>
-        </td>  
-    </tr>
-</tbody>
-</table> 
-</div-->
-
+   
     <div ng-show="premir">
 
         <div paging page="currentPage_premir" page-size=15 total="premir_count" scroll-top="true" hide-if-empty="true"
@@ -506,44 +411,41 @@
                     <!--td>{$ $index+1 $}</td-->
                     <td>
                         <a href="#!/premir_detail?search_ids={$v.pre_id$}"
-                            style="color: red"><strong>{$v.pre_id$}</strong></td>
+                            style="color: red">{$v.pre_id$}</td>
                     <td>
-                        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
-                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=pre-miRNA&one=1"
-                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        <span ng-if="v.source=='ClinVar'">{$v.source$}:{$ v.mut_id $}
                         </span>
-                        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                        <!--span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1"
                                 style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
-                        </span>
+                        </span-->
 
-                        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
-                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=pre-miRNA&one=1"
-                                style="color: red">{$ v.mut_id $}</a>
+                        <span ng-if="v.source=='COSMIC'">
+                              {$ v.mut_id $}
                         </span>
-                        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                        <!--span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1" style="color: red">{$v.mut_id $}</a>
-                        </span>
+                        </span-->
                         <!--span ng-if='v.is_tag||v.is_ld'>
                 <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
         </span-->
-                        <span ng-if="v.is_tag">
+                        <!--span ng-if="v.is_tag">
                             <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
-                        </span>
-                        <span ng-if="v.is_ld">
+                        </span-->
+                        <span ng-if="v.source=='GWAS'">
                             <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
                                 $}</a><br-->
-                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
+                           {$ v.mut_id $}
                         </span>
                         <!--span ng-if="!v.is_tag && !v.is_ld">
                 <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
         </span-->
                     </td>
-                    <td>{$ v.chr$}:{$ v.position $}</td>
+                    <td>{$ v.mut_chr$}:{$ v.mut_position $}</td>
 
-                    <td>{$ v.ref$}/{$v.alt$}</td>
+                    <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$ v.ref$}/{$v.alt$}</td>
                     <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-                    <td style="word-break:break-all">{$ v.pathology_show$}</td>
+                    <td style="word-break:break-all">{$ v.disease$}</td>
                     <td>{$v.location $}</td>
                     <!--td>
             <span ng-if="v.location != 'pre-miRNA'">{$v.identifier$}</span>
@@ -552,23 +454,23 @@
                     <td>{$v.energy_change$}</td>
                     <td>{$v.expression_change$}</td>
                     <td align="center">
-                        <span ng-if="v.is_ld||v.is_tag">
-                            <a target="_blank" href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">GWAS</a><br>
+                        <span ng-if="v.source=='GWAS'">
+                                <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&six=1" style="color: red;">GWAS</a>
                         </span>
                         <!--span ng-if="!v.is_ld && !v.is_tag">
                             {$v.resource$}
                         </span-->
-                        <span ng-if="v.resource=='COSMIC'">
-                            <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.resource$}</a>
+                        <span ng-if="v.source=='COSMIC'">
+                            <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.source$}</a>
                         </span>
-                        <span ng-if="v.resource=='ClinVar'">
-                            <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.resource$}</a>
+                        <span ng-if="v.source=='ClinVar'">
+                            <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.source$}</a>
                         </span>
                     </td>
                     <td align="center">
-                        <span ng-if="v.pubmed_id"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
+                        <span ng-if="v.pubmed_id!='NA'"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
                                 v.pubmed_id$}</a></span>
-                        <span ng-if="!v.pubmed_id">-</span>
+                        <span ng-if="v.pubmed_id=='NA'">-</span>
                     </td>
                 </tr>
             </tbody>
@@ -609,97 +511,125 @@
             <tbody>
                 <tr ng-repeat="v in utr3_list" ts-repeat>
                     <!--td>{$ $index+1 $}</td-->
-                    <td><a href="#!/gene?query_gene={$v.identifier$}&has_snp=1&has_phenotype=1"
-                            style="color: red"><strong>{$v.identifier$}</strong></td>
+                    <td><a href="#!/gene?query_gene={$v.gene$}&has_snp=1&has_phenotype=1"
+                            style="color: red">{$v.gene$}</td>
                     <td>
-                        <span ng-if="v.resource=='ClinVar'&&v.snp_id">
-                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&one=1"
-                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        <span ng-if="v.source=='ClinVar'">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1"
+                                style="color: red">{$v.source$}:{$ v.mut_id $}</a>
                         </span>
-                        <span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                        <!--span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1"
                                 style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
-                        </span>
+                        </span-->
 
-                        <span ng-if="v.resource=='COSMIC'&&v.snp_id">
-                            <a href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&one=1"
+                        <span ng-if="v.source=='COSMIC'">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1"
                                 style="color: red">{$ v.mut_id $}</a>
                         </span>
-                        <span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                        <!--span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&one=1" style="color: red">{$ v.mut_id
                                 $}</a>
-                        </span>
+                        </span-->
                         <!--span ng-if='v.is_tag||v.is_ld'>
                     <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
             </span-->
-                        <span ng-if="v.is_tag">
+                        <!--span ng-if="v.is_tag">
                             <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
-                        </span>
-                        <span ng-if="v.is_ld">
+                        </span-->
+                        <span ng-if="v.source=='GWAS'">
                             <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
                                 $}</a><br-->
-                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
+                            <a href="#!/snp?snp_id={$v.mut_id$}&location=UTR3&one=1" style="color: red">{$ v.mut_id $}</a>
                         </span>
                         <!--span ng-if="!v.is_tag && !v.is_ld">
                     <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
             </span-->
                     </td>
-                    <td>{$ v.chrome$}:{$ v.position $}</td>
-                    <td>{$ v.ref$}/{$v.alt$}</td>
+                    <td>{$ v.mut_chr$}:{$ v.mut_position $}</td>
+                    <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$ v.ref$}/{$v.alt$}</td>
                     <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-                    <td style="word-break:break-all">{$ v.pathology_show$}</td>
+                    <td style="word-break:break-all">{$ v.disease $}</td>
                     <td>{$v.location $}</td>
 
                     <td align="center">
-                        <span ng-if="v.is_ld||v.is_tag">
-                            <a target="_blank" href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">GWAS</a><br>
+                        <span ng-if="v.source=='GWAS'">
+                                <a href="#!/snp?snp_id={$v.mut_id$}&location=UTR3&six=1" style="color: red;">GWAS</a>
                         </span>
-                        <span ng-if="v.resource=='COSMIC'">
-                                <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.resource$}</a>
+                        <span ng-if="v.source=='COSMIC'">
+                                <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">COSMIC</a>
                             </span>
-                            <span ng-if="v.resource=='ClinVar'">
-                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.resource$}</a>
+                            <span ng-if="v.source=='ClinVar'">
+                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.source$}</a>
                             </span>
                     </td>
                     <td align="center">
-                        <span ng-if="v.pubmed_id"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
+                        <span ng-if="v.pubmed_id!='NA'"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
                                 v.pubmed_id$}</a></span>
-                        <span ng-if="!v.pubmed_id">-</span>
+                        <span ng-if="v.pubmed_id=='NA'">-</span>
                     </td>
                     <td>
-                        <span ng-if="v.snp_id"><a
-                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3;four=1"
-                                style="color: red">
-                                <button class="btn btn-success"
-                                    style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
-
-                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
-                                href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&four=1" style="color: red">
-                                <button class="btn btn-success"
-                                    style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
-
-                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&location=UTR3&four=1"
-                                style="color: red">
-                                <button class="btn btn-success"
-                                    style="width: 50px;height:30px;text-align: center">{$v.gain_count$}</button></a></span>
+                        <span ng-if="v.source=='GWAS'">
+                            <span ng-if="v.gain_count==0">
+                                <button class="btn btn-success disabled" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button>
+                            </span>
+                            <span ng-if="v.gain_count!=0">
+                                <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&four=1">
+                                    <button class="btn btn-success" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button></a>
+                            </span>
+                    </span>
+                    <span ng-if="v.source!='GWAS'&&v.snp_id">
+                        <span ng-if="v.gain_count==0">
+                            <button class="btn btn-success disabled" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button>
+                        </span>
+                        <span ng-if="v.gain_count!=0">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&eight=1">
+                                <button class="btn btn-success" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button></a>
+                        </span>
+                            
+                    </span>
+                    <span ng-if="v.source!='GWAS'&&!v.snp_id">
+                        <span ng-if="v.gain_count==0">
+                            <button class="btn btn-success disabled" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button>
+                        </span>
+                        <span ng-if="v.gain_count!=0">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&four=1">
+                                <button class="btn btn-success" style="width: 60px;height:30px;text-align: center">{$v.gain_count$}</button></a>    
+                        </span>
+                        
+                </span>
 
                     </td>
                     <td>
-                        <span ng-if="v.snp_id"><a
-                                href="#!/snp_relate_mutation?snp_id={$v.snp_id$}&mut_id={$v.mut_id$}&location=UTR3&five=1"
-                                style="color: red">
-                                <button class="btn btn-danger"
-                                    style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
-
-                        <span ng-if="!v.snp_id && !v.is_tag && !v.is_ld"><a
-                                href="#!/mutation?mut_id={$v.mut_id$}&location=UTR3&five=1" style="color: red">
-                                <button class="btn btn-danger"
-                                    style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
-
-                        <span ng-if="v.is_tag||v.is_ld"><a href="#!/snp?snp_id={$v.mut_id$}&lcoation=UTR3&five=1"
-                                style="color: red">
-                                <button class="btn btn-danger"
-                                    style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a></span>
+                        <span ng-if="v.source=='GWAS'">
+                            <span ng-if="v.loss_count==0">
+                                <button class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button>
+                            </span>
+                            <span ng-if="v.loss_count!=0">
+                                <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&five=1">
+                                    <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a>
+                            </span>
+                            
+                    </span>
+                    <span ng-if="v.source!='GWAS'&&v.snp_id">
+                        <span ng-if="v.loss_count==0">
+                            <button class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button>
+                        </span>
+                        <span ng-if="v.loss_count!=0">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&nine=1">
+                                <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a> 
+                        </span>
+                           
+                    </span>
+                    <span ng-if="v.source!='GWAS'&&!v.snp_id">
+                        <span ng-if="v.loss_count==0">
+                            <button class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button>
+                        </span>
+                        <span ng-if="v.loss_count!=0">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location={$v.location$}&five=1">
+                                <button class="btn btn-danger" style="width: 60px;height:30px;text-align: center">{$v.loss_count$}</button></a>
+                        </span>
+                </span>
                     </td>
 
                 </tr>

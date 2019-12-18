@@ -3,7 +3,7 @@
 angular.module('miRNASNP3')
     .controller('SnpSummaryController',SnpSummaryController);
 
-function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service) {
+function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service) {
     console.log('SnpSummaryController loaded');
     $("[data-toggle='popover']").popover();
     
@@ -24,6 +24,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
     var premir=$routeParams.premir
     var utr3=$routeParams.utr3
     var redirect=0
+    var query_snp=$routeParams.snp_id
 
     console.log(seed)
     console.log(premir)
@@ -197,6 +198,9 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
             }
         });
     }
+    //check gl count button------------------------------------------------
+
+
     addAnnotationInputKeyupHandler()
     check_input_autocomplete()
 
@@ -263,6 +267,9 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
             condition['identifier']=query_iden_summary
         }
         
+        if(query_snp){
+            condition['snp_id']=query_snp
+        }
 
         if ($("#ldsnp").is(":checked")){
             condition["ldsnp"]=1
@@ -343,6 +350,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                     else if(Number(premir_list[i].ref_freq)==0.0||premir_list[i].ref_freq=='novalue'){premir_list[i].ref_freq=0}
                     if(premir_list[i].alt_freq=='NA'){premir_list[i].alt_freq=0}
                     else if(Number(premir_list[i].alt_freq)==0.0){premir_list[i].alt_freq=0}
+                    premir_list[i].energy_change=Number(premir_list[i].energy_change).toFixed(2)
                 }
                 $scope.premir_list=premir_list;
 
@@ -372,6 +380,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                     if(utr3_list[i].alt_freq=='NA'){utr3_list[i].alt_freq=0}
                     else if(Number(utr3_list[i].alt_freq)==0.0){utr3_list[i].alt_freq=0}
                     if(utr3_list[i].location=='UTR3'){utr3_list[i].location="3'UTR";}
+                    if(utr3_list[i].is_ld=='NA'){utr3_list[i].is_ld='0'}
                     if(utr3_list[i].gain_count){utr3_list[i].gain_count=parseInt(utr3_list[i].gain_count).toLocaleString()}
                     if(utr3_list[i].loss_count){utr3_list[i].loss_count=parseInt(utr3_list[i].loss_count).toLocaleString()}
                 }
@@ -513,7 +522,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                 
             })*/
             switch(location){
-                case 'mirseed':
+                case 'miseed':
                     {
                         $http({
                             url:base_url+'/api/snp_summary_seed',
@@ -572,6 +581,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                                 else if(Number(premir_list[i].ref_freq)==0.0||premir_list[i].ref_freq=='novalue'){premir_list[i].ref_freq=0}
                                 if(premir_list[i].alt_freq=='NA'){premir_list[i].alt_freq=0}
                                 else if(Number(premir_list[i].alt_freq)==0.0){premir_list[i].alt_freq=0}
+                                premir_list[i].energy_change=Number(premir_list[i].energy_change).toFixed(2)
                         }
                             $scope.premir_list=premir_list
                         //$scope.premir_count=response.data.snp_summary_count;
@@ -594,6 +604,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
                             if(utr3_list[i].alt_freq=='NA'){utr3_list[i].alt_freq=0}
                             else if(Number(utr3_list[i].alt_freq)==0.0){utr3_list[i].alt_freq=0}
                             if(utr3_list[i].location=='UTR3'){utr3_list[i].location="3'UTR";}
+                            if(utr3_list[i].is_ld=='NA'){utr3_list[i].is_ld='0'}
                             if(utr3_list[i].gain_count){utr3_list[i].gain_count=parseInt(utr3_list[i].gain_count).toLocaleString()}
                             if(utr3_list[i].loss_count){utr3_list[i].loss_count=parseInt(utr3_list[i].loss_count).toLocaleString()}
                         }
@@ -613,6 +624,7 @@ function SnpSummaryController($scope,$routeParams,$http,$filter,miRNASNP3Service
         
         condition=[]
         clearValidationStyles($('#query_iden_summary'))
+        $route.reload('#!/snp_summary');
         $http({
             //url:base_url+base_ur+ip_address,
             url:base_url+'/api/snp_summary_seed',

@@ -88,11 +88,21 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 console.log(response);
                 $scope.mirna_summary_list = response.data.mirna_summary_list;
                 $scope.mirna_summary_count=response.data.mirna_summary_count;
-                var indel_in_seed=0
+                /*var indel_in_seed=0
                 var indel_in_mature=0
                 for(var i=0;i<$scope.mirna_summary_list.length;i++){
                     indel_in_seed+=Number($scope.mirna_summary_list[i].indel_in_seed)
                     indel_in_mature+=Number($scope.mirna_summary_list[i].indel_in_mature)
+                }*/
+                var snp_in_seed=0
+                var snp_in_mature=0
+                var mutation_in_seed=0
+                var mutation_in_mature=0
+                for(var i=0;i<$scope.mirna_summary_list.length;i++){
+                    snp_in_seed+=Number($scope.mirna_summary_list[i].snp_in_seed)
+                    snp_in_mature+=Number($scope.mirna_summary_list[i].snp_in_mature)
+                    mutation_in_seed+=$scope.mirna_summary_list[i].clinvar_in_seed+$scope.mirna_summary_list[i].cosmic_in_seed
+                    mutation_in_mature+=$scope.mirna_summary_list[i].clinvar_in_mature+$scope.mirna_summary_list[i].cosmic_in_mature
                 }
                 if($scope.mirna_summary_list.length>1){
                     $scope.mirna_table=1
@@ -100,14 +110,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     $scope.mirna_table=0
                 }
                 $scope.mirna_summary_alias=$scope.mirna_summary_list[0]
-                $scope.mirna_summary_alias.snp_in_seed=Number($scope.mirna_summary_alias.snp_in_seed)+indel_in_seed
-                $scope.mirna_summary_alias.snp_in_matue=Number($scope.mirna_summary_alias.snp_in_matue)+indel_in_mature
-                console.log(indel_in_seed)
-                console.log(indel_in_mature)
-                console.log($scope.mirna_summary_alias.snp_in_seed)
-                console.log($scope.mirna_summary_alias.snp_in_mature)
-                $scope.mirna_summary_alias.variation_in_seed=Number($scope.mirna_summary_alias.cosmic_in_seed)+Number($scope.mirna_summary_alias.clinvar_in_seed)+Number($scope.mirna_summary_alias.snp_gwas_in_seed_singlepre)
-                $scope.mirna_summary_alias.variation_in_mature=Number($scope.mirna_summary_alias.cosmic_in_matue)+Number($scope.mirna_summary_alias.clinvar_in_matue)+Number($scope.mirna_summary_alias.snp_gwas_in_mature_singlepre)
+                $scope.mirna_summary_alias.snp_in_seed=snp_in_seed
+                $scope.mirna_summary_alias.snp_in_mature=snp_in_mature
+                $scope.mirna_summary_alias.variation_in_seed=mutation_in_seed
+                $scope.mirna_summary_alias.variation_in_mature=mutation_in_mature
             });
     };
     $scope.fetch_mirna_details();
@@ -248,7 +254,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                // $scope.exp_item=title;
                 
                 var cancer_types=['cancer_type'];
-                var expr=['RPKM'];
+                var expr=['RSEM(log2)'];
                
                 for(var cancer in mirna_expr){
                     var source_data={}
@@ -301,7 +307,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     yAxis: [
                         {
                             type: 'value',
-                            name:'RPKM',
+                            name:'RSEM(log2)',
                             nameTextStyle:{
                                 align:'left',
                                 fontSize:12,
@@ -514,7 +520,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
            // $scope.exp_item=title;
             
             var cancer_types=['cancer_type'];
-            var expr=['RPKM'];
+            var expr=['RSEM(log2)'];
            
             for(var cancer in gene_expr){
                 var source_data={}
@@ -567,7 +573,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 yAxis: [
                     {
                         type: 'value',
-                        name:'RPKM',
+                        name:'RSEM(log2)',
                         nameTextStyle:{
                             align:'left',
                             fontSize:12,

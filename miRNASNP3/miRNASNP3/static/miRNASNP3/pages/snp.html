@@ -36,8 +36,7 @@
                 <!--dd class="ng-binding">{$ snp_summary_alias.snp_chr$}:{$snp_summary_alias.snp_coordinate$}</dd-->
                 <dd class="ng-binding">{$snp_position_list$}</dd>
                 <dt>Ref/Alt:</dt>
-                <dd class="ng-binidng">{$snp_summary_alias.ref$}
-                    <span ng-if="snp_summary_alias.ref_freq">({$snp_summary_alias.ref_freq$})</span> /{$snp_alt$}
+                <dd class="ng-binidng">{$snp_summary_alias.ref$}<span ng-if="snp_summary_alias.ref_freq!='NA'">({$snp_summary_alias.ref_freq$})</span>/{$snp_alt$}
                     <span ng-if="has_alt_freq">({$alt_freq$})</span> </dd>
                 <dt>Region:</dt>
                 <dd class="ng-binding">{$ snp_summary_alias.location $}</dd>
@@ -299,7 +298,7 @@
 <div ng-show="four">
 <div class="panel panel-info" id="section-4">
     <div class="panel-heading" >
-        <strong>{$ query_snp $} in gene 3'UTR gains targets</strong>
+        <strong>{$ query_snp $} in gene 3'UTR cause target gain</strong>
     </div>
     <table class="table table-bordered" ts-wrapper>
         <thead>
@@ -381,7 +380,7 @@
 <div ng-show="five">
 <div class="panel panel-info" id="section-5">
     <div class="panel-heading" >
-        <strong>{$ query_snp $} in gene 3'UTR loses targets</strong>
+        <strong>{$ query_snp $} in gene 3'UTR cause target loss</strong>
     </div>
     <table class="table table-bordered" ts-wrapper>
         <thead>
@@ -442,8 +441,8 @@
                         <span ng-if="!v.corelation_detail[0]||!v.has_cor">-</span>
                     </td>
             <td>
-                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid"></span>
-                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid"></span>
+                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.experiment_valid.length"></span>
+                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.experiment_valid.length"></span>
             </td>
             <td align="center" style="width: 10%">{$v.site_info.mm_start$}</td>
             <td align="center" style="width: 10%">{$v.site_info.mm_end$}</td>
@@ -775,7 +774,7 @@
                         <tr>
                             <th>Gene</th>
                             <td colspan="2"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$modal_site.gene_symbol$}">{$modal_site.gene_symbol$}</a><!--({$modal_site.utr_info.enst_id$})--></td>
-                            <td colspan="3" align="center">{$modal_site.utr_info.chr$}:{$modal_site.utr_info.start$}-{$modal_site.utr_info.end$}[{$modal_site.utr_info.strand$}]({$modal_site.site_info.truncate_start$}-{$modal_site.site_info.truncate_end$})</td>
+                            <td colspan="3" align="center">{$modal_site.utr_info.chr$}:{$modal_site.utr_info.start$}-{$modal_site.utr_info.end$}[{$modal_site.utr_info.strand$}]</td>
                         </tr>
                         <tr>
                             <th rowspan="2">TargetScan</th>
@@ -821,11 +820,17 @@
                         </tr>
                         <tr>
                             <td class="warning" colspan="4">
+                                <span ng-if="!modal_site.site_info.alt_display">
+                                    <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$} 5'</pre>
+                                </span>
+                                <span ng-if="modal_site.site_info.alt_display">
+                                        <!--pre align="left">3'UTR: {$align6_pre$}<span style="color:red"><strong>{$align6_letter$}</strong></span>{$align6_later$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$} 5'</pre-->
                                 <span ng-if="target_gain">
                                     <pre align="left">3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$} 5'</pre>
                                     </span>
                                 <span ng-if="target_loss">
                                         <pre align="left">3'UTR: {$align6_pre$}<span style="color: red"><strong>{$align6_letter$}</strong></span>{$align6_later$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$align7_pre$}<span style="color: green"><strong>{$align7_letter$}</strong></span>{$align7_later$}<br>miRNA: {$modal_site.site_info.align8$} 5'</pre>
+                                </span>
                                 </span>
                                 </td>
                         </tr>
