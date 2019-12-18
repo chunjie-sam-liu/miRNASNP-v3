@@ -1,0 +1,44 @@
+{
+  "filters": {
+    "op": "and",
+    "content": [{
+      "content": {
+        "field": "cases.project.program.name",
+        "value": ["TCGA"]
+      },
+      "op": "in"
+    }, {
+      "op": "in",
+      "content": {
+        "field": "files.access",
+        "value": ["open"]
+      }
+    }, {
+      "content": {
+        "field": "files.data_category",
+        "value": ["transcriptome profiling"]
+      },
+      "op": "in"
+    }, {
+      "op": "in",
+      "content": {
+        "field": "files.data_format",
+        "value": ["txt"]
+      }
+    }, {
+      "op": "in",
+      "content": {
+        "field": "files.data_type",
+        "value": ["miRNA Expression Quantification"]
+      }
+    }, {
+      "content": {
+        "field": "files.experimental_strategy",
+        "value": ["miRNA-Seq"]
+      },
+      "op": "in"
+    }]
+  },
+  "format":"tsv",
+  "size":20000
+}
