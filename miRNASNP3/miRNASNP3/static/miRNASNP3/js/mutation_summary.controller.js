@@ -334,8 +334,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 //$scope.initial=0;
                 console.log(response)
                 $scope.seed_list=response.data.mutation_seed_list;
-                $scope.seed_count=response.data.mutation_seed_count[0].count;
                 if(response.data.mutation_seed_count.length!=0 & redirect==0){
+                    $scope.seed_count=response.data.mutation_seed_count[0].count;
                     $scope.clear()
                     renew_mut_summary_tab()
                     $scope.seed=1;
