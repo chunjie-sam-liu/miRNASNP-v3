@@ -41,7 +41,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
         $scope.loading = true;
         var wildutr_sequence = $.trim($("#wildutr_sequence").val());
         
-        if (/^[ATGCatgc]*$/g.test(wildutr_sequence)||/^[AUGCaugc]*$/g.test(wildutr_sequence)) {
+        if ((/^[ATGCatgc]*$/g.test(wildutr_sequence)||/^[AUGCaugc]*$/g.test(wildutr_sequence))&&wildutr_sequence.length<5000) {
             //alert("Invalid input");
             flag_altutr += 0;
             console.log("predict altutr")
@@ -50,7 +50,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
             flag_altutr+=1
         }
         var snputr_sequence = $.trim($("#snputr_sequence").val());
-        if (/^[ATGCatgc]*$/g.test(snputr_sequence)||/^[AUGCaugc]*$/g.test(snputr_sequence)||!snputr_sequence    ) {
+        if ((/^[ATGCatgc]*$/g.test(snputr_sequence)||/^[AUGCaugc]*$/g.test(snputr_sequence)||!snputr_sequence)&&snputr_sequence.length<5000) {
             flag_altutr += 0;
             console.log("predict altutr")
             //history.back();
@@ -82,7 +82,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
         $scope.loading=true;
         flag_altmir=0
         var wildmir_sequence = $.trim($("#wildmir_sequence").val());
-        if (/^[ATGCatgc]*$/g.test(wildmir_sequence)||/^[AUGCaugc]*$/g.test(wildmir_sequence)) {
+        if ((/^[ATGCatgc]*$/g.test(wildmir_sequence)||/^[AUGCaugc]*$/g.test(wildmir_sequence))&&wildmir_sequence.length<30) {
             //alert("Invalid input");
             flag_altmir += 0;
             console.log("predict allmir")
@@ -92,7 +92,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
             console.log("wildseq invalid")
         }
         var snpmir_sequence = $.trim($("#snpmir_sequence").val());
-        if (/^[ATGCatgc]*$/g.test(snpmir_sequence)||/^[AUGCaugc]*$/g.test(snpmir_sequence)||!snpmir_sequence) {
+        if ((/^[ATGCatgc]*$/g.test(snpmir_sequence)||/^[AUGCaugc]*$/g.test(snpmir_sequence)||!snpmir_sequence)&&snpmir_sequence.length<30) {
             flag_altmir += 0;
             console.log("predict altmir")
             //history.back();
@@ -122,7 +122,7 @@ function ToolsController($scope,$http,$routeParams,$window,miRNASNP3Service) {
         flag_stru=0
         var structure_regex=/^[AUGCTaugct][0-9]+[AUGCTaugct]$/g
         var wildmir_str_seq=$.trim($("#wildmir_str_seq").val());
-        if (/^[ATGCatgc]*$/g.test(wildmir_str_seq)||/^[AUGCaugc]*$/g.test(wildmir_str_seq)) {
+        if ((/^[ATGCatgc]*$/g.test(wildmir_str_seq)||/^[AUGCaugc]*$/g.test(wildmir_str_seq))&&wildmir_str_seq.length<200) {
             flag_stru += 0;
             console.log("predict altmir")
             //history.back();

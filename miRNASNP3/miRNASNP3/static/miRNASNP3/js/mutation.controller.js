@@ -576,16 +576,22 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
     };
     //$scope.fetch_snv_utr_gain(page);
 
-    $scope.modal_expression = function (exp, title) {
+    $scope.modal_expression = function (exp, title,expr_type) {
         echarts.init(document.getElementById('expression')).dispose();
         var myChart = echarts.init(document.getElementById('expression'));
         var series_list = []
+        if(expr_type=='miRNA'){
+            var expression_unit='RSEM'
+        }
+        if(expr_type=='gene'){
+            var expression_unit='GSEM'
+        }
         $scope.expression = exp[0];
         $scope.exp_item = title;
         console.log($scope.expression);
         var gene_expr = $scope.expression.exp_df;
         var cancer_types = ['cancer_type'];
-        var expr = ['RSEM(log2)'];
+        var expr = [expression_unit];
 
         for (var cancer in gene_expr) {
             var source_data = {}
@@ -638,7 +644,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             yAxis: [
                 {
                     type: 'value',
-                    name: 'RSEM(log2)',
+                    name: expression_unit,
                     nameTextStyle: {
                         align: 'left',
                         fontSize: 12,
@@ -677,7 +683,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         'N': 'N'
     }
     $scope.modal_gain_site=function(site){
-        $scope.modal_header="Target Gain";
+        $scope.modal_header="Target gain";
         $scope.target_gain=1;
         $scope.target_loss=0;
         $scope.modal_site=site;
@@ -707,7 +713,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         }
     $scope.modal_loss_site=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_gain=0;
         $scope.target_loss=1;
         $scope.modal_site=site;
@@ -746,7 +752,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
 
     $scope.modal_gain_site_snv=function(site){
-        $scope.modal_header="Target Gain";
+        $scope.modal_header="Target gain";
         $scope.target_gain=1;
         $scope.target_loss=0;
         $scope.modal_site=site;
@@ -775,7 +781,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         }
     $scope.modal_loss_site_snv=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_gain=0;
         $scope.target_loss=1;
 		$scope.modal_site=site;
@@ -814,7 +820,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
 
 
     $scope.echart_correlation = function (cor) {
-        $scope.gene_mir = cor.mir_gene.split('_')[0] + " correlates with " + cor.mir_gene.split('_')[1];
+        $scope.gene_mir = cor.mir_gene.split('_')[0] + " correlates with " + cor.mir_gene.split('_')[1]+" across 33 cancer types in TCGA.";
         var c = echarts;
         c.init(document.getElementById('correlation')).dispose();
         var cor_echart = c.init(document.getElementById('correlation'));
@@ -935,7 +941,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
     }
 
     $scope.modal_loss_site_utr=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_loss=1
         $scope.target_gain=0
         $scope.modal_site=site;
@@ -1012,7 +1018,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
     }
 
     $scope.modal_loss_site_utr_snv=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         if(site.site_info.loc_start){site.site_info.alt_start=site.site_info.loc_start}
         if(site.site_info.loc_end){site.site_info.alt_start=site.site_info.loc_end}
         $scope.target_loss=1

@@ -199,6 +199,9 @@
         <li id="premir" ng-click="show_one('premir')" ng-show="premir_count"
             style="background-color:#EBEBEB;margin-right: 3px" class="class_premir"><a data-toggle="tab"><strong
                     id="premir_tab">DRV in pre-miRNA</strong></a> </li>
+        <li id="mature" ng-click="show_one('mature')" ng-show="mature_count"
+            style="background-color:#EBEBEB;margin-right: 3px" class="class_mature"><a data-toggle="tab"><strong
+                    id="mature_tab">DRV in mature</strong></a> </li>
         <li id="utr3" ng-click="show_one('utr3')" ng-show="utr3_count"
             style="background-color:#EBEBEB;margin-right: 3px " class="class_utr3"><a data-toggle="tab"><strong
                     id="utr3_tab">DRV in 3'UTR</strong></a> </li>
@@ -368,6 +371,117 @@
         </table>
     </div>
    
+    <div ng-show="mature">
+
+        <div paging page="currentPage_mature" page-size=15 total="mature_count" scroll-top="true" hide-if-empty="true"
+            show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
+            text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
+            text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
+            active-class="active" disabled-class="disabled" paging-action="update_page(page,'mature')"></div>
+
+        <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+            <thead>
+                <tr>
+                    <th ts-criteria="pre_id" style="width: 12%">Mature miRNA</th>
+                    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
+                    <th style="width: 12%">Position</th>
+                    <th style="width:6%">Ref/Alt</th>
+                    <th style="width: 20%">Disease
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                                data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                                data-content="This catalog also included some phenotype annotated in GWAS"></span>
+                    </th>
+                    <th style="width: 7%">Region
+                        <!--span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+            data-content="In pre-miRNA means SNP in pre-miRNA but not in mature region;In mature means SNP in mature region but not in seed region."></span-->
+                    </th>
+                    <th ts-criteria="energy_change|parseInt" width="7%">&Delta;G
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                            data-content="Minimum free energy(kcal/mol) change predicted by RNAfold."></span>
+                    </th>
+                    <th ts-criteria="expression_change" width="8%">Exp.
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                            data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                            data-content="Predicted SNP effects on mature miRNA expression (production).
+                            up:expression increases; mild:expression change mildly; down:expression decreases;"></span>
+                    </th>
+                    <th style="width: 12%">Source</th>
+                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="v in premir_list" ts-repeat>
+                    <!--td>{$ $index+1 $}</td-->
+                    <td>
+                        <a href="#!/mirna?mirna_id={$v.mature_id$}" 
+                            style="color: red">{$v.mature_id$}</td>
+                    <td>
+                        <span ng-if="v.source=='ClinVar'">{$v.source$}:{$ v.mut_id $}
+                        </span>
+                        <!--span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1"
+                                style="color: red">{$v.resource$}:{$ v.mut_id $}</a>
+                        </span-->
+
+                        <span ng-if="v.source=='COSMIC'">
+                              {$ v.mut_id $}
+                        </span>
+                        <!--span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
+                            <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1" style="color: red">{$v.mut_id $}</a>
+                        </span-->
+                        <!--span ng-if='v.is_tag||v.is_ld'>
+                <a href="#!/snp?snp_id={$v.mut_id$}" style="color: red">{$ v.mut_id $}</a>
+        </span-->
+                        <!--span ng-if="v.is_tag">
+                            <a href="#!/snp?snp_id={$v.mut_id$}&one=1" style="color: red">{$ v.mut_id $}</a>
+                        </span-->
+                        <span ng-if="v.source=='GWAS'">
+                            <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
+                                $}</a><br-->
+                           {$ v.mut_id $}
+                        </span>
+                        <!--span ng-if="!v.is_tag && !v.is_ld">
+                <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>
+        </span-->
+                    </td>
+                    <td>{$ v.mut_chr$}:{$ v.mut_position $}</td>
+
+                    <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$ v.ref$}/{$v.alt$}</td>
+                    <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
+                    <td style="word-break:break-all">{$ v.disease$}</td>
+                    <td>{$v.location $}</td>
+                    <!--td>
+            <span ng-if="v.location != 'pre-miRNA'">{$v.identifier$}</span>
+            <span ng-if="v.location=='pre-miRNA'">-</span>
+        </td-->
+                    <td>{$v.energy_change$}</td>
+                    <td>{$v.expression_change$}</td>
+                    <td align="center">
+                        <span ng-if="v.source=='GWAS'">
+                                <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&six=1" style="color: red;">GWAS</a>
+                        </span>
+                        <!--span ng-if="!v.is_ld && !v.is_tag">
+                            {$v.resource$}
+                        </span-->
+                        <span ng-if="v.source=='COSMIC'">
+                            <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.source$}</a>
+                        </span>
+                        <span ng-if="v.source=='ClinVar'">
+                            <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.source$}</a>
+                        </span>
+                    </td>
+                    <td align="center">
+                        <span ng-if="v.pubmed_id!='NA'"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$
+                                v.pubmed_id$}</a></span>
+                        <span ng-if="v.pubmed_id=='NA'">-</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
     <div ng-show="premir">
 
         <div paging page="currentPage_premir" page-size=15 total="premir_count" scroll-top="true" hide-if-empty="true"
@@ -413,7 +527,7 @@
                         <a href="#!/premir_detail?search_ids={$v.pre_id$}"
                             style="color: red">{$v.pre_id$}</td>
                     <td>
-                        <span ng-if="v.source=='ClinVar'">{$v.source$}:{$ v.mut_id $}
+                        <span ng-if="v.source=='ClinVar'"><a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={$v.mut_id$}">{$v.source$}:{$ v.mut_id $}</a>
                         </span>
                         <!--span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1"
@@ -435,7 +549,7 @@
                         <span ng-if="v.source=='GWAS'">
                             <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
                                 $}</a><br-->
-                           {$ v.mut_id $}
+                                <a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.mut_id$}" target="_blank">{$v.mut_id$}</a>
                         </span>
                         <!--span ng-if="!v.is_tag && !v.is_ld">
                 <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>

@@ -158,6 +158,18 @@ gainsite_info={
     'mirna_expression':fields.Nested(mirna_expression),
     'cor_key':fields.String
 }
+'''
+group_count={
+    '_id':fields.String,
+    'count':fields.Integer
+}
+
+gainsite_info_group={
+    '_id':fields.Nested(gainsite_info),
+    'count':fields.Integer,
+    'ref_seq':fields.Nested(fields.String)
+}
+'''
 snp_seed_gain={
    'snp_seed_gain_list':fields.Nested(gainsite_info),
     'snp_seed_gain_count':fields.Integer
@@ -185,11 +197,63 @@ class SnpSeedGain(Resource):
             condition['mirna_id']=args['mirna_id']
         if args['gene']:
             condition['gene_symbol']={'$regex':args['gene'],'$options':'$i'}
+        '''
+        group_by={'$group':{
+            "_id":{
+                "site_info" : {
+                "align_1" :'$site_info.align_1',
+                "prob_exac" :"$site_info.prob_exac",
+                "mm_start" : "$site_info.mm_start",
+                "tgs_score" : "$site_info.tgs_score",
+                "align_4" : "$site_info.align_4",
+                "dg_binding" : "$site_info.dg_binding",
+                "chrome" : "$site_info.chrome",
+                "align7" : "$site_info.align7",
+                "dg_duplex" : "$site_info.dg_duplex",
+                "tgs_end" : "$site_info.tgs_end",
+                "dg_open" : "$site_info.dg_open",
+                "align8" : "$site_info.align8",
+                "align_2" : "$site_info.align_2",
+                "tgs_au" : "$site_info.tgs_au",
+                "mm_end" : "$site_info.mm_end",
+                "align_5" : "$site_info.align_5",
+                "tgs_start" : "$site_info.tgs_start",
+                "align_3" : "$site_info.align_3",
+                "align6" : "$site_info.align6"
+                },
+                "cor_key":"$cor_key",
+                "snp_info":{
+                    "distance":"$snp_info.distance",
+                    "curalt":"$snp_info.curalt",
+                    "chr":"$snp_info.chr",
+                    "position":"$snp_info.position",
+                    "snp_id":"$snp_info.snp_id",
+                    "alt":"$snp_info.alt",
+                    "ref":"$snp_info.ref"
+                },
+                "mirna_id":"$mirna_id",
+                "gene_symbol":"$gene_symbol",
+                "utr_info":{
+                    "position":"$utr_info.position",
+                    "enst_id":"$utr_info.enst_id",
+                    "gene_symbol":"$utr_info.gene_symbol"
+                },
+                "snp_id":"$snp_id",
+                "mir_seedstart":"$mir_seedstart",
+                "mir_seedend":"$mir_seedend",
+                "mir_seedchr":"$mir_seedchr",
+                "strand":"$strand"
+        },
+        "count":{'$sum':1},
+        'ref_seq':{'$push':'$utr_info.acc'}
+            }
+        }
+        '''
         lookup_gene={'$lookup':{
             'from':'gene_expression',
             'localField':'gene_symbol',
             'foreignField':'symbol',
-            'as':'gene_expression'
+            'as':'_id.gene_expression'
         }}
         lookup_mirna={'$lookup':{
             'from':'mirna_expression',
@@ -201,14 +265,30 @@ class SnpSeedGain(Resource):
         match={'$match':condition}
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
+        group_count={'$group':{
+            '_id':'null',
+            'count':{'$sum':1}
+        }}
+        print(pipline)
         pipline=[match,skip,limit,lookup_gene,lookup_mirna]
+
         snp_seed4666_gain_count=mongo.db.seed_gain_4666.find(condition).count()
         snp_indel_gain_count=mongo.db.seed_gain_addindel.find(condition).count()
         snp_seed_gain_count=snp_seed4666_gain_count+snp_indel_gain_count
-
+        #snp_seed_gain_count=[]
+        snp_seed4666_gain_list=mongo.db.seed_gain_4666.aggregate(pipline)
+        indel_seed_gain_list=mongo.db.seed_gain_addindel.aggregate(pipline)
+        #snp_seed4666_gain_count=mongo.db.seed_gain_4666.aggregate(pipline_count)
+        #indel_seed_gain_count=mongo.db.seed_gain_addindel.aggregate(pipline_count)
+        #snp_seed_gain_count=list(snp_seed4666_gain_count)+list(indel_seed_gain_count)
+        #for i in snp_seed4666_gain_count:
+        #    snp_seed_gain_count.append(i)
+        #for i in indel_seed_gain_count:
+        #    snp_seed_gain_count.append(i)
+        
+        #print("snp_seed_gain_count")
+        #print(snp_seed_gain_count)
         if args['snp_id']:
-            snp_seed4666_gain_list=mongo.db.seed_gain_4666.aggregate(pipline)
-            indel_seed_gain_list=mongo.db.seed_gain_addindel.aggregate(pipline)
             snp_seed_gain_list=list(snp_seed4666_gain_list)+list(indel_seed_gain_list)
         elif record_skip>snp_seed4666_gain_count:
             print("view end pages")
@@ -218,7 +298,7 @@ class SnpSeedGain(Resource):
             skip_indel={'$skip':record_skip_indel}
             pipline_indel=[match,skip_indel,limit,lookup_gene,lookup_mirna]
             snp_seed_gain_list=mongo.db.seed_gain_addindel.aggregate(pipline_indel)
-        elif snp_seed4666_gain_count-record_skip<15:
+        elif snp_seed_gain_count-record_skip<15 and snp_seed_gain_count-record_skip>0:
             print("view across pages")
             print(record_skip)
             print(snp_seed4666_gain_count)
@@ -232,8 +312,10 @@ class SnpSeedGain(Resource):
             snp_seed_gain_list=mongo.db.seed_gain_4666.aggregate(pipline)
         #snp_seed_gain_list=mongo.db.indel_target_test.aggregate(pipline)
         #snp_seed_gain_count=mongo.db.indel_target_test.find(condition).count()
+       
         return {'snp_seed_gain_list':list(snp_seed_gain_list),
                 'snp_seed_gain_count':snp_seed_gain_count}
+        
 
 api.add_resource(SnpSeedGain,'/api/snp_seed_gain')
 
@@ -357,7 +439,7 @@ class SnpSeedLoss(Resource):
             skip_indel={'$skip':record_skip_indel}
             pipline_indel=[match,skip_indel,limit,lookup_gene,lookup_mirna]
             snp_seed_loss_list=mongo.db.seed_loss_addindel.aggregate(pipline_indel)
-        elif snp_seed4666_loss_count-record_skip<15:
+        elif snp_seed4666_loss_count-record_skip<15 and snp_seed4666_loss_count-record_skip>0:
             snp_seed4666_loss_list=mongo.db.seed_loss_4666.aggregate(pipline)
             limit_indel=snp_seed4666_loss_count-record_skip
             limit_indel_pip={'$limit':limit_indel}
@@ -1018,6 +1100,8 @@ class MirDrug(Resource):
         condition_nci60={}
         if mature_id:
             condition_ccle['mature-mirna']=mature_id
+            condition_ccle['pv']={'$lt':'0.05'}
+            condition_ccle['fdr']={'$lt':'0.05'}
             condition_nci60['miRNA']=mature_id
             condition_nci60['pv']={'$lt':'0.05'}
             condition_nci60['fdr']={'$lt':'0.05'}
@@ -1633,12 +1717,13 @@ class MutationSummary(Resource):
         #if args['location'] != 'All'and args['location']:
         #    condition['location']=args['location']
         if args['resource']!='All' and args['resource']:
-            condition['resource']=args['resource'].lower()
+            condition['source']=args['resource'].lower()
         if args['histology'] and args['histology'] != 'All':
-            histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
+            histology_dict['disease']={'$regex':args['histology'],'$options':'$i'}
             match_histology={'$match':histology_dict}
+
         if args['pathology'] and args['pathology']!='All':
-            pathology_dict['pathology']={'$regex':args['pathology'],'$options':'$i'}
+            pathology_dict['disease']={'$regex':args['pathology'],'$options':'$i'}
             match_pathology={'$match':pathology_dict}
         if args['mut_id']:
             mut_id=args['mut_id']
@@ -1662,9 +1747,11 @@ class MutationSummary(Resource):
         pipline_count=pipline+[count_group]
         pipline.append(skip)
         pipline.append(limit)
-
+        print("condition:")
         print(condition)
+        print("histology:")
         print(histology_dict)
+        print("pathology:")
         print(pathology_dict)
 
         if condition or histology_dict or pathology_dict:
@@ -1820,7 +1907,7 @@ class MutationSummarySeed(Resource):
         pipline_count=pipline+[count_group]
         pipline.append(skip)
         pipline.append(limit)
-
+        print("search srv seed")
         print(condition)
         print(histology_dict)
         print(pathology_dict)
@@ -1875,7 +1962,7 @@ class MutationSummaryMature(Resource):
             histology_dict['pathology']={'$regex':args['histology'],'$options':'$i'}
             match_histology={'$match':histology_dict}
         if args['pathology'] and args['pathology']!='All':
-            pathology_dict['pathology']={'$regex':args['pathology'],'$options':'$i'}
+            pathology_dict['disease']={'$regex':args['pathology'],'$options':'$i'}
             match_pathology={'$match':pathology_dict}
         if args['mut_id']:
            # mut_id=args['mut_id']
@@ -1885,6 +1972,7 @@ class MutationSummaryMature(Resource):
         #    condition['snp_rela']=args['snp_rela']
         #if args['pubmed_id']:
         #    condition['pubmed_id']={'$exists':True}
+        condition['location']='Mature'
         match_condition={'$match':condition}
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
@@ -1905,11 +1993,31 @@ class MutationSummaryMature(Resource):
         print(pathology_dict)
 
         #if condition or histology_dict or pathology_dict:
-        mutation_mature_list=mongo.db.mutation_summary_mature.aggregate(pipline)
+        mutation_mature_tmp_list=mongo.db.drv_in_premir_v2.aggregate(pipline)
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_mature_count=mongo.db.mutation_summary_mature.aggregate(pipline_count)
-       
+        mutation_mature_tmp_count=mongo.db.drv_in_premir_v2.aggregate(pipline_count)
+
+        condition['location']='Seed'
+        match_condition={'$match':condition}
+        skip={'$skip':record_skip}
+        limit={'$limit':per_page}
+        count_group={'$group':{'_id':'null','count':{'$sum':1}}}
+        if condition:
+            pipline.append(match_condition)
+        if histology_dict:
+            pipline.append(match_histology)
+        if pathology_dict:
+            pipline.append(match_pathology)
+        
+        pipline_count=pipline+[count_group]
+        pipline.append(skip)
+        pipline.append(limit)
+        mutation_seed_list=mongo.db.drv_in_premir_v2.aggregate(pipline)
+        mutation_seed_count=mongo.db.drv_in_premir_v2.aggregate(pipline_count)
+
+        mutation_mature_list=list(mutation_mature_tmp_list)+list(mutation_seed_list)
+        mutation_mature_count=list(mutation_mature_tmp_count)+list(mutation_seed_count)
         return{'mutation_mature_list':list(mutation_mature_list),'mutation_mature_count':list(mutation_mature_count)}
 
 api.add_resource(MutationSummaryMature,'/api/mutation_summary_mature')
@@ -2049,6 +2157,7 @@ class MutationSummaryUtr3(Resource):
         match_condition={'$match':condition}
         #skip={'$skip':record_skip}
         limit={'$limit':per_page}
+        skip={'$skip':record_skip}
         count_group={'$group':{'_id':'null','count':{'$sum':1}}}
         if condition:
             pipline.append(match_condition)
@@ -2059,7 +2168,10 @@ class MutationSummaryUtr3(Resource):
         
         pipline_count=pipline+[count_group]
         #pipline.append(skip)
-        pipline.append({'$match':page_condition})
+        if args['gene'] or (args['resource']!='All' and args['resource']) or (args['pathology'] and args['pathology']!='All') or (args['histology'] and args['histology'] != 'All') or args['mut_id']:
+            pipline.append(skip)
+        else:
+            pipline.append({'$match':page_condition})
         pipline.append(limit)
         print('get mutation summary UTR3')
         print(condition)
@@ -2153,6 +2265,8 @@ snp_summary_list={
     'snp_premir_count':fields.Integer,
     'snp_utr3_list':fields.Nested(snp_line),
     'snp_utr3_count':fields.Integer,
+    'snp_mature_list':fields.Nested(snp_line),
+    'snp_mature_count':fields.Integer,
     'snp_summary_list':fields.Nested(snp_line),
     'snp_summary_count':fields.Integer,
 }
@@ -2317,7 +2431,7 @@ class SnpSummarySeed(Resource):
         return {'snp_seed_list':list(snp_seed_list),'snp_seed_count':snp_seed_count}
 
 api.add_resource(SnpSummarySeed,'/api/snp_summary_seed')
-'''
+
 class SnpSummaryMature(Resource):
     @marshal_with(snp_summary_list)
     def get(self):
@@ -2367,18 +2481,23 @@ class SnpSummaryMature(Resource):
             #condition['identifier']={'$regex':args['identifier'],'$options':'$i'}
             condition['identifier_lower']=args['identifier'].lower()
         if args['ldsnp']:
-            condition['ldsnp']=args['ldsnp']
+            condition['id_ld']=args['ldsnp']
         if args['mutation_rela']:
             condition['mutation_rela']=args['mutation_rela']
         if args['gmaf'] !='All' and args['gmaf']:
             condition['alt_freq']={'$gt':args['gmaf'][1:]}
-        snp_mature_list=mongo.db.snp_summary_mature.find(condition).skip(record_skip).limit(per_page)
-        snp_mature_count=mongo.db.snp_summary_mature.find(condition).count()
-
+        condition['location']='Seed'
+        snp_seed_count=mongo.db.snp_in_premir_v2.find(condition).count()
+        snp_seed_list=mongo.db.snp_in_premir_v2.find(condition).skip(record_skip).limit(per_page)
+        condition['location']='Mature'
+        snp_mature_tmp_list=mongo.db.snp_in_premir_v2.find(condition).skip(record_skip).limit(per_page)
+        snp_mature_tmp_count=mongo.db.snp_in_premir_v2.find(condition).count()
+        snp_mature_list=list(snp_seed_list)+list(snp_mature_tmp_list)
+        snp_mature_count=snp_seed_count+snp_mature_tmp_count
         return {'snp_mature_list':list(snp_mature_list),'snp_mature_count':snp_mature_count}
 
 api.add_resource(SnpSummaryMature,'/api/snp_summary_mature')
-'''
+
 
 class SnpSummaryPremir(Resource):
     @marshal_with(snp_summary_list)
@@ -2474,7 +2593,7 @@ class SnpSummaryUtr3(Resource):
         if args['page']:
             page=args['page']
             record_skip = (int(page)-1)*per_page
-            condition['item_number']={"$gt":str(record_skip)}
+            
         if args['gene']:
             condition['identifier_lower']=args['gene'].lower()
             
@@ -2497,15 +2616,16 @@ class SnpSummaryUtr3(Resource):
         if args['gmaf'] !='All' and args['gmaf']:
             condition['alt_freq']={'$gt':args['gmaf'][1:]}
 
-        match={'$match':condition}
-        skip={'$skip':record_skip}
-        limit={'$limit':per_page}
-        pipline=[match,skip,limit]
-        
+        if args['gene'] or args['snp_id'] or args['identifier'] or args['ldsnp'] or (args['gmaf'] !='All' and args['gmaf']):
+            snp_utr3_list=mongo.db.snp_in_utr_v2.find(condition).skip(record_skip).limit(per_page)
+            snp_utr3_count=mongo.db.snp_in_utr_v2.find(condition).count()
+        else:
+            condition['item_number']={"$gt":str(record_skip)}
+            snp_utr3_list=mongo.db.snp_in_utr_v2.find(condition).limit(per_page)
+            snp_utr3_count=mongo.db.snp_in_utr_v2.find(condition).count()
         #snp_utr3_list=mongo.db.snp_summary_utr3.aggregate(pipline)
         print(condition)
-        snp_utr3_list=mongo.db.snp_in_utr_v2.find(condition).limit(per_page)
-        snp_utr3_count=mongo.db.snp_in_utr_v2.find(condition).count()
+        
 
         return {'snp_utr3_list':list(snp_utr3_list),'snp_utr3_count':snp_utr3_count}
 
@@ -2670,3 +2790,40 @@ class EnrichResult(Resource):
 
 api.add_resource(EnrichResult,'/api/enrich_result')
 
+var_item={
+    'var_id':fields.String,
+    'ref':fields.String,
+    'alt':fields.String,
+    'color':fields.String,
+    'count':fields.Integer
+}
+
+snp_distribute={
+    'base':fields.String,
+    'pos':fields.Integer,
+    'var_list':fields.Nested(var_item),
+    'mature_id':fields.String
+}
+
+snp_distribute_list={
+    'snp_distribute_list':fields.Nested(snp_distribute),
+    'snp_distribute_count':fields.Integer
+}
+
+class SnpDistribute(Resource):
+    @marshal_with(snp_distribute_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('mirna_id', type=str)
+        args = parser.parse_args()
+        condition={}
+        if args['mirna_id']:
+            condition['mature_id']=args['mirna_id']
+            snp_distribute_list=mongo.db.var_distribution.find(condition)
+            snp_distribute_count=mongo.db.var_distribution.find(condition).count()
+        else:
+            snp_distribute_list=[]
+            snp_distribute_count=0
+        return{'snp_distribute_list':list(snp_distribute_list),'snp_distribute_count':snp_distribute_count}
+
+api.add_resource(SnpDistribute,'/api/snp_distribute')

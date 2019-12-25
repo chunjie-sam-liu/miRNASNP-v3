@@ -129,7 +129,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                 }
                 $scope.premir_info.disease=$scope.premir_info.HMDD.slice(0,$scope.premir_info.HMDD.length-2)
                 $(function(){
-                    $("#pre").append("<tr>"+"<td style=\"font-size: 18px;font-weight: bold\"> HMDD</td >"+
+                    $("#pre").append("<tr>"+"<td style=\"font-size: 18px;font-weight: bold\"><a href=\"http://www.cuilab.cn/hmdd\"> HMDD</a></td >"+
                     "<td style=\"text-align: left\" colspan=\"6\"><div style=\"overflow-y:auto;max-height:200px\">"+$scope.premir_info.disease+"</div></td></tr>")})
             }
                 console.log($scope.premir_fun)
@@ -165,7 +165,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
                 $(function(){
                     $("#pre").append("<tr>"+
                    // "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan="+String($scope.mirnago_count+1)+">QuickGo function</th>"+
-                   "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan=2>QuickGo function</th>"+
+                   "<th style="+"\"font-size: 18px;font-weight:bold\"" +" rowspan=2><a href=\"https://www.ebi.ac.uk/QuickGO/\">QuickGo function</a></th>"+
                     "<th colspan="+"2"+" class="+"info"+" style="+"width: 20%"+">GO term</th>"+
                     "<th colspan="+"3"+" class="+"info"+" style="+"width: 60%"+">GO name</th>"+
                     "<th colspan="+"4"+" class="+"info"+" style="+"width: 20%"+">Reference</th>"+   

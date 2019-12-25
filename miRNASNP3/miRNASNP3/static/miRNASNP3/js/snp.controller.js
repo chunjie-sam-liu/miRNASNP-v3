@@ -274,10 +274,27 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             }).then(
                 function (response) {
                     console.log(response);
-                    $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
-                    $scope.snp_seed_gain_count=response.data.snp_seed_gain_count;
+                    $scope.snp_seed_gain_list=response.data.snp_seed_gain_list
+                    $scope.snp_seed_gain_count=response.data.snp_seed_gain_count
                     var site_array=$scope.snp_seed_gain_list
+                   /*var site_array = response.data.snp_seed_gain_list;
+                    $scope.snp_seed_gain_count=0
+                    for(var i=0;i<response.data.snp_seed_gain_count.length;i++){
+                        $scope.snp_seed_count+=response.data.snp_seed_gain_count[i].count
+                    }
                 for(var i=0;i<site_array.length;i++){
+                    $scope.snp_seed_gain_list[i]=site_array[i]._id
+                    var ref_number=$scope.snp_seed_gain_list[i].ref_seq[0].split('_')[1]
+                    var acc=$scope.snp_seed_gain_list[i].ref_seq[0]
+                    for(var i=0;i<$scope.snp_seed_gain_list[i].ref_seq.length;i++){
+                        var ref_number_cur=$scope.snp_seed_gain_list[i].ref_seq[i].split('_')[1]
+                        if(Number(ref_number_cur)<Number(ref_number)){
+                            ref_number=ref_number_cur
+                            acc=$scope.snp_seed_gain_list[i].ref_seq[i]
+                        }
+                    }
+                    site_array[i].utr_info['acc']=acc*/
+                    for(var i=0;i<site_array.length;i++){
                     site_array[i].has_cor=1
                     if(site_array[i].expr_corelation){
                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
@@ -295,6 +312,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
                 }
+                $scope.snp_seed_gain_list=site_array
                 })
             }
             };
@@ -347,16 +365,22 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         });
       });
 
-    $scope.modal_expression=function(exp,title){ 
+    $scope.modal_expression=function(exp,title,expr_type){ 
         echarts.init(document.getElementById('expression')).dispose();
         var myChart = echarts.init(document.getElementById('expression'));
         var series_list=[]
         $scope.expression=exp[0];
         $scope.exp_item=title;
         console.log($scope.expression);
+        if(expr_type=='gene'){
+            var expression_unit='GSEM'
+        }
+        if(expr_type=='miRNA'){
+            var expression_unit='RSEM'
+        }
         var gene_expr = $scope.expression.exp_df;
         var cancer_types=['cancer_type'];
-        var expr=['RSEM(log2)'];
+        var expr=[expression_unit];
        
         for(var cancer in gene_expr){
             var source_data={}
@@ -409,7 +433,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             yAxis: [
                 {
                     type: 'value',
-                    name:'RSEM(log2)',
+                    name:expression_unit,
                     nameTextStyle:{
                         align:'left',
                         fontSize:12,
@@ -476,7 +500,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         }
         }
     $scope.modal_loss_site=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_gain=0;
         $scope.target_loss=1;
 		$scope.modal_site=site;
@@ -516,7 +540,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
 
           $scope.echart_correlation=function(cor){
-            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1];
+            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1]+" across 33 cancer types in TCGA.";
             var c=echarts;
             c.init(document.getElementById('correlation')).dispose();
             var cor_echart=c.init(document.getElementById('correlation'));
@@ -736,7 +760,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     }
 
     $scope.modal_loss_site_utr=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         if(site.site_info.loc_start){site.site_info.alt_start=site.site_info.loc_start}
         if(site.site_info.loc_end){site.site_info.alt_start=site.site_info.loc_end}
         $scope.target_loss=1

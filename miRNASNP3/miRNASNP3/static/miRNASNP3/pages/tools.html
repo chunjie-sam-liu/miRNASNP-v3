@@ -2,7 +2,7 @@
     <div class="panel-heading"><strong>1.Predict the impact of variant in gene 3'UTR on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
         <p>This part is provided users to predict the loss and gain of miRNA:mRNA binding sites by the variation in 3'UTR, you can input your wild-type sequence and SNP-type sequence, separately. If only wild-type sequence is provided, it will predict miRNAs which target this sequence.
-            If wild-type sequence and SNP-type sequence are provided, you will get miRNA target loss/gain induced by the variant. (Notice:It takes few minutes for prediction)</p>
+            If wild-type sequence and SNP-type sequence are provided, you will get miRNA target loss/gain induced by the variant. (Notice: The length of predicted sequence should be less than 5000bp.)</p>
         <div class="alert alert-danger" ng-show="flash_message_altutr">
             <button type="button" class="close" ng-click="flash_message_altutr = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message_altutr $}
@@ -24,7 +24,7 @@
     <div class="panel-heading"><strong>2.Predict the impact of variant in miRNA on miRNA:mRNA interaction</strong></div>
     <div class="panel-body">
         <p> This tool is to predict the loss and gain of miRNA:mRNA binding sites by the variation in miRNA, you can input your wild-type sequence and SNP-type sequence, separately. If only wild-type sequence is provided,
-            it will predict target genes of the miRNA. If wild-type sequence and SNP-type sequence are provided, you will get gene target loss/gain induced by the variant. (Notice:This tool takes a while for predicting. please be patient.)</p>
+            it will predict target genes of the miRNA. If wild-type sequence and SNP-type sequence are provided, you will get gene target loss/gain induced by the variant. (Notice: The length of predicted sequence should be less than 30bp. This tool takes a while for predicting, please be patient.)</p>
             <div class="alert alert-danger" ng-show="flash_message_altmir">
             <button type="button" class="close" ng-click="flash_message_altmir = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message_altmir $}
@@ -45,7 +45,7 @@
     <div class="panel-heading"><strong>3.Predict the impact of variant in pre-miRNA on miRNA structure</strong></div>
     <div class="panel-body">
         <p>This tool is provdied users to explore the impact of variant in pre-miRNA on pre-miRNA secondary structure. A SNP list and wild-type pre-miRNA sequence are required.<br>Input format:
-        The list of SNPs must be given in separate lines. The SNPs are described as, wild-type nucleotide followed by nucleotide position followed by mutant nucleotide.
+        The list of SNPs must be given in separate lines. The SNPs are described as, wild-type nucleotide followed by nucleotide position followed by mutant nucleotide (Notice: The length of predicted sequence should be less than 200b).
             <div class="alert alert-danger" ng-show="flash_message_stru">
             <button type="button" class="close" ng-click="flash_message_stru = null"><span aria-hidden="true">&times;</span></button>
             <strong>Error:</strong> {$ flash_message_stru $}

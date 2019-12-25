@@ -427,5 +427,11 @@ span.document {
   border-color: #a94442;
 }
 
-
+.snp-distribution {
+  width: 8px;
+  height: 5px;
+  border: 1px solid;
+  margin: 0 1px 0 1px;
+  display: inline-block;
+}
 

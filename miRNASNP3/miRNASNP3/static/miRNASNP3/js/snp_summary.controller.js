@@ -23,6 +23,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
     var seed=$routeParams.seed
     var premir=$routeParams.premir
     var utr3=$routeParams.utr3
+    var mature=$routeParams.mature
     var redirect=0
     var query_snp=$routeParams.snp_id
 
@@ -39,7 +40,17 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
         $("#premir").removeClass('active')
         $("#utr3").removeClass('active')
         $('#seed').removeClass('active')
+        $('#mature').removeClass('active')
+
     }
+
+
+    function dict_sort(p){
+        return function(m,n){
+            var a = Number(m[p]);
+            var b = Number(n[p]);
+            return a - b;
+    }}//根据某一属性对以字典为元素的列表进行排序
 
     $scope.clear = function () {
         $scope.seed = 0;
@@ -73,13 +84,14 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
           //  tab_click($obj)
         }
     }
-    if(seed||premir||utr3){
+    if(seed||premir||utr3||mature){
          redirect=1
     }
     console.log("redirect:"+redirect)
-    if(seed){$scope.show_one('seed');$('#seed').addClass('active')}
+    if(seed){$scope.show_one('seed');$('#seed').addClass('active');}
     else if(premir){$scope.show_one('premir');$('#premir').addClass('active');console.log('show premir')}
     else if(utr3){$scope.show_one('utr3');$('#utr3').addClass('active')}
+    else if(mature){$scope.show_one('mature');$('#mature').addClass('active');}
     console.log($scope.seed)
     console.log($scope.premir)
    
@@ -278,6 +290,32 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
         //if ($("#mutation_rela").is(":checked")){
          //   condition['mutation_rela']=1
         //}
+
+        if(mature && flag_snp==0 && $scope.flag_identifier==0){
+
+            $http({
+                    url:base_url+'/api/snp_summary_mature',
+                    method:'GET',
+                    params:condition,
+                }).then(function(response){
+                    console.log(response);
+                    $scope.initial=0;
+                    var mature_list=response.data.snp_mature_list;
+                    $scope.mature_count=response.data.snp_mature_count;
+                    if($scope.mature_count>0){
+                        $('#mature').addClass('active')
+                    }
+                    for(var i=0;i<mature_list.length;i++){
+                        if(mature_list[i].ref_freq=='NA'){mature_list[i].ref_freq=0}
+                        else if(Number(mature_list[i].ref_freq)==0.0||mature_list[i].ref_freq=='novalue'){mature_list[i].ref_freq=0}
+                        if(mature_list[i].alt_freq=='NA'){mature_list[i].alt_freq=0}
+                        else if(Number(mature_list[i].alt_freq)==0.0){mature_list[i].alt_freq=0}
+                        mature_list[i].energy_change=Number(mature_list[i].energy_change).toFixed(2)
+                    }
+                    $scope.mature_list=mature_list.sort(dict_sort("snp_position"));
+            })
+        }
+
         if(flag_snp==0 && $scope.flag_identifier==0){
             $http({
                 //url:base_url+ip_address,
@@ -308,7 +346,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                     if(seed_list[i].gain_count){seed_list[i].gain_count_initial=seed_list[i].gain_count;seed_list[i].gain_count=parseInt(seed_list[i].gain_count).toLocaleString()}
                     if(seed_list[i].loss_count){seed_list[i].loss_count_initial=seed_list[i].loss_count;seed_list[i].loss_count=parseInt(seed_list[i].loss_count).toLocaleString()}
                 }
-                $scope.snp_seed_list=seed_list
+                $scope.snp_seed_list=seed_list.sort(dict_sort("snp_position"))
             })
             /*$http({
                 //url:base_url+ip_address,
@@ -345,6 +383,9 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                     $scope.premir_nonitem=1
                     console.log("premir no result")
                 }
+                if(mature){
+                    $scope.premir_count=0
+                }
                 for(var i=0;i<premir_list.length;i++){
                     if(premir_list[i].ref_freq=='NA'){premir_list[i].ref_freq=0}
                     else if(Number(premir_list[i].ref_freq)==0.0||premir_list[i].ref_freq=='novalue'){premir_list[i].ref_freq=0}
@@ -352,7 +393,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                     else if(Number(premir_list[i].alt_freq)==0.0){premir_list[i].alt_freq=0}
                     premir_list[i].energy_change=Number(premir_list[i].energy_change).toFixed(2)
                 }
-                $scope.premir_list=premir_list;
+                $scope.premir_list=premir_list.sort(dict_sort("snp_position"));
 
             })
             $http({
@@ -384,7 +425,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                     if(utr3_list[i].gain_count){utr3_list[i].gain_count=parseInt(utr3_list[i].gain_count).toLocaleString()}
                     if(utr3_list[i].loss_count){utr3_list[i].loss_count=parseInt(utr3_list[i].loss_count).toLocaleString()}
                 }
-                $scope.utr3_list=utr3_list
+                $scope.utr3_list=utr3_list.sort(dict_sort("snp_position"))
             })
 
           
@@ -541,7 +582,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                                 if(seed_list[i].gain_count){seed_list[i].gain_count_initial=seed_list[i].gain_count;seed_list[i].gain_count=parseInt(seed_list[i].gain_count).toLocaleString()}
                                 if(seed_list[i].loss_count){seed_list[i].loss_count_initial=seed_list[i].loss_count;seed_list[i].loss_count=parseInt(seed_list[i].loss_count).toLocaleString()}
                             }
-                            $scope.snp_seed_list=seed_list
+                            $scope.snp_seed_list=seed_list.sort(dict_sort("snp_position"))
                         })
 
                         //$scope.seed_count=response.data.snp_summary_count;
@@ -583,7 +624,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                                 else if(Number(premir_list[i].alt_freq)==0.0){premir_list[i].alt_freq=0}
                                 premir_list[i].energy_change=Number(premir_list[i].energy_change).toFixed(2)
                         }
-                            $scope.premir_list=premir_list
+                            $scope.premir_list=premir_list.sort(dict_sort("snp_position"))
                         //$scope.premir_count=response.data.snp_summary_count;
                         })
                         break;
@@ -608,7 +649,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                             if(utr3_list[i].gain_count){utr3_list[i].gain_count=parseInt(utr3_list[i].gain_count).toLocaleString()}
                             if(utr3_list[i].loss_count){utr3_list[i].loss_count=parseInt(utr3_list[i].loss_count).toLocaleString()}
                         }
-                        $scope.utr3_list=utr3_list
+                        $scope.utr3_list=utr3_list.sort(dict_sort("snp_position"))
                         //$scope.utr3_count=response.data.snp_summary_count;
                         })
                         break;
@@ -644,7 +685,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                 if(seed_list[i].gain_count){seed_list[i].gain_count_initial=seed_list[i].gain_count;seed_list[i].gain_count=parseInt(seed_list[i].gain_count).toLocaleString()}
                 if(seed_list[i].loss_count){seed_list[i].loss_count_initial=seed_list[i].loss_count;seed_list[i].loss_count=parseInt(seed_list[i].loss_count).toLocaleString()}
             }
-            $scope.seed_list=seed_list;
+            $scope.seed_list=seed_list.sort(dict_sort("snp_position"));
         })
         $http({
             //url:base_url+base_ur+ip_address,
@@ -662,7 +703,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                 if(premir_list[i].alt_freq=='NA'){premir_list[i].alt_freq=0}
                 else if(Number(premir_list[i].alt_freq)==0.0){premir_list[i].alt_freq=0}
             }
-            $scope.premir_list=premir_list;
+            $scope.premir_list=premir_list.sort(dict_sort("snp_position"));
 
         })
         $http({
@@ -684,7 +725,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                 if(utr3_list[i].gain_count){utr3_list[i].gain_count=parseInt(utr3_list[i].gain_count).toLocaleString()}
                 if(utr3_list[i].loss_count){utr3_list[i].loss_count=parseInt(utr3_list[i].loss_count).toLocaleString()}
             }
-            $scope.utr3_list=utr3_list
+            $scope.utr3_list=utr3_list.sort(dict_sort("snp_position"))
         })
         $scope.clear()
         renew_snp_summary_tab()

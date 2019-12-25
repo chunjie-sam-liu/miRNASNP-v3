@@ -20,7 +20,7 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
 
     if(has_phenotype){
     $http({
-        url:base_url+'/api/mutation_summary',
+        url:base_url+'/api/mutation_summary_utr3',
         method:'GET',
         params:{gene:$scope.query_gene}
     }).then(function(response){
@@ -32,7 +32,7 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
 }
 if(has_snp){
     $http({
-        url:base_url+'/api/snp_summary',
+        url:base_url+'/api/snp_summary_utr3',
         method:'GET',
         params:{gene:$scope.query_gene}
     }).then(function(response){

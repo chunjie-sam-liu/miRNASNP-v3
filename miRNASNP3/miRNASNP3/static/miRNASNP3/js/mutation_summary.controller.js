@@ -16,6 +16,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
     var seed=$routeParams.seed
     var premir=$routeParams.premir
     var utr3=$routeParams.utr3
+    var mature=$routeParams.mature
     var redirect=0
 
     $scope.initial=1;
@@ -26,7 +27,15 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         $('#seed').removeClass('active')
         $('#premir').removeClass('active')
         $('#utr3').removeClass('active')
+        $('#mature').removeClass('active')
     }
+
+    function dict_sort(p){
+        return function(m,n){
+            var a = Number(m[p]);
+            var b = Number(n[p]);
+            return a - b;
+    }}
 
     $scope.clear = function () {
         $scope.seed = 0;
@@ -60,13 +69,14 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         }
     }
 
-    if(seed||premir||utr3){
+    if(seed||premir||utr3||mature){
         redirect=1
    }
 
-    if(seed){$scope.show_one('seed');$('#seed').addClass('active')}
+    if(seed){$scope.show_one('seed');$('#seed').addClass('active');console.log("show seed")}
     else if(premir){$scope.show_one('premir');$('#premir').addClass('active');console.log('show premir')}
     else if(utr3){$scope.show_one('utr3');$('#utr3').addClass('active')}
+    else if(mature){$scope.show_one('mature');$('#mature').addClass('active')}
 
     //for input genes 
     function addAnnotationInputKeyupHandler(){
@@ -196,6 +206,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
        });
    }
    check_input_autocomplete_phenotype()
+
     $scope.fetch_mutation_summary=function(){
         if(redirect==0){
             renew_mut_summary_tab()
@@ -252,12 +263,17 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             condition['pathology']=query_phenotype_summary
         }
 
-
+        /*
         $('#histology').change(function(){
            console.log("change histology")
             condition['histology']=$('#histology').selectpicker('val')
-        });
+        });*/
         
+        var histology=$.trim($("#histology option:selected").text());
+        if(histology!="All"){
+            condition['histology']=histology.replace(' ','_')
+        }
+
         if (gene){
             condition['gene']=gene
         }
@@ -273,6 +289,43 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         console.log(condition)
         console.log('Start search')
         console.log($scope.initial)
+        if (mature && $scope.flag_identifier==0 && $scope.flag_phenotype==0){
+            $http({
+                
+                url:base_url+'/api/mutation_summary_mature',
+                method:'GET',
+                params:condition
+            }).then(function(response){
+                //$scope.initial=0;
+                console.log(response)
+                $scope.mature_list=response.data.mutation_mature_list;
+                var count_list=response.data.mutation_mature_count
+                if(response.data.mutation_mature_count.length!=0){$scope.mature_count=response.data.mutation_mature_count[0].count;}
+                else{$scope.mature_nonitem=1}
+                $scope.mature_count=0
+                for(var i=0;i<2;i++){
+                    $scope.mature_count+=count_list[i].count
+                }
+                if($scope.mature_count>0){
+                    $scope.mature=1;
+                    $('#mature').addClass('active')
+                }
+                
+                var data_list=$scope.mature_list
+            for(var i=0;i<data_list.length;i++){
+               // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
+                if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
+                if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
+                //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
+                //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
+            }
+            $scope.mature_list=data_list.sort(dict_sort("mut_position"))
+            })
+        }
+
         if($scope.flag_identifier==0 && $scope.flag_phenotype==0){
             $http({   
                 url:base_url+'/api/mutation_summary_seed',
@@ -282,8 +335,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 //$scope.initial=0;
                 console.log(response)
                 $scope.seed_list=response.data.mutation_seed_list;
+                $scope.seed_count=response.data.mutation_seed_count[0].count;
                 if(response.data.mutation_seed_count.length!=0 & redirect==0){
-                    $scope.seed_count=response.data.mutation_seed_count[0].count;
                     $scope.clear()
                     renew_mut_summary_tab()
                     $scope.seed=1;
@@ -293,6 +346,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                     $scope.seed_nonitem=1
                 }
                 var data_list=$scope.seed_list
+                console.log("seed count")
+                console.log( $scope.seed_count)
             for(var i=0;i<data_list.length;i++){
                // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                 if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
@@ -304,6 +359,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
+            $scope.seed_list=data_list.sort(dict_sort("mut_position"))
             })
            /* $http({
                 
@@ -342,7 +398,9 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                     $scope.premir=1;
                     $('#premir').addClass('active')
                 }
-                
+                if(mature){
+                    $scope.premir_count=0
+                }
                 var data_list=$scope.premir_list
             for(var i=0;i<data_list.length;i++){
                // data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
@@ -354,6 +412,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
+            $scope.premir_list=data_list.sort(dict_sort("mut_position"))
             })
             $http({              
                 url:base_url+'/api/mutation_summary_utr3',
@@ -380,6 +439,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
+            $scope.utr3_list=data_list.sort(dict_sort("mut_position"))
             })
         }
     }
@@ -413,7 +473,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         
         $('#histology').change(function(){
            console.log("change histology")
-            condition['histology']=$('#histology').selectpicker('val')
+            condition['histology']=$.trim($('#histology').selectpicker('val')).replace(' ','_')
         });
         $('#pathology').change(function(){
         condition['pathology']=$('#pathology').selectpicker('val')
@@ -451,10 +511,11 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                     data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                     data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
                 }
+                $scope.seed_list=data_list.sort(dict_sort("mut_position"))
                 })
                 break;
             }
-            /*case 'mature':
+            case 'mature':
                 {
                     $http({
                         
@@ -471,13 +532,14 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                         if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+                        data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
                         //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
                     }
                     })
                     break;  
-                }*/
+                }
             case 'pre-miRNA':
                 {
                     $http({
@@ -501,11 +563,13 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
                     }
+                    $scope.premir_list=data_list.sort(dict_sort("mut_position"))
                     })
                     break; 
                 }
             case 'UTR3':
                 {
+                    console.log("update utr3 pages")
                     $http({
                         
                         url:base_url+'/api/mutation_summary_utr3',
@@ -525,6 +589,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
                     }
+                    $scope.utr3_list=data_list.sort(dict_sort("mut_position"))
                     })  
                 }
 
@@ -566,6 +631,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
             data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
         }
+        $scope.seed_list=data_list.sort(dict_sort("mut_position"))
         })
         $http({
                 
@@ -587,6 +653,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
             //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
         }
+        $scope.premir_list=data_list.sort(dict_sort("mut_position"))
         })
         $http({
             
@@ -607,6 +674,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
             data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
         }
+        $scope.utr3_list=data_list.sort(dict_sort("mut_position"))
         })
         $scope.seed=1;
         $('#seed').addClass('active')
