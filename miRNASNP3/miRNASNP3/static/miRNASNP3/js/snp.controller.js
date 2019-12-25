@@ -373,7 +373,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.exp_item=title;
         console.log($scope.expression);
         if(expr_type=='gene'){
-            var expression_unit='GSEM'
+            var expression_unit='RSEM'
         }
         if(expr_type=='miRNA'){
             var expression_unit='RSEM'

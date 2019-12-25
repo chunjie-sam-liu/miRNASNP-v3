@@ -133,7 +133,7 @@
             <tbody>
             <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
                 <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$ v.snp_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$ v.snp_id$}</a></td>
                 <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                     {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <td align="center">
@@ -229,7 +229,7 @@
         <tr ng-repeat="v in snp_seed_loss_list" ts-repeat>
                 <!--td>{$ $index+1 $}</td-->
                 <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$ v.snp_id$}</a></td>
+                <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$ v.snp_id$}</a></td>
                 <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                     {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
                 <td align="center">
@@ -323,7 +323,7 @@
         <tbody>
         <tr ng-repeat="v in snv_utr_gain_list" ts-repeat>
             <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-            <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$v.snp_id$}</a></td>
+            <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
             <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                 {$v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc $}</a></td>
             <td align="center">
@@ -414,7 +414,7 @@
         <tbody>
         <tr ng-repeat="v in snv_utr_loss_list" ts-repeat>
             <td align="center"><a target="_blank" href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td> 
-            <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$v.snp_id$}</a></td>
+            <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
             <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                 {$v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc $}</a></td>
             <td align="center">

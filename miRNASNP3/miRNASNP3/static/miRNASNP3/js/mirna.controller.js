@@ -520,7 +520,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
            // $scope.exp_item=title;
             
             var cancer_types=['cancer_type'];
-            var expr=['GSEM'];
+            var expr=['RSEM'];
            
             for(var cancer in gene_expr){
                 var source_data={}
@@ -573,7 +573,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 yAxis: [
                     {
                         type: 'value',
-                        name:'GSEM',
+                        name:'RSEM',
                         nameTextStyle:{
                             align:'left',
                             fontSize:12,

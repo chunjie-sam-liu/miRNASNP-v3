@@ -584,7 +584,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             var expression_unit='RSEM'
         }
         if(expr_type=='gene'){
-            var expression_unit='GSEM'
+            var expression_unit='RSEM'
         }
         $scope.expression = exp[0];
         $scope.exp_item = title;
