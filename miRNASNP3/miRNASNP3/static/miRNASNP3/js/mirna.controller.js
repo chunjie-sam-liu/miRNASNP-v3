@@ -1050,7 +1050,7 @@ $scope.mirna_let7_7a_3p=[
 $scope.snp_distribution=function(){
     $http({
         url:base_url+'/api/snp_distribute',
-        method:'Get',
+        method:'GET',
         params:{mirna_id:$scope.query_mirna}
     }).then(function(response){
         console.log(response)
