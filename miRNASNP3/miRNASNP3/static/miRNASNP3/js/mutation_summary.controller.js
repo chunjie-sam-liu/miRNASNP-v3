@@ -290,8 +290,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         console.log('Start search')
         console.log($scope.initial)
         if (mature && $scope.flag_identifier==0 && $scope.flag_phenotype==0){
-            $http({
-                
+            $http({             
                 url:base_url+'/api/mutation_summary_mature',
                 method:'GET',
                 params:condition
@@ -392,6 +391,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 $scope.premir_list=response.data.mutation_premir_list;
                 if(response.data.mutation_premir_count.length!=0){$scope.premir_count=response.data.mutation_premir_count[0].count;}
                 else{$scope.premir_nonitem=1}
+                console.log("premir count")
+                console.log(response.data.mutation_premir_count.length)
                 if($scope.premir_count>0 & $scope.seed_count==0& redirect==0){
                     $scope.utr3=0;
                     $('#utr3').removeClass('active')
@@ -426,6 +427,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 $scope.utr3_list=response.data.mutation_utr3_list;
                 if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
                 else{$scope.utr3_nonitem=1}
+                console.log("utr count")
+                console.log(response.data.mutation_utr3_count.length)
                 if($scope.utr3_count>0&$scope.seed_count==0&$scope.premir_count==0& redirect==0){
                     $scope.utr3=1
                     $('#utr3').addClass('active')
