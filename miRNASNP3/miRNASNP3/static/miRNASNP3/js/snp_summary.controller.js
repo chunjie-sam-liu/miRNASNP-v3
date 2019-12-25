@@ -440,7 +440,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
         var flag_snp=0;
        // var flag_identifier=0;
         condition['chrome']='All';
-        condition['location']=location;
+        //condition['location']=location;
         condition['gmaf']='All';
         condition['ldsnp']='';
         condition['mutation_rela']='';
@@ -563,8 +563,9 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                 
             })*/
             switch(location){
-                case 'miseed':
+                case 'mirseed':
                     {
+                        console.log("update seed page")
                         $http({
                             url:base_url+'/api/snp_summary_seed',
                             method:'GET',
@@ -588,25 +589,31 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                         //$scope.seed_count=response.data.snp_summary_count;
                         break;
                     }
-                /*case 'mature':
+                case 'mature':
                     {
                         $http({
-                            url:base_url+base_url
-        +'/api/snp_summary_mature',
+                            url:base_url+'/api/snp_summary_mature',
                             method:'GET',
-                            params:condition
+                            params:condition,
                         }).then(function(response){
+                            console.log(response);
                             $scope.initial=0;
                             var mature_list=response.data.snp_mature_list;
+                            $scope.mature_count=response.data.snp_mature_count;
+                            if($scope.mature_count>0){
+                                $('#mature').addClass('active')
+                            }
                             for(var i=0;i<mature_list.length;i++){
-                                if(Number(mature_list[i].ref_freq)==0.0){mature_list[i].ref_freq=0}
-                                if(Number(mature_list[i].alt_freq)==0.0){mature_list[i].alt_freq=0}
-                        }
-                        $scope.mature_list=mature_list
-                        //$scope.mature_count=response.data.snp_summary_count;
-                        })
+                                if(mature_list[i].ref_freq=='NA'){mature_list[i].ref_freq=0}
+                                else if(Number(mature_list[i].ref_freq)==0.0||mature_list[i].ref_freq=='novalue'){mature_list[i].ref_freq=0}
+                                if(mature_list[i].alt_freq=='NA'){mature_list[i].alt_freq=0}
+                                else if(Number(mature_list[i].alt_freq)==0.0){mature_list[i].alt_freq=0}
+                                mature_list[i].energy_change=Number(mature_list[i].energy_change).toFixed(2)
+                            }
+                            $scope.mature_list=mature_list.sort(dict_sort("snp_position"));
+                    })
                         break;
-                    }*/
+                    }
                 case 'pre-miRNA':
                     {
                         $http({
