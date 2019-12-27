@@ -58,10 +58,10 @@ function KeyController($scope,$routeParams,$http,$filter,$window,miRNASNP3Servic
             }else{
                 if(mirna_key_uniq.length == 1 & premir_key_uniq.length == 0){
                     $scope.option_key = 0;
-                    window.open("#!/mirna?mirna_id=" + $scope.query_mirna, "_self")
+                    window.open("#!/mirna?mirna_id=" + mirna_key_uniq[0], "_self")
                 }else if(mirna_key_uniq.length == 0 & premir_key_uniq.length == 1){
                     $scope.option_key = 0;
-                    window.open("#!/premir_detail?search_ids=" + $scope.query_mirna, "_self")
+                    window.open("#!/premir_detail?search_ids=" + premir_key_uniq[0], "_self")
                 }else{
                     $scope.option_key = 1;
                     $scope.mirna_keys = mirna_key_uniq
