@@ -253,7 +253,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         }
 
         var query_phenotype_summary=$.trim($('#query_phenotype_summary').val());
-        if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_phenotype_summary)) {
+        if (/[@#\$%\^&\*<>\.\\\(\)]+/g.test(query_phenotype_summary)) {
             $scope.flag_phenotype = 1;
             $scope.alert_invalid=1;
             $scope.initial=0;
