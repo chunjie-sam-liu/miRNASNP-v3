@@ -221,6 +221,9 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         $scope.alert_invalid=0;
         $scope.flag_identifier=0;
         $scope.flag_phenotype=0;
+        $scope.seed_nonitem=0;
+        $scope.premir_nonitem=0;
+        $scope.utr3_nonitem=0;
        // condition['chrome']='All';
         //condition['location']='All';
         condition['resource']='All';
