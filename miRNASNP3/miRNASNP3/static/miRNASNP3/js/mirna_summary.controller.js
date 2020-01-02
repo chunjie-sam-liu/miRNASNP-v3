@@ -25,6 +25,7 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
     $scope.fetch_mirna_summary=function(){
         var flag_mirna=0;
         var condition={}
+        $scope.close_invalid()
         $scope.alert_nonitem=0;
         $scope.alert_invalid=0;
         $scope.mirna_summary_count=0
@@ -82,6 +83,7 @@ function MirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
     $scope.update_page=function(page){
         var flag_mirna=0;
         var condition={}
+        $scope.close_invalid()
         condition['chrome']='All';
         condition['mirna_id']='';
         var selectedchr = $('#chr option:selected').text();
@@ -161,6 +163,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
         var condition={}
         var flag_pri=0;
         $scope.primir_summary_count=0;
+        $scope.close_invalid()
         condition['chrome']='All';
         condition['page']=1;
         condition['pre_id']='';
@@ -209,6 +212,7 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
     $scope.update_page=function(page){
         var condition={}
         var flag_pri=0;
+        $scope.close_invalid()
         condition['chrome']='All';
         condition['page']=page;
         condition['pre_id']='';
