@@ -91,7 +91,7 @@
                 <div class="checkbox col-lg-4" data-triggle="hover" data-placement="middle">
                     <label class="control-label checkbox-inline">
                         <input type="checkbox" id="ldsnp">
-                            <strong id="ldsnp_1">SNP in GWAS LD Region</strong>
+                            <strong id="ldsnp_1">SNP in GWAS LD region</strong>
                     </label>
                 </div>
             </div>
@@ -110,9 +110,9 @@
 							Submit
                         </button>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" id="reset_query" type="reset" ng-click="reset_query()" name="reset_query">
+                        <a href="#!/snp_summary"><button class="btn btn-primary" id="reset_query" type="reset" ng-click="reset_query()" name="reset_query">
 							Reset
-                        </button>
+                        </button></a>
                 </div>
             </div>
         </form>
@@ -137,13 +137,13 @@
         <button type="button" class="close" ng-click="close_invalid()">
             <span aria-hidden="true">&times;</span>
                 </button>
-                <strong style="vertical-align: middle">No result for you query item !</strong>
+                <strong style="vertical-align: middle">No result for your query item !</strong>
             </div>
 <ul class="nav nav-tabs">
     <li id="seed" ng-click="show_one('seed')" ng-show="seed_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_seed" ><a data-toggle="tab"><strong>SNP in seed</strong></a> </li>
-    <!--li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px;margin-right: 3px "
-        class="class_mature" ><a data-toggle="tab"><strong>SNP on mature miRNA</strong></a> </li-->
+    <li id="mature" ng-click="show_one('mature')" ng-show="mature_count" style="background-color:#EBEBEB;margin-right: 3px;margin-right: 3px "
+        class="class_mature" ><a data-toggle="tab"><strong>SNP in mature miRNA</strong></a> </li>
     <li id="premir" ng-click="show_one('premir')" ng-show="premir_count" style="background-color:#EBEBEB;margin-right: 3px"
         class="class_premir"><a data-toggle="tab">
             <strong id="premir_tab">SNP in pre-miRNA</strong></a> </li>
@@ -181,14 +181,14 @@
                     <tr>
                         <th ts-criteria="identifier" width="10%">Mature miRNA</th>
                         <th ts-criteria="snp_id" width="10%">SNP ID</th>
-                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
+                        <th ts-criteria="snp_position|parseInt" width="10%">Position</th>
                        
                         <th width="8%" >Ref/Alt</th>
                         <th ts-criteria="alt_freq|parseInt" width="11%">Ref freq./Alt freq.</th>
                         <th width="7%">Region</th>
                         
                         <th ts-criteria="ldsnp" width="5%">LD
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP."></span></th>
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a GWAS tagSNP or locates in the linkage disequilibrium region of another GWAS tagSNP."></span></th>
                         <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
                         <th ts-criteria="gain_count_initial|parseInt" width="7%">Gain
@@ -199,19 +199,18 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="v in snp_seed_list" ts-repeat>
-                            <td><a href="#!/mirna?mirna_id={$v.identifier$}&one='1'" style="color: red"><strong>{$v.identifier$}</strong></a></td>
+                            <td><a href="#!/mirna?mirna_id={$v.mature_id$}&one='1'" style="color: red">{$v.mature_id$}</a></td>
                             <!--td><a href="http://www.mirbase.org/textsearch.shtml?q={&v.identifier&}&submit=submit">{$v.identifier$}</a></td-->
-                        <td ><a href="#!/snp?snp_id={$v.snp_id$}&one=1" style="color: red">{$v.snp_id$}</a></td>
-                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>    
-                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$v.ref$}/{$v.alt$}</td>
+                        <td ><a href="#!/snp?snp_id={$v.snp_id$}&location=Seed&one=1" style="color: red">{$v.snp_id$}</a></td>
+                        <td >{$v.snp_chr$}:{$v.snp_position$}</td>    
+                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.curalt$}'>{$v.ref$}/{$v.curalt$}</td>
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
                         <td>{$v.location$}</td>
                         <td>
-                                <span ng-if="v.vtype=='not_snv'">-</span>
-                                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp=='1' && !v.vtype"></span>
-                                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.ldsnp=='0' && !v.vtype"></span>
+                                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.is_ld=='1'"></span>
+                                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.is_ld=='0'"></span>
                             
                         </td>
                         <!--td>
@@ -219,19 +218,29 @@
                             <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
                         </td-->
                         <td>
-                            <span ng-if="v.gain_count">
-                            <a href="#!/snp?snp_id={$v.snp_id$}&two='1'" style="color:#FF0000">
-                                <button class="btn btn-success" style="width: 60px;height:30px;text-align: right" >{$v.gain_count$}</button></a>
+                            <span ng-if="v.gain_count&&v.analysis">
+                                <span ng-if="v.gain_count==0">
+                                    <button id="g_seed" class="btn btn-success disabled" style="width: 60px;height:30px;text-align: right" >{$v.gain_count$}</button>
                                 </span>
-                            <span ng-if="!v.gain_count">-</span>
+                                <span ng-if="v.gain_count!=0">
+                                    <a href="#!/snp?snp_id={$v.snp_id$}&location=Seed&two='1'" style="color:#FF0000">
+                                        <button id="g_seed" class="btn btn-success" style="width: 60px;height:30px;text-align: right" >{$v.gain_count$}</button></a>
+                                </span>
+                                </span>
+                            <span ng-if="!v.analysis">-</span>
                         </td>
                      
                         <td>
-                            <span ng-if="v.loss_count">
-                            <a href="#!/snp?snp_id={$v.snp_id$}&three='1'" style="color:#FF0000">
-                            <button class="btn btn-danger" style="width: 60px;height:30px;text-align: left">{$v.loss_count$}</button></a>
+                            <span ng-if="v.loss_count&&v.analysis">
+                                <span ng-if="v.loss_count==0">
+                                    <button id="g_seed" class="btn btn-danger disabled" style="width: 60px;height:30px;text-align: right" >{$v.loss_count$}</button>
+                                </span>
+                                <span ng-if="v.loss_count!=0">
+                                    <a href="#!/snp?snp_id={$v.snp_id$}&location=Seed&three='1'" style="color:#FF0000">
+                                        <button id="l_seed" class="btn btn-danger" style="width: 60px;height:30px;text-align: left">{$v.loss_count$}</button></a>
+                                </span>
                             </span>
-                            <span ng-if="!v.loss_count">-</span>
+                            <span ng-if="!v.analysis">-</span>
                         </td>
                     </tr>
                     </tbody>
@@ -240,7 +249,7 @@
 </div>
 
 
-<!--div ng-show="mature">
+<div ng-show="mature">
                 <div paging
                 page="currentPage_mature"
                 page-size=15
@@ -264,42 +273,63 @@
            ></div>
         </div>
     <div class="panel panel-info" ng-show="mature" id="section-mature">
-            <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-                    <thead>
-                    <tr>
-                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
-                        <th ts-criteria="snp_id" width="10%">SNP ID</th>
-                        <th width="5%">Ref/Alt</th>
-                        <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
-                        <th width="7%">Region</th>
-                        <th ts-criteria="identifier" width="10%">miRNA
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
-                        <th ts-criteria="ldsnp" width="5%">LD SNP
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="v in mature_list" ts-repeat>
-                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
-                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
-                        <td >{$v.ref$}/{$v.alt$}</td>
-                        <td align="center">
-                            <span ng-if="!v.ref_freq">-</span>
-                            <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
-                            <span ng-if="!v.alt_freq">-</span>
-                            <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
-                        </td>
-                        <td>{$v.location$}</td>
-                        <td>{$v.identifier$}</td>
-                        <td>
-                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
-                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
+            <thead>
+            <tr>
+                <th ts-criteria="identifier" width="10%">Mature miRNA</th>
+                <th ts-criteria="snp_id" width="10%">SNP ID</th>
+                <th ts-criteria="snp_position\parseInt" width="10%">Position</th>
+                <th width="5%">Ref/Alt</th>
+                <th ts-criteria="alt_freq|parseInt" width="13%">Ref freq./Alt freq.</th>
+                <th width="7%">Region
+                        <!--span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                        data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                        data-content="In pre-miRNA means SNP in pre-miRNA but not in mature region;In mature means SNP in mature region but not in seed region."></span-->
+                </th>
+                <th ts-criteria="pre_id" width="10%">Pre-miRNA</th>
+                <th ts-criteria="energy_change|parseInt" width="10%">&Delta;G
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                        data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                        data-content="Minimum free energy(kcal/mol) change predicted by RNAfold."></span> 
+                </th>
+                <th ts-criteria="expression_change" width="10%">Predict
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                        data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                        data-content="up:expression increases; mild:expression change mildly; down:expression change decreases;"></span>  
+                </th>
+                <th ts-criteria="ldsnp" width="5%">LD
+                <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a GWAS tagSNP or locates in the linkage disequilibrium region of another GWAS tagSNP."></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="v in premir_list" ts-repeat>
+                <td>
+                    <span ng-if="v.location != 'pre-miRNA'"><a href="#!/mirna?mirna_id={$v.mature_id$}" style="color: red">{$v.mature_id$}</a></span>
+                    <span ng-if="v.location=='pre-miRNA'">-</span>
+                </td>
+                <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}" target="_blank">{$v.snp_id$}</a></td>
+                <td >{$v.snp_chr$}:{$v.snp_position$}</td>   
+                <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.curalt$}'>{$v.ref$}/{$v.curalt$}</td>
+                <td align="center">
+                    <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
+                </td>
+                <td>{$v.location$}</td>
+                <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color: red">{$v.pre_id$}</td>
+                <td>
+                    <span ng-if="!v.analysis">-</span>
+                    <span ng-if="v.energy_change&&v.analysis">{$v.energy_change$}</span></td>
+                <td>
+                    <span ng-if="!v.analysis">-</span>
+                    <span ng-if="v.expression_change&&v.analysis">{$v.expression_change$}</span></td>
+                <td>
+                    <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.is_ld=='1'"></span>
+                    <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.is_ld=='0'"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-</div-->
+
 
         <div ng-show="premir">
                 <div paging
@@ -330,7 +360,7 @@
                     <tr>
                         <th ts-criteria="pre_id" width="10%">Pre-miRNA</th>
                         <th ts-criteria="snp_id" width="10%">SNP ID</th>
-                        <th ts-criteria="snp_coordinate" width="10%">Position</th>
+                        <th ts-criteria="snp_position\parseInt" width="10%">Position</th>
                         <th width="5%">Ref/Alt</th>
                         <th ts-criteria="alt_freq|parseInt" width="13%">Ref freq./Alt freq.</th>
                         <th width="7%">Region
@@ -347,36 +377,36 @@
                         <th ts-criteria="expression_change" width="10%">Predict
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                                data-content="up:expression increases; mild:expression change mildly; down:expression change decreases;"></span>  
+                                data-content="Predicted SNP effects on mature miRNA expression (production).
+                                up:expression increases; mild:expression change mildly; down:expression decreases;"></span>  
                         </th>
                         <th ts-criteria="ldsnp" width="5%">LD
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP."></span></th>
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a GWAS tagSNP or locates in the linkage disequilibrium region of another GWAS tagSNP."></span></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="v in premir_list" ts-repeat>
-                        <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color: red"><strong>{$v.pre_id$}</strong></td>
-                        <td ><a href="#!/snp?snp_id={$v.snp_id$}&one=1" style="color: red">{$v.snp_id$}</a></td>
-                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>   
-                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$v.ref$}/{$v.alt$}</td>
+                        <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color: red">{$v.pre_id$}</td>
+                        <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}" target="_blank">{$v.snp_id$}</a></td>
+                        <td >{$v.snp_chr$}:{$v.snp_position$}</td>   
+                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.curalt$}'>{$v.ref$}/{$v.curalt$}</td>
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
                         <td>{$v.location$}</td>
                         <td>
-                            <span ng-if="v.location != 'pre-miRNA'"><a href="#!/mirna?mirna_id={$v.identifier$}" style="color: red">{$v.identifier$}</a></span>
+                            <span ng-if="v.location != 'pre-miRNA'"><a href="#!/mirna?mirna_id={$v.mature_id$}" style="color: red">{$v.mature_id$}</a></span>
                             <span ng-if="v.location=='pre-miRNA'">-</span>
                         </td>
                         <td>
-                            <span ng-if="!v.energy_change">-</span>
-                            <span ng-if="v.energy_change">{$v.energy_change$}</span></td>
+                            <span ng-if="!v.analysis">-</span>
+                            <span ng-if="v.energy_change&&v.analysis">{$v.energy_change$}</span></td>
                         <td>
-                            <span ng-if="!v.expression_change">-</span>
-                            <span ng-if="v.expression_change">{$v.expression_change$}</span></td>
+                            <span ng-if="!v.analysis">-</span>
+                            <span ng-if="v.expression_change&&v.analysis">{$v.expression_change$}</span></td>
                         <td>
-                            <span ng-if="v.ldsnp=='2'">-</span>
-                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp=='1'"></span>
-                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.ldsnp=='0'"></span>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.is_ld=='1'"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.is_ld=='0'"></span>
                         </td>
                     </tr>
                     </tbody>
@@ -414,12 +444,12 @@
                     <tr>
                         <th ts-criteria="identifier" width="10%">Gene/miRNA</th>
                         <th ts-criteria="snp_id" width="10%">SNP ID</th>
-                        <th ts-criteria="snp_coordinate" width="10%">Position</th>                      
+                        <th ts-criteria="snp_position|parseInt" width="10%">Position</th>                      
                         <th width="5%">Ref/Alt</th>
                         <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
                         <th width="7%">Region</th>
                         <th ts-criteria="ldsnp" width="5%">LD
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP."></span></th>
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a GWAS tagSNP or locates in the linkage disequilibrium region of another GWAS tagSNP."></span></th>
                         <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
                         <th ts-criteria="gain_count|parseInt" width="7%">Gain
@@ -430,19 +460,18 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="v in utr3_list" ts-repeat>
-                        <td><a href="#!/gene?query_gene={$v.identifier$}&has_snp=1&has_phenotype=1" style="color: red"><strong>{$v.identifier$}</strong></a></td>
-                        <td ><a href="#!/snp?snp_id={$v.snp_id$}&one=1" style="color: red">{$v.snp_id$}</a></td>
-                        <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
-                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$v.ref$}/{$v.alt$}</td>
+                        <td><a href="#!/gene?query_gene={$v.identifier$}&has_snp=1&has_phenotype=1" style="color: red">{$v.gene$}</a></td>
+                        <td ><a href="#!/snp?snp_id={$v.snp_id$}&location=UTR3&one=1" style="color: red">{$v.snp_id$}</a></td>
+                        <td >{$v.snp_chr$}:{$v.snp_position$}</td>
+                        <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.curalt$}'>{$v.ref$}/{$v.curalt$}</td>
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
                         <td>{$v.location$}</td>
                         
                         <td>
-                            <span ng-if="v.ldsnp==2">-</span>
-                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp==1"></span>
-                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.ldsnp==0"></span>
+                            <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.is_ld=='1'"></span>
+                            <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.is_ld=='0'"></span>
                         </td>
                         <!--td>
                             <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
@@ -450,16 +479,26 @@
                         </td-->
                         <td>
                             <span ng-if="v.gain_count">
-                                <a href="#!/snp?snp_id={$v.snp_id$}&four='1'" style="color:#FF0000">
-                                    <button class="btn btn-success" style="width: 50px;height:30px;text-align: center" >{$v.gain_count$}</button></a>
+                                <span ng-if="v.gain_count==0">
+                                    <button id="g_utr" class="btn btn-success disabled" style="width: 50px;height:30px;text-align: center" >{$v.gain_count$}</button>
+                                </span>
+                                <span ng-if="v.gain_count!=0">
+                                    <a href="#!/snp?snp_id={$v.snp_id$}&location=UTR3&four='1'" style="color:#FF0000">
+                                        <button id="g_utr" class="btn btn-success" style="width: 50px;height:30px;text-align: center" >{$v.gain_count$}</button></a>
+                                </span>
                             </span>
                             <span ng-if="!v.gain_count">-</span>
                             </td>
                          
                             <td>
                                 <span ng-if="v.loss_count">
-                                <a href="#!/snp?snp_id={$v.snp_id$}&five='1'" style="color:#FF0000">
-                                <button class="btn btn-danger" style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a>
+                                    <span ng-if="v.loss_count==0">
+                                        <button id="l_utr" class="btn btn-danger disabled" style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button>
+                                    </span>
+                                    <span ng-if="v.loss_count!=0">
+                                        <a href="#!/snp?snp_id={$v.snp_id$}&location=UTR3&five='1'" style="color:#FF0000">
+                                            <button id="l_utr" class="btn btn-danger" style="width: 50px;height:30px;text-align: center">{$v.loss_count$}</button></a>
+                                    </span>
                                 </span>
                                 <span ng-if="!v.loss_count">-</span>
                             </td>
@@ -468,82 +507,4 @@
                 </table>
     </div>
 </div>
-<!--div class="div-table">
-    <div ng-show="initial">
-            <div class="flyover" ng-hide="snp_summary_count">
-                    <div class="mask"></div>
-                    <div class="spinner"></div>
-                </div>
-                </div>
-    
-    <div ng-show="snp_summary_count">
-        
-            <div paging
-            page="currentPage"
-            page-size=15
-            total="snp_summary_count"
-            scroll-top="true"
-            hide-if-empty="true"
-            show-prev-next="true"
-            show-first-last="true"
-            text-title-page="Page {page} Hover Over"
-            text-title-first="First hover"
-            text-title-last="Last hover"
-            text-title-next="Next hover"
-            text-title-prev="Prev hover"
-            show-prev-next="true"
-            show-first-last="true"
-            ul-class="pagination"
-            active-class="active"
-            disabled-class="disabled"
-            paging-action="update_page(page)"
-            
-       ></div>
-       
-    <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
-        <thead>
-        <tr>
-            <th ts-criteria="snp_coordinate" width="10%">Position</th>
-            <th ts-criteria="snp_id" width="10%">SNP ID</th>
-            <th width="5%">Ref/Alt</th>
-            <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
-            <th width="7%">Region</th>
-            <th ts-criteria="identifier" width="10%">Gene
-            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="SNP locates in the gene/miRNA"></span></th>
-            <th ts-criteria="ldsnp" width="5%">LD SNP
-            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a tagSNP or locates in the linkage disequilibrium region of another tagSNP"></span></th-->
-            <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
-            <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP shares genome position with a mutation from COSMIC/ClinVar"></span></th-->
-            <!--th ts-criteria="gain_count|parseInt" width="7%">Target Gain
-            <th ts-criteria="loss_count|parseInt" width="7%">Target Loss
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="v in snp_summary_list" ts-repeat>
-            <td >{$v.snp_chr$}:{$v.snp_coordinate$}</td>
-            <td ><a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
-            <td >{$v.ref$}/{$v.alt$}</td>
-            <td align="center">
-                <span ng-if="!v.ref_freq">-</span>
-                <span ng-if="v.ref_freq">{$v.ref_freq$}/</span>
-                <span ng-if="!v.alt_freq">-</span>
-                <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
-            </td>
-            <td>{$v.location$}</td>
-            <td>{$v.identifier$}</td>
-            <td>
-                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.ldsnp"></span>
-                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.ldsnp"></span>
-            </td-->
-            <!--td>
-                <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.mutation_rela"></span>
-                <span class="glyphicon glyphicon-remove" style="color: red" ng-if="!v.mutation_rela"></span>
-            </td-->
-            <!--td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.gain_count$}</a></td>
-            <td><a href="#!/snp?snp_id={$v.snp_id$}" style="color:#FF0000">{$v.loss_count$}</a></td>
-        </tr>
-        </tbody>
-    </table>    
-</div>
-</div-->
 

@@ -103,7 +103,7 @@ function HomeController($scope,$http,$routeParams,$window,miRNASNP3Service,$rout
                     $scope.alert_nonitem=1;
                     $('#alert_nonitem').show()
                 }else{
-                    window.open( "#!/snp?snp_id=" + query_snp+"&one='1", "_self");
+                    window.open( "#!/snp_summary?snp_id=" + query_snp, "_self");
                 }
         })}
         $scope.filter_mirna = function (query_mirna) {

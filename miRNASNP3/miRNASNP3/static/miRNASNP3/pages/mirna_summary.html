@@ -8,8 +8,8 @@
         There are <span class="badge alert-info-mature" style="color: white;background-color: #47899c;">2,652</span> mature miRNAs collected from mirBase v22. 
         User can click on the mature miRNA you are interested in in the table below to see target gained/lost detail caused by variations.</p>
     </div-->
-    <p>This module list a total of <span class="badge alert-info-mature">18,666</span> SNPs and <span class="badge alert-info-mature">2,409</span> DRVs in <span class="badge alert-info-mature">2,652</span> mature miRNAs, of which <span class="badge alert-info-mature">5,356</span> SNPs and 
-        <span class="badge alert-info-mature">649</span> DRVs are mapped to <span class="badge alert-info-mature">2,624</span> miRNA seed region. Red link in table presents the details of the mature miRNA and it's precurser miRNA, while blue link in table redirect
+    <p>This module list a total of <span class="badge alert-info-mature">18,666</span> SNPs and <span class="badge alert-info-mature">2,731</span> DRVs in <span class="badge alert-info-mature">2,652</span> mature miRNAs, of which <span class="badge alert-info-mature">6,229</span> SNPs and 
+        <span class="badge alert-info-mature">938</span> DRVs are mapped to <span class="badge alert-info-mature">2,624</span> miRNA seed region. Red link in table presents the details of the mature miRNA and it's precurser miRNA, while blue link in table redirect
 the source of miRNA. </p>
 </div>
 </div>
@@ -128,24 +128,24 @@ the source of miRNA. </p>
                         <th ts-criteria="snp_in_matue|parseInt" style="width: 12%">SNP number
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                                data-content="Number of SNP in mature miRNA seed regions/Number of SNP in mature miRNAs."></span>
+                                data-content="Number of SNP in mature miRNA."></span>
                         </th>
                         <th ts-criteria="mutation_sum|parseInt">DRV number
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                                data-content="Number of disease related variation (DRV) in miRNA seed region/Number of disease related variation (DRV) in mature miRNA."></span>
+                                data-content="Number of disease related variation (DRV) in mature miRNA."></span>
                         </th>
                         <th ts-criteria="pre_id|parseFloat">Pre-miRNA</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="v in mirna_summary_list" ts-repeat>
-                        <td><a href="#!/mirna?mirna_id={$v.mir_id$}" style="color:#FF0000"><strong>{$ v.mir_id$}</strong></a></td>
+                        <td><a href="#!/mirna?mirna_id={$v.mir_id$}" style="color:#FF0000">{$ v.mir_id$}</a></td>
                         <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.mir_acc$}">{$ v.mir_acc $}</a></td>
                         <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v.mir_chr $}%3A{$ v.mir_start $}%2D{$ v.mir_end$}">{$ v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
-                        <td>{$ v.snp_seed_sum$}/{$v.snp_mature_sum$}</td>
+                        <td>{$v.snp_in_mature$}</td>
             <!--td>{$v.snp_in_matue$}</td-->
-                        <td>{$ v.mutation_seed_sum $}/{$v.mutation_mature_sum$}</td>
+                        <td>{$ v.clinvar_in_mature + v.cosmic_in_mature$}</td>
                         <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color:#FF0000">{$ v.pre_id$}</a></td>
                     </tr>
                 </tbody>

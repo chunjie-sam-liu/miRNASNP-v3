@@ -8,7 +8,7 @@
     <!--p>In this module, we provide information on the distribution of variations(dbSNP, COSMIC, ClinVar) in precursor miRNAs(pre-miRNAs). 
         There are <span style="color: white;background-color: #c10808;" class="badge alert-danger-pre">1,913</span> pre-miRNAs collected from mirBase v22. 
         User can click on the pre-miRNA you are interested in in the table below to see the structure changes caused by variations.</p-->
-    <p>In this module, <span class="badge alert-danger-pre">46,826</span> SNPs and <span class="badge alert-danger-pre">6,003</span> DRVs in <span class="badge alert-danger-pre">1,913</span> precurser miRNAs was listed below. Red link in table presents the details of the precurser miRNA, including the secondary structure of pre-miRNA and variation impact on it. Blue link in table redirect
+    <p>In this module, <span class="badge alert-danger-pre">46,826</span> SNPs and <span class="badge alert-danger-pre">6,895</span> DRVs in <span class="badge alert-danger-pre">1,913</span> precurser miRNAs was listed below. Red link in table presents the details of the precurser miRNA, including the secondary structure of pre-miRNA and variation impact on it. Blue link in table redirect
     the source of miRNA. </p>
     </div>
 </div>
@@ -111,11 +111,15 @@
                     <th ts-criteria="_id.pre_id" style="width: 14%">Pre-miRNA</th>
                     <th ts-criteria="_id.pre_acc" style="width: 14%">Accession</th>
                     <th ts-criteria="_id.pre_start" style="width: 20%">Position</th>
-                    <th ts-criteria="_id.snv_in_pri|parseInt" style="width: 15%">SNP number</th>
+                    <th ts-criteria="_id.snv_in_pri|parseInt" style="width: 15%">SNP number
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
+                        data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
+                        data-content="Number of SNP in pre-miRNA."></span>
+                    </th>
                     <th ts-criteria="mutation_sum|parseInt" style="width: 15%">DRV number
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
-                            data-content="Number of disease related variation in pre-miRNA."></span>
+                            data-content="Number of disease related variation (DRV) in pre-miRNA."></span>
                     </th>
                     <th>Mature miRNAs</th>
                 </tr>
@@ -125,8 +129,8 @@
                     <td><a href="#!/premir_detail?search_ids={$v._id.pre_id$}" style="color:#FF0000">{$v._id.pre_id$}</a></td>
                     <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v._id.pre_acc$}">{$ v._id.pre_acc$}</a></td>
                     <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v._id.pre_chr $}%3A{$ v._id.pre_start $}%2D{$ v._id.pre_end$}">{$ v._id.pre_chr$}:{$v._id.pre_start$}-{$v._id.pre_end$}({$v._id.pre_strand$})</td>
-                    <td>{$ v.snp_sum $}</td>
-                    <td>{$ v.mutation_sum $}</td>
+                    <td>{$ v._id.snp_in_premir $}</td>
+                    <td>{$ v._id.cosmic_in_premir+v._id.clinvar_in_premir $}</td>
                     <td>
                         <span ng-repeat="m in v.mature_info"><a href="#!/mirna?mirna_id={$m.mir_id$}"
                                 style="color:#FF0000">{$ m.mir_id$}</a>&nbsp;&nbsp;</span>

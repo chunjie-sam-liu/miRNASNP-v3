@@ -88,11 +88,21 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 console.log(response);
                 $scope.mirna_summary_list = response.data.mirna_summary_list;
                 $scope.mirna_summary_count=response.data.mirna_summary_count;
-                var indel_in_seed=0
+                /*var indel_in_seed=0
                 var indel_in_mature=0
                 for(var i=0;i<$scope.mirna_summary_list.length;i++){
                     indel_in_seed+=Number($scope.mirna_summary_list[i].indel_in_seed)
                     indel_in_mature+=Number($scope.mirna_summary_list[i].indel_in_mature)
+                }*/
+                var snp_in_seed=0
+                var snp_in_mature=0
+                var mutation_in_seed=0
+                var mutation_in_mature=0
+                for(var i=0;i<$scope.mirna_summary_list.length;i++){
+                    snp_in_seed+=Number($scope.mirna_summary_list[i].snp_in_seed)
+                    snp_in_mature+=Number($scope.mirna_summary_list[i].snp_in_mature)
+                    mutation_in_seed+=$scope.mirna_summary_list[i].clinvar_in_seed+$scope.mirna_summary_list[i].cosmic_in_seed
+                    mutation_in_mature+=$scope.mirna_summary_list[i].clinvar_in_mature+$scope.mirna_summary_list[i].cosmic_in_mature
                 }
                 if($scope.mirna_summary_list.length>1){
                     $scope.mirna_table=1
@@ -100,14 +110,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     $scope.mirna_table=0
                 }
                 $scope.mirna_summary_alias=$scope.mirna_summary_list[0]
-                $scope.mirna_summary_alias.snp_in_seed=Number($scope.mirna_summary_alias.snp_in_seed)+indel_in_seed
-                $scope.mirna_summary_alias.snp_in_matue=Number($scope.mirna_summary_alias.snp_in_matue)+indel_in_mature
-                console.log(indel_in_seed)
-                console.log(indel_in_mature)
-                console.log($scope.mirna_summary_alias.snp_in_seed)
-                console.log($scope.mirna_summary_alias.snp_in_mature)
-                $scope.mirna_summary_alias.variation_in_seed=Number($scope.mirna_summary_alias.cosmic_in_seed)+Number($scope.mirna_summary_alias.clinvar_in_seed)+Number($scope.mirna_summary_alias.snp_gwas_in_seed_singlepre)
-                $scope.mirna_summary_alias.variation_in_mature=Number($scope.mirna_summary_alias.cosmic_in_matue)+Number($scope.mirna_summary_alias.clinvar_in_matue)+Number($scope.mirna_summary_alias.snp_gwas_in_mature_singlepre)
+                $scope.mirna_summary_alias.snp_in_seed=snp_in_seed
+                $scope.mirna_summary_alias.snp_in_mature=snp_in_mature
+                $scope.mirna_summary_alias.variation_in_seed=mutation_in_seed
+                $scope.mirna_summary_alias.variation_in_mature=mutation_in_mature
             });
     };
     $scope.fetch_mirna_details();
@@ -167,7 +173,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         })
     }
     $scope.fetch_mirna_drug()
-    $scope.fetch_mirna_expression=function(){
+    $scope.fetch_mirna_expression=function(expression_type){
         $scope.mirna_expression_show=1;
         $http({
            url:base_url+'/api/mirna_expression',
@@ -248,7 +254,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                // $scope.exp_item=title;
                 
                 var cancer_types=['cancer_type'];
-                var expr=['RPKM'];
+                var expr=['RSEM'];
                
                 for(var cancer in mirna_expr){
                     var source_data={}
@@ -301,7 +307,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     yAxis: [
                         {
                             type: 'value',
-                            name:'RPKM',
+                            name:'RSEM',
                             nameTextStyle:{
                                 align:'left',
                                 fontSize:12,
@@ -422,7 +428,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
           });
           
           $scope.echart_correlation=function(cor){
-            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1];
+            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1]+" across 33 cancer types in TCGA.";
             var c=echarts;
             c.init(document.getElementById('correlation')).dispose();
             var cor_echart=c.init(document.getElementById('correlation'));
@@ -514,7 +520,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
            // $scope.exp_item=title;
             
             var cancer_types=['cancer_type'];
-            var expr=['RPKM'];
+            var expr=['RSEM'];
            
             for(var cancer in gene_expr){
                 var source_data={}
@@ -567,7 +573,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 yAxis: [
                     {
                         type: 'value',
-                        name:'RPKM',
+                        name:'RSEM',
                         nameTextStyle:{
                             align:'left',
                             fontSize:12,
@@ -606,7 +612,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
     }
 
     $scope.modal_gain_site=function(site){
-        $scope.modal_header="Target Gain";
+        $scope.modal_header="Target gain";
         $scope.target_gain=1;
         $scope.target_loss=0;
 		$scope.modal_site=site;
@@ -617,7 +623,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $scope.align8_later=align8.substring(distance+1,align8.length);
         }
     $scope.modal_loss_site=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_gain=0;
         $scope.target_loss=1;
 		$scope.modal_site=site;
@@ -769,7 +775,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
 
 
     $scope.modal_gain_site_mut=function(site){
-        $scope.modal_header="Target Gain";
+        $scope.modal_header="Target gain";
         $scope.target_gain=1;
         $scope.target_loss=0;
 		$scope.modal_site=site;
@@ -780,7 +786,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
         $scope.align8_later=align8.substring(distance+1,align8.length);
         }
     $scope.modal_loss_site_mut=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_gain=0;
         $scope.target_loss=1
 		$scope.modal_site=site;
@@ -1026,5 +1032,41 @@ $scope.premir_sequence=function(v){
     $scope.cur_pre=v
 }
 
+/*var base_color={
+    'A':'red',
+    'U':'yellow',
+    'C':'green',
+    'G':'blue',
+    'indel':'#7A0099'
+}
+
+$scope.mirna_let7_7a_3p=[
+    {'base':'C','pos':1,'snp_list':[{'snp_id':'snp_1','ref':'C','curalt':'A','color':base_color['A'],'count':'1'}]},
+    {'base':'U','pos':2,'snp_list':[]},
+    {'base':'A','pos':3,'snp_list':[{'snp_id':'snp_1','ref':'A','curalt':'U','color':base_color['U'],'count':'1'}]},
+    {'base':'U','pos':4,'snp_list':[{'snp_id':'snp_2','ref':'T','curalt':'A','color':base_color['A'],'count':'1'}]},
+    {'base':'C','pos':5,'snp_list':[{'snp_id':'snp_1','ref':'C','curalt':'A','color':base_color['indel'],'count':'1'},{'count':'2','snp_id':'snp_4','ref':'C','curalt':'G','color':base_color['G']}]}
+]*/
+$scope.snp_distribution=function(){
+    $http({
+        url:base_url+'/api/snp_distribute',
+        method:'GET',
+        params:{mirna_id:$scope.query_mirna}
+    }).then(function(response){
+        console.log(response)
+        $scope.snp_distribute_list=response.data.snp_distribute_list
+        $scope.snp_distribute_count=response.data.snp_distribution_count
+        var dataset=$scope.snp_distribute_list
+        for(var i=0;i<dataset.length;i++){
+            if(Number(dataset[i].pos)==-2&&dataset[i].var_list.length==0){
+                dataset[i]={}
+        }else if(Number(dataset[i].pos)==-2){
+            dataset[i].pos=-1
+        }
+    }
+        $scope.snp_distribute_list=dataset
+    })
+}
+$scope.snp_distribution()
 }
 

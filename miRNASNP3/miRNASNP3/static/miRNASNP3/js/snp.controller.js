@@ -34,6 +34,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     var three=$routeParams.three;
     var four=$routeParams.four;
     var five=$routeParams.five;
+    var location=$routeParams.location
 		
 	$scope.clear=function(){
         $scope.one=0;
@@ -87,6 +88,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     else if(three){$scope.show_one('three');$('#three').addClass('active')}
     else if(four){$scope.show_one('four');$('#four').addClass('active')}
     else if(five){$scope.show_one('five');$('#five').addClass('active')}
+    else if(six){$scope.show_one('six');$('#six').addClass('active')}
 
 	//$scope.fetch_gwas=function(){};
 
@@ -107,18 +109,18 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     return result
     }
 
-    $scope.fetch_snp_details=function(){
+    $scope.fetch_snp_details_seed=function(){
         var page=1;
     	$http({
             //url:base_url+ base_url+'/api/snp_summary',
-            url:base_url+'/api/snp_summary',
+            url:base_url+'/api/snp_summary_seed',
             method: 'GET',
             params: {snp_id: $scope.query_snp}
         }).then(
             function (response) {
                 console.log(response);
-                $scope.snp_summary_list = response.data.snp_summary_list;
-                $scope.snp_summary_count=response.data.snp_summary_count;
+                $scope.snp_summary_list = response.data.snp_seed_list;
+                $scope.snp_summary_count=response.data.snp_seed_count;
                 var data_list=$scope.snp_summary_list
                 $scope.has_alt_freq=0
                 $scope.position_list=[]
@@ -126,14 +128,18 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     if(data_list[i].ref_freq=='novalue'){data_list[i].ref_freq=0}
                     if(Number(data_list[i].alt_freq)==0.0){data_list[i].alt_freq=0}
                     if(Number(data_list[i].ref_freq)==0.0){data_list[i].ref_freq=0}
-                    if(data_list[i].location=='mirseed'){$scope.head_identifier='miRNA';data_list[i].location='seed';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
-                    if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR";$scope.identifier_url="https://www.genecards.org/cgi-bin/carddisp.pl?gene="+data_list[i].identifier}
-                    if(data_list[i].location=='pre-miRNA'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
-                    if(data_list[i].location=='mature'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
-                    $scope.position_list.push(data_list[i].snp_chr+':'+data_list[i].snp_coordinate)
+                    if(data_list[i].location=='Seed'){$scope.head_identifier='miRNA';
+                        data_list[i].location='Seed';
+                        $scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].mature_id;
+                        data_list[i].identifier=data_list[i].mature_id
+                    }
+                   // if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR";$scope.identifier_url="https://www.genecards.org/cgi-bin/carddisp.pl?gene="+data_list[i].identifier}
+                   // if(data_list[i].location=='pre-miRNA'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
+                   // if(data_list[i].location=='mature'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
+                    $scope.position_list.push(data_list[i].snp_chr+':'+data_list[i].snp_position)
                 }
                 for(var i=0;i<data_list.length;i++){
-                    if(data_list[i].alt_freq){
+                    if(data_list[i].alt_freq!='NA'){
                         $scope.has_alt_freq=1
                     }
                 }
@@ -146,7 +152,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     $scope.snp_alt=''
                     $scope.alt_freq=''
                     for(var i=0;i<data_list.length;i++){
-                        $scope.snp_alt+=String(data_list[i].alt)+','
+                        $scope.snp_alt+=String(data_list[i].curalt)+','
                         if($scope.has_alt_freq){
                             if(data_list[i].alt_freq){
                                 $scope.alt_freq=$scope.alt_freq+String(data_list[i].alt_freq)+','
@@ -161,7 +167,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             console.log($scope.snp_position_list)
             $scope.snp_position_list=$scope.snp_position_list.substring(0,$scope.snp_position_list.length-1)
         }else{
-            $scope.snp_alt=data_list[0].alt
+            $scope.snp_alt=data_list[0].curalt
             $scope.alt_freq=data_list[0].alt_freq
             $scope.snp_position_list=$scope.snp_position_list.substring(0,$scope.snp_position_list.length-1)
         }
@@ -172,8 +178,82 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 $scope.snp_summary_alias=$scope.snp_summary_list.shift();
                // $scope.snp_summary_alias_count=$scope.snp_summary_list.length
             });
-	};
-	$scope.fetch_snp_details();
+    };
+    $scope.fetch_snp_detail_utr=function(){
+        var page=1;
+    	$http({
+            //url:base_url+ base_url+'/api/snp_summary',
+            url:base_url+'/api/snp_summary_utr3',
+            method: 'GET',
+            params: {snp_id: $scope.query_snp}
+        }).then(
+            function (response) {
+                console.log(response);
+                $scope.snp_summary_list = response.data.snp_utr3_list;
+                $scope.snp_summary_count=response.data.snp_utr3_count;
+                var data_list=$scope.snp_summary_list
+                $scope.has_alt_freq=0
+                $scope.position_list=[]
+                $scope.snp_alt=''
+                for(var i=0;i<data_list.length;i++){
+                   // if(data_list[i].ref_freq=='novalue'){data_list[i].ref_freq=0}
+                    //if(Number(data_list[i].alt_freq)==0.0){data_list[i].alt_freq=0}
+                    //if(Number(data_list[i].ref_freq)==0.0){data_list[i].ref_freq=0}
+                    if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';
+                        data_list[i].location="3'UTR";
+                        $scope.identifier_url="https://www.genecards.org/cgi-bin/carddisp.pl?gene="+data_list[i].gene;
+                        data_list[i].identifier=data_list[i].gene
+                    }
+                   // if(data_list[i].location=='UTR3'){$scope.head_identifier='Gene';data_list[i].location="3'UTR";$scope.identifier_url="https://www.genecards.org/cgi-bin/carddisp.pl?gene="+data_list[i].identifier}
+                   // if(data_list[i].location=='pre-miRNA'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
+                   // if(data_list[i].location=='mature'){$scope.head_identifier='miRNA';$scope.identifier_url="http://www.mirbase.org/textsearch.shtml?q="+data_list[i].identifier}
+                    $scope.position_list.push(data_list[i].snp_chr+':'+data_list[i].snp_position)
+                }
+               
+                for(var i=0;i<data_list.length;i++){
+                    if(data_list[i].alt_freq!='NA'){
+                        $scope.has_alt_freq=1
+                    }
+                }
+                var pl=distinct($scope.position_list)
+                $scope.snp_position_list=''
+                for(let p of pl){
+                    $scope.snp_position_list+=p+','
+                }
+                if(data_list.length>1){
+                    $scope.snp_alt=''
+                    $scope.alt_freq=''
+                    for(var i=0;i<data_list.length;i++){
+                        $scope.snp_alt+=String(data_list[i].curalt)+','
+                        if($scope.has_alt_freq){
+                            if(data_list[i].alt_freq!='NA'){
+                                $scope.alt_freq=$scope.alt_freq+String(data_list[i].alt_freq)+','
+                            }else{
+                                $scope.alt_freq+='-,'
+                            }
+                        }
+                        
+            }
+            $scope.snp_alt=$scope.snp_alt.substring(0,$scope.snp_alt.length-1)
+            $scope.alt_freq=$scope.alt_freq.substring(0,$scope.alt_freq.length-1)
+            console.log($scope.snp_position_list)
+            $scope.snp_position_list=$scope.snp_position_list.substring(0,$scope.snp_position_list.length-1)
+        }else{
+            $scope.snp_alt=data_list[0].curalt
+            $scope.alt_freq=data_list[0].alt_freq
+            $scope.snp_position_list=$scope.snp_position_list.substring(0,$scope.snp_position_list.length-1)
+        }
+            
+                
+                $scope.snp_summary_list=data_list
+                console.log($scope.snp_summary_list)
+                $scope.snp_summary_alias=$scope.snp_summary_list.shift();
+               // $scope.snp_summary_alias_count=$scope.snp_summary_list.length
+            });
+    }
+
+    if(location=='Seed'){$scope.fetch_snp_details_seed();}
+    if(location=='UTR3'){$scope.fetch_snp_detail_utr();}
 
     $scope.fetch_target_gain = function (page) {
         console.log("fetch_target_gain");
@@ -194,10 +274,27 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             }).then(
                 function (response) {
                     console.log(response);
-                    $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
-                    $scope.snp_seed_gain_count=response.data.snp_seed_gain_count;
+                    $scope.snp_seed_gain_list=response.data.snp_seed_gain_list
+                    $scope.snp_seed_gain_count=response.data.snp_seed_gain_count
                     var site_array=$scope.snp_seed_gain_list
+                   /*var site_array = response.data.snp_seed_gain_list;
+                    $scope.snp_seed_gain_count=0
+                    for(var i=0;i<response.data.snp_seed_gain_count.length;i++){
+                        $scope.snp_seed_count+=response.data.snp_seed_gain_count[i].count
+                    }
                 for(var i=0;i<site_array.length;i++){
+                    $scope.snp_seed_gain_list[i]=site_array[i]._id
+                    var ref_number=$scope.snp_seed_gain_list[i].ref_seq[0].split('_')[1]
+                    var acc=$scope.snp_seed_gain_list[i].ref_seq[0]
+                    for(var i=0;i<$scope.snp_seed_gain_list[i].ref_seq.length;i++){
+                        var ref_number_cur=$scope.snp_seed_gain_list[i].ref_seq[i].split('_')[1]
+                        if(Number(ref_number_cur)<Number(ref_number)){
+                            ref_number=ref_number_cur
+                            acc=$scope.snp_seed_gain_list[i].ref_seq[i]
+                        }
+                    }
+                    site_array[i].utr_info['acc']=acc*/
+                    for(var i=0;i<site_array.length;i++){
                     site_array[i].has_cor=1
                     if(site_array[i].expr_corelation){
                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
@@ -215,6 +312,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     site_array[i].site_info.tgs_score=Number(site_array[i].site_info.tgs_score).toFixed(2)
                     site_array[i].site_info.tgs_au=Number(site_array[i].site_info.tgs_au).toFixed(2)
                 }
+                $scope.snp_seed_gain_list=site_array
                 })
             }
             };
@@ -267,16 +365,22 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         });
       });
 
-    $scope.modal_expression=function(exp,title){ 
+    $scope.modal_expression=function(exp,title,expr_type){ 
         echarts.init(document.getElementById('expression')).dispose();
         var myChart = echarts.init(document.getElementById('expression'));
         var series_list=[]
         $scope.expression=exp[0];
         $scope.exp_item=title;
         console.log($scope.expression);
+        if(expr_type=='gene'){
+            var expression_unit='RSEM'
+        }
+        if(expr_type=='miRNA'){
+            var expression_unit='RSEM'
+        }
         var gene_expr = $scope.expression.exp_df;
         var cancer_types=['cancer_type'];
-        var expr=['RPKM'];
+        var expr=[expression_unit];
        
         for(var cancer in gene_expr){
             var source_data={}
@@ -329,7 +433,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             yAxis: [
                 {
                     type: 'value',
-                    name:'RPKM',
+                    name:expression_unit,
                     nameTextStyle:{
                         align:'left',
                         fontSize:12,
@@ -370,15 +474,33 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.modal_header="Target Gain";
         $scope.target_gain=1;
         $scope.target_loss=0;
-		$scope.modal_site=site;
-		var align8=site.site_info.align8;
+        $scope.modal_site=site;
+        if(site.snp_info.curalt.length==1){
+         var align8=site.site_info.align8;
 		var distance=align8.length-site.snp_info.distance-1;
 		$scope.align8_pre=align8.substring(0,distance);
         $scope.align8_letter=align8[distance];
         $scope.align8_later=align8.substring(distance+1,align8.length);
+        }else{
+            if(site.strand=='-'){
+                var align8=site.site_info.align8;
+                var distance=align8.length-site.snp_info.distance-1;
+                var curalt_len=site.snp_info.curalt.length
+                $scope.align8_pre=align8.substring(0,distance);
+                $scope.align8_letter=align8.substring(distance,distance+curalt_len);
+                $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
+            }else{
+                var align8=site.site_info.align8;
+                var distance=align8.length-site.snp_info.distance-1;
+                var curalt_len=site.snp_info.curalt.length
+                $scope.align8_pre=align8.substring(0,distance-curalt_len);
+                $scope.align8_letter=align8.substring(distance-curalt_len,distance);
+                $scope.align8_later=align8.substring(distance,align8.length);
+            }
+        }
         }
     $scope.modal_loss_site=function(site){
-        $scope.modal_header="Target Loss";
+        $scope.modal_header="Target loss";
         $scope.target_gain=0;
         $scope.target_loss=1;
 		$scope.modal_site=site;
@@ -386,23 +508,39 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         var align7=site.site_info.align7;
         console.log(align7)
         var distance=align8.length-site.snp_info.distance-1;
-        $scope.align8_pre=align8.substring(0,distance);
-        if(site.strand=='-'){
-            $scope.align8_letter=RULE1[site.snp_info.curalt]
+        if(site.snp_info.ref.length==1){
+            $scope.align8_pre=align8.substring(0,distance);
+            $scope.align8_letter=align8[distance]
+            $scope.align8_later=align8.substring(distance+1,align8.length);
+            $scope.align7_pre=align7.substring(0,distance);
+            console.log($scope.align7_pre)
+            $scope.align7_letter='X';
+            $scope.align7_later=align7.substring(distance+1,align7.length);
         }else{
-            $scope.align8_letter=site.snp_info.curalt;
-        }
-        $scope.align8_later=align8.substring(distance+1,align8.length);
-        $scope.align7_pre=align7.substring(0,distance);
-        console.log($scope.align7_pre)
-        $scope.align7_letter='X';
-        $scope.align7_later=align7.substring(distance+1,align7.length);
+            var ref_len=site.snp_info.ref.length
+            distance+=1
+            if(site.strand=="-"){
+                $scope.align8_pre=align8.substring(0,distance-ref_len);
+                $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                $scope.align8_later=align8.substring(distance,align8.length);
+                $scope.align7_pre=align7.substring(0,distance-ref_len);
+                $scope.align7_letter= ('X').repeat(ref_len);
+                $scope.align7_later=align7.substring(distance,align7.length);
+            }else{
+                $scope.align8_pre=align8.substring(0,distance-ref_len);
+                $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                $scope.align8_later=align8.substring(distance,align8.length);
+                $scope.align7_pre=align7.substring(0,distance-ref_len);
+                $scope.align7_letter= ('X').repeat(ref_len);
+                $scope.align7_later=align7.substring(distance,align7.length);
+            }}
+            console.log(site)
         }
 
 
 
           $scope.echart_correlation=function(cor){
-            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1];
+            $scope.gene_mir=cor.mir_gene.split('_')[0]+" correlates with "+cor.mir_gene.split('_')[1]+" across 33 cancer types in TCGA.";
             var c=echarts;
             c.init(document.getElementById('correlation')).dispose();
             var cor_echart=c.init(document.getElementById('correlation'));
@@ -576,8 +714,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         });
       });
 
-    $scope.modal_gain_site_utr=function(site){
-        $scope.modal_header="Target Gain";
+   /* $scope.modal_gain_site_utr=function(site){
+        $scope.modal_header="Target gain";
         $scope.target_gain=1
         $scope.target_loss=0
 		$scope.modal_site=site;
@@ -590,9 +728,78 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 		    $scope.align6_pre=align6.substring(0,distance);
             $scope.align6_letter=align6[distance];
             $scope.align6_later=align6.substring(distance+1,align6.length);
-        }
+        }*/
 
-        $scope.modal_loss_site_utr=function(site){
+    $scope.modal_gain_site_utr=function(site){
+        $scope.modal_header="Target gain"
+        $scope.target_gain=1
+        $scope.target_loss=0
+        $scope.modal_site=site
+        var d_start=Number(site.site_info.align_1.split(' ')[0])
+        var distance=Number(site.site_info.distance)-d_start+1
+        if(site.snp_info.curalt.length==1){
+            $scope.align6_pre=site.site_info.align6.substring(0,Number(site.site_info.alt_start)+3)
+            $scope.align6_letter=site.site_info.align6.substring(Number(site.site_info.alt_start)+3,Number(site.site_info.alt_end)+3)
+            $scope.align6_later=site.site_info.align6.substring(Number(site.site_info.alt_end)+3,site.site_info.align6.length)
+            console.log($scope.modal_site.site_info.alt_display)
+        }else{
+            var curalt_len=site.snp_info.curalt.length
+            if(site.utr_info.strand=='-'){
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+1-curalt_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3-curalt_len+1,Number(distance)+3+1)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
+                console.log($scope.modal_site.site_info.alt_display)
+            }else{
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3+1)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3+1,Number(distance)+1+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
+                console.log($scope.modal_site.site_info.alt_display)
+            }
+        }
+        
+    }
+
+    $scope.modal_loss_site_utr=function(site){
+        $scope.modal_header="Target loss";
+        if(site.site_info.loc_start){site.site_info.alt_start=site.site_info.loc_start}
+        if(site.site_info.loc_end){site.site_info.alt_start=site.site_info.loc_end}
+        $scope.target_loss=1
+        $scope.target_gain=0
+        $scope.modal_site=site;
+        var d_start=Number(site.site_info.align_1.split(' ')[0])
+        if(site.site_info.distance==0){
+            site.site_info.distance=site.site_info.alt_start
+        }
+        if(site.snp_info.ref.length==1){
+            var distance=Number(site.site_info.distance)-d_start
+            $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+            $scope.align6_letter=site.site_info.align6[distance+3]
+            $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
+            $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)+3)
+            $scope.align7_letter='X'
+            $scope.align7_later=site.site_info.align7.substring(Number(distance)+3+1,site.site_info.align7.length)
+        }
+        else{
+            var distance=Number(site.site_info.distance)-d_start+1
+            var ref_len=site.snp_info.ref.length
+            if(site.utr_info.strand=='+'){
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+ref_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+ref_len,site.site_info.align6.length)
+                $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)+3)
+                $scope.align7_letter=('X').repeat(ref_len)
+                $scope.align7_later=site.site_info.align7.substring(Number(distance)+ref_len+3,site.site_info.align7.length)
+            }else{
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)-ref_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)-ref_len+3,Number(distance)+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3,site.site_info.align6.length)
+                $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)-ref_len+3)
+                $scope.align7_letter=('X').repeat(Number(ref_len))
+                $scope.align7_later=site.site_info.align7.substring(Number(distance)+3,site.site_info.align7.length)
+            }
+        }
+    }
+      /*  $scope.modal_loss_site_utr=function(site){
             $scope.modal_header="Target Loss";
             $scope.target_loss=1
             $scope.target_gain=0
@@ -615,7 +822,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 $scope.align7_pre=align7.substring(0,distance);
                 $scope.align7_letter='X';
                 $scope.align7_later=align7.substring(distance+1,align7.length);
-            }
+            }*/
+    
 
 
     $scope.fetch_snv_utr_loss=function(page){
@@ -626,8 +834,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
             console.log(response);
-            $scope.snv_utr_loss_list=response.data.snv_utr_loss_list;
-            $scope.snv_utr_loss_count=response.data.snv_utr_loss_count;
+            $scope.snv_utr_loss_list=response.data.utr_loss_list;
+            $scope.snv_utr_loss_count=response.data.utr_loss_count;
             var site_array=$scope.snv_utr_loss_list
                 for(var i=0;i<site_array.length;i++){
                     site_array[i].has_cor=1
@@ -660,8 +868,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
             console.log(response);
-            $scope.snv_utr_gain_list=response.data.snv_utr_gain_list;
-            $scope.snv_utr_gain_count=response.data.snv_utr_gain_count
+            $scope.snv_utr_gain_list=response.data.utr_gain_list;
+            $scope.snv_utr_gain_count=response.data.utr_gain_count
             var site_array=$scope.snv_utr_gain_list
                 for(var i=0;i<site_array.length;i++){
                     site_array[i].has_cor=1
@@ -960,40 +1168,5 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     }
     $scope.search_ld();
 
-    $scope.fetch_relate_cosmic=function(){
-    	$http({
-            //url:base_url+base_url+'/api/cosmicinfo',
-            url:base_url+'/api/cosmicinfo',
-            method: 'GET',
-            params: {search_ids: $scope.query_snp,page:1}
-        }).then(
-            function (response) {
-                console.log(response);
-                $scope.rcosmic_list = response.data.cosmic_list;
-                $scope.rcosmic_count = response.data.data_length
-                var data_list=rcosmic_list
-                for(var i=0;i<data_list.length;i++){
-                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
-                }
-            });
-        };
-    $scope.fetch_relate_clinvar=function(){
-    	$http({
-            //url:base_url+base_url+'/api/clinvarinfo',
-            url:base_url+'/api/clinvarinfo',
-            method: 'GET',
-            params: {search_ids: $scope.query_snp,page:1}
-        }).then(
-            function (response) {
-                console.log(response);
-                $scope.rclinvar_list = response.data.clinvar_list;
-                $scope.rclinvar_count = response.data.data_length
-                var data_list=$scope.rclinvar_list
-                for(var i=0;i<data_list.length;i++){
-                    data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
-            }});
-	};
-	$scope.fetch_relate_cosmic();
-    $scope.fetch_relate_clinvar();
     
 }

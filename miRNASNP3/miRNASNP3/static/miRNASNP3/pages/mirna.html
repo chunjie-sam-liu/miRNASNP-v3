@@ -6,17 +6,17 @@
 
 <ul class="nav nav-tabs"  ng-show="mirna_summary_count">
     <li id="one" ng-click="show_one('one')" ng-show="mirna_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="active" ><a data-toggle="tab"><strong>miRNA Detail</strong></a> </li>
+        class="active" ><a data-toggle="tab"><strong>miRNA detail</strong></a> </li>
     <li id="two" ng-click="show_one('two')" ng-show="snp_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_two" ><a data-toggle="tab"><strong>Target gain with SNP in seed</strong></a> </li>
     <li id="three" ng-click="show_one('three')" ng-show="snp_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
         class="class_three" ><a data-toggle="tab"><strong>Target loss with SNPs in seed</strong></a> </li>
     <li id="four" ng-click="show_one('four')" ng-show="mut_seed_gain_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_four" ><a data-toggle="tab"><strong>Target gain with variation in seed</strong></a> </li>
+        class="class_four" ><a data-toggle="tab"><strong>Target gain with DRVs in seed</strong></a> </li>
     <li id="five" ng-click="show_one('five')" ng-show="mut_seed_loss_count" style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_five" ><a data-toggle="tab"><strong>Target loss with variation in seed</strong></a> </li>
+        class="class_five" ><a data-toggle="tab"><strong>Target loss with DRVs in seed</strong></a> </li>
     <li id="six" ng-click="show_one('six')" ng-show="enrich_result_count"  style="background-color:#EBEBEB;margin-right: 3px "
-        class="class_six" ><a data-toggle="tab"><strong>Target genes Enrichment Analysis</strong></a> </li>
+        class="class_six" ><a data-toggle="tab"><strong>Target genes enrichment analysis</strong></a> </li>
     <!--li id="six" ng-click="show_one('six')" ng-show="ld_list_lenth" style="background-color:white;margin-right: 3px "
         class="active" ><a data-toggle="tab"><strong>SNP in LD Region</strong></a> </li-->
 </ul>
@@ -88,7 +88,7 @@
                                         <th>Precursor ID</th>
                                         <th>Precursor accession</th>
                                         <th>Precursor position</th>
-                                        <th>mature miRNA position</th>
+                                        <th>Mature miRNA position</th>
                                         <th>Precursor sequence</th>
                                     </tr>
                                     </thead>
@@ -121,14 +121,14 @@
                                         <th>DRV in seed
                                                 <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                                 data-trigger="hover"
-                                                data-content="Disease related variation in miRNA seed region"
+                                                data-content="Disease related variation in miRNA seed region (consist of variations from ClinVar and COSMIC)."
                                                 style="color: #5bc0de"></span>
                                                
                                         </th>
                                         <th>DRV in mature miRNA
                                                 <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                                 data-trigger="hover"
-                                                data-content="Disease related variation in mature miRNA"
+                                                data-content="Disease related variation in mature miRNA (consist of variations from ClinVar and COSMIC)."
                                                 style="color: #5bc0de"></span>
                                         </th>
                                     </tr>
@@ -139,9 +139,9 @@
                                             <a href="#!/snp_summary?gene={$ mirna_summary_alias.mir_id $}&seed='1'" style="color: red">{$mirna_summary_alias.snp_in_seed$}</a></span>
                                             <span ng-if="!mirna_summary_alias.snp_in_seed">0</span></td>
                                         <td>
-                                                <span ng-if="mirna_summary_alias.snp_in_matue">
-                                            <a href="#!/snp_summary?gene={$ mirna_summary_alias.mir_id $}&premir='1'" style="color: red">{$mirna_summary_alias.snp_in_matue$}</a></span>
-                                            <span ng-if="!mirna_summary_alias.snp_in_matue">0</span>
+                                                <span ng-if="mirna_summary_alias.snp_in_mature">
+                                            <a href="#!/snp_summary?gene={$ mirna_summary_alias.mir_id $}&mature=1" style="color: red">{$mirna_summary_alias.snp_in_mature$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.snp_in_mature">0</span>
                                         </td>
                                         <td>
                                                 <span ng-if="mirna_summary_alias.variation_in_seed">
@@ -149,10 +149,30 @@
                                             <span ng-if="!mirna_summary_alias.variation_in_seed">0</span></td>
                                         <td>
                                                 <span ng-if="mirna_summary_alias.variation_in_mature">
-                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&premir='1'" style="color: red">{$mirna_summary_alias.variation_in_mature$}</a></span>
+                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&mature=1" style="color: red">{$mirna_summary_alias.variation_in_mature$}</a></span>
                                             <span ng-if="!mirna_summary_alias.variation_in_mature">0</span></td>
+                                        </td>
                                         </tbody>
                                         </table>
+                    </dd>
+                    <dt> </dt>
+                    <dd>
+                        <div style="width: 850px" id=ld_svg>
+                            <svg width="850" height="100">
+                                <rect height="20" width="850" fill="#DDDDDD"></rect>
+                                <svg ng-repeat="base in snp_distribute_list" width="850" height="100">
+                                    <text x="{$(base.pos+2)*30+10$}" y="15" style="stroke: black">{$base.base$}</text>
+                                    <text x="10" y="15">5 '</text>
+                                    <text x="820" y="15">3 '</text>
+                                    <svg ng-repeat="var in base.var_list" width="850" height="100">
+                                                <rect class="cursor-hand" x="{$(base.pos+2)*30$}" y="{$var.count*8+12$}" height='7' width='29' border='1' fill="{$var.color$}" >
+                                                    <title >{$var.var_id$}({$var.ref$}/{$var.alt$})</title>
+                                                </rect>
+                                    </svg>
+                                </svg>                             
+                            </svg>
+                        </svg>
+                        </div>
                     </dd>
                     <div ng-show="mirna_expression_show">
                                     <dt>Average expression:
@@ -295,13 +315,13 @@
                 <th>SNP</th>
                 <th>Gene</th>
                 <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
-                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
+                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                     </span>
                 </th>
-                <th style="width:10%">Binding start<br>(miRmap)</th>
-                <th style="width: 10%">Binding end<br>(miRmap)</th>
-                <th style="width: 10%">Binding start<br>(TargetScan)</th>
-                <th style="width: 10%">Binding end<br>(TargetScan)</th>
+                <th style="width:10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                <th style="width: 10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                <th style="width: 10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                 <th style="width: 10%">Predict</th>
             </tr>
             </thead>
@@ -372,7 +392,7 @@
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
             </th> 
             <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
@@ -383,10 +403,10 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA-gene validated by experiment.">
                         </span>
             </th>
-            <th style="width:10%">Binding start<br>(miRmap)</th>
-            <th style="width:10%">Binding end<br>(miRmap)</th>
-            <th style="width:10%">Binding start<br>(TargetScan)</th>
-            <th>Binding end<br>(TargetScan)</th>
+            <th style="width:10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width:10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width:10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
             <th style="width: 8%">Predict</th>
         </thead>
         <tbody>
@@ -407,7 +427,7 @@
                 </td>
             <td align="center">
                 <span ng-if="v.corelation_detail[0]&&v.has_cor">
-                    <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])">Detail</button>
                 </span>
                 <span ng-if="!v.corelation_detail[0]||!v.has_cor">-</span>
             </td>
@@ -467,13 +487,13 @@
             <th>Mutation</th>
             <th>Gene</th>
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 10%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
             </th>
-            <th>Binding start<br>(miRmap)</th>
-            <th>Binding end<br>(miRmap)</th>
-            <th>Binding start<br>(TargetScan)</th>
-            <th>Binding end<br>(TargetScan)</th>
+            <th>Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th>Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th>Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
             <th>Predict</th>
         </tr>
         </thead>
@@ -544,7 +564,7 @@
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
             <th ts-criteria="gene_expression[0].exp_mean|parseInt" style="width: 7%">Gene exp.
-                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene mean expression from TCGA. Click number to pop out gene expression in each cancer type.">
+                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
             <th ts-criteria="expr_corelation|parseInt" style="width: 7%">Exp. cor.
@@ -555,10 +575,10 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA-gene validated by experiment.">
                         </span>
             </th>
-            <th style="width: 10%">Binding start<br>(miRmap)</th>
-            <th style="width: 10%">Binding end<br>(miRmap)</th>
-            <th style="width:10%">Binding start<br>(TargetScan)</th>
-            <th>Binding end<br>(TargetScan)</th>
+            <th style="width: 10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width:10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
             <th style="width: 8%">Predict</th>
         </thead>
         <tbody>
@@ -579,7 +599,7 @@
                 </td>
             <td align="center">
                     <span ng-if="v.corelation_detail[0]&&v.has_cor">
-                        <a data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])"><strong>{$v.expr_corelation$}</strong></a>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#corelation_detail" ng-click="echart_correlation(v.corelation_detail[0])">Detail</button>
                     </span>
                     <span ng-if="!v.corelation_detail[0]||!v.has_cor">-</span>
                 </td>
@@ -650,7 +670,7 @@
                             <span ng-if="e.alt">{$ e.alt $}</span>
                             <span ng-if="!e.alt">-</span>
                     </td>
-                    <td>{$ e.effect $}</td>
+                    <td>Target {$ e.effect $}</td>
                     <td>{$ e.enrich_type $}</td>
                     <td>
                         <button class="btn btn-success" data-toggle="modal" data-target="#enrichment_plot"
@@ -696,47 +716,65 @@
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
-                            <th rowspan="2">TargetScan</th>
-                            <th  colspan="2" class="success" style="width: 50%">start</th>
-                            <th colspan="3" class="success" style="width: 50%">end</th>
+                            <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                            <th  colspan="2" class="success" style="width: 50%">Start</th>
+                            <th colspan="3" class="success" style="width: 50%">End</th>
                         </tr>
                         <tr>
                             <td style="width: 50%" colspan="2">{$ modal_site.site_info.tgs_start $}</td>
                             <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                         </tr>
                         <tr>
-                                <th rowspan="9">miRmap</th>
-                                <th colspan="2" class="success" style="width: 50%">start</th>
-                                <th colspan="3" class="success" style="width: 50%">end</th>
+                                <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                                <th colspan="2" class="success" style="width: 50%">Start</th>
+                                <th colspan="3" class="success" style="width: 50%">End</th>
                             </tr>
                             <tr>
                                 <td style="width: 50%" colspan="2">{$ modal_site.site_info.mm_start $}</td>
                                 <td style="width: 50%" colspan="3">{$ modal_site.site_info.mm_end $}</td>
                             </tr>
-                    <tr>
-                        <td colspan="2">&Delta;G duplex (kCal/mol)</td>
-                        <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">&Delta;G binding (kCal/mol)</td>
-                        <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">&Delta;G open (kCal/mol)</td>
-                        <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">TargetScan Score</td>
-                        <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">AU content</td>
-                        <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Exact Probability</td>
-                        <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
-                    </tr>
+                            <tr>
+                                <td colspan="2">&Delta;G duplex (kCal/mol)
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                data-content="Minimum Free Energy (MFE) with RNAcofold."></span>
+                                </td>
+                                <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&Delta;G binding (kCal/mol)
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                data-content="Binding energy based on ensemble free energy."></span>
+                                </td>
+                                <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&Delta;G open (kCal/mol)
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                data-content="mRNA opening free energy - Accessibility."></span>
+                                </td>
+                                <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                data-content="TargerScan score predicted by miRmap."></span>
+                                </td>
+                                <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">AU content
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                data-content="AU nucleotides composition around the seed."></span>
+                                </td>
+                                <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Exact probability
+                                    <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                data-content="Site over-representation probability (exact distribution)."></span>
+                                </td>
+                                <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
+                            </tr>
                     <tr>
                         <td class="warning" colspan="4">
                             <span ng-if="target_gain">
@@ -785,47 +823,65 @@
                             <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                         </tr>
                         <tr>
-                                <th rowspan="2">TargetScan</th>
-                                <th  colspan="2" class="success" style="width: 50%">start</th>
-                                <th colspan="3" class="success" style="width: 50%">end</th>
+                                <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                                <th  colspan="2" class="success" style="width: 50%">Start</th>
+                                <th colspan="3" class="success" style="width: 50%">End</th>
                             </tr>
                             <tr>
                                 <td style="width: 50%" colspan="2">{$ modal_site.site_info.tgs_start $}</td>
                                 <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                             </tr>
                             <tr>
-                                    <th rowspan="9">miRmap</th>
-                                    <th colspan="2" class="success" style="width: 50%">start</th>
-                                    <th colspan="3" class="success" style="width: 50%">end</th>
+                                    <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                                    <th colspan="2" class="success" style="width: 50%">Start</th>
+                                    <th colspan="3" class="success" style="width: 50%">End</th>
                                 </tr>
                                 <tr>
                                     <td style="width: 50%" colspan="2">{$ modal_site.site_info.mm_start $}</td>
                                     <td style="width: 50%" colspan="3">{$ modal_site.site_info.mm_end $}</td>
                                 </tr>
-                        <tr>
-                            <td colspan="2">&Delta;G duplex (kCal/mol)</td>
-                            <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">&Delta;G binding (kCal/mol)</td>
-                            <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">&Delta;G open (kCal/mol)</td>
-                            <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">TargetScan Score</td>
-                            <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">AU content</td>
-                            <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Exact Probability</td>
-                            <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
-                        </tr>
+                                <tr>
+                                    <td colspan="2">&Delta;G duplex (kCal/mol)
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                    data-content="Minimum Free Energy (MFE) with RNAcofold."></span>
+                                    </td>
+                                    <td colspan="3" align="center">{$modal_site.site_info.dg_duplex$}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&Delta;G binding (kCal/mol)
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                    data-content="Binding energy based on ensemble free energy."></span>
+                                    </td>
+                                    <td colspan="3" align="center">{$modal_site.site_info.dg_binding$}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&Delta;G open (kCal/mol)
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                    data-content="mRNA opening free energy - Accessibility."></span>
+                                    </td>
+                                    <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                    data-content="TargerScan score predicted by miRmap."></span>
+                                    </td>
+                                    <td colspan="3" align="center">{$modal_site.site_info.tgs_score$}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">AU content
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                    data-content="AU nucleotides composition around the seed."></span>
+                                    </td>
+                                    <td colspan="3" align="center">{$modal_site.site_info.tgs_au$}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Exact probability
+                                        <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
+                                    data-content="Site over-representation probability (exact distribution)."></span>
+                                    </td>
+                                    <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
+                                </tr>
                         <tr>
                           
                                 <td class="warning" colspan="4">
@@ -906,7 +962,7 @@
                 </ul>
                 <div ng-show="enrich_table">
                         <div class="panel panel-info" ng-show="enrich_table" id="section-7-table">
-                                <div class="panel-heading">enrichment analysis for target {$enrich_item.effect$} caused by {$enrich_item.variation_id$} in {$enrich_item.mirna_id$} 
+                                <div class="panel-heading">Enrichment analysis for target {$enrich_item.effect$} caused by {$enrich_item.variation_id$} in {$enrich_item.mirna_id$} 
                                 </div>
                                 <div class="panel-body" >
                                         <div class="pre-scrollable">
