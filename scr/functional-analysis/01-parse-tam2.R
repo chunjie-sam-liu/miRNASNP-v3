@@ -1,4 +1,3 @@
-
 # Library -----------------------------------------------------------------
 
 library(magrittr)
@@ -2955,7 +2954,6 @@ mirna_expression_pre_mature_seed_plot <- fn_mirna_expression_pre_mature_seed()
 mirna_cluster_plot <- fn_cluster()
 mirna_disease_plot <- fn_disease()
 mirna_function_plot <- fn_function()
-
 
 # save image --------------------------------------------------------------
 
