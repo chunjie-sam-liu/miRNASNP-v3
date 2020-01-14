@@ -906,12 +906,12 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 				$scope.catalog_list=response.data.catalog_list;
                 $scope.catalog_count=response.data.catalog_count;
                 if($scope.catalog_count){
-                    var data_list=$scope.catalog_list
+                    var tag_array=$scope.catalog_list
                     var disk_allele_regex=/-([A-Z]|\?)/
                     var ci_regex=/\[(.*?)\]/
-                    for(var i=0;i<data_list.length;i++){
-                        var risk_allele=disk_allele_regex.exec(data_list[i].risk_allele)
-                        var ci=ci_regex.exec(data_list[i].ci95)
+                    for(var i=0;i<tag_array.length;i++){
+                        var risk_allele=disk_allele_regex.exec(tag_array[i].risk_allele)
+                        var ci=ci_regex.exec(tag_array[i].ci95)
                         console.log(risk_allele)
                         console.log(ci)
                         if(risk_allele){
@@ -928,10 +928,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                         if(tag_array[i].risk_allele_fre){tag_array[i].risk_allele_fre=Number(tag_array[i].risk_allele_fre).toFixed(4)}
                         if(tag_array[i].or_beta){tag_array[i].or_beta=Number(tag_array[i].or_beta).toFixed(4)}
                         if(tag_array[i].reported_gene){tag_array[i].reported_gene=tag_array[i].reported_gene.replace(/NR/g,"")}
-                        tag_array[i].tag_chr= tag_array[i].coordinate.split(':')[0]
-                        tag_array[i].tag_position= tag_array[i].coordinate.split(':')[1]
+                        //tag_array[i].tag_chr= tag_array[i].coordinate.split(':')[0]
+                        //tag_array[i].tag_position= tag_array[i].coordinate.split(':')[1]
                     }
-                    console.log(data_list)
+                    console.log(tag_array)
                     console.log($scope.catalog_list)
                 }
 			}
@@ -946,7 +946,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             method:'GET',
             params:{search_ids:$scope.query_snp}
         }).then(
-            function (response) {
+                  function (response) {
+                      
                 console.log(response);
                 $scope.ld_list = response.data.ld_list;
                 $scope.ld_list_lenth = response.data.ld_item_lenth;
@@ -966,10 +967,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     }).then(
                         function (response) {
                             console.log(response);
-                            $scope.tag_array=response.data.catalog_list;
+                            var tag_array=response.data.catalog_list;
                             $scope.catalog_count=response.data.catalog_count;
                             if($scope.catalog_count){
-                                var data_list=$scope.tag_array
+                                var data_list=tag_array
                                 var disk_allele_regex=/-([A-Z]|\?)/
                                 var ci_regex=/\[(.*?)\]/
                                 for(var i=0;i<data_list.length;i++){
@@ -978,8 +979,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                                     console.log(risk_allele)
                                     console.log(ci)
                                     if(risk_allele){
-                                        if(risk_allele[1]){tag_array[i].risk_allele=risk_allele[1].replace(/NR/g,"")}
-                                        
+                                        if(risk_allele[1]){tag_array[i].risk_allele=risk_allele[1].replace(/NR/g,"")}     
                                     }
                                     if(ci && ci[1]!='NR')
                                     {
@@ -992,13 +992,16 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                                     if(tag_array[i].or_beta){tag_array[i].or_beta=Number(tag_array[i].or_beta).toFixed(4)}
                                     if(tag_array[i].reported_gene){tag_array[i].reported_gene=tag_array[i].reported_gene.replace(/NR/g,"")}
                                    // data_list[i].ci95=ci[0]
-                                   tag_array[i].tag_chr= tag_array[i].coordinate.split(':')[0]
-                                   tag_array[i].tag_position= tag_array[i].coordinate.split(':')[1]
+                                   //tag_array[i].tag_chr= tag_array[i].coordinate.split(':')[0]
+                                   //tag_array[i].tag_position= tag_array[i].coordinate.split(':')[1]
                                 }
                                 console.log(data_list)
                             }
+                            $scope.tag_array=tag_array
                             console.log($scope.tag_array)
-                	$scope.tag_array[0].coordinate=$scope.ld_list[0]._id.snp_chr+':'+$scope.ld_list[0]._id.snp_position;
+                    console.log("coordinate:")
+                    $scope.tag_array[0].coordinate=$scope.ld_list[0]._id.snp_chr+':'+$scope.ld_list[0]._id.snp_position;
+                    console.log($scope.tag_array[0].coordinate)
                     var ld_region_all = $scope.ld_list[0].tag_info;
                     var ld_array = [];
                     var ld_array_line = {};
@@ -1028,7 +1031,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     $scope.ld_array = ld_array;
                     $scope.ld_svg=$scope.ld_array;
                     // fix svg height 
-                   
+                    console.log("ld_array:")
+                    console.log(ld_array)
                     var h=$scope.ld_svg.length*(850/26)
                     $("#ld_svg").css({'height':h+'px'});
                     $("#ld_region").css({'height':h+'px'});
@@ -1139,11 +1143,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                         if(tag_array[i].reported_gene){tag_array[i].reported_gene=tag_array[i].reported_gene.replace(/NR/g,"")}
                         tag_array[i].tag_chr= tag_array[i].coordinate.split(':')[0]
                         tag_array[i].tag_position= tag_array[i].coordinate.split(':')[1]
-                        /*if(ci){
-                            tag_array[i].ci95=ci[0]
-                        }else{
-                            tag_array[i].ci95="-"
-                        }*/
+                       
                     }
                     $scope.tag_array=tag_array;
                     $scope.tag_line=tag_line;
@@ -1164,7 +1164,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 console.log("tag_line");
                 console.log($scope.tag_line);
                 }
-            })
+            } )
     }
     $scope.search_ld();
 
