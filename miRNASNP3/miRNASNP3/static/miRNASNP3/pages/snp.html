@@ -114,12 +114,12 @@
                 <th>miRNA</th>
                 <th>SNP</th>
                 <th>Gene</th>
-                <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
+                <th ts-criteria="mirna_expression[0].exp_mean|parseFloat" style="width: 10%">miRNA exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression from TCGA. Click number to pop out miRNA expression in each cancer type.
                         ">
                     </span>
                 </th>
-                <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+                <th ts-criteria="gene_expression[0].exp_mean|parseFloat" style="width: 10%">Gene exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                         data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type."></span>
                     </th>
@@ -201,17 +201,17 @@
             <th style="width: 16%">miRNA</th>
             <th style="width: 9%">SNP</th>
             <th style="width: 10%">Gene</th>
-            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean|parseFloat" style="width: 7%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
                 </span>
             </th>
             <!--th style="width: 10%;">Gene ACC</th>
             <th style="width: 10%">Transcript ID</th-->
-            <th ts-criteria="gene_expression[0].exp_mean" style="width: 7%">Gene exp.
+            <th ts-criteria="gene_expression[0].exp_mean|parseFloat" style="width: 7%">Gene exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
-            <th ts-criteria="expr_corelation" style="width: 7%">Exp. cor.
+            <th ts-criteria="expr_corelation|parseFloat" style="width: 7%">Exp. cor.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene">
                         </span>
             </th>
@@ -305,11 +305,11 @@
             <th>miRNA</th>
             <th>SNP</th>
             <th>Gene</th>
-            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean|parseFloat" style="width: 10%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
                 </span>
             </th>
-            <th ts-criteria="gene_expression[0].exp_mean" style="width: 10%">Gene exp.
+            <th ts-criteria="gene_expression[0].exp_mean|parseFloat" style="width: 10%">Gene exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
@@ -387,17 +387,17 @@
             <th style="width: 12%">miRNA</th>
             <th style="width: 10%">SNP</th>
             <th style="width: 10%">Gene</th>
-            <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
+            <th ts-criteria="mirna_expression[0].exp_mean|parseFloat" style="width: 7%">miRNA exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA average expression from TCGA. Click number to pop out miRNA expression in each cancer type.">
                 </span>
             </th>
-            <th ts-criteria="gene_expression[0].exp_mean" style="width: 7%">Gene exp.
+            <th ts-criteria="gene_expression[0].exp_mean|parseFloat" style="width: 7%">Gene exp.
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
                 </th>
             <!--th>Accession</th>
             <th>Transcript</th-->
-            <th ts-criteria="expr_corelation" style="width: 7%">Exp. cor.
+            <th ts-criteria="expr_corelation|parseFloat" style="width: 7%">Exp. cor.
                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Correlation coefficient of expression between miRNA and gene.">
                 </span>
             </th>
