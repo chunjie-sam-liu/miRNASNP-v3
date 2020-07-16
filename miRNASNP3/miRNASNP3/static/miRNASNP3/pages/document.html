@@ -86,8 +86,13 @@
 								</span>
 								</p>
 					<p>
+<<<<<<< HEAD
 							In the disease-related variations module, we integrated pathological information of 281,664 non-coding variations from <a href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 37,406 variations from <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
 							 and disease/trait information of 254,364 SNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>.
+=======
+							In the disease-related variations module, we integrated pathological information of 276,132 non-coding variations from <a href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 37,320 variations from <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
+							 and disease/trait information of 253,087 SNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>.
+>>>>>>> 4638b480f62d460b986b53d95e7001365f1e0a7f
 							We divided these variations into three categories based on their location. For variations in miRNA seed regions and gene 3'UTRs, target gain/loss information was presented.
 							For variations in pre-miRNAs, we provided the minimum free energy change of secondary structure of the pre-miRNA caused by the variation.
 							In this module, users can screen for variations associated with a particular disease by selecting a tissue of interest or typing in a description of the disease.
@@ -96,7 +101,11 @@
 							To look into GWAS SNPs, we downloaded all the tagSNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a> with the linkage disequilibrium (LD) information between tagSNPs
 							 and surrounding SNPs (D'>0.98, a LD measurement to show the degree of linkage disequilibrium between the selected variant and other variants) of 26 populations by the Ensembl REST API (<a href="http://rest.ensembl.org/documentation/info/ld_pairwise_get">http://rest.ensembl.org/documentation/info/ld_pairwise_get</a>). 
 							 Then, a genome block between the minimum and maximum coordination of the surrounded SNPs was defined as the GWAS identified trait associated regions of each tagSNP in each population. 
+<<<<<<< HEAD
 							 Finally, we identified 254,364 tagSNPs and SNPs in trait associated regions. For each SNP, a plot of GWAS identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP position) in SNP detail panel.  
+=======
+							 Finally, we identified 254,966 tagSNPs and SNPs in trait associated region. For each SNP, a plot of GWAS identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP position) in SNP detail panel.  
+>>>>>>> 4638b480f62d460b986b53d95e7001365f1e0a7f
 					</p>
 					<div align="center">
 						<img src="/static/miRNASNP3/img/phenotype_panel_1218.png" style="width: 100%;margin-top: 30px;">
