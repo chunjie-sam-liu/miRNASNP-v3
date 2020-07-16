@@ -86,8 +86,8 @@
 								</span>
 								</p>
 					<p>
-							In the disease-related variations module, we integrated pathological information of 175,985 non-coding variations from <a href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 32,136 variations from <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
-							 and disease/trait information of 235,148 SNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>.
+							In the disease-related variations module, we integrated pathological information of 281,664 non-coding variations from <a href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 37,406 variations from <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
+							 and disease/trait information of 254,364 SNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>.
 							We divided these variations into three categories based on their location. For variations in miRNA seed regions and gene 3'UTRs, target gain/loss information was presented.
 							For variations in pre-miRNAs, we provided the minimum free energy change of secondary structure of the pre-miRNA caused by the variation.
 							In this module, users can screen for variations associated with a particular disease by selecting a tissue of interest or typing in a description of the disease.
@@ -96,7 +96,7 @@
 							To look into GWAS SNPs, we downloaded all the tagSNPs from <a href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a> with the linkage disequilibrium (LD) information between tagSNPs
 							 and surrounding SNPs (D'>0.98, a LD measurement to show the degree of linkage disequilibrium between the selected variant and other variants) of 26 populations by the Ensembl REST API (<a href="http://rest.ensembl.org/documentation/info/ld_pairwise_get">http://rest.ensembl.org/documentation/info/ld_pairwise_get</a>). 
 							 Then, a genome block between the minimum and maximum coordination of the surrounded SNPs was defined as the GWAS identified trait associated regions of each tagSNP in each population. 
-							 Finally, we identified 3,602 tagSNPs and 236,251 SNPs in LD region. For each SNP, a plot of GWAS identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP position) in SNP detail panel.  
+							 Finally, we identified 254,364 tagSNPs and SNPs in trait associated regions. For each SNP, a plot of GWAS identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP position) in SNP detail panel.  
 					</p>
 					<div align="center">
 						<img src="/static/miRNASNP3/img/phenotype_panel_1218.png" style="width: 100%;margin-top: 30px;">
@@ -168,7 +168,7 @@
 					 We downloaded 370,058 MTIs with supporting CLIP-seq (HITS-CLIP, PAR-CLIP, iCLIP, CLASH) experiments (>5) from <a href="http://starbase.sysu.edu.cn/">starBase</a>. 
 					 422,390 and 37,490 MTIs were collected from <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a> and <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> respectively, 
 					 they had been validated by luciferase report assay, western blot and high-throughput experiments.  We also integrated 240 MTIs from <a href="http://mirecords.biolead.org/">miRecords</a> experimentally verified by literature curation, 
-					 and 641 MTIs from <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a> by luciferase reporter assay. Generally, 1027355 experimentally verified MTIs were obtained in miRNASNP-v3. 
+					 and 641 MTIs from <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a> by luciferase reporter assay. Generally, 1,027,355 experimentally verified MTIs were obtained in miRNASNP-v3. 
 					 It should be noted that, miRNA names were uniformed by miRBase nomenclature, and gene names was annotated by gene symbols.
 
 			</p>
@@ -372,11 +372,6 @@
 				<strong>&nbsp;&nbsp;Xin Fu, M.S. student</strong><br />
 				<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
 			   <img alt="Gui-Yan Xie" src="/static/miRNASNP3/img/fuxin_email.png" style="height: 20px">
-			</address>
-			<address>
-				<strong>&nbsp;&nbsp;Chun-Jie Liu, Ph.D. Postdoc Fellow</strong><br/>
-				<strong style="font-size: 18px;margin-top: 1px">&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
-				<img alt="Chun-Jie Liu"src="/static/miRNASNP3/img/chunjie_email.png" style="height: 20px">
 			</address>
 	
 		  <div class="address">
