@@ -1186,8 +1186,8 @@ pri_id={
 }
 
 mature_info={
-    'mir_id':fields.String,
-    'mir_acc':fields.String
+    'mir_id':fields.List(fields.String),
+    'mir_acc':fields.List(fields.String)
 }
 pri_count={
     '_id':fields.String,
@@ -1195,12 +1195,20 @@ pri_count={
 }
 
 primir_summary={
-    '_id':fields.Nested(pri_id),
+    'pre_id':fields.String,
+    'pre_chr':fields.String,
+    'pre_acc':fields.String,
+    'pre_start':fields.String,
+    'pre_end':fields.String,
+    'pre_strand':fields.String,
+    'snp_in_premir':fields.Integer,
+    'cosmic_in_premir':fields.Integer,
+    'clinvar_in_premir':fields.Integer,
     'mature_info':fields.Nested(mature_info)
 }
 primir_summary_list={
     'primir_summary_list':fields.Nested(primir_summary),
-    'primir_summary_count':fields.Nested(pri_count)
+    'primir_summary_count':fields.Integer
 }
 
 class PrimirSummary(Resource):
@@ -1217,17 +1225,12 @@ class PrimirSummary(Resource):
         per_page = 15
         record_skip = (page - 1) * per_page
         print(page)
-        pipline = []
+        condition = {}
         if chrome!="All":
-            match_chr={'$match':{
-                'pre_chr':chrome
-            }}
-            pipline.append(match_chr)
+            condition['pre_chr']=chrome
         if pre_id:
-            match_mir = {'$match': {
-                'pre_id': {'$regex':pre_id,'$options':'$i'}
-            }}
-            pipline.append(match_mir)
+            condition['pre_id']= {'$regex':pre_id,'$options':'$i'}
+            '''
         group={'$group':{
             '_id':{
                 'pre_id':'$pre_id',
@@ -1249,15 +1252,14 @@ class PrimirSummary(Resource):
             '_id':'null',
             'count':{'$sum':1}
         }}
-        limit = {'$limit': per_page}
-        skip = {'$skip': record_skip}
-        piplines = pipline+[group, skip, limit]
-        pip_sum=pipline+[group,group_sum]
-        primir_summary_list = mongo.db.seed_mature_pre_var.aggregate(piplines)
-        primir_summary_count = mongo.db.seed_mature_pre_var.aggregate(pip_sum)
+        '''
+        print(condition)
+        premir_summary_list = mongo.db.premir_summary.find(condition).skip(record_skip).limit(per_page)
+        premir_summary_count = mongo.db.premir_summary.find(condition).count()
+        print("done serch")
         #print(pip_sum)
         #print(pipline)
-        return {'primir_summary_list': list(primir_summary_list),'primir_summary_count':list(primir_summary_count)}
+        return {'primir_summary_list': list(premir_summary_list),'primir_summary_count':premir_summary_count}
 
 api.add_resource(PrimirSummary, '/api/primir_summary')
 
