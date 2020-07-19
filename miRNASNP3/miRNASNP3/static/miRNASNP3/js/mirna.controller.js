@@ -365,6 +365,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 }).then(
                     function (response) {
                         console.log(response);
+                        console.log("snp in seed target")
                         $scope.snp_seed_gain_list = response.data.snp_seed_gain_list;
                         $scope.snp_seed_gain_count=response.data.snp_seed_gain_count;
                         var site_array=$scope.snp_seed_gain_list

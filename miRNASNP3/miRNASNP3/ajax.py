@@ -253,7 +253,7 @@ class SnpSeedGain(Resource):
             'from':'gene_expression',
             'localField':'gene_symbol',
             'foreignField':'symbol',
-            'as':'_id.gene_expression'
+            'as':'gene_expression'
         }}
         lookup_mirna={'$lookup':{
             'from':'mirna_expression',
@@ -1913,10 +1913,10 @@ class MutationSummarySeed(Resource):
         print(pathology_dict)
 
         #if condition or histology_dict or pathology_dict:
-        mutation_seed_list=mongo.db.drv_in_seed_v2.aggregate(pipline)
+        mutation_seed_list=mongo.db.drv_in_seed_v3.aggregate(pipline)
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_seed_count=mongo.db.drv_in_seed_v2.aggregate(pipline_count)
+        mutation_seed_count=mongo.db.drv_in_seed_v3.aggregate(pipline_count)
        
         return{'mutation_seed_list':list(mutation_seed_list),'mutation_seed_count':list(mutation_seed_count)}
 
