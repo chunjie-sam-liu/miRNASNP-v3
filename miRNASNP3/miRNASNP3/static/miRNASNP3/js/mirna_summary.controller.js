@@ -194,8 +194,8 @@ function PrimirSummaryController($scope,$route,$http,$filter,miRNASNP3Service) {
                     $scope.alert_nonitem=1;
                     $('#alert_nonitem').show()
                 }else{
-                $scope.primir_summary_count=response.data.primir_summary_count[0].count;
-               /* var data_list=$scope.primir_summary_list
+                $scope.primir_summary_count=response.data.primir_summary_count;
+                /*var data_list=$scope.primir_summary_list
                 for(var i=0;i<data_list.length;i++){
                     //console.log(data_list[i])
                     data_list[i].snp_sum=Number(data_list[i]._id.snp_in_pre)+Number(data_list[i]._id.indel_in_premir)
