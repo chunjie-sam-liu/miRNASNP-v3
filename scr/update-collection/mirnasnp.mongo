@@ -1,0 +1,9 @@
+
+db.seed_gain_4666.find({
+  "gene_symbol": "SERBP1", "mirna_id": "hsa-miR-105-3p", "snp_id": "rs778443619"
+  }, {"_id": 0}).pretty()
+
+
+db.seed_gain_4666.find({'gene_symbol': 'SERBP1', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info': {'mm_start': '67411398', 'mm_end': '67411405', 'tgs_start': '67411399', 'tgs_end': '67411404'}}, {"_id": 0}).pretty()
+
+db.seed_gain_4666.find({'gene_symbol': 'SERBP1', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info.mm_start': '67411398', 'site_info.mm_end': '67411405', 'site_info.tgs_start': '67411399', 'site_info.tgs_end': '67411404'}, {"_id": 0}).pretty()
