@@ -7,3 +7,30 @@ db.seed_gain_4666.find({
 db.seed_gain_4666.find({'gene_symbol': 'SERBP1', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info': {'mm_start': '67411398', 'mm_end': '67411405', 'tgs_start': '67411399', 'tgs_end': '67411404'}}, {"_id": 0}).pretty()
 
 db.seed_gain_4666.find({'gene_symbol': 'SERBP1', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info.mm_start': '67411398', 'site_info.mm_end': '67411405', 'site_info.tgs_start': '67411399', 'site_info.tgs_end': '67411404'}, {"_id": 0}).pretty()
+
+db.seed_gain_4666.find({'gene_symbol': 'BICRAL', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info.mm_start': '42866068', 'site_info.mm_end': '42866075', 'site_info.tgs_start': '42866069', 'site_info.tgs_end': '42866074'}, {"_id": 0}).count()
+
+db.seed_gain_4666.find({'gene_symbol': 'BICRAL', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info.mm_start': '42866068', 'site_info.mm_end': '42866075', 'site_info.tgs_start': '42866069', 'site_info.tgs_end': '42866074'}, {"_id": 0}).pretty()
+
+
+db.seed_gain_4666.find({"utr_info.acc": { $type : "array" }}).count()
+
+
+db.seed_gain_4666_cj.find({}).pretty()
+
+db.seed_gain_4666.find({}).sort({_id:-1}).limit(60)
+
+
+db.seed_gain_4666.find(
+    { $where: "this._id.getTimestamp() >= ISODate('2020-07-20')" }
+).count()
+
+// db.seed_gain_4666.find( { $where: function(){
+//     today = new Date(); //
+//     today.setHours(0,0,0,0);
+//     return (this._id.getTimestamp() >= today)
+// } } );
+
+db.seed_gain_4666.find({'gene_symbol': 'SERBP1', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619'}, {"_id": 0}).pretty()
+
+db.seed_gain_4666.find({'gene_symbol': 'SERBP1', 'mirna_id': 'hsa-miR-105-3p', 'snp_id': 'rs778443619', 'site_info.mm_start': '67411466', 'site_info.mm_end': '67411473', 'site_info.tgs_start': '67411467', 'site_info.tgs_end': '67411472'}, {"_id": 0}).pretty()
