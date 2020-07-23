@@ -138,7 +138,7 @@ gene_expression={
     'symbol':fields.String
 }
 utr_info={
-    'acc':fields.String,
+    'acc':fields.List(fields.String),
     'position':fields.String,
     'enst_id':fields.String,
     'gene_symbol':fields.String
@@ -272,12 +272,12 @@ class SnpSeedGain(Resource):
         print(pipline)
         pipline=[match,skip,limit,lookup_gene,lookup_mirna]
 
-        snp_seed4666_gain_count=mongo.db.seed_gain_4666.find(condition).count()
-        snp_indel_gain_count=mongo.db.seed_gain_addindel.find(condition).count()
+        snp_seed4666_gain_count=mongo.db.seed_gain_4666_cj.find(condition).count()
+        snp_indel_gain_count=mongo.db.seed_gain_addindel_redundancy.find(condition).count()
         snp_seed_gain_count=snp_seed4666_gain_count+snp_indel_gain_count
         #snp_seed_gain_count=[]
-        snp_seed4666_gain_list=mongo.db.seed_gain_4666.aggregate(pipline)
-        indel_seed_gain_list=mongo.db.seed_gain_addindel.aggregate(pipline)
+        snp_seed4666_gain_list=mongo.db.seed_gain_4666_cj.aggregate(pipline)
+        indel_seed_gain_list=mongo.db.seed_gain_addindel_redundancy.aggregate(pipline)
         #snp_seed4666_gain_count=mongo.db.seed_gain_4666.aggregate(pipline_count)
         #indel_seed_gain_count=mongo.db.seed_gain_addindel.aggregate(pipline_count)
         #snp_seed_gain_count=list(snp_seed4666_gain_count)+list(indel_seed_gain_count)
@@ -297,19 +297,19 @@ class SnpSeedGain(Resource):
             record_skip_indel=record_skip-snp_seed4666_gain_count
             skip_indel={'$skip':record_skip_indel}
             pipline_indel=[match,skip_indel,limit,lookup_gene,lookup_mirna]
-            snp_seed_gain_list=mongo.db.seed_gain_addindel.aggregate(pipline_indel)
+            snp_seed_gain_list=mongo.db.seed_gain_addindel_redundancy.aggregate(pipline_indel)
         elif snp_seed_gain_count-record_skip<15 and snp_seed_gain_count-record_skip>0:
             print("view across pages")
             print(record_skip)
             print(snp_seed4666_gain_count)
-            snp_seed4666_gain_list=mongo.db.seed_gain_4666.aggregate(pipline)
+            snp_seed4666_gain_list=mongo.db.seed_gain_4666_cj.aggregate(pipline)
             limit_indel=snp_seed4666_gain_count-record_skip
             limit_indel_pip={'$limit':limit_indel}
             pipline_indel=[match,limit_indel_pip,lookup_gene,lookup_mirna]
-            indel_seed_gain_list=mongo.db.seed_gain_addindel.aggregate(pipline_indel)
+            indel_seed_gain_list=mongo.db.seed_gain_addindel_redundancy.aggregate(pipline_indel)
             snp_seed_gain_list=list(snp_seed4666_gain_list)+list(indel_seed_gain_list)
         else:
-            snp_seed_gain_list=mongo.db.seed_gain_4666.aggregate(pipline)
+            snp_seed_gain_list=mongo.db.seed_gain_4666_cj.aggregate(pipline)
         #snp_seed_gain_list=mongo.db.indel_target_test.aggregate(pipline)
         #snp_seed_gain_count=mongo.db.indel_target_test.find(condition).count()
        
@@ -426,28 +426,27 @@ class SnpSeedLoss(Resource):
         skip = {'$skip': record_skip}
         limit = {'$limit': per_page}
         pipline = [match, skip, limit, lookup_gene,lookup_mirna,lookup_corelation]
-        snp_seed4666_loss_count=mongo.db.seed_loss_4666.find(condition).count()
-        snp_indel_loss_count=mongo.db.seed_loss_addindel.find(condition).count()
+        snp_seed4666_loss_count=mongo.db.seed_loss_4666_redundancy.find(condition).count()
+        snp_indel_loss_count=mongo.db.seed_loss_addindel_redundancy.find(condition).count()
         snp_seed_loss_count=snp_seed4666_loss_count+snp_indel_loss_count
-
         if args['snp_id']:
-            snp_seed4666_loss_list=mongo.db.seed_loss_4666.aggregate(pipline)
-            indel_seed_loss_list=mongo.db.seed_loss_addindel.aggregate(pipline)
+            snp_seed4666_loss_list=mongo.db.seed_loss_4666_redundancy.aggregate(pipline)
+            indel_seed_loss_list=mongo.db.seed_loss_addindel_redundancy.aggregate(pipline)
             snp_seed_loss_list=list(snp_seed4666_loss_list)+list(indel_seed_loss_list)
         elif record_skip>snp_seed4666_loss_count:
             record_skip_indel=record_skip-snp_seed4666_loss_count
             skip_indel={'$skip':record_skip_indel}
             pipline_indel=[match,skip_indel,limit,lookup_gene,lookup_mirna]
-            snp_seed_loss_list=mongo.db.seed_loss_addindel.aggregate(pipline_indel)
+            snp_seed_loss_list=mongo.db.seed_loss_addindel_redundancy.aggregate(pipline_indel)
         elif snp_seed4666_loss_count-record_skip<15 and snp_seed4666_loss_count-record_skip>0:
-            snp_seed4666_loss_list=mongo.db.seed_loss_4666.aggregate(pipline)
+            snp_seed4666_loss_list=mongo.db.seed_loss_4666_redundancy.aggregate(pipline)
             limit_indel=snp_seed4666_loss_count-record_skip
             limit_indel_pip={'$limit':limit_indel}
             pipline_indel=[match,limit_indel_pip,lookup_gene,lookup_mirna]
-            indel_seed_loss_list=mongo.db.seed_loss_addindel.aggregate(pipline_indel)
+            indel_seed_loss_list=mongo.db.seed_loss_addindel_redundancy.aggregate(pipline_indel)
             snp_seed_loss_list=list(snp_seed4666_loss_list)+list(indel_seed_loss_list)
         else:
-            snp_seed_loss_list=mongo.db.seed_loss_4666.aggregate(pipline)  
+            snp_seed_loss_list=mongo.db.seed_loss_4666_redundancy.aggregate(pipline)  
         return {'snp_seed_loss_list': list(snp_seed_loss_list),
                 'snp_seed_loss_count': snp_seed_loss_count}
 
@@ -515,10 +514,10 @@ class MutSeedGain(Resource):
         limit={'$limit':per_page}
 
         pipline=[match,skip,limit,lookup]
-        tysnv_mut_seed_gain_list=mongo.db.seed_cosmic_gain.aggregate(pipline)
-        tysnv_mut_seed_gain_count=mongo.db.seed_cosmic_gain.find(condition).count()
-        indel_mut_seed_gain_list=mongo.db.indel_seed_mutation_gain.aggregate(pipline)
-        indel_mut_seed_gain_count=mongo.db.indel_seed_mutation_gain.find(condition).count()
+        tysnv_mut_seed_gain_list=mongo.db.seed_cosmic_gain_redundancy.aggregate(pipline)
+        tysnv_mut_seed_gain_count=mongo.db.seed_cosmic_gain_redundancy.find(condition).count()
+        indel_mut_seed_gain_list=mongo.db.indel_seed_mutation_gain_redundancy.aggregate(pipline)
+        indel_mut_seed_gain_count=mongo.db.indel_seed_mutation_gain_redundancy.find(condition).count()
         mut_seed_gain_list=list(tysnv_mut_seed_gain_list)+list(indel_mut_seed_gain_list)
         mut_seed_gain_count=tysnv_mut_seed_gain_count+indel_mut_seed_gain_count
         print(mut_seed_gain_count)
@@ -599,10 +598,10 @@ class MutSeedLoss(Resource):
         limit={'$limit':per_page}
 
         pipline=[match,skip,limit,lookup_mirna,lookup_gene,lookup_corelation]
-        tysnv_mut_seed_loss_list=mongo.db.seed_cosmic_loss.aggregate(pipline)
-        tysnv_mut_seed_loss_count=mongo.db.seed_cosmic_loss.find(condition).count()
-        indel_mut_seed_loss_list=mongo.db.indel_seed_mutation_loss.aggregate(pipline)
-        indel_mut_seed_loss_count=mongo.db.indel_seed_mutation_loss.find(condition).count()
+        tysnv_mut_seed_loss_list=mongo.db.seed_cosmic_loss_redundancy.aggregate(pipline)
+        tysnv_mut_seed_loss_count=mongo.db.seed_cosmic_loss_redundancy.find(condition).count()
+        indel_mut_seed_loss_list=mongo.db.indel_seed_mutation_loss_redundancy.aggregate(pipline)
+        indel_mut_seed_loss_count=mongo.db.indel_seed_mutation_loss_redundancy.find(condition).count()
 
         mut_seed_loss_list=list(tysnv_mut_seed_loss_list)+list(indel_mut_seed_loss_list)
         mut_seed_loss_count=tysnv_mut_seed_loss_count+indel_mut_seed_loss_count
@@ -654,7 +653,7 @@ snp_info_line={
 utr_info_line={
     'gene_symbol':fields.String,
     'enst_id':fields.String,
-    'acc':fields.String,
+    'acc':fields.List(fields.String),
     'chr':fields.String,
     'end':fields.String,
     'start':fields.String,
@@ -732,10 +731,10 @@ class SnvUtrLoss(Resource):
         skip = {'$skip': record_skip}
         limit = {'$limit': per_page}
         pipline = [match, skip, limit, lookup_gene, lookup_mirna,lookup_corelation,lookup_experiment_valid]
-        snv_utr_loss_list=mongo.db.snv_utr_loss_v2.aggregate(pipline)
-        snv_utr_loss_count=mongo.db.snv_utr_loss_v2.find(condition).count()
-        indel_utr_loss_list=mongo.db.indel_utr_loss_v2.aggregate(pipline)
-        indel_utr_loss_count=mongo.db.indel_utr_loss_v2.find(condition).count()
+        snv_utr_loss_list=mongo.db.snv_utr_loss_v2_redundancy.aggregate(pipline)
+        snv_utr_loss_count=mongo.db.snv_utr_loss_v2_redundancy.find(condition).count()
+        indel_utr_loss_list=mongo.db.indel_utr_loss_v2_redundancy.aggregate(pipline)
+        indel_utr_loss_count=mongo.db.indel_utr_loss_v2_redundancy.find(condition).count()
 
         utr_loss_list=list(snv_utr_loss_list)+list(indel_utr_loss_list)
         utr_loss_count=snv_utr_loss_count+indel_utr_loss_count
@@ -791,10 +790,10 @@ class SnvUtrGain(Resource):
         limit = {'$limit': per_page}
         print(condition)
         pipline = [match, skip, limit, lookup_gene, lookup_mirna]
-        snv_utr_gain_list=mongo.db.snv_utr_gain_v2.aggregate(pipline)
-        snv_utr_gain_count=mongo.db.snv_utr_gain_v2.find(condition).count()
-        indel_utr_gain_list=mongo.db.indel_utr_gain_v2.aggregate(pipline)
-        indel_utr_gain_count=mongo.db.indel_utr_gain_v2.find(condition).count()
+        snv_utr_gain_list=mongo.db.snv_utr_gain_v2_redundancy.aggregate(pipline)
+        snv_utr_gain_count=mongo.db.snv_utr_gain_v2_redundancy.find(condition).count()
+        indel_utr_gain_list=mongo.db.indel_utr_gain_v2_redundancy.aggregate(pipline)
+        indel_utr_gain_count=mongo.db.indel_utr_gain_v2_redundancy.find(condition).count()
         
         utr_gain_list=list(snv_utr_gain_list)+list(indel_utr_gain_list)
         utr_gain_count=snv_utr_gain_count+indel_utr_gain_count
@@ -851,17 +850,17 @@ class MutUtrGain(Resource):
         
         pipline = [match, skip, limit, lookup_gene, lookup_mirna]
         if args['mut_id'].lower().startswith('cosn'):
-            tynsv_mut_utr_gain_list=mongo.db.utr_cosmic_gain.aggregate(pipline)
-            tysnv_mut_utr_gain_count=mongo.db.utr_cosmic_gain.find(condition).count()
-            indel_mut_utr_gain_list=mongo.db.utr_cosmic_gain_indel.aggregate(pipline)
-            indel_mut_utr_gain_count=mongo.db.utr_cosmic_gain_indel.find(condition).count()
+            tynsv_mut_utr_gain_list=mongo.db.utr_cosmic_gain_redundancy.aggregate(pipline)
+            tysnv_mut_utr_gain_count=mongo.db.utr_cosmic_gain_redundancy.find(condition).count()
+            indel_mut_utr_gain_list=mongo.db.utr_cosmic_gain_indel_redundancy.aggregate(pipline)
+            indel_mut_utr_gain_count=mongo.db.utr_cosmic_gain_indel_redundancy.find(condition).count()
             mut_utr_gain_list=list(tynsv_mut_utr_gain_list)+list(indel_mut_utr_gain_list)
             mut_utr_gain_count=tysnv_mut_utr_gain_count+indel_mut_utr_gain_count
         else:
-            tynsv_mut_utr_gain_list=mongo.db.utr_clinvar_gain.aggregate(pipline)
-            tysnv_mut_utr_gain_count=mongo.db.utr_clinvar_gain.find(condition).count()
-            indel_mut_utr_gain_list=mongo.db.utr_clinvar_gain_indel.aggregate(pipline)
-            indel_mut_utr_gain_count=mongo.db.utr_clinvar_gain_indel.find(condition).count()
+            tynsv_mut_utr_gain_list=mongo.db.utr_clinvar_gain_redundancy.aggregate(pipline)
+            tysnv_mut_utr_gain_count=mongo.db.utr_clinvar_gain_redundancy.find(condition).count()
+            indel_mut_utr_gain_list=mongo.db.utr_clinvar_gain_indel_redundancy.aggregate(pipline)
+            indel_mut_utr_gain_count=mongo.db.utr_clinvar_gain_indel_redundancy.find(condition).count()
             mut_utr_gain_list=list(tynsv_mut_utr_gain_list)+list(indel_mut_utr_gain_list)
             mut_utr_gain_count=tysnv_mut_utr_gain_count+indel_mut_utr_gain_count
 
@@ -927,17 +926,17 @@ class MutUtrLoss(Resource):
         limit = {'$limit': per_page}
         pipline = [match, skip, limit, lookup_gene, lookup_mirna,lookup_corelation]
         if args['mut_id'].lower().startswith('cos'):
-            tysnv_mut_utr_loss_list=mongo.db.utr_cosmic_loss.aggregate(pipline)
-            tysnv_mut_utr_loss_count=mongo.db.utr_cosmic_loss.find(condition).count()
-            indel_mut_utr_loss_list=mongo.db.utr_cosmic_loss_indel.aggregate(pipline)
-            indel_mut_utr_loss_count=mongo.db.utr_cosmic_loss_indel.find(condition).count()
+            tysnv_mut_utr_loss_list=mongo.db.utr_cosmic_loss_redundancy.aggregate(pipline)
+            tysnv_mut_utr_loss_count=mongo.db.utr_cosmic_loss_redundancy.find(condition).count()
+            indel_mut_utr_loss_list=mongo.db.utr_cosmic_loss_indel_redundancy.aggregate(pipline)
+            indel_mut_utr_loss_count=mongo.db.utr_cosmic_loss_indel_redundancy.find(condition).count()
             mut_utr_loss_list=list(tysnv_mut_utr_loss_list)+list(indel_mut_utr_loss_list)
             mut_utr_loss_count=tysnv_mut_utr_loss_count+indel_mut_utr_loss_count
         else:
-            tysnv_mut_utr_loss_list=mongo.db.utr_clinvar_loss.aggregate(pipline)
-            tysnv_mut_utr_loss_count=mongo.db.utr_clinvar_loss.find(condition).count()
-            indel_mut_utr_loss_list=mongo.db.utr_clinvar_loss_indel.aggregate(pipline)
-            indel_mut_utr_loss_count=mongo.db.utr_clinvar_loss_indel.find(condition).count()
+            tysnv_mut_utr_loss_list=mongo.db.utr_clinvar_loss_redundancy.aggregate(pipline)
+            tysnv_mut_utr_loss_count=mongo.db.utr_clinvar_loss_redundancy.find(condition).count()
+            indel_mut_utr_loss_list=mongo.db.utr_clinvar_loss_indel_redundancy.aggregate(pipline)
+            indel_mut_utr_loss_count=mongo.db.utr_clinvar_loss_indel_redundancy.find(condition).count()
             mut_utr_loss_list=list(tysnv_mut_utr_loss_list)+list(indel_mut_utr_loss_list)
             mut_utr_loss_count=tysnv_mut_utr_loss_count+indel_mut_utr_loss_count
         return {'mut_utr_loss_list':list(mut_utr_loss_list),'mut_utr_loss_count':mut_utr_loss_count}
@@ -1083,8 +1082,6 @@ nci60_item={
     'fdr':fields.String
 }
 drug_cor={
-    'ccle_list':fields.Nested(ccle_drug_item),
-    'ccle_count':fields.Integer,
     'nci60_list':fields.Nested(nci60_item),
     'nci60_count':fields.Integer
 }
@@ -1099,22 +1096,24 @@ class MirDrug(Resource):
         condition_ccle = {}
         condition_nci60={}
         if mature_id:
-            condition_ccle['mature-mirna']=mature_id
+            condition_nci60['miRNA']=mature_id
+            '''
             condition_ccle['pv']={'$lt':'0.05'}
             condition_ccle['fdr']={'$lt':'0.05'}
             condition_nci60['miRNA']=mature_id
             condition_nci60['pv']={'$lt':'0.05'}
+            '''
             condition_nci60['fdr']={'$lt':'0.05'}
-            ccle_list=mongo.db.ccle_drug_correlation.find(condition_ccle)
-            ccle_count=mongo.db.ccle_drug_correlation.find(condition_ccle).count()
+             #
+            #ccle_list=mongo.db.ccle_drug_correlation.find(condition_ccle)
+            #ccle_count=mongo.db.ccle_drug_correlation.find(condition_ccle).count()
+            print(condition_nci60)
             nci60_list=mongo.db.nci60_drug_correlation.find(condition_nci60)
             nci60_count=mongo.db.nci60_drug_correlation.find(condition_nci60).count()
         else:
-            ccle_list=[]
-            ccle_count=0
             nci60_list=[]
             nci60_count=0
-        return{'ccle_list':list(ccle_list),'ccle_count':ccle_count,'nci60_list':list(nci60_list),'nci60_count':nci60_count}
+        return{'nci60_list':list(nci60_list),'nci60_count':nci60_count}
 api.add_resource(MirDrug,'/api/mirdrug')
 
 mirna_key_list={
@@ -1643,6 +1642,11 @@ class LDinfo(Resource):
 
 api.add_resource(LDinfo,'/api/ldinfo')
 
+disease_pubmed_item={
+    'disease':fields.String,
+    'pubmed_id':fields.String
+}
+
 mutation_line={
     'analysis':fields.Integer,
     'mut_chr':fields.String,
@@ -1650,11 +1654,9 @@ mutation_line={
     'mut_id':fields.String,
     'ref':fields.String,
     'alt':fields.String,
-    'disease':fields.String,
     'rela_tag_snp':fields.String,
     'location':fields.String,
     'source':fields.String,
-    'pubmed_id':fields.String,
     'gain_count':fields.String,
     'loss_count':fields.String,
     'mature_id':fields.String,
@@ -1663,7 +1665,8 @@ mutation_line={
     'pre_id':fields.String,
     'energy_change':fields.String,
     'expression_change':fields.String,
-    'snp_id':fields.String
+    'snp_id':fields.String,
+    'disease_pubmed':fields.Nested(disease_pubmed_item)
 }
 
 count_group={
@@ -1683,7 +1686,7 @@ mutation_summary_list={
     'mutation_summary_list':fields.Nested(mutation_line),
     'mutation_summary_count':fields.Nested(count_group)
 }
-
+'''
 class MutationSummary(Resource):
     @marshal_with(mutation_summary_list)
     def get(self):
@@ -1765,7 +1768,7 @@ class MutationSummary(Resource):
         return{'mutation_summary_list':list(mutation_summary_list),'mutation_summary_count':list(mutation_summary_count)}
 
 api.add_resource(MutationSummary,'/api/mutation_summary')
-
+'''
 gene_symbol={
     'gene_symbol':fields.String,
     'gene_symbol_lower':fields.String
@@ -1882,10 +1885,10 @@ class MutationSummarySeed(Resource):
         if args['resource']!='All' and args['resource']:
             condition['source']=args['resource']
         if args['histology'] and args['histology'] != 'All':
-            histology_dict['disease']={'$regex':args['histology'],'$options':'$i'}
+            histology_dict['disease_pubmed.disease']={'$regex':args['histology'],'$options':'$i'}
             match_histology={'$match':histology_dict}
         if args['pathology'] and args['pathology']!='All':
-            pathology_dict['disease']={'$regex':args['pathology'],'$options':'$i'}
+            pathology_dict['disease_pubmed.disease']={'$regex':args['pathology'],'$options':'$i'}
             match_pathology={'$match':pathology_dict}
         if args['mut_id']:
            # mut_id=args['mut_id']
@@ -1915,10 +1918,10 @@ class MutationSummarySeed(Resource):
         print(pathology_dict)
 
         #if condition or histology_dict or pathology_dict:
-        mutation_seed_list=mongo.db.drv_in_seed_v3.aggregate(pipline)
+        mutation_seed_list=mongo.db.drv_in_seed_v3_redundancy.aggregate(pipline)
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_seed_count=mongo.db.drv_in_seed_v3.aggregate(pipline_count)
+        mutation_seed_count=mongo.db.drv_in_seed_v3_redundancy.aggregate(pipline_count)
        
         return{'mutation_seed_list':list(mutation_seed_list),'mutation_seed_count':list(mutation_seed_count)}
 
@@ -1995,10 +1998,10 @@ class MutationSummaryMature(Resource):
         print(pathology_dict)
 
         #if condition or histology_dict or pathology_dict:
-        mutation_mature_tmp_list=mongo.db.drv_in_premir_v2.aggregate(pipline)
+        mutation_mature_tmp_list=mongo.db.drv_in_premir_v3_redundancy.aggregate(pipline)
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_mature_tmp_count=mongo.db.drv_in_premir_v2.aggregate(pipline_count)
+        mutation_mature_tmp_count=mongo.db.drv_in_premir_v3_redundancy.aggregate(pipline_count)
 
         condition['location']='Seed'
         match_condition={'$match':condition}
@@ -2061,10 +2064,10 @@ class MutationSummaryPremir(Resource):
         if args['resource']!='All' and args['resource']:
             condition['source']=args['resource']
         if args['histology'] and args['histology'] != 'All':
-            histology_dict['disease']={'$regex':args['histology'],'$options':'$i'}
+            histology_dict['disease_pubmed.disease']={'$regex':args['histology'],'$options':'$i'}
             match_histology={'$match':histology_dict}
         if args['pathology'] and args['pathology']!='All':
-            pathology_dict['disease']={'$regex':args['pathology'],'$options':'$i'}
+            pathology_dict['disease_pubmed.disease']={'$regex':args['pathology'],'$options':'$i'}
             match_pathology={'$match':pathology_dict}
         if args['mut_id']:
            # mut_id=args['mut_id']
@@ -2094,10 +2097,10 @@ class MutationSummaryPremir(Resource):
         print(pathology_dict)
 
         #if condition or histology_dict or pathology_dict:
-        mutation_premir_list=mongo.db.drv_in_premir_v2.aggregate(pipline)
+        mutation_premir_list=mongo.db.drv_in_premir_v3_redundancy.aggregate(pipline)
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_premir_count=mongo.db.drv_in_premir_v2.aggregate(pipline_count)
+        mutation_premir_count=mongo.db.drv_in_premir_v3_redundancy.aggregate(pipline_count)
        
         return{'mutation_premir_list':list(mutation_premir_list),'mutation_premir_count':list(mutation_premir_count)}
 
@@ -2143,10 +2146,10 @@ class MutationSummaryUtr3(Resource):
         if args['resource']!='All' and args['resource']:
             condition['source']=args['resource']
         if args['histology'] and args['histology'] != 'All':
-            histology_dict['disease']={'$regex':args['histology'],'$options':'$i'}
+            histology_dict['disease_pubmed.disease']={'$regex':args['histology'],'$options':'$i'}
             match_histology={'$match':histology_dict}
         if args['pathology'] and args['pathology']!='All':
-            pathology_dict['disease']={'$regex':args['pathology'],'$options':'$i'}
+            pathology_dict['disease_pubmed.disease']={'$regex':args['pathology'],'$options':'$i'}
             match_pathology={'$match':pathology_dict}
         if args['mut_id']:
            # mut_id=args['mut_id']
@@ -2181,10 +2184,11 @@ class MutationSummaryUtr3(Resource):
         print(pathology_dict)
         print(pipline)
         #if condition or histology_dict or pathology_dict:
-        mutation_utr3_list=mongo.db.drv_in_utr_v2.aggregate(pipline)
+        mutation_utr3_list=mongo.db.drv_in_utr_v3_redundancy.aggregate(pipline)
+        #print(list(mutation_utr3_list))
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
-        mutation_utr3_count=mongo.db.drv_in_utr_v2.aggregate(pipline_count)
+        mutation_utr3_count=mongo.db.drv_in_utr_v3_redundancy.aggregate(pipline_count)
        
         return{'mutation_utr3_list':list(mutation_utr3_list),'mutation_utr3_count':list(mutation_utr3_count)}
 
