@@ -1,0 +1,10 @@
+
+use mirnasnp
+db.createUser({
+user: "username",
+pwd: "passwd",
+roles: [{
+role: "ax",
+db: "dbname"
+}]
+})
