@@ -63,6 +63,19 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
 		}
     };
     
+    function distinct(a) {
+        let arr = a
+        let result = []
+        let obj = {}
+        for (let i of arr) {
+            if (!obj[i]) {
+                result.push(i)
+                obj[i] = 1
+            }
+        }
+        return result
+        }
+
     if(one){$scope.show_one('one');$('#one').addClass('active')}
     else if(two){$scope.show_one('two');$('#two').addClass('active')}
     else if(three){$scope.show_one('three');$('#three').addClass('active')}
@@ -75,7 +88,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             case 'mirseed':
                 {
                 $http({
-                    url:'/api/mutation_summary_seed',
+                    url:base_url+'/api/mutation_summary_seed',
                     method:'GET',
                     params:{mut_id:$scope.query_mutation}
                 }).then(function(response){
@@ -103,7 +116,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             case 'mature':
                 {
                     $http({
-                        url:'/api/mutation_summary_mature',
+                        url:base_url+'/api/mutation_summary_mature',
                         method:'GET',
                         params:{mut_id:$scope.query_mutation}
                     }).then(function(response){
@@ -131,7 +144,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             case 'pre-miRNA':
                 {
                     $http({
-                        url:'/api/mutation_summary_premir',
+                        url:base_url+'/api/mutation_summary_premir',
                         method:'GET',
                         params:{mut_id:$scope.query_mutation}
                     }).then(function(response){
@@ -159,7 +172,7 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             case 'UTR3':
                 {
                     $http({
-                        url:'/api/mutation_summary_utr3',
+                        url:base_url+'/api/mutation_summary_utr3',
                         method:'GET',
                         params:{mut_id:$scope.query_mutation}
                     }).then(function(response){
@@ -199,8 +212,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             }
             if(flag==0){
     	$http({
-            //url:base_url+'/api/snp_seed_gain',
-            url:'/api/snp_seed_gain',
+            //url:base_url+base_url+'/api/snp_seed_gain',
+            url:base_url+'/api/snp_seed_gain',
 			method: 'GET',
 			params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
             }).then(
@@ -212,6 +225,10 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                 for(var i=0;i<site_array.length;i++){
                     if(site_array[i].expr_corelation){
                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                    }
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
                     }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -239,8 +256,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             if(flag==0){
                 console.log(query_gene_gain)
                 $http({
-                    //url:base_url+'/api/snp_seed_gain',
-                    url:'/api/snp_seed_gain',
+                    //url:base_url+base_url+'/api/snp_seed_gain',
+                    url:base_url+'/api/snp_seed_gain',
                     method: 'GET',
                     params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
                     }).then(
@@ -252,6 +269,10 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                             for(var i=0;i<site_array.length;i++){
                                 if(site_array[i].expr_corelation){
                                     site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                }
+                                if(site_array[i].utr_info.acc.length>1){
+                                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                    site_array[i].utr_info.acc=deduplicate_arr
                                 }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -531,8 +552,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             }
             if(flag==0){
     	$http({
-        	//url:base_url+'/api/snp_seed_loss',
-            url:'/api/snp_seed_loss',
+        	//url:base_url+base_url+'/api/snp_seed_loss',
+            url:base_url+'/api/snp_seed_loss',
             method: 'GET',
             params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
         }).then(
@@ -553,6 +574,10 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     if(site_array[i].gene_expression[0]){
                         if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                     }else{site_array[i].has_cor=0}
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
+                    }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -579,8 +604,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
             if(flag==0){
                 console.log(query_gene_loss)
                 $http({
-                    //url:base_url+'/api/snp_seed_loss',
-                    url:'/api/snp_seed_loss',
+                    //url:base_url+base_url+'/api/snp_seed_loss',
+                    url:base_url+'/api/snp_seed_loss',
                     method: 'GET',
                     params: {snp_id: $scope.query_snp,page:page,gene:query_gene_loss}
                     }).then(
@@ -601,6 +626,10 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                                 if(site_array[i].gene_expression[0]){
                                     if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                                 }else{site_array[i].has_cor=0}
+                                if(site_array[i].utr_info.acc.length>1){
+                                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                    site_array[i].utr_info.acc=deduplicate_arr
+                                }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                                 site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -648,8 +677,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
     $scope.fetch_snv_utr_loss=function(page){
         $http({
-            //url:base_url+'/api/snv_utr_loss',
-            url:'/api/snv_utr_loss',
+            //url:base_url+base_url+'/api/snv_utr_loss',
+            url:base_url+'/api/snv_utr_loss',
             method:'Get',
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
@@ -669,6 +698,10 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                     if(site_array[i].gene_expression[0]){
                         if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                     }else{site_array[i].has_cor=0}
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
+                    }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -682,8 +715,8 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
 
     $scope.fetch_snv_utr_gain=function(page){
         $http({
-            //url:base_url+'/api/snv_utr_gain',
-            url:'/api/snv_utr_gain',
+            //url:base_url+base_url+'/api/snv_utr_gain',
+            url:base_url+'/api/snv_utr_gain',
             method:'GET',
             params:{snp_id:$scope.query_snp,page:page}
         }).then(function (response) {
@@ -694,6 +727,10 @@ function SNPMutationController($scope,$routeParams,$http,miRNASNP3Service) {
                 for(var i=0;i<site_array.length;i++){
                     if(site_array[i].expr_corelation){
                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                    }
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
                     }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)

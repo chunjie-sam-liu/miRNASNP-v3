@@ -305,6 +305,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     if(site_array[i].gene_expression[0]){
                         if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                     }else{site_array[i].has_cor=0}
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
+                    }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -353,6 +357,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                                 if(site_array[i].gene_expression[0]){
                                     if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                                 }else{site_array[i].has_cor=0}
+                                if(site_array[i].utr_info.acc.length>1){
+                                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                    site_array[i].utr_info.acc=deduplicate_arr
+                                }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                                 site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -654,6 +662,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     if(site_array[i].gene_expression[0]){
                         if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                     }else{site_array[i].has_cor=0}
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
+                    }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -702,6 +714,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                                 if(site_array[i].gene_expression[0]){
                                     if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                                 }else{site_array[i].has_cor=0}
+                                if(site_array[i].utr_info.acc.length>1){
+                                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                    site_array[i].utr_info.acc=deduplicate_arr
+                                }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                                 site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -849,6 +865,10 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     if(site_array[i].gene_expression[0]){
                         if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                     }else{site_array[i].has_cor=0}
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
+                    }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -912,8 +932,6 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     for(var i=0;i<tag_array.length;i++){
                         var risk_allele=disk_allele_regex.exec(tag_array[i].risk_allele)
                         var ci=ci_regex.exec(tag_array[i].ci95)
-                        console.log(risk_allele)
-                        console.log(ci)
                         if(risk_allele){
                             if(risk_allele[1]){tag_array[i].risk_allele=risk_allele[1].replace(/NR/g,"")}
                             
@@ -976,8 +994,6 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                                 for(var i=0;i<data_list.length;i++){
                                     var risk_allele=disk_allele_regex.exec(data_list[i].risk_allele)
                                     var ci=ci_regex.exec(data_list[i].ci95)
-                                    console.log(risk_allele)
-                                    console.log(ci)
                                     if(risk_allele){
                                         if(risk_allele[1]){tag_array[i].risk_allele=risk_allele[1].replace(/NR/g,"")}     
                                     }

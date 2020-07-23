@@ -25,6 +25,9 @@ function HomeController($scope,$http,$routeParams,$window,miRNASNP3Service,$rout
     var snp_regex=/^rs[0-9]+$/i
     var gene_regex=/^[0-9a-zA-Z]+$/
 
+    console.log("base url:base_url+")
+    console.log(base_url)
+
     $scope.search_query = function () {
         var flag = 0;
         $scope.alert_nonitem=0;

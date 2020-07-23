@@ -127,7 +127,10 @@
                                                         {$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</a>
                                             </span></td>
                                     <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
-                                        {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                                        {$ v.gene_symbol$}</a><br><span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                                     <td align="center">
                                         <span ng-if="v.mirna_expression[0]">
                                         <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -230,7 +233,10 @@
                                                                 {$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</a>
                                                     </span></td>
                                             <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
-                                                {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                                                {$ v.gene_symbol$}</a><br><span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                                             <td align="center">
                                                 <span ng-if="v.mirna_expression[0]">
                                                 <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.mirna_expression,v.mirna_id)"><strong style="color:red">{$v.mirna_expression[0].exp_mean$}</strong>
@@ -330,7 +336,10 @@
                                                                     {$mutation_alias.resource$}:{$ mutation_alias.mut_id$}</a>
                                                         </span></td>
                                                 <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
-                                                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                                                    {$ v.gene_symbol$}</a><br><span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                                                 <td align="center">
                                                         <span ng-if="v.gene_expression[0]">
                                                         <a data-toggle="modal" data-target="#exp" ng-click="modal_expression(v.gene_expression,v.gene_symbol)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -434,7 +443,10 @@
                                                         </span></td>
                                                 
                                                 <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
-                                                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                                                    {$ v.gene_symbol$}</a><br><span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                                                 <!--td>{$v.utr_info.acc $}</td>
                                                 <td>{$ v.utr_info.enst_id $}</td-->
                                                     <td align="center">

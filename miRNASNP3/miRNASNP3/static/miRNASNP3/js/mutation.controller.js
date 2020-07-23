@@ -86,6 +86,18 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
     else if (eight) { $scope.show_one('eight'); $('#eight').addClass('active') }
     else if (nine) { $scope.show_one('nine'); $('#nine').addClass('active') }
 
+    function distinct(a) {
+        let arr = a
+        let result = []
+        let obj = {}
+        for (let i of arr) {
+            if (!obj[i]) {
+                result.push(i)
+                obj[i] = 1
+            }
+        }
+        return result
+        }
     console.log(location)
 
     $scope.fetch_target_gain_mut = function (page) {
@@ -113,6 +125,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                     for (var i = 0; i < site_array.length; i++) {
                         if (site_array[i].expr_corelation) {
                             site_array[i].expr_corelation = Number(site_array[i].expr_corelation).toFixed(2)
+                        }
+                        if(site_array[i].utr_info.acc.length>1){
+                            var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                            site_array[i].utr_info.acc=deduplicate_arr
                         }
                         site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -154,6 +170,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                         for (var i = 0; i < site_array.length; i++) {
                             if (site_array[i].expr_corelation) {
                                 site_array[i].expr_corelation = Number(site_array[i].expr_corelation).toFixed(2)
+                            }
+                            if(site_array[i].utr_info.acc.length>1){
+                                var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                site_array[i].utr_info.acc=deduplicate_arr
                             }
                             site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -201,6 +221,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                         if (site_array[i].gene_expression[0]) {
                             if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                         } else { site_array[i].has_cor = 0 }
+                        if(site_array[i].utr_info.acc.length>1){
+                            var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                            site_array[i].utr_info.acc=deduplicate_arr
+                        }
                         site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                         site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -249,6 +273,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                             if (site_array[i].gene_expression[0]) {
                                 if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                             } else { site_array[i].has_cor = 0 }
+                            if(site_array[i].utr_info.acc.length>1){
+                                var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                site_array[i].utr_info.acc=deduplicate_arr
+                            }
                             site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                             site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -276,6 +304,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             for (var i = 0; i < site_array.length; i++) {
                 if (site_array[i].expr_corelation) {
                     site_array[i].expr_corelation = Number(site_array[i].expr_corelation).toFixed(2)
+                }
+                if(site_array[i].utr_info.acc.length>1){
+                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                    site_array[i].utr_info.acc=deduplicate_arr
                 }
                 site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                 site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -311,6 +343,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 if (site_array[i].gene_expression[0]) {
                     if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                 } else { site_array[i].has_cor = 0 }
+                if(site_array[i].utr_info.acc.length>1){
+                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                    site_array[i].utr_info.acc=deduplicate_arr
+                }
                 site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                 site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                 site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -356,6 +392,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                         if (site_array[i].gene_expression[0]) {
                             if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                         } else { site_array[i].has_cor = 0 }
+                        if(site_array[i].utr_info.acc.length>1){
+                            var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                            site_array[i].utr_info.acc=deduplicate_arr
+                        }
                         site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                         site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -403,6 +443,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                             if (site_array[i].gene_expression[0]) {
                                 if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                             } else { site_array[i].has_cor = 0 }
+                            if(site_array[i].utr_info.acc.length>1){
+                                var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                site_array[i].utr_info.acc=deduplicate_arr
+                            }
                             site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                             site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -448,6 +492,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                         if (site_array[i].gene_expression[0]) {
                             if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                         } else { site_array[i].has_cor = 0 }
+                        if(site_array[i].utr_info.acc.length>1){
+                            var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                            site_array[i].utr_info.acc=deduplicate_arr
+                        }
                         site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                         site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -496,6 +544,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                             if (site_array[i].gene_expression[0]) {
                                 if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                             } else { site_array[i].has_cor = 0 }
+                            if(site_array[i].utr_info.acc.length>1){
+                                var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                site_array[i].utr_info.acc=deduplicate_arr
+                            }
                             site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                             site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -531,6 +583,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 if (site_array[i].gene_expression[0]) {
                     if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                 } else { site_array[i].has_cor = 0 }
+                if(site_array[i].utr_info.acc.length>1){
+                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                    site_array[i].utr_info.acc=deduplicate_arr
+                }
                 site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                 site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                 site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -564,7 +620,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 if (site_array[i].gene_expression[0]) {
                     if (Number(site_array[i].gene_expression[0].exp_mean) == 0) { site_array[i].gene_expression[0] = 0; site_array[i].has_cor = 0 }
                 } else { site_array[i].has_cor = 0 }
-
+                if(site_array[i].utr_info.acc.length>1){
+                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                    site_array[i].utr_info.acc=deduplicate_arr
+                }
                 site_array[i].site_info.dg_binding = Number(site_array[i].site_info.dg_binding).toFixed(2)
                 site_array[i].site_info.dg_duplex = Number(site_array[i].site_info.dg_duplex).toFixed(2)
                 site_array[i].site_info.dg_open = Number(site_array[i].site_info.dg_open).toFixed(2)
