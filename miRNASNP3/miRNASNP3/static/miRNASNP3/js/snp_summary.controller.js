@@ -116,8 +116,8 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
         $query_iden_summary.keyup(function () {
             console.log("addAnnotationInputKeyupHandler");
             clearValidationStyles(this);
-            var query_iden_summary = this.value.trim();
-            //var query_iden_summary = $.trim($('#query_iden_summary').val())
+            //var query_iden_summary = this.value.trim();
+            var query_iden_summary = $.trim($('#query_iden_summary').val())
             if (query_iden_summary != '') {
                 checkAnnotationInput(query_iden_summary.toLowerCase(), this);
             }

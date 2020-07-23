@@ -240,7 +240,7 @@
                             <div ng-show="mirna_drug_show" style="display:inline-block;width: 100%">
                                 <dt>Drug sensitivity:</dt>
                                 <dd>
-                                    <div class="panel panel-primary" style="width: 48%;float:left;" ng-show="mirna_ccle_show">
+                                    <!--div class="panel panel-primary" style="width: 48%;float:left;" ng-show="mirna_ccle_show">
                                         <div class="panel-heading" style="height: 32px;">
                                             <strong>Pearson correlation between drug and miRNA in CCLE</strong>
                                         </div>
@@ -265,24 +265,24 @@
                                 </div>
                                 <div ng-show="mirna_ccle_show" style="width: 4%;float:left;">
                                         <hr size="300" width="1">
-                                </div>
-                                <div class="panel panel-primary" style="width: 48%;float:left;" ng-show="mirna_nci60_show">
+                                </div-->
+                                <div class="panel panel-primary"  ng-show="mirna_nci60_show">
                                         <div class="panel-heading" style="height: 32px;">
                                             <strong>Pearson correlation between drug and miRNA in NCI60</strong>
                                         </div>
                                         <div class="panel-body">
                                             <div class="scrollable pre-scrollable">
-                                                <table style="text-align: center" ts-wrapper id="mirna-ccle-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" style="height:450px;display:block;overflow:scroll">
+                                                <table style="text-align: center" ts-wrapper id="mirna-ccle-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" style="height:150px;display:block;overflow:scroll">
                                                     <tr>
                                             <th>NSC ID</th>
                                             <th>Pearson corr.</th>
-                                            <th>P-value</th>
+                                            <!--th>P-value</th-->
                                             <th>FDR</th>
                                                     </tr>
                                         <tr ng-repeat="v in mirna_nci60">
                                             <td><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/compound/{$v.pubchem$}">{$v.NSC$}</a></td>
                                             <td>{$v.cor$}</td>
-                                            <td>{$v.pv$}</td>
+                                            <!--td>{$v.pv$}</td-->
                                             <td>{$v.fdr$}</td>
                                         </tr>
                                     </table>
@@ -331,7 +331,10 @@
                 <td align="center" style="width:12%"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$ v.mirna_id$}</a></td>
                 <td align="center" style="width: 10%"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$v.snp_id$}</a></td>
                 <td align="center" style="width: 10%"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">{$v.gene_symbol$}</a><br>
-                    <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</td>
+                    <span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                    </td>
                 <td align="center" style="width: 10%">
                         <span ng-if="v.gene_expression[0]">
                         <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -415,7 +418,11 @@
                 <td align="center"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$v.mirna_id$}</a></td>
                 <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.snp_id$}">{$ v.snp_id$}</a></td>
                 <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
-                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                    {$ v.gene_symbol$}</a><br>
+                    <span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                 <!--td align="center">{$v.utr_info.acc$}</td>
                 <td align="center">{$v.utr_info.enst_id$}</td-->
                 <td align="center">
@@ -503,7 +510,11 @@
                 <td align="center" style="width: 12%"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$v.mirna_id$}</a></td>
                 <td align="center" style="width: 10%"><a target="_blank" href={$v.mut_url$}>{$ v.mut_id$}</a></td>
                 <td align="center" style="width: 10%"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
-                    {$ v.gene_symbol$}</a><br><a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                    {$ v.gene_symbol$}</a><br>
+                    <span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                 <td align="center" style="width: 10%">
                     <span ng-if="v.gene_expression[0]">
                     <a data-toggle="modal" data-target="#gene_exp" ng-click="modal_gene_expression(v.gene_expression)"><strong style="color:red">{$v.gene_expression[0].exp_mean$}</strong>
@@ -587,7 +598,10 @@
                 <td align="center"><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$mirna_summary_alias.mir_acc$}">{$v.mirna_id$}</a></td>
                 <td align="center"><a target="_blank" href={$v.mut_url$}>{$ v.mut_id$}</a></td>
                 <td align="center"><a target="_blank" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">{$ v.gene_symbol$}</a><br>
-                    <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$v.utr_info.acc$}</a></td>
+                    <span ng-repeat="a in v.utr_info.acc">
+                        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/nuccore/{$v.utr_info.acc$}">{$a$}</a><br>
+                    </span>
+                </td>
                 <!--td align="center">{$v.utr_info.acc$}</td>
                 <td align="center">{$v.utr_info.enst_id$}</td-->
                 <td align="center">

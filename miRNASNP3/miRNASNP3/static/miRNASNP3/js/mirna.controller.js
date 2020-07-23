@@ -52,6 +52,18 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             $scope.class_six = "ative";
         }
     };
+    function distinct(a) {
+        let arr = a
+        let result = []
+        let obj = {}
+        for (let i of arr) {
+            if (!obj[i]) {
+                result.push(i)
+                obj[i] = 1
+            }
+        }
+        return result
+        }
     $scope.enrich_clear=function(){
         $scope.enrich_dot=0;
         $scope.enrich_cnet=0;
@@ -126,14 +138,13 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
             params:{mature_id:$scope.query_mirna}
         }).then(function(response){
             console.log(response)
-            $scope.mirna_ccle=response.data.ccle_list
-            $scope.mirna_ccle_count=response.data.ccle_count
+            $scope.mirna_ccle={}
             $scope.mirna_nci60=response.data.nci60_list
-            //$scope.mirna_nci60=
-            if(($scope.mirna_ccle.length+$scope.mirna_nci60.length)==0){
+            $scope.nci60_count=response.data.nci60_count
+            if(($scope.mirna_nci60.length)==0){
                 $scope.mirna_drug_show=0
             }else{
-                if($scope.mirna_ccle.length!=0){
+               /* if($scope.mirna_ccle.length!=0){
                     $scope.mirna_ccle_show=1;
                     var dataset=$scope.mirna_ccle
                     for (var i=0;i<dataset.length;i++){
@@ -150,7 +161,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         }
                     }
                     $scope.mirna_ccle=dataset
-                }
+                }*/
                 if($scope.mirna_nci60.length!=0){
                     $scope.mirna_nci60_show=1;
                     var dataset=$scope.mirna_nci60
@@ -373,6 +384,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             if(site_array[i].expr_corelation){
                                 site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
                             }
+                            if(site_array[i].utr_info.acc.length>1){
+                                var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                site_array[i].utr_info.acc=deduplicate_arr
+                            }
                             site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                             site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -415,6 +430,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                                 for(var i=0;i<site_array.length;i++){
                                     if(site_array[i].expr_corelation){
                                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                    }
+                                    if(site_array[i].utr_info.acc.length>1){
+                                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                        site_array[i].utr_info.acc=deduplicate_arr
                                     }
                                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -677,6 +696,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         if(site_array[i].gene_expression[0]){
                             if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                         }else{site_array[i].has_cor=0}
+                        if(site_array[i].utr_info.acc.length>1){
+                            var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                            site_array[i].utr_info.acc=deduplicate_arr
+                        }
                         site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                         site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                         site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -723,6 +746,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             if(site_array[i].gene_expression[0]){
                                 if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                             }else{site_array[i].has_cor=0}
+                            if(site_array[i].utr_info.acc.length>1){
+                                var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                site_array[i].utr_info.acc=deduplicate_arr
+                            }
                             site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                             site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                             site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -833,6 +860,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                     if(site_array[i].expr_corelation){
                         site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
                     }
+                    if(site_array[i].utr_info.acc.length>1){
+                        var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                        site_array[i].utr_info.acc=deduplicate_arr
+                    }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -873,6 +904,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             for(var i=0;i<site_array.length;i++){
                                 if(site_array[i].expr_corelation){
                                     site_array[i].expr_corelation=Number(site_array[i].expr_corelation).toFixed(2)
+                                }
+                                if(site_array[i].utr_info.acc.length>1){
+                                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                    site_array[i].utr_info.acc=deduplicate_arr
                                 }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
@@ -917,6 +952,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         if(site_array[i].gene_expression[0]){
                             if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                         }else{site_array[i].has_cor=0}
+                        if(site_array[i].utr_info.acc.length>1){
+                            var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                            site_array[i].utr_info.acc=deduplicate_arr
+                        }
                     site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                     site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                     site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)
@@ -963,6 +1002,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                                 if(site_array[i].gene_expression[0]){
                                     if(Number(site_array[i].gene_expression[0].exp_mean)==0){site_array[i].gene_expression[0]=0;site_array[i].has_cor=0} 
                                 }else{site_array[i].has_cor=0}
+                                if(site_array[i].utr_info.acc.length>1){
+                                    var deduplicate_arr=distinct(site_array[i].utr_info.acc)
+                                    site_array[i].utr_info.acc=deduplicate_arr
+                                }
                                 site_array[i].site_info.dg_binding=Number(site_array[i].site_info.dg_binding).toFixed(2)
                                 site_array[i].site_info.dg_duplex=Number(site_array[i].site_info.dg_duplex).toFixed(2)
                                 site_array[i].site_info.dg_open=Number(site_array[i].site_info.dg_open).toFixed(2)

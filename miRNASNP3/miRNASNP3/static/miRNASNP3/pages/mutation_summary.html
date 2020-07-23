@@ -1,7 +1,7 @@
 <div class="bs-callout-primary">
     <div class="description" style="margin-left: 7px;">
-        <h4>Disease related variation in miRNA and gene 3'UTR</h4>
-        <p> Disease related variations (DRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">281,664</span> mutations from COSMIC, 
+        <h4>Disease-related variation in miRNA and gene 3'UTR</h4>
+        <p> Disease-related variations (DRVs) listed below are located in pre-miRNAs and gene 3'UTRs. We integrated pathological information of <span class="badge alert-primary" style="background-color: #2e6da4;">281,664</span> mutations from COSMIC, 
             disease information of <span class="badge alert-primary" style="background-color: #2e6da4;">37,406</span> variations from ClinVar and disease/trait information of <span class="badge alert-primary" style="background-color: #2e6da4;">254,364</span> SNPs from GWAS catalog to construct this module.  
             You may browse DRVs by tissues or enter the disease you are interested in to get the highest match DRVs.</p>
     </div>
@@ -219,21 +219,21 @@
             <thead>
                 <tr>
                     <th style="width: 12%">Mature miRNA</th>
-                    <th ts-criteria="mut_id" style="width: 15%">Variation ID</th>
-                    <th style="width: 12%">Position</th>
+                    <th ts-criteria="mut_id" style="width: 12%">Variation ID</th>
+                    <th style="width: 10%">Position</th>
                     <th style="width:6%">Ref/Alt</th>
-                    <th style="width: 20%">Disease
+                    <th style="width: 35%">Disease
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                                 data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
                                 data-content="This catalog also included some phenotype annotated in GWAS"></span>
                     </th>
-                    <th style="width: 7%">Region</th>
+                    <!--th style="width: 7%">Region</th-->
 
                     <!--th>SNP Related</th-->
-                    <th style="width: 10%">Source</th>
-                    <th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th>
-                    <th ts-criteria="gain_count_initial|parseInt" style="width: 8%">Gain</th>
-                    <th ts-criteria="loss_count_initial|parseInt" style="width: 8%">Loss</th>
+                    <th style="width: 7%">Source</th>
+                    <!--th ts-criteria="pubmed_id|parseInt" style="width: 8%">PubMed</th-->
+                    <th ts-criteria="gain_count_initial|parseInt" style="width: 7%">Gain</th>
+                    <th ts-criteria="loss_count_initial|parseInt" style="width: 7%">Loss</th>
                 </tr>
             </thead>
             <tbody>
@@ -273,28 +273,35 @@
 
                     <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.ref$}/{$v.alt$}'>{$ v.ref$}/{$v.alt$}</td>
                     <!--td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="{$v.pathology_show$}">{$ v.pathology_show$}</td-->
-                    <td style="word-break:break-all">{$ v.disease $}</td>
-                    <td>{$v.location $}</td>
+                    <td>
+                        <span ng-repeat="i in v.disease_pubmed">
+                            <p align="left" style="margin-bottom:1px">{$i.disease$}
+                            <span ng-if="i.pubmed_id!='NA'">
+                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$i.pubmed_id$}">({$i.pubmed_id$})</a>
+                                </span>
+                        </span></p>
+                    </td>
+                    <!--td>{$v.location $}</td-->
 
                     <!--td align="center">
                     <span ng-if="v.snp_id"><a href="#!/snp?snp_id={$v.snp_id$}">{$ v.snp_id $}</span>
                     <span ng-if="!v.snp_id">-</span>
                 </td-->
                     <td>
-                        <span ng-if="v.source=='GWAS'">
-                            <a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&six=1" style="color: red;">GWAS</a>
+                        <span ng-if="v.source=='GWAS'">GWAS
+                            <!--a href="#!/snp?snp_id={$v.mut_id$}&location={$v.location$}&six=1" style="color: red;">GWAS</a-->
                         </span>
-                        <span ng-if="v.source=='COSMIC'">
-                                <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.source$}</a>
+                        <span ng-if="v.source=='COSMIC'">COSMIC
+                                <!--a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$v.mut_id$}">{$v.source$}</a-->
                             </span>
-                            <span ng-if="v.source=='ClinVar'">
-                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.source$}</a>
+                            <span ng-if="v.source=='ClinVar'">ClinVar
+                                <!--a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$v.mut_id$}">{$v.source$}</a-->
                             </span>
                     </td>
-                    <td align="center">
+                    <!--td align="center">
                         <span ng-if="v.pubmed_id!='NA'"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$v.pubmed_id$}">{$v.pubmed_id$}</a></span>
                         <span ng-if="v.pubmed_id=='NA'">-</span>
-                    </td>
+                    </td-->
                     <td>
                         <span ng-if="!v.analysis">-</span>
                         <span ng-if="v.analysis">

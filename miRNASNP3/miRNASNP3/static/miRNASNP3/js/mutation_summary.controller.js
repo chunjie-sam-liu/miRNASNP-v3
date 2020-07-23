@@ -22,7 +22,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
     $scope.initial=1;
     $scope.flag_identifier=0;
     console.log(gene)
-
+    console.log("base url")
+    console.log(base_url)
     function renew_mut_summary_tab(){
         $('#seed').removeClass('active')
         $('#premir').removeClass('active')
