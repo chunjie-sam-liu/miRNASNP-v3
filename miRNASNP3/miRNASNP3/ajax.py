@@ -2136,7 +2136,7 @@ class MutationSummaryUtr3(Resource):
         if args['page']:
             page=args['page']
             record_skip = (int(page) - 1) * per_page
-            page_condition['item_number']={"$gt":record_skip}
+            #page_condition['item_number']={"$gt":record_skip}
         if args['gene']:
             condition['identifier_lower']=args['gene'].lower()
         #if args['chrome']!='All' and args['chrome']:
@@ -2176,7 +2176,8 @@ class MutationSummaryUtr3(Resource):
         if args['gene'] or (args['resource']!='All' and args['resource']) or (args['pathology'] and args['pathology']!='All') or (args['histology'] and args['histology'] != 'All') or args['mut_id']:
             pipline.append(skip)
         else:
-            pipline.append({'$match':page_condition})
+            #pipline.append({'$match':page_condition})
+            pipline.append(skip)
         pipline.append(limit)
         print('get mutation summary UTR3')
         print(condition)
