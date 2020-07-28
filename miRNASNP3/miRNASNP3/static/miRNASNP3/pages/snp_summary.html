@@ -4,7 +4,7 @@
     <!--p>
         <span class="badge alert-success">43,923</span> SNPs in pre-miRNA, with <span class="badge alert-success">4,666 </span>SNPs in microRNA seed region and <span class="badge alert-success">6,358,867</span> SNPs in 3'UTR are identified in miRNASNP3. 
     </p-->
-    <p>A total of <span class="badge alert-success" style="color: white;background-color: #32920b;">46,826</span> SNPs in pre-miRNAs and <span class="badge alert-success" style="color: white;background-color: #32920b;">7,115,796</span> SNPs in gene 3'UTRs were identified by miRNASNP-v3, including <span class="badge alert-success" style="color: white;background-color: #32920b;">6229</span> SNPs in miRNA seed regions. 
+    <p>A total of <span class="badge alert-success" style="color: white;background-color: #32920b;">46,826</span> SNPs in pre-miRNAs and <span class="badge alert-success" style="color: white;background-color: #32920b;">7,115,796</span> SNPs in gene 3'UTRs were identified by miRNASNP-v3, including <span class="badge alert-success" style="color: white;background-color: #32920b;">6,229</span> SNPs in miRNA seed regions. 
         For SNPs in miRNA seed regions and SNPs in gene 3'UTRs, we focused on their effects on miRNA:gene interactions, 
         for SNPs in pre-miRNAs, we investigated their effects on pre-miRNA structure. 
         Users can retrieve specific genes/miRNAs to obtain SNPs in them and explore the impact of the SNP on mRNA:miRNA interaction.</p>
@@ -185,7 +185,7 @@
                        
                         <th width="8%" >Ref/Alt</th>
                         <th ts-criteria="alt_freq|parseInt" width="11%">Ref freq./Alt freq.</th>
-                        <th width="7%">Region</th>
+                        <!--th width="7%">Region</th-->
                         
                         <th ts-criteria="ldsnp" width="5%">LD
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a GWAS tagSNP or locates in the linkage disequilibrium region of another GWAS tagSNP."></span></th>
@@ -207,7 +207,7 @@
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
-                        <td>{$v.location$}</td>
+                        <!--td>{$v.location$}</td-->
                         <td>
                                 <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.is_ld=='1'"></span>
                                 <span class="glyphicon glyphicon-remove" style="color: red" ng-if="v.is_ld=='0'"></span>
@@ -447,7 +447,7 @@
                         <th ts-criteria="snp_position|parseInt" width="10%">Position</th>                      
                         <th width="5%">Ref/Alt</th>
                         <th ts-criteria="alt_freq" width="13%">Ref freq./Alt freq.</th>
-                        <th width="7%">Region</th>
+                        <!--th width="7%">Region</th-->
                         <th ts-criteria="ldsnp" width="5%">LD
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Whether the SNP is a GWAS tagSNP or locates in the linkage disequilibrium region of another GWAS tagSNP."></span></th>
                         <!--th ts-criteria="mutation_rela" width="8%">Mutation Related
@@ -467,7 +467,7 @@
                         <td align="center">
                             <span ng-if="!v.ref_freq">-/</span><span ng-if="v.ref_freq">{$v.ref_freq$}/</span><span ng-if="!v.alt_freq">-</span><span ng-if="v.alt_freq">{$v.alt_freq$}</span>
                         </td>
-                        <td>{$v.location$}</td>
+                        <!--td>{$v.location$}</td-->
                         
                         <td>
                             <span class="glyphicon glyphicon-ok" style="color: deepskyblue" ng-if="v.is_ld=='1'"></span>
