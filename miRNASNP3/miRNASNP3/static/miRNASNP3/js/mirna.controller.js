@@ -297,7 +297,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                         source_data['name']=cancer;
                         source_data['type']='bar';
                         source_data['barGap']=0.2;
-                        source_data['barWidth']=23
+                        source_data['barWidth']=21
                     }
                     
                 }
@@ -336,7 +336,7 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             trigger: 'item',
                             axisPointer: {
                                 type: 'shadow'
-                            }
+                            },
                         },
                         series: series_list,
                         grid:{
@@ -344,7 +344,8 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                             y:35,
                             x2:30,
                             y2:20,
-                            borderWidth:1
+                            borderWidth:1,
+                            containLabel:true
                            },
                     })
                 }

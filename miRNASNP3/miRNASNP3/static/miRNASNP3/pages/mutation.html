@@ -56,9 +56,15 @@
                 <dd class="ng-binding">{$ mutation_alias.location $}</dd>
                 <dt>{$mutation_alias.head_identifier$}:</dt>
                 <dd class="ng-binding">{$ mutation_alias.identifier $}</dd>
-                <span ng-if="mutation_alias.disease!='not_provided'">
+                <span ng-if="mutation_alias.disease_pubmed.disease!='not_provided'">
                     <dt>Disease:</dt>
-                    <dd>{$ mutation_alias.disease$}</dd>
+                    <dd>
+                        <span ng-repeat="i in mutation_alias.disease_pubmed">
+                            <p align="left" style="margin-bottom:1px">{$i.disease$}
+                            <span ng-if="i.pubmed_id!='NA'">
+                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/?term={$i.pubmed_id$}">(PMID:{$i.pubmed_id$})</a>
+                                </span>
+                        </span></p></dd>
                 </span>
                 <span ng-if="mutation_alias.snp_id!='NA'">
                     <dt>dbSNP:</dt>

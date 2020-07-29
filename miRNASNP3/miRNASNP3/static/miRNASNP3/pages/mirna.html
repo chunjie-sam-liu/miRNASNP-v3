@@ -161,7 +161,12 @@
                             <svg width="850" height="100">
                                 <rect height="20" width="850" fill="#DDDDDD"></rect>
                                 <svg ng-repeat="base in snp_distribute_list" width="850" height="100">
-                                    <text x="{$(base.pos+2)*30+10$}" y="15" style="stroke: black">{$base.base$}</text>
+                                    <svg ng-if="base.pos>1&&base.pos<9">
+                                        <text x="{$(base.pos+2)*30+10$}" y="15" style="stroke: red">{$base.base$}</text>
+                                    </svg>
+                                    <svg ng-if="base.pos<2||base.pos>8">
+                                        <text x="{$(base.pos+2)*30+10$}" y="15" style="stroke: black">{$base.base$}</text>
+                                    </svg>                        
                                     <text x="10" y="15">5 '</text>
                                     <text x="820" y="15">3 '</text>
                                     <svg ng-repeat="var in base.var_list" width="850" height="100">
@@ -181,7 +186,7 @@
                                           data-content="miRNA expression profiles were calculated from 33 cancer types from TCGA"
                                           style="color: #5bc0de"></span>
                                     </dt>
-                                    <dd>{$ mirna_expression.exp_mean $}</dd>
+                                    <dd>{$ mirna_expression.exp_mean $} RSEM</dd>
                                     <dt>miRNA expression
                                         <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                           data-trigger="hover"
