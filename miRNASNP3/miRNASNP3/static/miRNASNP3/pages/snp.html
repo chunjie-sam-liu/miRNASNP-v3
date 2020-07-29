@@ -505,9 +505,9 @@
             <div class="grid" style="width: 800px" id=ld_svg>
                 <svg width="800" height="2000">
                     <svg width="800" height="2000" ng-repeat="ld in ld_svg">
-                        <text x="0" y="{$ ld.text_y $}" style="stroke: black">{$ ld.population $}</text>
                         <rect x="{$ ld.rect_x $}" y="{$ ld.rect_y $}" height="17" width="{$ ld.width $}"
                               fill="blue"></rect>
+                        <text x="0" y="{$ ld.text_y $}" style="stroke: black">{$ ld.population $}</text>
                     </svg>
                     <line ng-x1='{$ snp_line $}' y1='10' ng-x2='{$ snp_line $}' y2='{$line_y$}'
                           style="stroke: green;stroke-width: 2;stroke-dasharray: 2;"></line>
