@@ -121,14 +121,14 @@
                                         <th>DRV in seed
                                                 <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                                 data-trigger="hover"
-                                                data-content="Disease-related variation in miRNA seed region (consist of variations from ClinVar and COSMIC)."
+                                                data-content="Disease-related variation in miRNA seed region (consist of variations from ClinVar and COSMIC, phenotype associated SNPs from GWAS)."
                                                 style="color: #5bc0de"></span>
                                                
                                         </th>
                                         <th>DRV in mature miRNA
                                                 <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
                                                 data-trigger="hover"
-                                                data-content="Disease-related variation in mature miRNA (consist of variations from ClinVar and COSMIC)."
+                                                data-content="Disease-related variation in mature miRNA (consist of variations from ClinVar and COSMIC, phenotype associated SNPs from GWAS)."
                                                 style="color: #5bc0de"></span>
                                         </th>
                                     </tr>
@@ -144,13 +144,13 @@
                                             <span ng-if="!mirna_summary_alias.snp_in_mature">0</span>
                                         </td>
                                         <td>
-                                                <span ng-if="mirna_summary_alias.variation_in_seed">
-                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&seed='1'" style="color: red">{$mirna_summary_alias.variation_in_seed$}</a></span>
-                                            <span ng-if="!mirna_summary_alias.variation_in_seed">0</span></td>
+                                                <span ng-if="mirna_summary_alias.drv_in_seed">
+                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&seed='1'" style="color: red">{$mirna_summary_alias.drv_in_seed$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.drv_in_seed">0</span></td>
                                         <td>
-                                                <span ng-if="mirna_summary_alias.variation_in_mature">
-                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&mature=1" style="color: red">{$mirna_summary_alias.variation_in_mature$}</a></span>
-                                            <span ng-if="!mirna_summary_alias.variation_in_mature">0</span></td>
+                                                <span ng-if="mirna_summary_alias.drv_in_mature">
+                                            <a href="#!/mutation_summary?gene={$mirna_summary_alias.mir_id$}&mature=1" style="color: red">{$mirna_summary_alias.drv_in_mature$}</a></span>
+                                            <span ng-if="!mirna_summary_alias.drv_in_mature">0</span></td>
                                         </td>
                                         </tbody>
                                         </table>

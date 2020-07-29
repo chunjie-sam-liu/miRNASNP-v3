@@ -507,9 +507,9 @@
         <table class="table table-bordered" style="table-layout: fixed" ts-wrapper>
             <thead>
                 <tr>
-                    <th ts-criteria="pre_id" style="width: 12%">Pre-miRNA</th>
-                    <th ts-criteria="mut_id" style="width: 15%">Mutation ID</th>
-                    <th style="width: 12%">Position</th>
+                    <th ts-criteria="pre_id" style="width: 11%">Pre-miRNA</th>
+                    <th ts-criteria="mut_id" style="width: 13%">Mutation ID</th>
+                    <th style="width: 11%">Position</th>
                     <th style="width:6%">Ref/Alt</th>
                     <th style="width: 20%">Disease
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
@@ -521,6 +521,7 @@
             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
             data-content="In pre-miRNA means SNP in pre-miRNA but not in mature region;In mature means SNP in mature region but not in seed region."></span-->
                     </th>
+                    <th style="width:10%">Mature miRNA</th>
                     <th ts-criteria="energy_change|parseInt" width="7%">&Delta;G
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
@@ -586,6 +587,10 @@
             <span ng-if="v.location != 'pre-miRNA'">{$v.identifier$}</span>
             <span ng-if="v.location=='pre-miRNA'">-</span>
         </td-->
+                    <td>
+                        <span ng-if="v.location != 'pre-miRNA'"><a href="#!/mirna?mirna_id={$v.mature_id$}" style="color: red">{$v.mature_id$}</a></span>
+                        <span ng-if="v.location=='pre-miRNA'">-</span>
+                    </td>
                     <td>{$v.energy_change$}</td>
                     <td>{$v.expression_change$}</td>
                     <td align="center">

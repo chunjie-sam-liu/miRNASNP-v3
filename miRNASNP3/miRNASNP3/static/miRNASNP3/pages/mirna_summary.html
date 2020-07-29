@@ -145,7 +145,7 @@ the source of miRNA. </p>
                         <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v.mir_chr $}%3A{$ v.mir_start $}%2D{$ v.mir_end$}">{$ v.mir_chr$}:{$v.mir_start$}-{$v.mir_end$}({$v.mir_strand$})</td>
                         <td>{$v.snp_in_mature$}</td>
             <!--td>{$v.snp_in_matue$}</td-->
-                        <td>{$ v.clinvar_in_mature + v.cosmic_in_mature$}</td>
+                        <td>{$ v.drv_in_mature $}</td>
                         <td><a href="#!/premir_detail?search_ids={$v.pre_id$}" style="color:#FF0000">{$ v.pre_id$}</a></td>
                     </tr>
                 </tbody>
