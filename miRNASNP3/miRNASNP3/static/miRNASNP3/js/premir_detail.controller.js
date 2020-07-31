@@ -188,7 +188,7 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
     };
     $scope.fetch_premir();
 
-    $scope.structure_effection_snp=function (snp_id,click_alt) {
+    $scope.structure_effection_snp=function (snp_id,click_alt,pre_id) {
         console.log("curalt:")
         console.log(click_alt)
         var snp_id=snp_id
@@ -260,13 +260,13 @@ function PremirDetailController($scope,$routeParams,$http,$filter,miRNASNP3Servi
         })
         
     };
-    $scope.structure_effection_mut=function(mut_id){
+    $scope.structure_effection_mut=function(mut_id,pre_id){
         $scope.primir_alt_count=0;
       $http({
           //url:base_url+base_url+'/api/primir_altseq_mut',
           url:base_url+'/api/primir_altseq_mut',
           method:'Get',
-          params:{mut_id:mut_id}
+          params:{mut_id:mut_id,pre_id:pre_id}
       }).then(function(response){
           console.log(response);
           $scope.primir_mut_list=response.data.primir_mut_list[0];

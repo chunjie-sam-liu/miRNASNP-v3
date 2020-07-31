@@ -17,10 +17,27 @@ class MongoManipulation:
 
     def __init__(self, col_name):
         self.__col_name = col_name
-        self.__new_col_name = col_name + "_cj"
+        self.__new_col_name = col_name + "_redundancy"
 
     def get_data(self, condition={}, output={"_id": 0}):
         mcur = self.__mongo.mirnasnp[self.__col_name].find(
+            condition, output, no_cursor_timeout=True
+        )
+        return list(mcur)
+
+    def has_new_col(self) -> bool:
+        return (
+            True
+            if self.__new_col_name in self.__mongo.mirnasnp.list_collection_names()
+            else False
+        )
+
+    def get_data_new_col(
+        self,
+        condition={},
+        output={"_id": 0, "mirna_id": 1, "snp_id": 1, "gene_symbol": 1},
+    ):
+        mcur = self.__mongo.mirnasnp[self.__new_col_name].find(
             condition, output, no_cursor_timeout=True
         )
         return list(mcur)
@@ -43,8 +60,17 @@ class DataUpdate(MongoManipulation):
             output={"_id": 0, "mirna_id": 1, "snp_id": 1, "gene_symbol": 1}
         )
         ds_u = map(dict, set(tuple(sorted(d.items())) for d in ds))
+
+        ds_new_col = list()
+
+        if self.has_new_col():
+            ds_new_col = self.get_data_new_col()
+
         for d in ds_u:
-            self.__get_single_item(cond=d)
+            if d in ds_new_col:
+                continue
+            else:
+                self.__get_single_item(cond=d)
 
     def __get_single_item(self, cond):
         ds = self.get_data(condition=cond)
@@ -90,7 +116,6 @@ class DataUpdate(MongoManipulation):
 
 def main():
     col1 = DataUpdate(col_name="seed_gain_4666")
-    col1.drop_col()
     col1.traverse_all_mirna_snp_gene()
 
 

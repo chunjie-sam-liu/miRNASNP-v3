@@ -191,7 +191,7 @@
                 </tbody>
             </table>
             </div>
-            <div ng-show="premir_info.mirinfo.length-1">
+            <div ng-show="premir_info.mature.length-1">
             <table id="mature_2" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
@@ -211,7 +211,7 @@
                 </tbody>
             </table>
             </div>
-            <!--div ng-show="premir_info.mirinfo.length-2>0">
+            <div ng-show="premir_info.mature.length-2>0">
             <table id="mature_3" class="table table-hover table-bordered">
                 <tbody>
                 <tr>
@@ -224,8 +224,9 @@
                 </tr>
                     <tr>
                     <td style="font-size: 18px;font-weight: bold">Position</td>
-                        <td style="text-align: left"><a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].mir_chr$}%3A{$premir_info.mirinfo[0].mir_start$}%2D{$premir_info.mirinfo[0].mir_end$}">
-                            {$premir_info.mirinfo[2].mir_chr$}:{$premir_info.mirinfo[2].mir_start$}-{$premir_info.mirinfo[2].mir_end$}({$premir_info.mirinfo[2].mir_strand$})</a></td>
+                    <td style="text-align: left"><!--a href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$premir_info.mirinfo[0].mir_chr$}%3A{$premir_info.mirinfo[0].mir_start$}%2D{$premir_info.mirinfo[0].mir_end$}">
+                        {$premir_info.mirinfo[1].mir_chr$}:{$premir_info.mirinfo[1].mir_start$}-{$premir_info.mirinfo[1].mir_end$}({$premir_info.mirinfo[1].mir_strand$})</a-->
+                    {$premir_info.mature[2].pos_list$}</td>
                 </tr>
                 </tbody>
             </table>
@@ -272,7 +273,7 @@
                                             
                                                 <span ng-repeat="v in premir_info.snv">
                                                     <span ng-if="v.structure_analys">
-                                                            <button ng-click="structure_effection_snp(v.mut_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
+                                                            <button ng-click="structure_effection_snp(v.mut_id,premir_info.pre_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
                                                     </span>
                                                     <!--span ng-if="!v.structure_analys">
                                                         <a href="#!/snp?snp_id={$v.mut_id$}"><button type="button" class="btn btn-danger" style="width: 32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button></a>
@@ -292,7 +293,7 @@
                                     <span ng-if="premir_info.cosmic.length">
                         <span ng-repeat="v in premir_info.cosmic">
                             <span ng-if="v.structure_analys">
-                                    <button ng-click="structure_effection_mut(v.mut_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
+                                    <button ng-click="structure_effection_mut(v.mut_id,premir_info.pre_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
                             </span>
                             <!--span ng-if="!v.structure_analys">
                                     <a href="#!/mutation?mut_id={$v.mut_id$}" style="color: red;"><button type="button" class="btn btn-danger" style="width: 32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button></a>
@@ -301,7 +302,7 @@
                             <span ng-if="premir_info.clinvar.length">
                                     <span ng-repeat="v in premir_info.clinvar">
                                         <span ng-if="v.structure_analys">
-                                                <button ng-click="structure_effection_mut(v)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
+                                                <button ng-click="structure_effection_mut(v,premir_info.pre_id)" type="button" class="btn btn-info" style="width:32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button>
                                         </span>
                                         <span ng-if="!v.structure_analys">
                                                 <a href="#!/mutation?mut_id={$v.mut_id$}" style="color: red;"><button type="button" class="btn btn-danger" style="width: 32%;padding:0;margin-bottom: 5px;">{$v.mut_id$}&nbsp;</button></a>
@@ -394,7 +395,7 @@
                                 <td>
                                     {$primir_alt_info.ref$}<span ng-if="primir_alt_info.snp_ref_freq!='NA'">({$primir_alt_info.snp_ref_freq$})</span>/
                                     <span ng-repeat="item in primir_alt_list">
-                            <button ng-click="structure_effection_snp(item.snp_id,item.curalt)" type="button" class="btn btn-info" style="width:10%;padding:0;margin-bottom: 5px;">{$item.curalt$}</button>
+                            <button ng-click="structure_effection_snp(item.snp_id,item.curalt,premir_info.pre_id)" type="button" class="btn btn-info" style="width:10%;padding:0;margin-bottom: 5px;">{$item.curalt$}</button>
                         </span>
                                     <span ng-if="primir_alt_info.snp_alt_freq!='NA'">({$primir_alt_info.snp_alt_freq$})</span>
                                 </td>
