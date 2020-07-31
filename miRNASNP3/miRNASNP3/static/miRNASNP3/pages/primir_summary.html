@@ -116,7 +116,7 @@
                         data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
                         data-content="Number of SNP in pre-miRNA."></span>
                     </th>
-                    <th ts-criteria="cosmic_in_premir+clinvar_in_premir|parseInt" style="width: 15%">DRV number
+                    <th ts-criteria="drv_in_premir|parseInt" style="width: 15%">DRV number
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
                             data-toggle="popover" style="color: dodgerblue" data-trigger="hover"
                             data-content="Number of disease-related variation (DRV) in pre-miRNA."></span>
@@ -130,7 +130,7 @@
                     <td><a target="_blank" href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={$v.pre_acc$}">{$ v.pre_acc$}</a></td>
                     <td><a target="_blank" href="https://genome-asia.ucsc.edu/cgi-bin/hgTracks?db=hg38&position={$ v.pre_chr $}%3A{$ v.pre_start $}%2D{$ v.pre_end$}">{$ v.pre_chr$}:{$v.pre_start$}-{$v.pre_end$}({$v.pre_strand$})</td>
                     <td>{$ v.snp_in_premir $}</td>
-                    <td>{$ v.cosmic_in_premir+v.clinvar_in_premir $}</td>
+                    <td>{$ v.drv_in_premir $}</td>
                     <td>
                         <span ng-repeat="m in v.mature_info.mir_id"><a href="#!/mirna?mirna_id={$m$}"
                                 style="color:#FF0000">{$ m$}</a>&nbsp;&nbsp;</span>

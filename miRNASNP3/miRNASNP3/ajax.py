@@ -1008,7 +1008,10 @@ mir_summary = {
     'clinvar_in_premir':fields.Integer,
     'snp_gwas_in_seed':fields.Integer,
     'snp_gwas_in_mature':fields.Integer,
-    'snp_gwas_in_premir':fields.Integer
+    'snp_gwas_in_premir':fields.Integer,
+    'drv_in_seed':fields.Integer,
+    'drv_in_mature':fields.Integer,
+    'drv_in_premir':fields.Integer
 }
 
 mirna_summary_list = {
@@ -1037,8 +1040,8 @@ class MirSummary(Resource):
             condition['mir_id']={'$regex':mirna_id,'$options':'$i'}
         #mirna_summary_list = mongo.db.mirna_summary_sort.find(condition).skip(record_skip).limit(per_page)
         #mirna_summary_count=mongo.db.mirna_summary_sort.find(condition).count()
-        mirna_summary_list = mongo.db.seed_mature_pre_var.find(condition).skip(record_skip).limit(per_page)
-        mirna_summary_count=mongo.db.seed_mature_pre_var.find(condition).count()
+        mirna_summary_list = mongo.db.seed_mature_pre_var_v1.find(condition).skip(record_skip).limit(per_page)
+        mirna_summary_count=mongo.db.seed_mature_pre_var_v1.find(condition).count()
         return {'mirna_summary_list':list(mirna_summary_list),
                 'mirna_summary_count':mirna_summary_count}
 
@@ -1055,8 +1058,8 @@ class MirInfo(Resource):
         print(search_ids)
         if search_ids:
             condition['mir_id']={'$regex':''.join(['^',search_ids,'$']),'$options':'$i'}
-            mirna_summary_list = mongo.db.seed_mature_pre_var.find(condition)
-            mirna_summary_count=mongo.db.seed_mature_pre_var.find(condition).count()
+            mirna_summary_list = mongo.db.seed_mature_pre_var_v1.find(condition)
+            mirna_summary_count=mongo.db.seed_mature_pre_var_v1.find(condition).count()
         else:
             mirna_summary_list={}
             mirna_summary_count=0
@@ -1203,6 +1206,7 @@ primir_summary={
     'snp_in_premir':fields.Integer,
     'cosmic_in_premir':fields.Integer,
     'clinvar_in_premir':fields.Integer,
+    'drv_in_premir':fields.Integer,
     'mature_info':fields.Nested(mature_info)
 }
 primir_summary_list={
@@ -1253,8 +1257,8 @@ class PrimirSummary(Resource):
         }}
         '''
         print(condition)
-        premir_summary_list = mongo.db.premir_summary.find(condition).skip(record_skip).limit(per_page)
-        premir_summary_count = mongo.db.premir_summary.find(condition).count()
+        premir_summary_list = mongo.db.premir_summary_v1.find(condition).skip(record_skip).limit(per_page)
+        premir_summary_count = mongo.db.premir_summary_v1.find(condition).count()
         print("done serch")
         #print(pip_sum)
         #print(pipline)
@@ -1366,7 +1370,7 @@ class PremirInfo(Resource):
             pipline=[match,lookup_mirinfo,lookup_function,lookup_context]
             print(pipline)
             #premir_info=mongo.db.premir_info.aggregate(pipline)
-            premir_info=mongo.db.premir_info_addindel.aggregate(pipline)
+            premir_info=mongo.db.premir_info_addindel_v1.aggregate(pipline)
         else:
             premir_info={}
         return {'premir_info':list(premir_info)}
@@ -1459,11 +1463,14 @@ class PrimirMut(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('mut_id', type=str)
+        parser.add_argument('pre_id', type=str)
         args = parser.parse_args()
         mut_id = args['mut_id']
+        pre_id = args['pre_id']
         condition = {}
         if mut_id:
             condition['mut_id']=mut_id
+            condition['pre_id']=pre_id
             #primir_mut_list=mongo.db.primir_altseq_mut.find(condition)
             #primir_mut_count=mongo.db.primir_altseq_mut.find(condition).count()
             primir_mut_list=mongo.db.primir_altseq_mut_indel.find(condition)
@@ -2051,12 +2058,17 @@ class MutationSummaryPremir(Resource):
         pathology_dict={}
         match_histology={}
         match_pathology={}
+        #find_gene={}
         pipline=[]
         if args['page']:
             page=args['page']
             record_skip = (int(page) - 1) * per_page
         if args['gene']:
-            condition['identifier_lower']=args['gene'].lower()
+            #condition['identifier_lower']=args['gene'].lower()
+            condition["$or"] = [
+                {'identifier_lower':args['gene'].lower()},
+                {'pre_id':args['gene'].lower()}
+            ]
         #if args['chrome']!='All' and args['chrome']:
         #    condition['chrome']=args['chrome']
         #if args['location'] != 'All'and args['location']:
@@ -2087,6 +2099,7 @@ class MutationSummaryPremir(Resource):
             pipline.append(match_histology)
         if pathology_dict:
             pipline.append(match_pathology)
+        
         
         pipline_count=pipline+[count_group]
         pipline.append(skip)
@@ -2541,7 +2554,10 @@ class SnpSummaryPremir(Resource):
             page=args['page']
             record_skip = (int(page)-1)*per_page
         if args['gene']:
-            condition['identifier_lower']=args['gene'].lower()
+            condition["$or"] = [
+                {'identifier_lower':args['gene'].lower()},
+                {'pre_id':args['gene'].lower()}
+            ]
         #if args['chrome'] != 'All' and args['chrome']:
          #   condition['snp_chr'] = args['chrome']
         if args['spe_snp_id']:
