@@ -272,11 +272,11 @@ class SnpSeedGain(Resource):
         print(pipline)
         pipline=[match,skip,limit,lookup_gene,lookup_mirna]
 
-        snp_seed4666_gain_count=mongo.db.seed_gain_4666_cj.find(condition).count()
+        snp_seed4666_gain_count=mongo.db.seed_gain_4666_redundancy.find(condition).count()
         snp_indel_gain_count=mongo.db.seed_gain_addindel_redundancy.find(condition).count()
         snp_seed_gain_count=snp_seed4666_gain_count+snp_indel_gain_count
         #snp_seed_gain_count=[]
-        snp_seed4666_gain_list=mongo.db.seed_gain_4666_cj.aggregate(pipline)
+        snp_seed4666_gain_list=mongo.db.seed_gain_4666_redundancy.aggregate(pipline)
         indel_seed_gain_list=mongo.db.seed_gain_addindel_redundancy.aggregate(pipline)
         #snp_seed4666_gain_count=mongo.db.seed_gain_4666.aggregate(pipline_count)
         #indel_seed_gain_count=mongo.db.seed_gain_addindel.aggregate(pipline_count)
@@ -302,14 +302,14 @@ class SnpSeedGain(Resource):
             print("view across pages")
             print(record_skip)
             print(snp_seed4666_gain_count)
-            snp_seed4666_gain_list=mongo.db.seed_gain_4666_cj.aggregate(pipline)
+            snp_seed4666_gain_list=mongo.db.seed_gain_4666_redundancy.aggregate(pipline)
             limit_indel=snp_seed4666_gain_count-record_skip
             limit_indel_pip={'$limit':limit_indel}
             pipline_indel=[match,limit_indel_pip,lookup_gene,lookup_mirna]
             indel_seed_gain_list=mongo.db.seed_gain_addindel_redundancy.aggregate(pipline_indel)
             snp_seed_gain_list=list(snp_seed4666_gain_list)+list(indel_seed_gain_list)
         else:
-            snp_seed_gain_list=mongo.db.seed_gain_4666_cj.aggregate(pipline)
+            snp_seed_gain_list=mongo.db.seed_gain_4666_redundancy.aggregate(pipline)
         #snp_seed_gain_list=mongo.db.indel_target_test.aggregate(pipline)
         #snp_seed_gain_count=mongo.db.indel_target_test.find(condition).count()
        
