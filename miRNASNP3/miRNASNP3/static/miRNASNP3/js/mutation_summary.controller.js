@@ -275,7 +275,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         
         var histology=$.trim($("#histology option:selected").text());
         if(histology!="All"){
-            condition['histology']=histology.replace(' ','_')
+            //condition['histology']=histology.replace(' ','_')
+            condition['histology']=histology
         }
 
         if (gene){
@@ -360,6 +361,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                 if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                 data_list[i].gain_count_initial=data_list[i].gain_count
                 data_list[i].loss_count_initial=data_list[i].loss_count
                 data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
@@ -415,6 +417,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                 data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
                 //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                 //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
@@ -446,6 +449,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                 if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                 if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                 data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                 data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
             }
@@ -483,7 +487,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
         
         $('#histology').change(function(){
            console.log("change histology")
-            condition['histology']=$.trim($('#histology').selectpicker('val')).replace(' ','_')
+            //condition['histology']=$.trim($('#histology').selectpicker('val')).replace(' ','_')
+            condition['histology']=$.trim($('#histology').selectpicker('val'))
         });
         $('#pathology').change(function(){
         condition['pathology']=$('#pathology').selectpicker('val')
@@ -516,6 +521,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                     if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                     //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                     if(data_list[i].location=='mirseed'){data_list[i].location='seed'}
+                    if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                     data_list[i].gain_count_initial=data_list[i].gain_count
                     data_list[i].loss_count_initial=data_list[i].loss_count
                     data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
@@ -543,6 +549,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                         if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                         data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
+                        if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                         //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
@@ -569,6 +576,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                         if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                         data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
+                        if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                         //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
                         //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         //data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
@@ -596,6 +604,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                         if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
                         if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
                         if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+                        if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
                         data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
                         data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
                     }
@@ -635,6 +644,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
           //  data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+            if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
             //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
             data_list[i].gain_count_initial=data_list[i].gain_count
             data_list[i].loss_count_initial=data_list[i].loss_count
@@ -658,6 +668,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
           //  data_list[i].pathology_show=data_list[i].pathology.replace(/,/g,"; ").replace(/_and/g," ").replace(/_/g," ").replace(/\|/g,"; ")
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
+            if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
             data_list[i].energy_change=Number(data_list[i].energy_change).toFixed(2)
             //if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
             //data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
@@ -681,6 +692,7 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
             if(data_list[i].resource=="ClinVar"){data_list[i].url="https://www.ncbi.nlm.nih.gov/clinvar/variation/"+data_list[i].mut_id}
             if(data_list[i].resource=="COSMIC"){data_list[i].url="https://cancer.sanger.ac.uk/cosmic/ncv/overview?id="+data_list[i].mut_id.replace(/COSN/g,"")}
             if(data_list[i].location=="UTR3"){data_list[i].location="3'UTR"}
+            if(data_list[i].snp_id='"NA"'){data_list[i].snp_id=''}
             data_list[i].gain_count=parseInt(data_list[i].gain_count).toLocaleString()
             data_list[i].loss_count=parseInt(data_list[i].loss_count).toLocaleString()
         }
