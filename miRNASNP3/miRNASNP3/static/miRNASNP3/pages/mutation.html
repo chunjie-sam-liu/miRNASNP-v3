@@ -578,8 +578,15 @@
                 <tr ng-repeat="v in snp_seed_gain_list" ts-repeat>
                     <td align="center"><a target="_blank"
                             href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-                    <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$
-                            mutation_alias.mut_id$}</a></td>
+                            <td align="center"><span ng-if="mutation_alias.source=='ClinVar'">
+                                <a target="_blank"
+                                    href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$mutation_alias.mut_id$}">
+                                    {$mutation_alias.source$}:{$ mutation_alias.mut_id$}</a></span>
+                            <span ng-if="mutation_alias.source=='COSMIC'">
+                                <a target="_blank"
+                                    href="https://cancer.sanger.ac.uk/cosmic/search?q={$mutation_alias.mut_id$}">
+                                    {$mutation_alias.source$}:{$ mutation_alias.mut_id$}</a>
+                            </span></td>
                     <td align="center"><a target="_blank"
                             href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                             {$ v.gene_symbol$}</a><br>
@@ -641,7 +648,7 @@
             <thead>
                 <tr>
                     <th style="width: 16%">miRNA</th>
-                    <th style="width: 9%">SNP</th>
+                    <th style="width: 9%">Variation</th>
                     <th style="width: 10%">Gene</th>
                     <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
@@ -680,8 +687,15 @@
                     <!--td>{$ $index+1 $}</td-->
                     <td align="center"><a target="_blank"
                             href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-                    <td align="center"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={v.snp_id}">{$
-                            mutation_alias.mut_id $}</a></td>
+                            <td align="center"><span ng-if="mutation_alias.source=='ClinVar'">
+                                <a target="_blank"
+                                    href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$mutation_alias.mut_id$}">
+                                    {$mutation_alias.source$}:{$ mutation_alias.mut_id$}</a></span>
+                            <span ng-if="mutation_alias.source=='COSMIC'">
+                                <a target="_blank"
+                                    href="https://cancer.sanger.ac.uk/cosmic/search?q={$mutation_alias.mut_id$}">
+                                    {$mutation_alias.source$}:{$ mutation_alias.mut_id$}</a>
+                            </span></td>
                     <td align="center"><a target="_blank"
                             href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                             {$ v.gene_symbol$}</a><br>
@@ -752,7 +766,7 @@
             <thead>
                 <tr>
                     <th>miRNA</th>
-                    <th>SNP</th>
+                    <th>Variation</th>
                     <th>Gene</th>
                     <th ts-criteria="mirna_expression[0].exp_mean" style="width: 10%">miRNA exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
@@ -777,7 +791,15 @@
                 <tr ng-repeat="v in snv_utr_gain_list" ts-repeat>
                     <td align="center"><a target="_blank"
                             href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-                    <td align="center">{$ mutation_alias.mut_id$}</td>
+                            <td align="center"><span ng-if="mutation_alias.source=='ClinVar'">
+                                <a target="_blank"
+                                    href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$mutation_alias.mut_id$}">
+                                    {$mutation_alias.source$}:{$ mutation_alias.mut_id$}</a></span>
+                            <span ng-if="mutation_alias.source=='COSMIC'||!mutation_alias.source">
+                                <a target="_blank"
+                                    href="https://cancer.sanger.ac.uk/cosmic/search?q={$mutation_alias.mut_id$}">
+                                    COSMIC:{$ mutation_alias.mut_id$}</a>
+                            </span></td>
                     <td align="center"><a target="_blank"
                             href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                             {$v.gene_symbol$}</a><br>
@@ -833,7 +855,7 @@
             <thead>
                 <tr>
                     <th style="width: 12%">miRNA</th>
-                    <th style="width: 10%">SNP</th>
+                    <th style="width: 10%">Variation</th>
                     <th style="width: 10%">Gene</th>
                     <th ts-criteria="mirna_expression[0].exp_mean" style="width: 7%">miRNA exp.
                         <span class="glyphicon glyphicon-question-sign" data-placement="top" data-container="body"
@@ -871,7 +893,15 @@
                 <tr ng-repeat="v in snv_utr_loss_list" ts-repeat>
                     <td align="center"><a target="_blank"
                             href="http://www.mirbase.org/textsearch.shtml?q={$v.mirna_id$}">{$v.mirna_id$}</a></td>
-                    <td align="center">{$ mutation_alias.mut_id $}</td>
+                            <td align="center"><span ng-if="mutation_alias.source=='ClinVar'">
+                                <a target="_blank"
+                                    href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{$mutation_alias.mut_id$}">
+                                    {$mutation_alias.source$}:{$ mutation_alias.mut_id$}</a></span>
+                            <span ng-if="mutation_alias.source=='COSMIC'||!mutation_alias.source">
+                                <a target="_blank"
+                                    href="https://cancer.sanger.ac.uk/cosmic/search?q={$mutation_alias.mut_id$}">
+                                    COSMIC:{$ mutation_alias.mut_id$}</a>
+                            </span></td>
                     <td align="center"><a target="_blank"
                             href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={$v.gene_symbol$}">
                             {$v.gene_symbol$}</a><br>

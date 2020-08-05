@@ -22,6 +22,10 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
     var three = $routeParams.three;
     var four = $routeParams.four;
     var five = $routeParams.five;
+    var six = $routeParams.six;
+    var seven = $routeParams.seven;
+    var eight = $routeParams.eight;
+    var nine =  $routeParams.nine
     var location = $routeParams.location;
 
     $scope.clear = function () {
@@ -36,44 +40,45 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         $scope.nine=0;
         };
     $scope.clear()
+    //$scope.one=1;
     $scope.show_one = function (refer) {
         console.log(refer);
         $scope.clear()
         if (refer == "one") {
             $scope.one = 1;
-            $scope.class_one = "ative";
+            $scope.class_one = "active";
         }
         if (refer == "two") {
             $scope.two = 1;
-            $scope.class_two = "ative";
+            $scope.class_two = "active";
         }
         if (refer == "three") {
             $scope.three = 1;
-            $scope.class_three = "ative";
+            $scope.class_three = "active";
         }
         if (refer == "four") {
             $scope.four = 1;
-            $scope.class_four = "ative"
+            $scope.class_four = "active"
         }
         if (refer == "five") {
             $scope.five = 1;
-            $scope.class_five = "ative"
+            $scope.class_five = "active"
         }
         if (refer == "six") {
             $scope.six = 1;
-            $scope.class_six = "ative"
+            $scope.class_six = "active"
         }
         if (refer == "seven") {
             $scope.seven = 1;
-            $scope.class_seven = "ative"
+            $scope.class_seven = "active"
         }
         if (refer == "eight") {
             $scope.eight = 1;
-            $scope.class_eight = "ative"
+            $scope.class_eight = "active"
         }
         if (refer == "nine") {
             $scope.nine = 1;
-            $scope.class_nine = "ative"
+            $scope.class_nine = "active"
         }
     };
     if (one) { $scope.show_one('one'); $('#one').addClass('active') }
@@ -1120,7 +1125,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
     $scope.fetch_mutation_details = function () {
         var page = 1;
         switch (location) {
-            case 'Seed':
+            case "Seed":
                 {
                     $http({
                         url:base_url+ '/api/mutation_summary_seed',
@@ -1187,13 +1192,14 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                     })
                     break; 
                 }*/
-            case 'UTR3':
+            case "3'UTR":
                 {
                     $http({
                         url:base_url+ '/api/mutation_summary_utr3',
                         method: 'GET',
                         params: { mut_id: $scope.query_mutation }
                     }).then(function (response) {
+                        console.log("mutation detail in UTR3")
                         console.log(response)
                         $scope.initial = 0;
                         $scope.mutation_summary_list = response.data.mutation_utr3_list;

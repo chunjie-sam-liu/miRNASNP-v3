@@ -108,13 +108,15 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 }*/
                 var snp_in_seed=0
                 var snp_in_mature=0
-                var mutation_in_seed=0
-                var mutation_in_mature=0
+                var drv_in_seed=0
+                var drv_in_mature=0
                 for(var i=0;i<$scope.mirna_summary_list.length;i++){
                     snp_in_seed+=Number($scope.mirna_summary_list[i].snp_in_seed)
                     snp_in_mature+=Number($scope.mirna_summary_list[i].snp_in_mature)
-                    mutation_in_seed+=$scope.mirna_summary_list[i].clinvar_in_seed+$scope.mirna_summary_list[i].cosmic_in_seed
-                    mutation_in_mature+=$scope.mirna_summary_list[i].clinvar_in_mature+$scope.mirna_summary_list[i].cosmic_in_mature
+                    drv_in_seed+=Number($scope.mirna_summary_list[i].drv_in_seed)
+                    drv_in_mature+=Number($scope.mirna_summary_list[i].drv_in_mature)
+                    //mutation_in_seed+=$scope.mirna_summary_list[i].clinvar_in_seed+$scope.mirna_summary_list[i].cosmic_in_seed
+                    //mutation_in_mature+=$scope.mirna_summary_list[i].clinvar_in_mature+$scope.mirna_summary_list[i].cosmic_in_mature
                 }
                 if($scope.mirna_summary_list.length>1){
                     $scope.mirna_table=1
@@ -124,8 +126,10 @@ function MirnaController($scope,$routeParams,$http,$filter,$document,miRNASNP3Se
                 $scope.mirna_summary_alias=$scope.mirna_summary_list[0]
                 $scope.mirna_summary_alias.snp_in_seed=snp_in_seed
                 $scope.mirna_summary_alias.snp_in_mature=snp_in_mature
-                $scope.mirna_summary_alias.variation_in_seed=mutation_in_seed
-                $scope.mirna_summary_alias.variation_in_mature=mutation_in_mature
+                $scope.mirna_summary_alias.drv_in_seed=drv_in_seed
+                $scope.mirna_summary_alias.drv_in_mature=drv_in_mature
+                //$scope.mirna_summary_alias.variation_in_seed=mutation_in_seed
+                //$scope.mirna_summary_alias.variation_in_mature=mutation_in_mature
             });
     };
     $scope.fetch_mirna_details();

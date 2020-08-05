@@ -252,8 +252,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             });
     }
 
-    if(location=='Seed'){$scope.fetch_snp_details_seed();}
-    if(location=='UTR3'){$scope.fetch_snp_detail_utr();}
+    if(location=="Seed"){$scope.fetch_snp_details_seed();}
+    if(location=="UTR3"|location=="3'UTR"){$scope.fetch_snp_detail_utr();}
 
     $scope.fetch_target_gain = function (page) {
         console.log("fetch_target_gain");
@@ -1026,6 +1026,8 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     var max_end = Number($scope.ld_list[0]._id.snp_position )+ 250000;
                     $scope.snp_line=(Number($scope.ld_list[0]._id.snp_position)-min_start)/500-20;
                     $scope.tag_line=$scope.snp_line;
+                    console.log("tag_line")
+                    console.log($scope.tag_line)
                     for (var p=0;p<ld_region_all.length;p++){
                         ld_array_line = {};
                         ld_array_line['id'] = p;
