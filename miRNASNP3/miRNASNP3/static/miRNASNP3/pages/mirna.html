@@ -273,19 +273,45 @@
                                 </div-->
                                 <div class="panel panel-primary"  ng-show="mirna_nci60_show">
                                         <div class="panel-heading" style="height: 32px;">
-                                            <strong>Pearson correlation between drug and miRNA in NCI60</strong>
+                                            <strong>Pearson correlation between small drug and miRNA</strong>
                                         </div>
                                         <div class="panel-body">
                                             <div class="scrollable pre-scrollable">
                                                 <table style="text-align: center" ts-wrapper id="mirna-ccle-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" style="height:150px;display:block;overflow:scroll">
                                                     <tr>
-                                            <th>NSC ID</th>
+                                            <th>PubChem SID
+                                                <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                          data-trigger="hover"
+                                          data-content="This is the PubChem substance ID number."
+                                          style="color: #5bc0de"></span>
+                                            </th>
+                                            <th>NSC #
+                                                <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                          data-trigger="hover"
+                                          data-content="Cancer Chemotherapy National Service Center (NSC) number."
+                                          style="color: #5bc0de"></span>
+                                            </th>
+                                            <th>Drug name
+                                                <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                          data-trigger="hover"
+                                          data-content="The most commonly used name for this compound. In many cases there is no name. In some the chemical formula is used for the name."
+                                          style="color: #5bc0de"></span>
+                                            </th>
+                                            <th>FDA status
+                                                <span class="glyphicon glyphicon-question-sign" data-toggle="popover" data-container="body"
+                                          data-trigger="hover"
+                                          data-content="For those compounds that have been accepted for a clinical trail the status with be pending approval."
+                                          style="color: #5bc0de"></span>
+                                            </th>
                                             <th>Pearson corr.</th>
                                             <!--th>P-value</th-->
                                             <th>FDR</th>
                                                     </tr>
                                         <tr ng-repeat="v in mirna_nci60">
-                                            <td><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/compound/{$v.pubchem$}">{$v.NSC$}</a></td>
+                                            <td><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/substance/{$v.pubchem$}">{$v.drug_name[0].pubchem_sid$}</a></td>
+                                            <td>{$v.drug_name[0].nsc_id$}</td>
+                                            <td>{$v.drug_name[0].drug_name$}</td>
+                                            <td>{$v.drug_name[0].fda_status$}</td>
                                             <td>{$v.cor$}</td>
                                             <!--td>{$v.pv$}</td-->
                                             <td>{$v.fdr$}</td>
@@ -323,10 +349,10 @@
                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                     </span>
                 </th>
-                <th style="width:10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                <th style="width: 10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                <th style="width: 10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                <th style="width:10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                <th style="width: 10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                <th style="width: 10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                <th style="width: 10%">Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                 <th style="width: 10%">Predict</th>
             </tr>
             </thead>
@@ -411,10 +437,10 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA-gene validated by experiment.">
                         </span>
             </th>
-            <th style="width:10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-            <th style="width:10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-            <th style="width:10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-            <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th style="width:10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width:10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width:10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
             <th style="width: 8%">Predict</th>
         </thead>
         <tbody>
@@ -502,10 +528,10 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                 </span>
             </th>
-            <th>Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-            <th>Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-            <th>Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-            <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th>Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th>Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
             <th>Predict</th>
         </tr>
         </thead>
@@ -591,10 +617,10 @@
                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" data-content="miRNA-gene validated by experiment.">
                         </span>
             </th>
-            <th style="width: 10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-            <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-            <th style="width:10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-            <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th style="width: 10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width: 10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+            <th style="width:10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+            <th>Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
             <th style="width: 8%">Predict</th>
         </thead>
         <tbody>
@@ -738,7 +764,7 @@
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
-                            <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                            <th rowspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
                             <th  colspan="2" class="success" style="width: 50%">Start</th>
                             <th colspan="3" class="success" style="width: 50%">End</th>
                         </tr>
@@ -747,7 +773,7 @@
                             <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                         </tr>
                         <tr>
-                                <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                                <th rowspan="9"><a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a></th>
                                 <th colspan="2" class="success" style="width: 50%">Start</th>
                                 <th colspan="3" class="success" style="width: 50%">End</th>
                             </tr>
@@ -777,7 +803,7 @@
                                 <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                             </tr>
                             <tr>
-                                <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                                <td colspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> score
                                     <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                                 data-content="TargerScan score predicted by miRmap."></span>
                                 </td>
@@ -845,7 +871,7 @@
                             <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                         </tr>
                         <tr>
-                                <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                                <th rowspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
                                 <th  colspan="2" class="success" style="width: 50%">Start</th>
                                 <th colspan="3" class="success" style="width: 50%">End</th>
                             </tr>
@@ -854,7 +880,7 @@
                                 <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                             </tr>
                             <tr>
-                                    <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                                    <th rowspan="9"><a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a></th>
                                     <th colspan="2" class="success" style="width: 50%">Start</th>
                                     <th colspan="3" class="success" style="width: 50%">End</th>
                                 </tr>
@@ -884,7 +910,7 @@
                                     <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                                    <td colspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> score
                                         <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                                     data-content="TargerScan score predicted by miRmap."></span>
                                     </td>

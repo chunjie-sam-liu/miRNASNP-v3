@@ -140,10 +140,10 @@
                             data-content="Gene average expression from TCGA. Click number to pop out gene expression in each cancer type.">
                         </span>
                     </th>
-                    <th>Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th>Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th>Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th>Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th>Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th>Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th>Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th>Predict</th>
                 </tr>
             </thead>
@@ -200,11 +200,25 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_seedgain" page-size=15 total="mut_seed_gain_count" scroll-top="true"
-        hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
-        text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
-        text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
-        active-class="active" disabled-class="disabled" paging-action="fetch_target_gain_mut(page)"></div>
+    <div paging 
+            page="currentPage_seedgain_mut" 
+            page-size=15 
+            total="mut_seed_gain_count" 
+            scroll-top="true"
+            hide-if-empty="true" 
+            show-prev-next="true" 
+            show-first-last="true" 
+            text-title-page="Page {page} Hover Over"
+            text-title-first="First hover" 
+            text-title-last="Last hover" 
+            text-title-next="Next hover"
+            text-title-prev="Prev hover" 
+            show-prev-next="true" 
+            show-first-last="true" 
+            ul-class="pagination"
+            active-class="active" 
+            disabled-class="disabled" 
+            paging-action="fetch_target_gain_mut(page)"></div>
 </div>
 
 <div ng-show="three">
@@ -250,10 +264,10 @@
                             data-content="miRNA-gene validated by experiment.">
                         </span>
                     </th>
-                    <th>Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th>Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th>Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th>Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th>Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th>Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th>Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th style="width: 10%">Predict</th>
             </thead>
             <tbody>
@@ -323,7 +337,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_seedloss" page-size=15 total="mut_seed_loss_count" scroll-top="true"
+    <div paging page="currentPage_seedloss_mut" page-size=15 total="mut_seed_loss_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -355,10 +369,10 @@
                     </th>
 
 
-                    <th style="width:10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width:10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width:10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th style="width:10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width:10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width:10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width:10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width:10%">Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th style="width: 10%">Predict</th>
             </thead>
             <tbody>
@@ -414,7 +428,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_utrgain" page-size=15 total="mut_utr_gain_count" scroll-top="true"
+    <div paging page="currentPage_utrgain_mut" page-size=15 total="mut_utr_gain_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -458,10 +472,10 @@
                             data-content="miRNA-gene validated by experiment.">
                         </span>
                     </th>
-                    <th style="width: 10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th style="width: 10%">Predict</th>
             </thead>
             <tbody>
@@ -532,7 +546,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_utrloss" page-size=15 total="mut_utr_loss_count" scroll-top="true"
+    <div paging page="currentPage_utrloss_mut" page-size=15 total="mut_utr_loss_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -567,10 +581,10 @@
                                                             ">
                         </span>
                     </th>
-                    <th>Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th>Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th>Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th>Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th>Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th>Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th>Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th>Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th>Predict</th>
                 </tr>
             </thead>
@@ -626,7 +640,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_seedgain" page-size=15 total="snp_seed_gain_count" scroll-top="true"
+    <div paging page="currentPage_seedgain_snv" page-size=15 total="snp_seed_gain_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -676,10 +690,10 @@
                             data-content="miRNA-gene validated by experiment.">
                         </span>
                     </th>
-                    <th style="width: 10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th style="width: 10%">Predict</th>
             </thead>
             <tbody>
@@ -749,7 +763,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_seedloss" page-size=15 total="snp_seed_loss_count" scroll-top="true"
+    <div paging page="currentPage_seedloss_snv" page-size=15 total="snp_seed_loss_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -781,10 +795,10 @@
                         </span>
                     </th>
 
-                    <th style="width: 10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th style="width: 10%">Predict</th>
             </thead>
             <tbody>
@@ -839,7 +853,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_utrgain" page-size=15 total="snv_utr_gain_count" scroll-top="true"
+    <div paging page="currentPage_utrgain_snv" page-size=15 total="snv_utr_gain_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -883,10 +897,10 @@
                             data-content="miRNA-gene validated by experiment.">
                         </span>
                     </th>
-                    <th style="width:10%">Binding start<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="https://mirmap.ezlab.org/">miRmap</a>)</th>
-                    <th style="width: 10%">Binding start<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
-                    <th style="width: 10%">Binding end<br>(<a href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width:10%">Binding start<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>)</th>
+                    <th style="width: 10%">Binding start<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
+                    <th style="width: 10%">Binding end<br>(<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>)</th>
                     <th style="width: 10%">Predict</th>
             </thead>
             <tbody>
@@ -956,7 +970,7 @@
             </tbody>
         </table>
     </div>
-    <div paging page="currentPage_utrloss" page-size=15 total="snv_utr_loss_count" scroll-top="true"
+    <div paging page="currentPage_utrloss_snv" page-size=15 total="snv_utr_loss_count" scroll-top="true"
         hide-if-empty="true" show-prev-next="true" show-first-last="true" text-title-page="Page {page} Hover Over"
         text-title-first="First hover" text-title-last="Last hover" text-title-next="Next hover"
         text-title-prev="Prev hover" show-prev-next="true" show-first-last="true" ul-class="pagination"
@@ -1004,7 +1018,7 @@
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
-                        <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                        <th rowspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
                         <th colspan="2" class="success" style="width: 50%">Start</th>
                         <th colspan="3" class="success" style="width: 50%">End</th>
                     </tr>
@@ -1013,7 +1027,7 @@
                         <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                     </tr>
                     <tr>
-                        <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                        <th rowspan="9"><a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a></th>
                         <th colspan="2" class="success" style="width: 50%">Start</th>
                         <th colspan="3" class="success" style="width: 50%">End</th>
                     </tr>
@@ -1044,7 +1058,7 @@
                         <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                        <td colspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> score
                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                         data-content="TargerScan score predicted by miRmap."></span>
                         </td>
@@ -1116,7 +1130,7 @@
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
-                        <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                        <th rowspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
                         <th colspan="2" class="success" style="width: 50%">Start</th>
                         <th colspan="3" class="success" style="width: 50%">End</th>
                     </tr>
@@ -1125,7 +1139,7 @@
                         <td colspan="2" style="width: 50%">{$ modal_site.site_info.tgs_end $}</td>
                     </tr>
                     <tr>
-                        <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                        <th rowspan="9"><a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a></th>
                         <th colspan="2" class="success" style="width: 50%">Start</th>
                         <th colspan="3" class="success" style="width: 50%">End</th>
                     </tr>
@@ -1156,7 +1170,7 @@
                         <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                        <td colspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> score
                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                         data-content="TargerScan score predicted by miRmap."></span>
                         </td>
@@ -1224,7 +1238,7 @@
                         <td colspan="3" align="center">{$modal_site.utr_info.position$}</td>
                     </tr>
                     <tr>
-                        <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                        <th rowspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
                         <th  colspan="2" class="success" style="width: 50%">Start</th>
                         <th colspan="3" class="success" style="width: 50%">End</th>
                     </tr>
@@ -1233,7 +1247,7 @@
                         <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                     </tr>
                     <tr>
-                        <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                        <th rowspan="9"><a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a></th>
                         <th colspan="2" class="success" style="width: 50%">Start</th>
                         <th colspan="3" class="success" style="width: 50%">End</th>
                     </tr>
@@ -1263,7 +1277,7 @@
                         <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                        <td colspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> score
                             <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                         data-content="TargerScan score predicted by miRmap."></span>
                         </td>
@@ -1328,7 +1342,7 @@
                             <td colspan="3" align="center">{$modal_site.utr_info.chr$}:{$modal_site.utr_info.start$}-{$modal_site.utr_info.end$}[{$modal_site.utr_info.strand$}]({$modal_site.site_info.truncate_start$}-{$modal_site.site_info.truncate_end$})</td>
                         </tr>
                         <tr>
-                            <th rowspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
+                            <th rowspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a></th>
                             <th  colspan="2" class="success" style="width: 50%">Start</th>
                             <th colspan="3" class="success" style="width: 50%">End</th>
                         </tr>
@@ -1337,7 +1351,7 @@
                             <td style="width: 50%" colspan="3">{$ modal_site.site_info.tgs_end $}</td>
                         </tr>
                         <tr>
-                            <th rowspan="9"><a href="https://mirmap.ezlab.org/">miRmap</a></th>
+                            <th rowspan="9"><a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a></th>
                             <th colspan="2" class="success" style="width: 50%">Start</th>
                             <th colspan="3" class="success" style="width: 50%">End</th>
                         </tr>
@@ -1367,7 +1381,7 @@
                             <td colspan="3" align="center">{$modal_site.site_info.dg_open$}</td>
                         </tr>
                         <tr>
-                            <td colspan="2"><a href="http://www.targetscan.org/vert_72/">TargetScan</a> score
+                            <td colspan="2"><a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> score
                                 <span class="glyphicon glyphicon-question-sign" data-placement="top"  data-container="body" data-toggle="popover" style="color: dodgerblue" data-trigger="hover" 
                             data-content="TargerScan score predicted by miRmap."></span>
                             </td>
