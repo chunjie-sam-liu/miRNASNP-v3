@@ -474,7 +474,8 @@ mut_gainsite_info={
     'mut_info':fields.Nested(mut_info),
     'site_info':fields.Nested(site_info),
     'utr_info':fields.Nested(utr_info),
-    'gene_expression':fields.Nested(gene_expression)
+    'gene_expression':fields.Nested(gene_expression),
+    'mirna_expression':fields.Nested(mirna_expression)
 }
 mut_seed_gain_list={
     'mut_seed_gain_list':fields.Nested(mut_gainsite_info),
@@ -491,6 +492,7 @@ class MutSeedGain(Resource):
         parser.add_argument('page', type=int, default=1)
         args = parser.parse_args()
         mirna_id = args['mirna_id']
+        page=1
         page = args['page']
         per_page = 15
         record_skip = (int(page) - 1) * per_page
@@ -504,16 +506,23 @@ class MutSeedGain(Resource):
         match={'$match':condition}
         print("mut_seed_gain")
         print(condition)
-        lookup = {'$lookup': {
+        lookup_gene = {'$lookup': {
             'from': 'gene_expression',
             'localField': 'gene_symbol',
             'foreignField': 'symbol',
             'as': 'gene_expression'
         }}
+        lookup_mirna = {'$lookup': {
+            'from': 'mirna_expression',
+            'localField': 'mirna_id',
+            'foreignField': 'mir_id',
+            'as': 'mirna_expression'
+
+        }}
         skip={'$skip':record_skip}
         limit={'$limit':per_page}
 
-        pipline=[match,skip,limit,lookup]
+        pipline=[match,skip,limit,lookup_gene,lookup_mirna]
         tysnv_mut_seed_gain_list=mongo.db.seed_cosmic_gain_redundancy.aggregate(pipline)
         tysnv_mut_seed_gain_count=mongo.db.seed_cosmic_gain_redundancy.find(condition).count()
         indel_mut_seed_gain_list=mongo.db.indel_seed_mutation_gain_redundancy.aggregate(pipline)
@@ -809,7 +818,8 @@ mut_gain_utr_site={
     'mut_info':fields.Nested(mut_info),
     'site_info':fields.Nested(utr_site_info),
     'utr_info':fields.Nested(utr_info_line),
-    'gene_expression':fields.Nested(gene_expression)
+    'gene_expression':fields.Nested(gene_expression),
+    'mirna_expression':fields.Nested(mirna_expression)
 }
 
 mut_utr_gain={
@@ -1068,12 +1078,12 @@ class MirInfo(Resource):
 
 api.add_resource(MirInfo,'/api/mirinfo')
 
-ccle_drug_item={
-    'mature-mirna':fields.String,
-    'cor':fields.String,
-    'pv':fields.String,
-    'Compound':fields.String,
-    'fdr':fields.String
+drug_name={
+    'pubchem_sid':fields.String,
+    'drug_name':fields.String,
+    'fda_status':fields.String,
+    'nsc_id':fields.String,
+    'machanism_of_action':fields.String
 }
 
 nci60_item={
@@ -1082,8 +1092,10 @@ nci60_item={
     'pubchem':fields.String,
     'cor':fields.String,
     'pv':fields.String,
-    'fdr':fields.String
+    'fdr':fields.String,
+    'drug_name':fields.Nested(drug_name)
 }
+
 drug_cor={
     'nci60_list':fields.Nested(nci60_item),
     'nci60_count':fields.Integer
@@ -1098,6 +1110,7 @@ class MirDrug(Resource):
         mature_id = args['mature_id']
         condition_ccle = {}
         condition_nci60={}
+        pipeline=[]
         if mature_id:
             condition_nci60['miRNA']=mature_id
             '''
@@ -1110,9 +1123,17 @@ class MirDrug(Resource):
              #
             #ccle_list=mongo.db.ccle_drug_correlation.find(condition_ccle)
             #ccle_count=mongo.db.ccle_drug_correlation.find(condition_ccle).count()
+            lookup_name = {'$lookup': {
+                'from': 'nscid_psid',
+                'localField': 'NSC',
+                'foreignField': 'nsc_id',
+                'as': 'drug_name'
+            }}
             print(condition_nci60)
-            nci60_list=mongo.db.nci60_drug_correlation.find(condition_nci60)
-            nci60_count=mongo.db.nci60_drug_correlation.find(condition_nci60).count()
+            match = {'$match': condition_nci60}
+            pipeline = [match,lookup_name]
+            nci60_list=mongo.db.nci60_drug_correlation.aggregate(pipeline)
+            nci60_count=1
         else:
             nci60_list=[]
             nci60_count=0
@@ -1643,6 +1664,7 @@ class LDinfo(Resource):
             'as':'catalog_info'
         }}
         pipline = [match,group,lookup]
+        print(pipline)
         ld_list = mongo.db.ld_region.aggregate(pipline)
         ld_item_lenth = mongo.db.ld_region.find({'snp_id':search_ids}).count()
         return {'ld_list':list(ld_list),'ld_item_lenth':ld_item_lenth}
@@ -1689,7 +1711,8 @@ mutation_summary_list={
     'mutation_premir_list':fields.Nested(mutation_line),
     'mutation_premir_count':fields.Nested(count_group),
     'mutation_utr3_list':fields.Nested(mutation_line),
-    'mutation_utr3_count':fields.Nested(count_group),
+    #'mutation_utr3_count':fields.Nested(count_group),
+    'mutation_utr3_count':fields.Integer,
     'mutation_summary_list':fields.Nested(mutation_line),
     'mutation_summary_count':fields.Nested(count_group)
 }
@@ -2159,11 +2182,13 @@ class MutationSummaryUtr3(Resource):
         if args['resource']!='All' and args['resource']:
             condition['source']=args['resource']
         if args['histology'] and args['histology'] != 'All':
-            histology_dict['disease_pubmed.disease']={'$regex':args['histology'],'$options':'$i'}
+            #histology_dict['disease_pubmed.disease']={'$regex':args['histology'],'$options':'$i'}
+            condition['disease_pubmed.disease']={'$regex':args['histology'],'$options':'$i'}
             match_histology={'$match':histology_dict}
         if args['pathology'] and args['pathology']!='All':
-            pathology_dict['disease_pubmed.disease']={'$regex':args['pathology'],'$options':'$i'}
-            match_pathology={'$match':pathology_dict}
+            #pathology_dict['disease_pubmed.disease']={'$regex':args['pathology'],'$options':'$i'}
+            condition['disease_pubmed.disease']={'$regex':args['pathology'],'$options':'$i'}
+            #match_pathology={'$match':pathology_dict}
         if args['mut_id']:
            # mut_id=args['mut_id']
            # if mut_id.startswith('COS') or re.match('[0-9]*',mut_id):
@@ -2172,11 +2197,13 @@ class MutationSummaryUtr3(Resource):
         #    condition['snp_rela']=args['snp_rela']
         #if args['pubmed_id']:
         #    condition['pubmed_id']={'$exists':True}
+        '''
         match_condition={'$match':condition}
         #skip={'$skip':record_skip}
         limit={'$limit':per_page}
         skip={'$skip':record_skip}
         count_group={'$group':{'_id':'null','count':{'$sum':1}}}
+        
         if condition:
             pipline.append(match_condition)
         if histology_dict:
@@ -2203,8 +2230,10 @@ class MutationSummaryUtr3(Resource):
         #else:
         #    mutation_summary_list=mongo.db.mutation_summary_addtarget.find(condition).skip(record_skip).limit(per_page)      
         mutation_utr3_count=mongo.db.drv_in_utr_v3_redundancy.aggregate(pipline_count)
-       
-        return{'mutation_utr3_list':list(mutation_utr3_list),'mutation_utr3_count':list(mutation_utr3_count)}
+       '''
+        mutation_utr3_list=mongo.db.drv_in_utr_v3_redundancy.find(condition).skip(record_skip).limit(per_page)
+        mutation_utr3_count=mongo.db.drv_in_utr_v3_redundancy.find(condition).count()
+        return{'mutation_utr3_list':list(mutation_utr3_list),'mutation_utr3_count':mutation_utr3_count}
 
 api.add_resource(MutationSummaryUtr3,'/api/mutation_summary_utr3')
 
@@ -2642,6 +2671,9 @@ class SnpSummaryUtr3(Resource):
         if args['gene'] or args['snp_id'] or args['identifier'] or args['ldsnp'] or (args['gmaf'] !='All' and args['gmaf']):
             snp_utr3_list=mongo.db.snp_in_utr_v2.find(condition).skip(record_skip).limit(per_page)
             snp_utr3_count=mongo.db.snp_in_utr_v2.find(condition).count()
+        elif int(page)<=50000:
+            snp_utr3_list=mongo.db.snp_in_utr_v2.find(condition).skip(record_skip).limit(per_page)
+            snp_utr3_count=mongo.db.snp_in_utr_v2.find(condition).count()
         else:
             condition['item_number']={"$gt":str(record_skip)}
             snp_utr3_list=mongo.db.snp_in_utr_v2.find(condition).limit(per_page)
@@ -2842,8 +2874,8 @@ class SnpDistribute(Resource):
         condition={}
         if args['mirna_id']:
             condition['mature_id']=args['mirna_id']
-            snp_distribute_list=mongo.db.var_distribution.find(condition)
-            snp_distribute_count=mongo.db.var_distribution.find(condition).count()
+            snp_distribute_list=mongo.db.variation_distribute_deduplicate.find(condition)
+            snp_distribute_count=mongo.db.variation_distribute_deduplicate.find(condition).count()
         else:
             snp_distribute_list=[]
             snp_distribute_count=0
