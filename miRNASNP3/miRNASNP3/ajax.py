@@ -938,15 +938,15 @@ class MutUtrLoss(Resource):
         if args['mut_id'].lower().startswith('cos'):
             tysnv_mut_utr_loss_list=mongo.db.utr_cosmic_loss_redundancy.aggregate(pipline)
             tysnv_mut_utr_loss_count=mongo.db.utr_cosmic_loss_redundancy.find(condition).count()
-            indel_mut_utr_loss_list=mongo.db.utr_cosmic_loss_indel_redundancy.aggregate(pipline)
-            indel_mut_utr_loss_count=mongo.db.utr_cosmic_loss_indel_redundancy.find(condition).count()
+            indel_mut_utr_loss_list=mongo.db.utr_cosmic_loss_indel_v2_redundancy.aggregate(pipline)
+            indel_mut_utr_loss_count=mongo.db.utr_cosmic_loss_indel_v2_redundancy.find(condition).count()
             mut_utr_loss_list=list(tysnv_mut_utr_loss_list)+list(indel_mut_utr_loss_list)
             mut_utr_loss_count=tysnv_mut_utr_loss_count+indel_mut_utr_loss_count
         else:
             tysnv_mut_utr_loss_list=mongo.db.utr_clinvar_loss_redundancy.aggregate(pipline)
             tysnv_mut_utr_loss_count=mongo.db.utr_clinvar_loss_redundancy.find(condition).count()
-            indel_mut_utr_loss_list=mongo.db.utr_clinvar_loss_indel_redundancy.aggregate(pipline)
-            indel_mut_utr_loss_count=mongo.db.utr_clinvar_loss_indel_redundancy.find(condition).count()
+            indel_mut_utr_loss_list=mongo.db.utr_clinvar_loss_indel_v2_redundancy.aggregate(pipline)
+            indel_mut_utr_loss_count=mongo.db.utr_clinvar_loss_indel_v2_redundancy.find(condition).count()
             mut_utr_loss_list=list(tysnv_mut_utr_loss_list)+list(indel_mut_utr_loss_list)
             mut_utr_loss_count=tysnv_mut_utr_loss_count+indel_mut_utr_loss_count
         return {'mut_utr_loss_list':list(mut_utr_loss_list),'mut_utr_loss_count':mut_utr_loss_count}
