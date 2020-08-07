@@ -767,14 +767,16 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             if(site.strand=='-'){
                 var align8=site.site_info.align8;
                 var distance=align8.length-site.mut_info.distance-1;
-                var curalt_len=site.mut_info.alt.length
+                var curalt_len=site.mut_info.curalt.length
                 $scope.align8_pre=align8.substring(0,distance);
                 $scope.align8_letter=align8.substring(distance,distance+curalt_len);
                 $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
             }else{
+                console.log(site)
                 var align8=site.site_info.align8;
-                var distance=align8.length-site.mut_info.distance-1;
-                var curalt_len=site.snp_info.alt.length
+                //var distance=align8.length-site.mut_info.distance-1;
+                var distance=align8.length-site.mut_info.distance
+                var curalt_len=site.mut_info.curalt.length
                 $scope.align8_pre=align8.substring(0,distance-curalt_len);
                 $scope.align8_letter=align8.substring(distance-curalt_len,distance);
                 $scope.align8_later=align8.substring(distance,align8.length);
