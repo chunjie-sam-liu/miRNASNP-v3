@@ -310,7 +310,7 @@
                                         <tr ng-repeat="v in mirna_nci60">
                                             <td><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/substance/{$v.pubchem$}">{$v.drug_name[0].pubchem_sid$}</a></td>
                                             <td>{$v.drug_name[0].nsc_id$}</td>
-                                            <td>{$v.drug_name[0].drug_name$}</td>
+                                            <td style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$v.drug_name[0].drug_name$}'>{$v.drug_name[0].drug_name$}</td>
                                             <td>{$v.drug_name[0].fda_status$}</td>
                                             <td>{$v.cor$}</td>
                                             <!--td>{$v.pv$}</td-->

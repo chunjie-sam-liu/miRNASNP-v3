@@ -263,9 +263,11 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 }).then(
                     function (response) {
                         console.log(response);
-                        $scope.snp_seed_loss_list = response.data.snp_seed_loss_list;
-                        $scope.snp_seed_loss_count = response.data.snp_seed_loss_count + 1;
-                        var site_array = $scope.snp_seed_loss_list
+                        $scope.mut_seed_loss_list = response.data.mut_seed_loss_list;
+                        $scope.mut_seed_loss_count = response.data.mut_seed_loss_count + 1;
+                        var site_array = $scope.mut_seed_loss_list
+                        console.log("site_array")
+                        console.log(site_array)
                         for (var i = 0; i < site_array.length; i++) {
                             site_array[i].has_cor = 1
                             if (site_array[i].expr_corelation) {
@@ -290,6 +292,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                             site_array[i].site_info.tgs_au = Number(site_array[i].site_info.tgs_au).toFixed(2)
 
                         }
+                        console.log("update loss for query gene")
                     })
             }
         });
