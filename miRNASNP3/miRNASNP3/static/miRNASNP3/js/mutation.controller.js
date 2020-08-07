@@ -997,14 +997,14 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }else{
             var curalt_len=site.mut_info.curalt.length
             if(site.utr_info.strand=='-'){
-                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+1-curalt_len+3)
-                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3-curalt_len+1,Number(distance)+3+1)
-                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)-curalt_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3-curalt_len,Number(distance)+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3,site.site_info.align6.length)
                 console.log($scope.modal_site.site_info.alt_display)
             }else{
-                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3+1)
-                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3+1,Number(distance)+1+curalt_len+3)
-                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+curalt_len,site.site_info.align6.length)
                 console.log($scope.modal_site.site_info.alt_display)
             }
         }
