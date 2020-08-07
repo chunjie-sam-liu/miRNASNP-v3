@@ -277,23 +277,6 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                     $scope.snp_seed_gain_list=response.data.snp_seed_gain_list
                     $scope.snp_seed_gain_count=response.data.snp_seed_gain_count
                     var site_array=$scope.snp_seed_gain_list
-                   /*var site_array = response.data.snp_seed_gain_list;
-                    $scope.snp_seed_gain_count=0
-                    for(var i=0;i<response.data.snp_seed_gain_count.length;i++){
-                        $scope.snp_seed_count+=response.data.snp_seed_gain_count[i].count
-                    }
-                for(var i=0;i<site_array.length;i++){
-                    $scope.snp_seed_gain_list[i]=site_array[i]._id
-                    var ref_number=$scope.snp_seed_gain_list[i].ref_seq[0].split('_')[1]
-                    var acc=$scope.snp_seed_gain_list[i].ref_seq[0]
-                    for(var i=0;i<$scope.snp_seed_gain_list[i].ref_seq.length;i++){
-                        var ref_number_cur=$scope.snp_seed_gain_list[i].ref_seq[i].split('_')[1]
-                        if(Number(ref_number_cur)<Number(ref_number)){
-                            ref_number=ref_number_cur
-                            acc=$scope.snp_seed_gain_list[i].ref_seq[i]
-                        }
-                    }
-                    site_array[i].utr_info['acc']=acc*/
                     for(var i=0;i<site_array.length;i++){
                     site_array[i].has_cor=1
                     if(site_array[i].expr_corelation){

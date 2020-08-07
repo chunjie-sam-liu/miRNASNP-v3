@@ -529,7 +529,7 @@
                         <a href="#!/premir_detail?search_ids={$v.pre_id$}"
                             style="color: red">{$v.pre_id$}</td>
                     <td>
-                        <span ng-if="v.source=='ClinVar'"><a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={$v.mut_id$}">{$v.source$}:{$ v.mut_id $}</a>
+                        <span ng-if="v.source=='ClinVar'"><a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/?term={$v.mut_id$}">{$v.source$}:{$ v.mut_id $}</a>
                         </span>
                         <!--span ng-if="v.resource=='ClinVar'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1"
@@ -537,7 +537,7 @@
                         </span-->
 
                         <span ng-if="v.source=='COSMIC'">
-                              <a href="https://cancer.sanger.ac.uk/cosmic/search?q={$ v.mut_id $}">{$ v.mut_id $}</a>
+                              <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/search?q={$ v.mut_id $}">{$ v.mut_id $}</a>
                         </span>
                         <!--span ng-if="v.resource=='COSMIC'&&!v.snp_id && !v.is_tag && !v.is_ld">
                             <a href="#!/mutation?mut_id={$v.mut_id$}&location=pre-miRNA&one=1" style="color: red">{$v.mut_id $}</a>
@@ -551,7 +551,7 @@
                         <span ng-if="v.source=='GWAS'">
                             <!--a href="https://www.ebi.ac.uk/gwas/variants/{$v.rela_tag_snp$}">tagSNP:{$ v.rela_tag_snp
                                 $}</a><br-->
-                                <a href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.mut_id$}" target="_blank">{$v.mut_id$}</a>
+                                <a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/?term={$v.mut_id$}" target="_blank">{$v.mut_id$}</a>
                         </span>
                         <!--span ng-if="!v.is_tag && !v.is_ld">
                 <a href="{$v.url$}" >{$v.resource$}:{$ v.mut_id $}</a>

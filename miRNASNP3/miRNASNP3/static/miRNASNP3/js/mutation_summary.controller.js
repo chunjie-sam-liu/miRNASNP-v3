@@ -435,7 +435,8 @@ function MutationSummaryController($scope,$routeParams,$http,$route,miRNASNP3Ser
                 console.log(response)
                 console.log(response.data.mutation_utr3_list)
                 $scope.utr3_list=response.data.mutation_utr3_list;
-                if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
+                //if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count[0].count;}
+                if(response.data.mutation_utr3_count.length!=0){$scope.utr3_count=response.data.mutation_utr3_count;}
                 else{$scope.utr3_nonitem=1}
                 console.log("utr count")
                 console.log(response.data.mutation_utr3_count.length)
