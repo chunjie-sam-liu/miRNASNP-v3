@@ -690,15 +690,16 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered table-hover table-condensed">
+                <table class="table table-bordered table-hover table-condensed" style="table-layout: fixed;">
                     <tr>
                         <th>miRNA</th>
                         <td colspan="2">{$modal_site.mirna_id$}</td>
                         <td colspan="3" align="center">{$modal_site.mir_seedchr$}:{$modal_site.mir_seedstart$}-{$modal_site.mir_seedend$}[{$modal_site.strand$}]<br>(seed region)</td>
                     </tr>
                     <tr>
-                        <th>SNP</th>
-                        <td colspan="2">{$modal_site.snp_info.snp_id$}({$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$})</td>
+                        <th style="width:28%">SNP</th>
+                        <td colspan="2" style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$}'>
+                            {$modal_site.snp_info.snp_id$}({$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$})</td>
                         <td colspan="3" align="center">{$modal_site.snp_info.chr$}:{$modal_site.snp_info.position$}</td>
                     </tr>
                     <tr>
@@ -767,7 +768,7 @@
                         <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
                     </tr>
                     <tr>
-                        <td class="warning" colspan="4">
+                        <td class="warning" colspan="5">
                             <span ng-if="target_gain">
                                     <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$align8_pre$}<span style="color: red"><strong>{$align8_letter$}</strong></span>{$align8_later$} 5'</pre>
                             </span>
@@ -794,7 +795,7 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered table-hover table-condensed">
+                    <table class="table table-bordered table-hover table-condensed" style="table-layout:fixed">
                         <tr>
                             <th>miRNA</th>
                             <td colspan="2">{$modal_site.mirna_id$}</td>
@@ -802,7 +803,8 @@
                         </tr>
                         <tr>
                             <th>SNP</th>
-                            <td colspan="2">{$modal_site.snp_info.snp_id$}({$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$})</td>
+                            <td colspan="2" style="overflow:hidden;text-overflow:ellipsis;white-space: nowrap;" title='{$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$}'>
+                                {$modal_site.snp_info.snp_id$}({$modal_site.snp_info.ref$}/{$modal_site.snp_info.curalt$})</td>
                             <td colspan="3" align="center">{$modal_site.snp_info.chr$}:{$modal_site.snp_info.position$}</td>
                         </tr>
                         <tr>
@@ -871,7 +873,7 @@
                             <td colspan="3" align="center">{$modal_site.site_info.prob_exac$}</td>
                         </tr>
                         <tr>
-                            <td class="warning" colspan="4">
+                            <td class="warning" colspan="5">
                                 <span ng-if="!modal_site.site_info.alt_display">
                                     <pre align="left">3'UTR: {$modal_site.site_info.align6$} 3'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$modal_site.site_info.align7$}<br>miRNA: {$modal_site.site_info.align8$} 5'</pre>
                                 </span>
