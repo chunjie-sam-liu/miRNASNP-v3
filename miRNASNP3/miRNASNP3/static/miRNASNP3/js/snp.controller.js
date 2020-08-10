@@ -735,12 +735,22 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.target_loss=0
         $scope.modal_site=site
         var d_start=Number(site.site_info.align_1.split(' ')[0])
+        
         var distance=Number(site.site_info.distance)-d_start+1
+
         if(site.snp_info.curalt.length==1){
-            $scope.align6_pre=site.site_info.align6.substring(0,Number(site.site_info.alt_start)+3)
-            $scope.align6_letter=site.site_info.align6.substring(Number(site.site_info.alt_start)+3,Number(site.site_info.alt_end)+3)
-            $scope.align6_later=site.site_info.align6.substring(Number(site.site_info.alt_end)+3,site.site_info.align6.length)
+            console.log("single curalt")
+            console.log(site)
+            if(site.utr_info.strand=='-'){var alt_start=site.site_info.alt_start-1}
+            else{var alt_start=site.site_info.alt_end-1}
+            $scope.align6_pre=site.site_info.align6.substring(0,Number(alt_start)+3)
+            console.log($scope.align6_pre)
+            $scope.align6_letter=site.site_info.align6.substring(Number(alt_start)+3,Number(alt_start)+4)
+            console.log($scope.align6_letter)
+            $scope.align6_later=site.site_info.align6.substring(Number(alt_start)+4,site.site_info.align6.length)
+            console.log($scope.align6_later)
             console.log($scope.modal_site.site_info.alt_display)
+           
         }else{
             var curalt_len=site.snp_info.curalt.length
             if(site.utr_info.strand=='-'){
@@ -749,10 +759,14 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
                 console.log($scope.modal_site.site_info.alt_display)
             }else{
+                /*
                 $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3+1)
                 $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3+1,Number(distance)+1+curalt_len+3)
                 $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
-                console.log($scope.modal_site.site_info.alt_display)
+                console.log($scope.modal_site.site_info.alt_display)*/
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+curalt_len,site.site_info.align6.length)
             }
         }
         
@@ -760,6 +774,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
 
     $scope.modal_loss_site_utr=function(site){
         $scope.modal_header="Target loss";
+        console.log(site)
         if(site.site_info.loc_start){site.site_info.alt_start=site.site_info.loc_start}
         if(site.site_info.loc_end){site.site_info.alt_start=site.site_info.loc_end}
         $scope.target_loss=1
@@ -767,12 +782,16 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.modal_site=site;
         var d_start=Number(site.site_info.align_1.split(' ')[0])
         if(site.site_info.distance==0){
-            site.site_info.distance=site.site_info.alt_start
+            //site.site_info.distance=site.site_info.alt_start
+            if(site.utr_info.strand=='-'){site.site_info.distance=site.site_info.alt_start-1}
+            else{site.site_info.distance=site.site_info.alt_end-1}
         }
         if(site.snp_info.ref.length==1){
-            var distance=Number(site.site_info.distance)-d_start
+            console.log(site)
+            var distance=Number(site.site_info.distance)-d_start+1
             $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
-            $scope.align6_letter=site.site_info.align6[distance+3]
+           // $scope.align6_letter=site.site_info.align6[distance+3]
+            $scope.align6_letter=site.site_info.align6.substring(Number(distance+3),Number(distance+4))
             $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
             $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)+3)
             $scope.align7_letter='X'
