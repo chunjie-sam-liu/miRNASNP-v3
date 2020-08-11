@@ -780,7 +780,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         $scope.modal_site=site
         var d_start=Number(site.site_info.align_1.split(' ')[0])
         var distance=Number(site.site_info.distance)-d_start+1
-        if(!site.site_info.distance&&!site.snp_info.distance){
+        if(!site.site_info.distance&&!(site.site_info.alt_start+site.site_info.alt_end)&&!site.snp_info.distance){
             console.log("over sequence")
             $scope.align6_pre=ite.site_info.align6
             $scope.align6_letter=''
@@ -855,7 +855,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             if(site.utr_info.strand=='-'){site.site_info.distance=site.site_info.alt_start-1}
             else{site.site_info.distance=site.site_info.alt_end-1}
         }
-        if(!site.site_info.distance&&!site.snp_info.distance){
+        if(!site.site_info.distance&&!(site.site_info.alt_start+site.site_info.alt_end)&&!site.snp_info.distance){
             console.log("over sequence")
             $scope.align6_pre=site.site_info.align6
             $scope.align6_letter=''

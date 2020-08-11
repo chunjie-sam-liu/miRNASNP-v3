@@ -757,6 +757,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         $scope.target_loss=0;
         $scope.modal_site=site;
         if(!site.mut_info.curalt){site.mut_info.curalt=site.mut_info.alt}
+        /*
         if(site.mut_info.curalt.length==1){
          var align8=site.site_info.align8;
 		var distance=align8.length-site.mut_info.distance-1;
@@ -781,7 +782,51 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align8_letter=align8.substring(distance-curalt_len,distance);
                 $scope.align8_later=align8.substring(distance,align8.length);
             }
-        }
+        }*/
+        if(site.mut_info.curalt.length==1&&site.mut_info.ref.length==1){
+            console.log("single polymophism")
+            var align8=site.site_info.align8;
+            var distance=align8.length-site.mut_info.distance-1;
+            $scope.align8_pre=align8.substring(0,distance);
+            $scope.align8_letter=align8[distance];
+            $scope.align8_later=align8.substring(distance+1,align8.length);
+            }
+            else if(site.mut_info.curalt.length>1&&site.mut_info.ref.length==1){
+                console.log("a insert")
+                if(site.strand=='-'){
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.mut_info.distance-1;
+                    var curalt_len=site.mut_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance);
+                    $scope.align8_letter=align8.substring(distance,distance+curalt_len);
+                    $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
+                }else{
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.mut_info.distance;
+                    var curalt_len=site.mut_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance-curalt_len);
+                    $scope.align8_letter=align8.substring(distance-curalt_len,distance);
+                    $scope.align8_later=align8.substring(distance,align8.length);
+                }
+            }
+            else if(site.mut_info.curalt.length==1&&site.mut_info.ref.length>1){
+                console.log("a delete")
+                if(site.strand=='-'){
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.mut_info.distance-1;
+                    var curalt_len=site.mut_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance);
+                    $scope.align8_letter=align8.substring(distance,distance+curalt_len);
+                    $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
+                }else{
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.mut_info.distance;
+                    var curalt_len=site.mut_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance-curalt_len);
+                    $scope.align8_letter=align8.substring(distance-curalt_len,distance);
+                    $scope.align8_later=align8.substring(distance,align8.length);
+                }
+            }
         }
 
     $scope.modal_loss_site=function(site){
@@ -794,6 +839,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         var align8=site.site_info.align8;
         var align7=site.site_info.align7;
         var distance=align8.length-site.mut_info.distance-1;
+        /*
         if(site.strand=='-'){
             var distance=align8.length-site.mut_info.distance-1+site.mut_info.curalt.length-site.mut_info.curalt.length;
         }else{
@@ -826,7 +872,57 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align7_letter= ('X').repeat(ref_len);
                 $scope.align7_later=align7.substring(distance,align7.length);
             }}
-            console.log(site)
+            console.log(site)*/
+            if(site.mut_info.ref.length==1&&site.mut_info.curalt.length==1){
+                console.log("single polymophism")
+                $scope.align8_pre=align8.substring(0,distance);
+                $scope.align8_letter=align8[distance]
+                $scope.align8_later=align8.substring(distance+1,align8.length);
+                $scope.align7_pre=align7.substring(0,distance);
+                console.log($scope.align7_pre)
+                $scope.align7_letter='X';
+                $scope.align7_later=align7.substring(distance+1,align7.length);
+            }
+            else if(site.mut_info.ref.length==1&&site.mut_info.curalt.length>1){
+                console.log("a insert")
+                var ref_len=site.mut_info.ref.length
+                if(site.strand=="-"){
+                    distance+=(site.mut_info.curalt.length-site.mut_info.ref.length)
+                    $scope.align8_pre=align8.substring(0,distance);
+                    $scope.align8_letter=align8.substring(distance,distance+1)
+                    $scope.align8_later=align8.substring(distance+1,align8.length);
+                    $scope.align7_pre=align7.substring(0,distance);
+                    $scope.align7_letter= ('X').repeat(ref_len);
+                    $scope.align7_later=align7.substring(distance+ref_len,align7.length);
+                }else{
+                    distance+=1
+                    $scope.align8_pre=align8.substring(0,distance-ref_len);
+                    $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                    $scope.align8_later=align8.substring(distance,align8.length);
+                    $scope.align7_pre=align7.substring(0,distance-ref_len);
+                    $scope.align7_letter= ('X').repeat(ref_len);
+                    $scope.align7_later=align7.substring(distance,align7.length);
+                }}
+                else if(site.mut_info.ref.length>1&&site.mut_info.curalt.length==1){
+                    console.log("a delete")
+                    var ref_len=site.mut_info.ref.length
+                    distance+=1
+                    if(site.strand=="-"){
+                        $scope.align8_pre=align8.substring(0,distance-ref_len);
+                        $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                        $scope.align8_later=align8.substring(distance,align8.length);
+                        $scope.align7_pre=align7.substring(0,distance-ref_len);
+                        $scope.align7_letter= ('X').repeat(ref_len);
+                        $scope.align7_later=align7.substring(distance,align7.length);
+                    }else{
+                        $scope.align8_pre=align8.substring(0,distance-ref_len);
+                        $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                        $scope.align8_later=align8.substring(distance,align8.length);
+                        $scope.align7_pre=align7.substring(0,distance-ref_len);
+                        $scope.align7_letter= ('X').repeat(ref_len);
+                        $scope.align7_later=align7.substring(distance,align7.length);
+                    }}
+                console.log(site)
         }
 
     $scope.modal_gain_site_snv=function(site){
@@ -834,29 +930,50 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         $scope.target_gain=1;
         $scope.target_loss=0;
         $scope.modal_site=site;
-        if(site.snp_info.curalt.length==1){
-         var align8=site.site_info.align8;
-		var distance=align8.length-site.snp_info.distance-1;
-		$scope.align8_pre=align8.substring(0,distance);
-        $scope.align8_letter=align8[distance];
-        $scope.align8_later=align8.substring(distance+1,align8.length);
-        }else{
-            if(site.strand=='-'){
-                var align8=site.site_info.align8;
-                var distance=align8.length-site.snp_info.distance-1;
-                var curalt_len=site.snp_info.curalt.length
-                $scope.align8_pre=align8.substring(0,distance);
-                $scope.align8_letter=align8.substring(distance,distance+curalt_len);
-                $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
-            }else{
-                var align8=site.site_info.align8;
-                var distance=align8.length-site.snp_info.distance-1;
-                var curalt_len=site.snp_info.curalt.length
-                $scope.align8_pre=align8.substring(0,distance-curalt_len);
-                $scope.align8_letter=align8.substring(distance-curalt_len,distance);
-                $scope.align8_later=align8.substring(distance,align8.length);
+        if(site.snp_info.curalt.length==1&&site.snp_info.ref.length==1){
+            console.log("single polymophism")
+            var align8=site.site_info.align8;
+            var distance=align8.length-site.snp_info.distance-1;
+            $scope.align8_pre=align8.substring(0,distance);
+            $scope.align8_letter=align8[distance];
+            $scope.align8_later=align8.substring(distance+1,align8.length);
             }
-        }
+            else if(site.snp_info.curalt.length>1&&site.snp_info.ref.length==1){
+                console.log("a insert")
+                if(site.strand=='-'){
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.snp_info.distance-1;
+                    var curalt_len=site.snp_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance);
+                    $scope.align8_letter=align8.substring(distance,distance+curalt_len);
+                    $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
+                }else{
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.snp_info.distance;
+                    var curalt_len=site.snp_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance-curalt_len);
+                    $scope.align8_letter=align8.substring(distance-curalt_len,distance);
+                    $scope.align8_later=align8.substring(distance,align8.length);
+                }
+            }
+            else if(site.snp_info.curalt.length==1&&site.snp_info.ref.length>1){
+                console.log("a delete")
+                if(site.strand=='-'){
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.snp_info.distance-1;
+                    var curalt_len=site.snp_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance);
+                    $scope.align8_letter=align8.substring(distance,distance+curalt_len);
+                    $scope.align8_later=align8.substring(distance+curalt_len,align8.length);
+                }else{
+                    var align8=site.site_info.align8;
+                    var distance=align8.length-site.snp_info.distance;
+                    var curalt_len=site.snp_info.curalt.length
+                    $scope.align8_pre=align8.substring(0,distance-curalt_len);
+                    $scope.align8_letter=align8.substring(distance-curalt_len,distance);
+                    $scope.align8_later=align8.substring(distance,align8.length);
+                }
+            }
         }
 
     $scope.modal_loss_site_snv=function(site){
@@ -868,6 +985,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         var align7=site.site_info.align7;
         console.log(align7)
         var distance=align8.length-site.snp_info.distance-1;
+        /*
         if(site.snp_info.ref.length==1){
             $scope.align8_pre=align8.substring(0,distance);
             $scope.align8_letter=align8[distance]
@@ -894,7 +1012,57 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align7_letter= ('X').repeat(ref_len);
                 $scope.align7_later=align7.substring(distance,align7.length);
             }}
-            console.log(site)
+            console.log(site)*/
+            if(site.snp_info.ref.length==1&&site.snp_info.curalt.length==1){
+                console.log("single polymophism")
+                $scope.align8_pre=align8.substring(0,distance);
+                $scope.align8_letter=align8[distance]
+                $scope.align8_later=align8.substring(distance+1,align8.length);
+                $scope.align7_pre=align7.substring(0,distance);
+                console.log($scope.align7_pre)
+                $scope.align7_letter='X';
+                $scope.align7_later=align7.substring(distance+1,align7.length);
+            }
+            else if(site.snp_info.ref.length==1&&site.snp_info.curalt.length>1){
+                console.log("a insert")
+                var ref_len=site.snp_info.ref.length
+                if(site.strand=="-"){
+                    distance+=(site.snp_info.curalt.length-site.snp_info.ref.length)
+                    $scope.align8_pre=align8.substring(0,distance);
+                    $scope.align8_letter=align8.substring(distance,distance+1)
+                    $scope.align8_later=align8.substring(distance+1,align8.length);
+                    $scope.align7_pre=align7.substring(0,distance);
+                    $scope.align7_letter= ('X').repeat(ref_len);
+                    $scope.align7_later=align7.substring(distance+ref_len,align7.length);
+                }else{
+                    distance+=1
+                    $scope.align8_pre=align8.substring(0,distance-ref_len);
+                    $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                    $scope.align8_later=align8.substring(distance,align8.length);
+                    $scope.align7_pre=align7.substring(0,distance-ref_len);
+                    $scope.align7_letter= ('X').repeat(ref_len);
+                    $scope.align7_later=align7.substring(distance,align7.length);
+                }}
+                else if(site.snp_info.ref.length>1&&site.snp_info.curalt.length==1){
+                    console.log("a delete")
+                    var ref_len=site.snp_info.ref.length
+                    distance+=1
+                    if(site.strand=="-"){
+                        $scope.align8_pre=align8.substring(0,distance-ref_len);
+                        $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                        $scope.align8_later=align8.substring(distance,align8.length);
+                        $scope.align7_pre=align7.substring(0,distance-ref_len);
+                        $scope.align7_letter= ('X').repeat(ref_len);
+                        $scope.align7_later=align7.substring(distance,align7.length);
+                    }else{
+                        $scope.align8_pre=align8.substring(0,distance-ref_len);
+                        $scope.align8_letter=align8.substring(distance-ref_len,distance)
+                        $scope.align8_later=align8.substring(distance,align8.length);
+                        $scope.align7_pre=align7.substring(0,distance-ref_len);
+                        $scope.align7_letter= ('X').repeat(ref_len);
+                        $scope.align7_later=align7.substring(distance,align7.length);
+                    }}
+                console.log(site)
         }
 
     $scope.echart_correlation = function (cor) {
@@ -989,6 +1157,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         console.log(site.mut_info.distance) 
         var d_start=Number(site.site_info.align_1.split(' ')[0])
         var over_sequence=0
+        console.log(site)
         if(site.site_info.distance==0&&site.mut_info.distance){
             console.log("distance in mut_info")
             site.site_info.distance=site.mut_info.distance
@@ -1017,9 +1186,6 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         else if(site.mut_info.curalt.length==1 && site.mut_info.ref.length==1){
             console.log("single")
-           /* if(site.utr_info.strand=='-'){
-                distance-=1
-            }*/
             $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
             console.log($scope.align6_pre)
             $scope.align6_letter=site.site_info.align6[distance+3]
@@ -1060,7 +1226,6 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 console.log($scope.modal_site.site_info.alt_display)
             }
             }
-        
         
     }
 
@@ -1153,7 +1318,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         $scope.modal_site=site
         var d_start=Number(site.site_info.align_1.split(' ')[0])
         var distance=Number(site.site_info.distance)-d_start+1
-        
+        console.log(site)
         /*
         if(site.snp_info.curalt.length==1){
             $scope.align6_pre=site.site_info.align6.substring(0,Number(site.site_info.alt_start)+3)
@@ -1173,7 +1338,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
                 console.log($scope.modal_site.site_info.alt_display)
             }
-        }*/
+        }
 
         if(site.snp_info.curalt.length==1){
             console.log("single curalt")
@@ -1200,6 +1365,64 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3+1,Number(distance)+1+curalt_len+3)
                 $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
                 console.log($scope.modal_site.site_info.alt_display)
+            }
+        }*/
+        if(!site.site_info.distance&&!(site.site_info.alt_start+site.site_info.alt_end)&&!site.snp_info.distance){
+            console.log("over sequence")
+            $scope.align6_pre=site.site_info.align6
+            $scope.align6_letter=''
+            $scope.align6_later=''
+        }
+        else if(site.snp_info.curalt.length==1&&site.snp_info.ref.length==1){
+            console.log("single curalt")
+            console.log(site)
+            if(site.utr_info.strand=='-'){var alt_start=site.site_info.alt_start-1}
+            else{var alt_start=site.site_info.alt_end-1}
+            $scope.align6_pre=site.site_info.align6.substring(0,Number(alt_start)+3)
+            console.log($scope.align6_pre)
+            $scope.align6_letter=site.site_info.align6.substring(Number(alt_start)+3,Number(alt_start)+4)
+            console.log($scope.align6_letter)
+            $scope.align6_later=site.site_info.align6.substring(Number(alt_start)+4,site.site_info.align6.length)
+            console.log($scope.align6_later)
+            console.log($scope.modal_site.site_info.alt_display)
+           
+        }
+        else if(site.snp_info.curalt.length>1&&site.snp_info.ref.length==1){
+            console.log("a insert")
+            var curalt_len=site.snp_info.curalt.length
+            if(site.utr_info.strand=='-'){
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+1-curalt_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3-curalt_len+1,Number(distance)+3+1)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
+                console.log($scope.modal_site.site_info.alt_display)
+            }else{
+                /*
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3+1)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3+1,Number(distance)+1+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
+                console.log($scope.modal_site.site_info.alt_display)*/
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+curalt_len,site.site_info.align6.length)
+            }
+        }
+        else if(site.snp_info.curalt.length==1&&site.snp_info.ref.length>1){
+            console.log("a delete")
+            var curalt_len=site.snp_info.curalt.length
+            if(site.utr_info.strand=='-'){
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+1-curalt_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3-curalt_len+1,Number(distance)+3+1)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
+                console.log($scope.modal_site.site_info.alt_display)
+            }else{
+                /*
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3+1)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3+1,Number(distance)+1+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1+curalt_len,site.site_info.align6.length)
+                console.log($scope.modal_site.site_info.alt_display)*/
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+curalt_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+curalt_len,site.site_info.align6.length)
             }
         }
     }
@@ -1243,7 +1466,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align7_letter=('X').repeat(Number(ref_len))
                 $scope.align7_later=site.site_info.align7.substring(Number(distance)+3,site.site_info.align7.length)
             }
-        }*/
+        }//
         if(site.site_info.distance==0){
             //site.site_info.distance=site.site_info.alt_start
             if(site.utr_info.strand=='-'){site.site_info.distance=site.site_info.alt_start-1}
@@ -1278,6 +1501,91 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 $scope.align7_letter=('X').repeat(Number(ref_len))
                 $scope.align7_later=site.site_info.align7.substring(Number(distance)+3,site.site_info.align7.length)
             }
+        }*/
+        if(site.site_info.distance==0){
+            //site.site_info.distance=site.site_info.alt_start
+            if(site.utr_info.strand=='-'){site.site_info.distance=site.site_info.alt_start-1}
+            else{site.site_info.distance=site.site_info.alt_end-1}
+        }
+        if(!site.site_info.distance&&!(site.site_info.alt_start+site.site_info.alt_end)&&!site.snp_info.distance){
+            console.log("over sequence")
+            $scope.align6_pre=site.site_info.align6
+            $scope.align6_letter=''
+            $scope.align6_later=''
+            $scope.align7_pre=site.site_info.align7
+            $scope.align7_letter=''
+            $scope.align7_later=''
+        }
+        else if(site.snp_info.ref.length==1&&site.snp_info.curalt.length==1){
+            console.log("single")
+            console.log(site)
+            var distance=Number(site.site_info.distance)-d_start+1
+            $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+           // $scope.align6_letter=site.site_info.align6[distance+3]
+            $scope.align6_letter=site.site_info.align6.substring(Number(distance+3),Number(distance+4))
+            $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+1,site.site_info.align6.length)
+            $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)+3)
+            $scope.align7_letter='X'
+            $scope.align7_later=site.site_info.align7.substring(Number(distance)+3+1,site.site_info.align7.length)
+        }
+        else if(site.snp_info.ref.length==1&&site.snp_info.curalt.length>1){
+            console.log("a insert")
+            var distance=Number(site.site_info.distance)-d_start+1
+            var ref_len=site.snp_info.ref.length
+            if(site.utr_info.strand=='+'){
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+ref_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+ref_len,site.site_info.align6.length)
+                $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)+3)
+                $scope.align7_letter=('X').repeat(ref_len)
+                $scope.align7_later=site.site_info.align7.substring(Number(distance)+ref_len+3,site.site_info.align7.length)
+            }else{
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)-ref_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)-ref_len+3,Number(distance)+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3,site.site_info.align6.length)
+                $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)-ref_len+3)
+                $scope.align7_letter=('X').repeat(Number(ref_len))
+                $scope.align7_later=site.site_info.align7.substring(Number(distance)+3,site.site_info.align7.length)
+            }
+        }
+        else if(site.snp_info.ref.length>1&&site.snp_info.curalt.length==1){
+            console.log("a delete")
+            console.log(site)
+            var distance=Number(site.site_info.distance)-d_start+1
+            var ref_len=site.snp_info.ref.length
+            if(site.utr_info.strand=='+'){
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)+3,Number(distance)+ref_len+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3+ref_len,site.site_info.align6.length)
+                $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)+3)
+                if(ref_len<$scope.align7_pre.length){
+                    var repeat_n=ref_len
+                }else{
+                    var repeat_n=7
+                }
+                $scope.align7_letter=('X').repeat(repeat_n)
+                $scope.align7_later=site.site_info.align7.substring(Number(distance)+ref_len+3,site.site_info.align7.length)
+            }else{
+                $scope.align6_pre=site.site_info.align6.substring(0,Number(distance)-ref_len+3)
+                $scope.align6_letter=site.site_info.align6.substring(Number(distance)-ref_len+3,Number(distance)+3)
+                $scope.align6_later=site.site_info.align6.substring(Number(distance)+3,site.site_info.align6.length)
+                $scope.align7_pre=site.site_info.align7.substring(0,Number(distance)-ref_len+3)
+                if(ref_len<$scope.align7_pre.length){
+                    var repeat_n=ref_len
+                }else{
+                    var repeat_n=7
+                }
+                $scope.align7_letter=('X').repeat(repeat_n)
+                $scope.align7_later=site.site_info.align7.substring(Number(distance)+3,site.site_info.align7.length)
+            }
+        }else{
+            console.log("unhandle type")
+            $scope.align6_pre=site.site_info.align6
+            $scope.align6_letter=''
+            $scope.align6_later=''
+            $scope.align7_pre=site.site_info.align7
+            $scope.align7_letter=''
+            $scope.align7_later=''
         }
     }
 
