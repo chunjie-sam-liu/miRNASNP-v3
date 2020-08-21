@@ -118,8 +118,11 @@
             <strong>{$ mutation_alias.mut_id $} in miRNA seed region causes target gain</strong>
             <form class="form-inline pull-right">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="gene" id="search_gene" style="height: 24px">
+                    <input type="text" class="form-control" placeholder="gene" id="search_gene" style="height: 24px;margin-right: 10px;">
                 </div>
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target_mut(mut_seed_gain_list,mutation_alias.mut_id+'_in_miRNA_seed_region_causes_target_gain')" style="margin: -4px;">
+                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                </button>
             </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
@@ -228,7 +231,10 @@
             <form class="form-inline pull-right">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="gene" id="search_gene_loss"
-                        style="height: 24px">
+                        style="height: 24px;margin-right: 10px;">
+                        <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target_mut(mut_seed_loss_list,mutation_alias.mut_id+'_in_miRNA_seed_region_causes_target_loss')" style="margin: -4px;">
+                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                        </button>
                 </div>
             </form>
         </div>
@@ -349,6 +355,11 @@
     <div class="panel panel-info" id="section-4">
         <div class="panel-heading">
             <strong>{$ mutation_alias.mut_id $} in gene 3'UTR causes target gain</strong>
+            <form class="form-inline pull-right">
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target_mut(mut_utr_gain_list,mutation_alias.mut_id+'_in_gene_UTR3_causes_target_gain')" style="margin: -4px;">
+                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+             </button>
+            </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
             <thead>
@@ -439,6 +450,11 @@
     <div class="panel panel-info" id="section-5">
         <div class="panel-heading">
             <strong>{$ mutation_alias.mut_id $} in gene 3'UTR causes target loss</strong>
+            <form class="form-inline pull-right">
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target_mut(mut_utr_loss_list,mutation_alias.mut_id+'_in_gene_UTR3_causes_target_loss')" style="margin: -4px;">
+                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+             </button>
+            </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
             <thead>
@@ -559,8 +575,11 @@
             <strong>{$ mutation_alias.mut_id $} in miRNA seed region causes target gain</strong>
             <form class="form-inline pull-right">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="gene" id="search_gene_snv" style="height: 24px">
+                    <input type="text" class="form-control" placeholder="gene" id="search_gene_snv" style="height: 24px;margin-right: 10px;">
                 </div>
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snp_seed_gain_list,mutation_alias.mut_id+'_in_miRNA_seed_region_causes_target_gain')" style="margin: -4px;">
+                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                </button>
             </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
@@ -654,8 +673,11 @@
             <form class="form-inline pull-right">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_snv"
-                        style="height: 24px">
+                        style="height: 24px;margin-right: 10px;">
                 </div>
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snp_seed_loss_list,mutation_alias.mut_id+'_in_miRNA_seed_region_causes_target_loss')" style="margin: -4px;">
+                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                </button>
             </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
@@ -775,6 +797,11 @@
     <div class="panel panel-info" id="section-4">
         <div class="panel-heading">
             <strong>{$ mutation_alias.mut_id $} in gene 3'UTR causes target gain</strong>
+            <form class="form-inline pull-right">
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snv_utr_gain_list,mutation_alias.mut_id+'_in_gene_UTR3_causes_target_gain')" style="margin: -4px;">
+                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+             </button>
+            </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
             <thead>
@@ -864,6 +891,11 @@
     <div class="panel panel-info" id="section-5">
         <div class="panel-heading">
             <strong>{$ mutation_alias.mut_id $} in gene 3'UTR causes target loss</strong>
+            <form class="form-inline pull-right">
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snv_utr_gain_list,mutation_alias.mut_id+'_in_gene_UTR3_causes_target_loss')" style="margin: -4px;">
+                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+             </button>
+            </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
             <thead>

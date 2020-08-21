@@ -1307,5 +1307,62 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     }
     $scope.search_ld();
 
+    $scope.downFile_target=function(content, filename){
+        // 创建隐藏的可下载链接
+        var eleLink = document.createElement('a');
+        eleLink.download = filename;
+        eleLink.style.display = 'none';
+        var df_content=[]
+        for (var i=0;i<content.length;i++){
+            df_content[i]={}
+            df_content[i]['mirna_id'] = content[i]['mirna_id']
+            df_content[i]['gene_symbol'] = content[i]['gene_symbol']
+            df_content[i]['snp_id'] = content[i]['snp_id']
+            df_content[i]['gene_acc'] = content[i]['utr_info']['acc']
+            df_content[i]['snp_chromosome'] = content[i]['snp_info']['chr']
+            df_content[i]['snp_position'] = content[i]['snp_info']['position']
+            df_content[i]['snp_ref'] = content[i]['snp_info']['ref']
+            if(content[i]['snp_info']['curalt']){
+                df_content[i]['snp_alt'] = content[i]['snp_info']['curalt']
+            }else{
+                df_content[i]['snp_alt'] = content[i]['snp_info']['alt']
+            }
+            if(content[i]['gene_expression'].length>0){
+                df_content[i]['gene_expression_mean'] = content[i]['gene_expression'][0]['exp_mean']
+
+            }else{
+                df_content[i]['gene_expression_mean'] = 'null'
+            }
+            if(content[i]['mirna_expression'].length>0){
+                df_content[i]['mirna_expression_mean'] = content[i]['mirna_expression'][0]['exp_mean']
+
+            }else{
+                df_content[i]['mrina_expression_mean'] = 'null'
+            }
+            if(content[i]['corelation_detail']&&content[i]['corelation_detail'].length>0){
+                df_content[i]['correlation'] = content[i]['corelation_detail'][0]
+            }
+            df_content[i]['mirmap_start'] = content[i]['site_info']['mm_start']
+            df_content[i]['mirmap_end'] = content[i]['site_info']['mm_end']
+            df_content[i]['tgs_start'] = content[i]['site_info']['tgs_start']
+            df_content[i]['tgs_end'] = content[i]['site_info']['tgs_end']
+            df_content[i]['mm_dg_duplex'] = content[i]['site_info']['dg_duplex']
+            df_content[i]['mm_dg_binding'] = content[i]['site_info']['dg_binding']
+            df_content[i]['mm_dg_open'] = content[i]['site_info']['dg_open']
+            df_content[i]['mm_tgs_score'] = content[i]['site_info']['tgs_score']
+            df_content[i]['mm_tgs_au'] = content[i]['site_info']['tgs_au']
+            df_content[i]['prob_exac'] = content[i]['site_info']['prob_exac']
+        }
+        // 字符内容转变成blob地址
+        //var blob = new Blob(content);
+        var blob = new Blob([JSON.stringify(df_content, null, 2)], {type : 'application/json'});
+        eleLink.href = URL.createObjectURL(blob);
+        // 触发点击
+        document.body.appendChild(eleLink);
+        eleLink.click();
+        // 然后移除
+        document.body.removeChild(eleLink);
+    }
+
     
 }

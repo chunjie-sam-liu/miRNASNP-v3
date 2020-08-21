@@ -272,8 +272,11 @@
                                         <hr size="300" width="1">
                                 </div-->
                                 <div class="panel panel-primary"  ng-show="mirna_nci60_show">
-                                        <div class="panel-heading" style="height: 32px;">
+                                        <div class="panel-heading" style="height: 40px;">
                                             <strong>Pearson correlation between small drug and miRNA</strong>
+                                            <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile(mirna_nci60,mirna_summary_alias.mir_id)" style="margin: -4px;">
+                                                <!--span class="glyphicon glyphicon-download" aria-hidden="true"></span-->Download
+                                            </button>
                                         </div>
                                         <div class="panel-body">
                                             <div class="scrollable pre-scrollable">
@@ -332,11 +335,14 @@
 <div ng-show="two">
     <div class="panel panel-info" id="section-2">
         <div class="panel-heading">
-            <strong >{$ query_mirna $} with SNPs in seed region gains targets</strong>
+            <strong >{$ query_mirna $} with SNPs in seed region gain targets</strong>
             <form class="form-inline pull-right">
                <div class="form-group">
-                   <input type="text" class="form-control" placeholder="gene" id="search_gene_gain" style="height: 24px" >
+                   <input type="text" class="form-control" placeholder="gene" id="search_gene_gain" style="height: 24px;margin-right: 10px;" >
                </div>
+               <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snp_seed_gain_list,query_mirna+'_with_SNPs_in_seed_region_gain_targets')" style="margin: -4px;">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+            </button>
            </form>
         </div>
         <table class="table table-bordered" ts-wrapper>
@@ -410,11 +416,14 @@
 <div ng-show="three">
 <div class="panel panel-info" id="section-3">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with SNPs in seed region loses targets</strong>
+            <strong >{$ query_mirna $} with SNPs in seed region loss targets</strong>
          <form class="form-inline pull-right">
                <div class="form-group">
-                   <input type="text" class="form-control" placeholder="gene" id="search_gene_loss" style="height: 24px">
+                   <input type="text" class="form-control" placeholder="gene" id="search_gene_loss" style="height: 24px;margin-right: 10px;">
                </div>
+               <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snp_seed_loss_list,query_mirna+'_with_SNPs_in_seed_region_loss_targets')" style="margin: -4px;">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+            </button>
            </form>
         </div>
     <table class="table table-bordered" ts-wrapper>
@@ -511,11 +520,14 @@
 <div ng-show="four">
 <div class="panel panel-info"  id="section-4">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with variations in seed region gains targets</strong>
+            <strong >{$ query_mirna $} with variations in seed region gain targets</strong>
         <form class="form-inline pull-right">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain_mut" style="height: 24px">
-                </div>
+                    <input type="text" class="form-control" placeholder="gene" id="search_gene_gain_mut" style="height: 24px;margin-right: 10px;">
+                </div>     
+                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target_mut(mut_seed_gain_list,query_mirna+'_with_variations_in_seed_region_gain_targets')" style="margin: -4px;">
+                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                </button>
             </form>
     </div>
     <table class="table table-bordered" ts-wrapper>
@@ -590,11 +602,14 @@
 <div ng-show="five">
 <div class="panel panel-info" ng-show="five" id="section-5">
     <div class="panel-heading">
-            <strong >{$ query_mirna $} with variations in seed region losses targets</strong>
+            <strong >{$ query_mirna $} with variations in seed region loss targets</strong>
             <form class="form-inline pull-right">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_mut" style="height: 24px">
+                        <input type="text" class="form-control" placeholder="gene" id="search_gene_loss_mut" style="height: 24px;margin-right: 10px;">
                     </div>
+                    <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target_mut(mut_seed_gain_list,query_mirna+'_with_variations_in_seed_region_gain_targets')" style="margin: -4px;">
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                    </button>
                 </form>
         </div>
     <table class="table table-bordered" ts-wrapper>
