@@ -108,7 +108,7 @@
 
     <div id="DRVs">
       <p>
-        <span class="document"> Disease-related variations (DRVs) in miRNA/3'UTR in miRNASNP-v3</span>
+        <span class="document"> Disease-related variations (DRVs) identified on miRNA/3'UTR in miRNASNP-v3</span>
       </p>
       <p>
         In the "Disease" module, we integrated pathological information of 232,927 non-coding variations from
@@ -141,38 +141,56 @@
 
     <div id="enrichment">
       <p>
-        <span class="document"> Enrichment analysis for target gain/loss </span>
+        <span class="document"> miRNA gained/lost target gene set enrichment analysis </span>
       </p>
       <p>
-        Enrichment analysis of gained/lost targets by variations in miRNA seed region may help us further discover the underlying biological
-        mechanisms effected by the variation. We perform <a target="_blank" href="http://geneontology.org/">Gene Ontology (GO)</a> and
+        One SNV occurs on the miRNA seed region could lead to gain and/or lose a set of target genes. This gained/lost set of target genes
+        could be enriched in special biological pathways, so that the SNV could affect the miRNA function. To further benefit users
+        investigating biological functions of the altered miRNA targets caused by SNVs. We performed
+        <a target="_blank" href="http://geneontology.org/">Gene Ontology (GO)</a> and
         <a target="_blank" href="https://www.kegg.jp/">Kyoto Encyclopedia of Genes and Genomes (KEGG)</a> enrichment analysis on gained/lost
-        gene sets with gene numbers from 50 to 1000.
+        gene sets with gene numbers from 50 to 1000. clusterprofile.....写细一点... The output of enrichment analysis will be presented like
+        Figure 4.
       </p>
       <div align="center">
         <img src="/static/miRNASNP3/img/enrichment-help-2.png" style="width: 100%; margin-top: 30px; margin-bottom: 30px" />
       </div>
     </div>
 
-    <div>
+    <div id="drug">
       <p>
-        <span class="document">Correlation of drug sensitivity and miRNAs </span>
+        <span class="document">Correlation between miRNA expression and drug sensitivity</span>
       </p>
       <p>
-        Drug sensitivity data (GI50) of 18,724 drug/compounds and 355 miRNAs expression data in
+        Drug sensitivity data (GI50) of 18,724 drug/compounds and 355 miRNAs expression data from
         <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a> were download from
         <a target="_blank" href="https://discover.nci.nih.gov/cellminercdb/">CellMinerCDB</a>. The drug/compounds were annotated by
         <a target="_blank" href="https://dtp.cancer.gov/dtpstandard/cancerscreeningdata/index.jsp">NSC ID</a> with its corresponding
-        <a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a> SID.
-        <!-- In addition, sensitivity data of 24 drugs measured by IC50 were downloaded from <a target="_blank" href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> with expression data of 626 miRNAs. -->
-        Then we performed Pearson correlation analysis between drug sensitivity and miRNA expression. The result is present in miRNA detail
-        panel, <a href="http://bioinfo.life.hust.edu.cn/miRNASNP/#!/mirna?mirna_id=hsa-miR-10b-5p">for hsa-miR-10b-5p example</a>. And we
-        only preserve miRNA-compound pairs with |cor|&gt;0.5 and FDR&lt;0.05 in
-        <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a>.
+        <a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a> SID. Then we performed Pearson correlation analysis between
+        drug sensitivity and miRNA expression. The result is present in miRNA detail panel,
+        <a href="http://bioinfo.life.hust.edu.cn/miRNASNP/#!/mirna?mirna_id=hsa-miR-10b-5p">for hsa-miR-10b-5p example</a>. And we only
+        preserve miRNA-compound pairs with |cor|&gt;0.5 and FDR&lt;0.05 in
+        <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a>. 加一个截图吧。
       </p>
     </div>
 
-    <div>
+    <div id="tcga-expr">
+      <p>
+        <span class="document"> Correlation between miRNA and target gene in TCGA cancers </span>
+      </p>
+      <p>
+        Gene expression data and miRNA expression data across 33 cancers were downloaded from
+        <a target="_blank" href="https://portal.gdc.cancer.gov/">TCGA portal</a>. For each cancer, we performed pearson correlation analysis
+        between genes and miRNAs. The overall correlation coefficient value was displayed in loss targets information panel, which can be
+        clicked to pop out a histogram of correlation coefficient value for each cancer type. However, because there is no expression data
+        for SNP type 3'UTR/miRNA, the correlation coefficient value for gain target is not available.
+      </p>
+      <div align="center">
+        <img style="width: 100%; margin-top: 30px; margin-bottom: 30px" src="/static/miRNASNP3/img/correlation_and_expression.png" />
+      </div>
+    </div>
+
+    <div id="validation">
       <p>
         <span class="document"> Experimentally verified miRNA-target interactions (MTIs) </span>
       </p>
@@ -198,25 +216,9 @@
 			</p-->
     </div>
 
-    <div>
+    <div id="predict">
       <p>
-        <span class="document"> miRNA expression and correlation with mRNAs </span>
-      </p>
-      <p>
-        Gene expression data and miRNA expression data across 33 cancers were downloaded from
-        <a target="_blank" href="https://portal.gdc.cancer.gov/">TCGA portal</a>. For each cancer, we performed pearson correlation analysis
-        between genes and miRNAs. The overall correlation coefficient value was displayed in loss targets information panel, which can be
-        clicked to pop out a histogram of correlation coefficient value for each cancer type. However, because there is no expression data
-        for SNP type 3'UTR/miRNA, the correlation coefficient value for gain target is not available.
-      </p>
-      <div align="center">
-        <img style="width: 100%; margin-top: 30px; margin-bottom: 30px" src="/static/miRNASNP3/img/correlation_and_expression.png" />
-      </div>
-    </div>
-
-    <div>
-      <p>
-        <span class="document">Online prediction</span>
+        <span class="document">Predict module</span>
       </p>
       <p>
         miRNASNP-v3 provides three kinds of online predictions. (1) Predicting the impact of variant in gene 3'UTR on miRNA:mRNA
@@ -235,9 +237,9 @@
       </div>
     </div>
 
-    <div>
+    <div id="source">
       <p>
-        <span class="document">Data sources and tools for analyze</span>
+        <span class="document">Data sources and tools</span>
       </p>
       <table class="table table-bordered table-striped table-hover">
         <tbody>
