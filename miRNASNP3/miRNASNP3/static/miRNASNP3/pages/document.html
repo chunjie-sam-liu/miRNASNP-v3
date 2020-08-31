@@ -3,7 +3,7 @@
     <strong>miRNASNP-v3 data source and methods</strong>
   </div>
   <div class="panel-body text-justify">
-    <div id="one">
+    <div id="overview">
       <p>
         <span class="document"> Features in miRNASNP-<span style="color: red">v3</span></span>
       </p>
@@ -13,9 +13,9 @@
         variations (DRVs) with diseases/traits annotations. In this miRNASNP-v3, we analyzed the effects of 7,161,741 single nucleotide
         variations (SNVs) and 505,417 DRVs on 1,897 pre-miRNAs (2,630 mature miRNAs) and 3’UTRs of 18,152 genes. In addition to updating the
         number of SNVs identified on miRNA/genes, we also added four new features. Now, miRNASNP-v3 becomes a one-stop resource for
-        miRNA-related SNVs research with the following functions
+        miRNA-related SNVs research with the following functions.
       </p>
-      <p>Updated the previous database with latest data, including:</p>
+      <p>Update compared with miRNASNP-v2:</p>
       <ul>
         <li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> SNPs in pre-miRNAs and their impacts on miRNAs.</li>
         <li>
@@ -29,7 +29,7 @@
         <li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Experimentally verified miRNA-target interaction.</li>
         <li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Expression and correlation of miRNAs and genes.</li>
       </ul>
-      <p>New features are added to miRNASNP-v3, including:</p>
+      <p>New added to miRNASNP-v3:</p>
 
       <ul>
         <li>
@@ -45,44 +45,73 @@
         </li>
         <li><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Correlation of drug sensitivity and miRNAs.</li>
       </ul>
-      <!--p>And We update data to the latest version, User can</p>
-			<ul>
-				<li>search or browse SNPs in pre-miRNA and their impacts on miRNAs' structure,</li>
-				<li>search or browse targets gain/loss by SNP in miRNA seed region and gene 3'UTR,</li>
-				<li>search or browse experiment validated miRNA:gene interaction,</li>
-				<li>search or browse expression and correlation of miRNAs and genes,</li>
-				<li>search or browse expression and correlation of miRNAs and genes.</li>
-			</ul-->
     </div>
-    <div id="two">
+    <div id="statistics">
       <p>
-        <span class="document"> Characterized variations in miRNAs and genes </span>
+        <span class="document"> Data summary of variations identified on miRNAs and target binding sites </span>
       </p>
       <p>
-        The characterized variations in miRNASNP-v3 comprise single nucleotide polymorphism (SNP) in miRNAs/genes and disease-related
-        variation (DRV) in miRNAs/genes. More than 689,966,720 SNPs, 21,338,716
+        More than 689,966,720 SNPs, 21,338,716
         <a href="https://cancer.sanger.ac.uk/cosmic" target="_blank">COSMIC</a> non-coding variations and 444,715
         <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
         variations were mapped to 2,652 mature miRNAs derived from 1,913 pre-miRNAs. We performed target gain/loss analysis for variations
-        in miRNA seed region and 3'UTR. The seed region is defined as a 7bp nucleotide fragment at the 5'end of the mature miRNA between 2
-        and 8. Meanwhile, we studied the impact of all the variations in pre-miRNA on secondary structure. The detailed mapping information
-        is listed below.
+        in miRNA seed region and 3'UTR (Predict target gain/loss section). The seed region is defined as a 7bp nucleotide fragment at the
+        5'end of the mature miRNA between 2 and 8. Meanwhile, we predicted the impact of all the variations in pre-miRNA on secondary
+        structure. The detailed statistics of these data integrated in miRNASNP-v3 are listed below.
       </p>
       <div align="center">
-        <!--img src="/static/miRNASNP3/img/data_statistics_table.png" style="margin-top: 30px;margin-bottom: 30px;width: 80%"-->
         <embed src="/static/miRNASNP3/img/data_statistics_table_0724.svg" style="display: block; width: 850px; height: 397px" />
       </div>
-      <!--div align="center">
-						<img src="/static/miRNASNP3/img/targets_statistics_1.png" style="margin-top: 30px;margin-bottom: 30px">
-					</div-->
     </div>
 
-    <div>
+    <div id="gain-loss">
       <p>
-        <span class="document"> Disease-related variations in miRNA/3'UTR </span>
+        <span class="document">Predict target gain/loss</span>
       </p>
       <p>
-        In the disease-related variations module, we integrated pathological information of 232,927 non-coding variations from
+        We predict the target gain/loss effect of SNPs in miRNA seed regions. Firstly, for SNPs in miRNA seed region, we obtained miRNA wild
+        sequence and SNP allele sequence. Then, we used two target prediction tools
+        <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> and
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> to predict their target sites, respectively.
+        <a target="_blank" href="https://arxiv.org/abs/1711.01632">Faiza et al, 2019</a> reported that combination of these two tools have
+        best performance prediction in human. Four categories of results are recorded as wild
+        <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP
+        <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST) and SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site
+        (SM). If one miRNA's target gene shows in both WT and WM, but not in either ST or SM, we called that the miRNA lost this target
+        gene. On the contrary, if one target shows in both ST and SM, but not in either WT or WM, we called that the miRNA gained one target
+        gene.
+      </p>
+
+      <p>
+        We also predict the target gain/loss effect of SNPs in genes' 3'UTRs. For SNPs in one gene 3'UTR, we obtained wild type 3'UTR
+        sequence and corresponding SNP 3'UTR sequence. Then, we used two target prediction tools (<a
+          target="_blank"
+          href="http://www.targetscan.org/vert_72/"
+          >TargetScan</a
+        >
+        and <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>) to predict their target sites respectively. Four categories of
+        results are recorded as wild <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP
+        <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST), SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM).
+        If one target site shows in both WT and WM, but not in either ST or SM, we called that the gene lost this target site. On the
+        contrary, if one target both show in ST and SM, but not in either WT or WM, we called that the gene gained one target site.
+      </p>
+      This method is also applied to analyze the effect of DRVs in miRNA seed regions and 3'UTRs on target gain/loss.
+      <div align="center">
+        <embed
+          src="/static/miRNASNP3/img/gain_loss_method.png"
+          style="display: block; width: 500px; margin-top: 30px; margin-bottom: 30px"
+        />
+      </div>
+    </div>
+
+    <div id="DRVs">
+      <p>
+        <span class="document"> Disease-related variations (DRVs) in miRNA/3'UTR in miRNASNP-v3</span>
+      </p>
+      <p>
+        In the "Disease" module, we integrated pathological information of 232,927 non-coding variations from
         <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 37,405 variations from
         <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a> and disease/trait information of 235,085 SNPs from
         <a target="_blank" href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>. We divided these variations into three categories
@@ -92,7 +121,7 @@
         typing in a description of the disease.
       </p>
       <p>
-        To look into GWAS SNPs, we downloaded all the tagSNPs from
+        To investigate SNPs with GWAS disease/traits, we downloaded all the tagSNPs from
         <a target="_blank" href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a> with the linkage disequilibrium (LD) information
         between tagSNPs and surrounding SNPs (D'>0.98, a LD measurement to show the degree of linkage disequilibrium between the selected
         variant and other variants) of 26 populations by the Ensembl REST API (<a
@@ -110,49 +139,7 @@
       </div>
     </div>
 
-    <div>
-      <p>
-        <span class="document">Target gain/loss</span>
-      </p>
-      <p>
-        We provide the target gain/loss effect of SNPs in miRNA seed regions. Firstly, for SNPs in miRNA seed region, we obtained miRNA wild
-        sequence and SNP allele sequence. Then, we used two target prediction tools
-        <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> and
-        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> to predict their target sites respectively. Four categories of
-        results are recorded as wild <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild
-        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP
-        <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST) and SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site
-        (SM). If one miRNA's target gene shows in both WT and WM, but not in either ST or SM, we called that the miRNA lost this target
-        gene. On the contrary, if one target shows in both ST and SM, but not in either WT or WM, we called that the miRNA gained one target
-        gene.
-      </p>
-
-      <p>
-        We also provide the target gain/loss effect of SNPs in genes' 3'UTRs. For SNPs in one gene 3'UTR, we obtained wild type 3'UTR
-        sequence and corresponding SNP 3'UTR sequence. Then, we used two target prediction tools (<a
-          target="_blank"
-          href="http://www.targetscan.org/vert_72/"
-          >TargetScan</a
-        >
-        and <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>) to predict their target sites respectively. Four categories of
-        results are recorded as wild <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild
-        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP
-        <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST), SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM).
-        If one target site shows in both WT and WM, but not in either ST or SM, we called that the gene lost this target site. On the
-        contrary, if one target both show in ST and SM, but not in either WT or WM, we called that the gene gained one target site.
-      </p>
-      (This method is also used to analyze the effect of variations (from
-      <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a> and
-      <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>) in miRNA seed regions and 3'UTRs on target gain/loss )
-      <div align="center">
-        <embed
-          src="/static/miRNASNP3/img/gain_loss_method.png"
-          style="display: block; width: 500px; margin-top: 30px; margin-bottom: 30px"
-        />
-      </div>
-    </div>
-
-    <div>
+    <div id="enrichment">
       <p>
         <span class="document"> Enrichment analysis for target gain/loss </span>
       </p>

@@ -1,4 +1,14 @@
 {
   "python.pythonPath": "/usr/bin/python2",
-  "python.formatting.provider": "yapf"
+  "python.formatting.provider": "yapf",
+  "cSpell.words": [
+    "DRVs",
+    "Faiza",
+    "RNASNP",
+    "RNAs",
+    "SNPs",
+    "SNVs",
+    "UTRs",
+    "glyphicon"
+  ]
 }
