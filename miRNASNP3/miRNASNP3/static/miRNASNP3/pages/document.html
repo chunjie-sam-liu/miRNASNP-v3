@@ -183,11 +183,17 @@
         <span class="document"> Correlation between miRNA and target gene in TCGA cancers </span>
       </p>
       <p>
-        Gene expression data and miRNA expression data across 33 cancers were downloaded from
-        <a target="_blank" href="https://portal.gdc.cancer.gov/">TCGA portal</a>. For each cancer, we performed pearson correlation analysis
-        between genes and miRNAs. The overall correlation coefficient value was displayed in loss targets information panel, which can be
-        clicked to pop out a histogram of correlation coefficient value for each cancer type. However, because there is no expression data
-        for SNP type 3'UTR/miRNA, the correlation coefficient value for gain target is not available.
+        Gene expression data and miRNA expression data across 33 cancers were downloaded from 
+        <a target="_blank" href="https://portal.gdc.cancer.gov/">The CanCer Genome Atlas (TCGA) portal</a>. 
+        For each cancer, we performed pearson correlation analysis between genes and miRNAs, 
+        which can be easily obtained with <a target="_blank" href="https://bioinfo.life.hust.edu.cn/web/GSCALite/">GSCALite</a>. 
+        The expression profiles and correlation details can be browsed in miRNA target gain/loss detail page. 
+        The overall correlation coefficient value was displayed in loss targets information panel, 
+        which can be clicked to pop out a histogram of correlation coefficient value for each cancer type 
+        (coefficient values were reserved only with P-value&lt;0.05). In expression panel, a mean expression number was provided, 
+        which can be clicked to see expression level of the gene/miRNA in each cancer type. 
+        However, because there is no expression data for SNP type 3'UTR/miRNA, 
+        the correlation coefficient value for gain target is not available.
       </p>
       <div align="center">
         <img style="width: 100%; margin-top: 30px; margin-bottom: 30px" src="/static/miRNASNP3/img/correlation_and_expression.png" />
