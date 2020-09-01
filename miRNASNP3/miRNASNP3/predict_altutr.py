@@ -11,7 +11,7 @@ import sys
 sys.path.append('/home/fux/tools/miRmap-1.1/src')
 
 
-import mirmap
+# import mirmap
 
 #altutr prediction
 
@@ -36,13 +36,13 @@ def targetscan_predict(seq_file,result_file):
     t_mirna_file = "/home/fux/refdata/miRNASNP3/mir_2652.tgs.txt"
     command = "/home/fux/tools/TargetScan/targetscan_70.pl {t_mirna_file} {t_fasta_file} {result_file}".format(t_mirna_file=t_mirna_file, t_fasta_file = seq_file, result_file = result_file)
     command_excute(command)
-    
+
 
 def mirmap_predict(tarseq,result_file):
     print("mirmap predict ...")
     conmand="python2 /home/fux/web/miRNASNP3/miRNASNP3/miRNASNP3/online_predict/scr/run_mirmap_altutr.py {tarseq} {result_file}".format(tarseq=tarseq,result_file=result_file)
     command_excute(conmand)
-    
+
 
 def result_parser(wm_result,wt_result,sm_result,st_result):
     print("result parser ...")
@@ -104,11 +104,11 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
                     #print("wm_bed_line:"+bed_line) wm_bed_json[lkey]=item--> set all values of the dict to item, why?
                     wm_bed.write(bed_line+'\n')
                 line=infile.readline()
-            
+
     #gettable
     #gene/mir list
     #bed file
-    
+
     wm_bed_sort=get_tempfile_name()
     sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+wm_bed_file+" >"+wm_bed_sort
     os.popen(sort_cmd)
@@ -140,7 +140,7 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
     insec_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools intersect -sorted -f 0.5 -a "+wm_bed_sort+" -b "+wt_bed_sort+" -u >"+w_insect_file
     #print(insec_cmd)
     os.popen(insec_cmd)
-    
+
     print("sm format ...")
 
     sm_mir_list=[]
@@ -242,7 +242,7 @@ def result_parser(wm_result,wt_result,sm_result,st_result):
             if nline[0] not in s_unin:
                 loss.append(wm_bed_json[nline[0]+'#'+nline[1]+'#'+nline[2]])
             wild_result.append(wm_bed_json[nline[0]+'#'+nline[1]+'#'+nline[2]])
-    
+
     print("caculate gain ...")
     gain=[]
     alt_result=[]
@@ -343,11 +343,11 @@ def wild_result_parser(wm_result,wt_result):
                     #print("wm_bed_line:"+bed_line) wm_bed_json[lkey]=item--> set all values of the dict to item, why?
                     wm_bed.write(bed_line+'\n')
                 line=infile.readline()
-            
+
     #gettable
     #gene/mir list
     #bed file
-    
+
     wm_bed_sort=get_tempfile_name()
     sort_cmd="/home/fux/tools/bedtools/bedtools2-2.25.0/bin/bedtools sort -i "+wm_bed_file+" >"+wm_bed_sort
     os.popen(sort_cmd)
@@ -432,7 +432,7 @@ class PredictionAltutr(Resource):
             result = predict_start(wild_seq,wild_prefix,alt_seq,alt_prefix)
         elif wild_seq:
             result=predict_wild(wild_seq,wild_prefix)
-            
+
         return {'result_altutr':result}
 
 api.add_resource(PredictionAltutr, '/api/prediction')

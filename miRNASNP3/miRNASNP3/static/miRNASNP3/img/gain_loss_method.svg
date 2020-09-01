@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="299px"
+	 height="140.5px" viewBox="0 0 299 140.5" enable-background="new 0 0 299 140.5" xml:space="preserve">
+<g id="图层_1">
+	<text transform="matrix(1 0 0 1 8 29)" font-family="'TimesNewRomanPSMT'" font-size="12">Wild-type sequence</text>
+	<text transform="matrix(1 0 0 1 10 38.333)" font-family="'TimesNewRomanPSMT'" font-size="6">UACCUGUAGAACCGAAUUUGUG</text>
+	<text transform="matrix(1 0 0 1 173.334 30.6685)" font-family="'TimesNewRomanPSMT'" font-size="12">SNP-type sequence</text>
+	<g>
+		
+			<text transform="matrix(1.0672 0 0 1 77.6841 120.5557)" fill="#AF3E92" font-family="'TimesNewRomanPS-BoldMT'" font-size="11.0304">Loss = (WM    WT) - (SM    ST)</text>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#AF3E92" d="M215.939,112.931c-0.137,2.212-0.061,4.465-0.473,6.616
+			c-0.301,1.558-2.412,2.187-4.549,1.774c-1.531-0.296-2.5-1.444-2.559-3.158c-0.051-1.466-0.025-2.943-0.002-4.412
+			c0.002-0.291,0.141-0.579,0.221-0.871c0.141,0.013,0.281,0.028,0.428,0.038c0,1.583-0.004,3.165,0,4.745
+			c0.012,2.192,1.154,3.439,3.121,3.411c1.926-0.025,3.016-1.222,3.039-3.358c0.016-1.267-0.012-2.535,0.016-3.804
+			c0.002-0.344,0.105-0.687,0.16-1.031C215.539,112.897,215.74,112.916,215.939,112.931z"/>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="#AF3E92" d="M148.394,121.091c0.183,0,0.369,0,0.553,0
+			c0-1.654,0.008-3.307-0.002-4.961c-0.015-2.218-1.201-3.432-3.379-3.487c-2.54-0.066-3.914,1.042-4.013,3.331
+			c-0.063,1.525-0.023,3.059,0.002,4.589c0.003,0.235,0.176,0.467,0.27,0.699c0.121-0.015,0.242-0.031,0.362-0.046
+			c0-1.547-0.003-3.091,0-4.636c0.01-2.397,1.006-3.537,3.084-3.537c2.111,0,3.088,1.089,3.119,3.515
+			C148.408,118.069,148.394,119.579,148.394,121.091z"/>
+		<g>
+			
+				<text transform="matrix(1.0672 0 0 1 76.4766 133.2212)" fill="#AF3E92" font-family="'TimesNewRomanPS-BoldMT'" font-size="11.0304">Gain = (SM    ST) - (WM    WT)</text>
+			<path fill-rule="evenodd" clip-rule="evenodd" fill="#AF3E92" d="M143.572,134.295c0.182,0,0.369,0,0.553,0.001
+				c0-1.654,0.008-3.309-0.002-4.963c-0.016-2.217-1.202-3.431-3.379-3.488c-2.539-0.063-3.914,1.044-4.013,3.333
+				c-0.063,1.527-0.024,3.06,0.002,4.59c0.003,0.235,0.176,0.467,0.27,0.699c0.12-0.014,0.242-0.032,0.363-0.048
+				c0-1.545-0.005-3.09,0-4.633c0.008-2.398,1.004-3.539,3.083-3.539c2.11,0,3.089,1.091,3.119,3.516
+				C143.587,131.274,143.572,132.783,143.572,134.295z"/>
+			<path fill-rule="evenodd" clip-rule="evenodd" fill="#AF3E92" d="M211.383,125.924c-0.135,2.212-0.061,4.466-0.475,6.614
+				c-0.303,1.558-2.412,2.187-4.545,1.777c-1.535-0.296-2.504-1.445-2.559-3.16c-0.053-1.467-0.027-2.94-0.004-4.412
+				c0.004-0.289,0.143-0.578,0.219-0.869c0.145,0.013,0.281,0.028,0.426,0.038c0,1.583-0.002,3.162,0,4.743
+				c0.014,2.192,1.158,3.441,3.125,3.413c1.928-0.024,3.018-1.224,3.035-3.357c0.018-1.268-0.006-2.536,0.018-3.807
+				c0-0.342,0.104-0.685,0.16-1.029C210.982,125.891,211.184,125.908,211.383,125.924z"/>
+		</g>
+	</g>
+</g>
+<g id="_x3C_图层_x3E_">
+	<text transform="matrix(1 0 0 1 173.334 39.6665)"><tspan x="0" y="0" font-family="'TimesNewRomanPSMT'" font-size="6">UACC</tspan><tspan x="16.67" y="0" fill="#E60012" font-family="'TimesNewRomanPS-BoldMT'" font-size="6">C</tspan><tspan x="21.003" y="0" font-family="'TimesNewRomanPSMT'" font-size="6">GUAGAACCGAAUUUGUG</tspan></text>
+	<text transform="matrix(1 0 0 1 123 12)" font-family="'TimesNewRomanPSMT'" font-size="12">Variation</text>
+	<g>
+		<ellipse fill="#2EA7E0" cx="24.25" cy="92.5" rx="14.25" ry="12.66"/>
+		<text transform="matrix(1 0 0 1 15 97.5005)" font-family="'TimesNewRomanPSMT'" font-size="12">WT</text>
+	</g>
+	<g>
+		<ellipse fill="#2EA7E0" cx="96.682" cy="92.5" rx="14.25" ry="12.66"/>
+		<text transform="matrix(1 0 0 1 88.4316 97.5005)" font-family="'TimesNewRomanPSMT'" font-size="12">ST</text>
+	</g>
+	<g>
+		<ellipse fill="#2EA7E0" cx="208.876" cy="92.5" rx="14.25" ry="12.66"/>
+		<text transform="matrix(1 0 0 1 197.626 97.5005)" font-family="'TimesNewRomanPSMT'" font-size="12">WM</text>
+	</g>
+	<g>
+		<ellipse fill="#2EA7E0" cx="278" cy="92.5" rx="14.25" ry="12.66"/>
+		<text transform="matrix(1 0 0 1 269 97.5005)" font-family="'TimesNewRomanPSMT'" font-size="12">SM</text>
+	</g>
+	<g>
+		<line x1="22" y1="46.001" x2="22" y2="79.841"/>
+		<g>
+			<line fill="none" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" x1="22" y1="46.001" x2="22" y2="73.727"/>
+			<g>
+				<path d="M22,72.38l2.702-1.644l0.062,0.092l-1.75,4.406c-0.337,1.535-0.675,3.07-1.013,4.605
+					c-0.338-1.535-0.675-3.07-1.013-4.605l-1.75-4.406l0.046-0.092L22,72.38z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" x1="168" y1="32.002" x2="101.759" y2="76.435"/>
+			<g>
+				<path d="M102.877,75.685l2.87,1.329l-0.042,0.102l-4.634,1.001c-1.463,0.575-2.926,1.15-4.389,1.724
+					c1.087-1.136,2.174-2.271,3.26-3.407l2.684-3.908l0.103-0.013L102.877,75.685z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" x1="278" y1="48.668" x2="278" y2="73.727"/>
+			<g>
+				<path d="M278,72.38l2.702-1.644l0.062,0.092l-1.75,4.406c-0.338,1.535-0.676,3.07-1.014,4.605
+					c-0.338-1.535-0.676-3.07-1.014-4.605l-1.75-4.406l0.047-0.092L278,72.38z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			
+				<line fill="none" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" x1="124.667" y1="30.668" x2="203.596" y2="76.758"/>
+			<g>
+				<path d="M202.434,76.079l-0.057-3.162l0.11-0.006l2.923,3.733c1.155,1.065,2.311,2.131,3.466,3.197
+					c-1.496-0.482-2.992-0.965-4.488-1.447l-4.688-0.71l-0.057-0.086L202.434,76.079z"/>
+			</g>
+		</g>
+	</g>
+	<rect x="5" y="108.668" fill="none" stroke="#000000" stroke-miterlimit="10" width="291" height="28.333"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M124.667,34.001c0,6.627-5.373,12-12,12H15.333
+		c-6.627,0-12-5.373-12-12v-6.667c0-6.627,5.373-12,12-12h97.333c6.627,0,12,5.373,12,12V34.001z"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M296,36.668c0,6.627-5.373,12-12,12H180c-6.627,0-12-5.373-12-12
+		v-9.333c0-6.627,5.373-12,12-12h104c6.627,0,12,5.373,12,12V36.668z"/>
+	<rect x="5" y="55.5" fill="#8FC31F" stroke="#8FC31F" stroke-miterlimit="10" width="121.333" height="13.914"/>
+	<text transform="matrix(1 0 0 1 32.0112 65.8315)" font-family="'TimesNewRomanPSMT'" font-size="12">TargetScan</text>
+	<g>
+		<rect x="168" y="54.5" fill="#FAEE00" stroke="#FAEE00" stroke-miterlimit="10" width="128" height="13.914"/>
+		<text transform="matrix(1 0 0 1 214.1406 65.9136)" font-family="'TimesNewRomanPSMT'" font-size="12">miRmap</text>
+	</g>
+	<g>
+		<g>
+			<path fill="none" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" d="M161.069,19.363
+				c-9.089-7.377-23.178-7.527-34.127,0.406"/>
+			<g>
+				<path d="M160.006,18.526l-3.074,0.745l0.022,0.108l4.351,1.883c1.323,0.849,2.646,1.697,3.97,2.545
+					c-0.845-1.325-1.69-2.65-2.535-3.976l-1.873-4.355l-0.098-0.033L160.006,18.526z"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

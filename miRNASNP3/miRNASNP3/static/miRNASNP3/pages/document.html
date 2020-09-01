@@ -1,389 +1,389 @@
 <div class="panel panel-primary">
-    <div class="panel-heading" >
-        <strong>miRNASNP-v3 document</strong>
-	</div>
-	<div class="panel-body">
-		<ul>
-		<!--li><a href="#!/document/#one">1. What's new in miRNASNP-v3 compared to the previous version?</a></li>
-		<li><a href="#!/document/#two">2. Data statistics for miRNASNP-v3</a></li>
-		<li><a href="#!/document/#three">3. Data sources and tools for analyze</a></li>
-		<li><a href="#!/document/#four">4. Phenotype</a></li>
-		<li><a href="#!/document/#five">5. Enrichment analysis for gained/lost targets</a></li>
-		<li><a href="#!/document/#six">6. miRNA information and gene 3'UTR</a></li>
-		<li><a href="#!/document/#seven">7. Expression level and expression correlation of miRNAs and target genes</a></li>
-		<li><a href="#!/document/#eight">8. Genome-wide association studies (GWAS)</a></li>
-		<li><a href="#!/document/#nine">9. Online prediction</a></li>
-		<li><a href="#!/document/#ten">10. Target gain/loss</a></li>
-		<li><a href="#!/document/#eleven">11. Cite miRNASNP3</a></li>
-		<li><a href="#!/document/#contact">12. Contact us</a></li-->
-		</ul>
-		<div id="one">
-			<p>
-				<span class="document">
-					Features in miRNASNP-v3
-				</span>
-			</p>
-			<p>
-					<!--microRNAs (miRNAs) are endogenous and regulatory non-coding RNAs by targeting mRNAs for cleavage or translational repression.
-					SNPs on pre-miRNAs or target sites will affect miRNA expression or functions. -->
-					The completion of international projects (1000 genome project, TCGA, ExAC et al.) introduced a large amount of new single nucleotide polymorphism (SNPs).
-					These SNPs in miRNA can impact the secondary structures and targets of miRNAs. miRNASNP-v3 characterized SNPs in miRNAs, gene 3'UTRs and could predict the effect of miRNA-target interactions (MTIs) and secondary structures.
-					Also, miRNASNP-v3 identified disease-related variations (DRVs).
-			</p>
-			<p>
-				Updated the previous database with latest data, including:
-			</p>
-			<ul>
-				<li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>  SNPs in pre-miRNAs and their impacts on miRNAs.</li>
-				<li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>  Target gain/loss by SNPs in miRNA seed region and gene 3'UTRs.</li>
-				<li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>  Online tools to predict novel SNP effect on miRNA function.</li>
-				<li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>  Experimentally verified miRNA-target interaction.</li>
-				<li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>  Expression and correlation of miRNAs and genes.</li>
-			</ul>
-			<p>New features are added to miRNASNP-v3, including:</p>
+  <div class="panel-heading">
+    <strong>miRNASNP-v3 data source and methods</strong>
+  </div>
+  <div class="panel-body text-justify">
+    <div id="overview">
+      <p>
+        <span class="document"> Features in miRNASNP-<span style="color: red">v3</span></span>
+      </p>
+      <p>
+        Since the variation number identified in human genome was tremendously increased in last five years, we updated our miRNASNP
+        database to v3. To better understand associations of functional miRNA-related SNVs with phenotypes, we categorized disease-related
+        variations (DRVs) with diseases/traits annotations. In this miRNASNP-v3, we analyzed the effects of 7,161,741 single nucleotide
+        variations (SNVs) and 505,417 DRVs on 1,897 pre-miRNAs (2,630 mature miRNAs) and 3’UTRs of 18,152 genes. In addition to updating the
+        number of SNVs identified on miRNA/genes, we also added four new features. Now, miRNASNP-v3 becomes a one-stop resource for
+        miRNA-related SNVs research with the following functions.
+      </p>
+      <p>Update compared with miRNASNP-v2:</p>
+      <ul>
+        <li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> SNPs in pre-miRNAs and their impacts on miRNAs.</li>
+        <li>
+          <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Target gain/loss by SNPs in miRNA seed region and gene
+          3'UTRs.
+        </li>
+        <li>
+          <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Online tools to predict novel SNP effect on miRNA
+          function.
+        </li>
+        <li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Experimentally verified miRNA-target interaction.</li>
+        <li><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Expression and correlation of miRNAs and genes.</li>
+      </ul>
+      <p>New added to miRNASNP-v3:</p>
+      <ul>
+        <li>
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span> DRVs (NHGRI GWAS catalog, ClinVar, COSMIC) in miRNAs and gene
+          3'UTRs.
+        </li>
+        <li>
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span> DRVs impact on miRNA target gain/loss and secondary structure.
+        </li>
+        <li>
+          <span class="glyphicon glyphicon-star" aria-hidden="true" style="font: 2px"></span> Gene enrichment of miRNA target gain/loss by
+          variations in miRNA seed regions.
+        </li>
+        <li><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Correlation of drug sensitivity and miRNAs.</li>
+      </ul>
+    </div>
+    <div id="statistics">
+      <p>
+        <span class="document"> Data summary of variations identified on miRNAs and target binding sites </span>
+      </p>
+      <p>
+        More than 689,966,720 SNPs, 21,338,716
+        <a href="https://cancer.sanger.ac.uk/cosmic" target="_blank">COSMIC</a> non-coding variations and 444,715
+        <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
+        variations were mapped to 2,652 mature miRNAs derived from 1,913 pre-miRNAs. We performed target gain/loss analysis for variations
+        in miRNA seed region and 3'UTR (Predict target gain/loss section). The seed region is defined as a 7bp nucleotide fragment at the
+        5'end of the mature miRNA between 2 and 8. Meanwhile, we predicted the impact of all the variations in pre-miRNA on secondary
+        structure. The detailed statistics of these data integrated in miRNASNP-v3 are listed below.
+      </p>
+      <div align="center">
+        <embed src="/static/miRNASNP3/img/data_statistics_table_0724.svg" style="display: block; width: 850px; height: 397px" />
+      </div>
+    </div>
 
-			<ul>
-				<li><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  DRVs (NHGRI GWAS catalog, ClinVar, COSMIC) in miRNAs and gene 3'UTRs.</li>
-				<li><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  DRVs impact on miRNA target gain/loss and secondary structure.</li>
-				<li><span class="glyphicon glyphicon-star" aria-hidden="true" style="font: 2px"></span>  Gene enrichment of miRNA target gain/loss by variations in miRNA seed regions.</li>
-				<li><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  Correlation of drug sensitivity and miRNAs.</li>
-			</ul>
-			<!--p>And We update data to the latest version, User can</p>
-			<ul>
-				<li>search or browse SNPs in pre-miRNA and their impacts on miRNAs' structure,</li>
-				<li>search or browse targets gain/loss by SNP in miRNA seed region and gene 3'UTR,</li>
-				<li>search or browse experiment validated miRNA:gene interaction,</li>
-				<li>search or browse expression and correlation of miRNAs and genes,</li>
-				<li>search or browse expression and correlation of miRNAs and genes.</li>
-			</ul-->
-		</div>
-		<div id="two">
-				<p>
-					<span class="document">
-						Characterized variations in miRNAs and genes
-					</span>
-				</p>
-				<p>
-						The characterized variations in miRNASNP-v3 comprise single nucleotide polymorphism (SNP) in miRNAs/genes and disease-related variation (DRV) in miRNAs/genes.
-						More than 689,966,720 SNPs, 21,338,716 <a href="https://cancer.sanger.ac.uk/cosmic" target="_blank">COSMIC</a> non-coding variations and 444,715 <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a> variations were mapped to 2,652 mature miRNAs derived from 1,913 pre-miRNAs.
-						We performed target gain/loss analysis for variations in miRNA seed region and 3'UTR. The seed region is defined as a 7bp nucleotide fragment at the 5'end of the mature miRNA between 2 and 8.
-						Meanwhile, we studied the impact of all the variations in pre-miRNA on secondary structure.
-						The detailed mapping information is listed below.
-				</p>
-				<div align="center">
-				<!--img src="/static/miRNASNP3/img/data_statistics_table.png" style="margin-top: 30px;margin-bottom: 30px;width: 80%"-->
-				<embed src="/static/miRNASNP3/img/data_statistics_table_0724.svg" style="display:block;width:850px;height:397px">
-				</div>
-				<!--div align="center">
-						<img src="/static/miRNASNP3/img/targets_statistics_1.png" style="margin-top: 30px;margin-bottom: 30px">
-					</div-->
-			</div>
+    <div id="gain-loss">
+      <p>
+        <span class="document">Predict target gain/loss</span>
+      </p>
+      <p>
+        We predict the target gain/loss effect of SNPs in miRNA seed regions. Firstly, for SNPs in miRNA seed region, we obtained miRNA wild
+        sequence and SNP allele sequence. Then, we used two target prediction tools
+        <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> and
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> to predict their target sites, respectively.
+        <a target="_blank" href="https://arxiv.org/abs/1711.01632">Faiza et al, 2019</a> reported that combination of these two tools have
+        best performance prediction in human. Four categories of results are recorded as wild
+        <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP
+        <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST) and SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site
+        (SM). If one miRNA's target gene shows in both WT and WM, but not in either ST or SM, we called that the miRNA lost this target
+        gene. On the contrary, if one target shows in both ST and SM, but not in either WT or WM, we called that the miRNA gained one target
+        gene.
+      </p>
 
-			<div>
-					<p>
-						<span class="document">
-								Disease-related variations in miRNA/3'UTR
-								</span>
-								</p>
-					<p>
-							In the disease-related variations module, we integrated pathological information of 232,927 non-coding variations from <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 37,405 variations from <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>
-							 and disease/trait information of 235,085 SNPs from <a target="_blank" href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>.
-							We divided these variations into three categories based on their location. For variations in miRNA seed regions and gene 3'UTRs, target gain/loss information was presented.
-							For variations in pre-miRNAs, we provided the minimum free energy change of secondary structure of the pre-miRNA caused by the variation.
-							In this module, users can screen for variations associated with a particular disease by selecting a tissue of interest or typing in a description of the disease.
-					</p>
-					<p>
-							To look into GWAS SNPs, we downloaded all the tagSNPs from <a target="_blank" href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a> with the linkage disequilibrium (LD) information between tagSNPs
-							 and surrounding SNPs (D'>0.98, a LD measurement to show the degree of linkage disequilibrium between the selected variant and other variants) of 26 populations by the Ensembl REST API (<a target="_blank" href="http://rest.ensembl.org/documentation/info/ld_pairwise_get">http://rest.ensembl.org/documentation/info/ld_pairwise_get</a>).
-							 Then, a genome block between the minimum and maximum coordination of the surrounded SNPs was defined as the GWAS identified trait associated regions of each tagSNP in each population.
-							 Finally, we identified 235,085 tagSNPs and SNPs in trait associated regions. For each SNP, a plot of GWAS identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP position) in SNP detail panel.
-					</p>
-					<div align="center">
-						<img src="/static/miRNASNP3/img/phenotype_panel_0730.png" style="width: 100%;margin-top: 30px;">
-						<img src="/static/miRNASNP3/img/phenotype-gwas.png" style="width: 100%;margin-bottom: 30px">
-					</div>
+      <p>
+        We also predict the target gain/loss effect of SNPs in genes' 3'UTRs. For SNPs in one gene 3'UTR, we obtained wild type 3'UTR
+        sequence and corresponding SNP 3'UTR sequence. Then, we used two target prediction tools (<a
+          target="_blank"
+          href="http://www.targetscan.org/vert_72/"
+          >TargetScan</a
+        >
+        and <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>) to predict their target sites respectively. Four categories of
+        results are recorded as wild <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP
+        <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST), SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM).
+        If one target site shows in both WT and WM, but not in either ST or SM, we called that the gene lost this target site. On the
+        contrary, if one target both show in ST and SM, but not in either WT or WM, we called that the gene gained one target site.
+      </p>
+      This method is also applied to analyze the effect of DRVs in miRNA seed regions and 3'UTRs on target gain/loss.
+      <div align="center">
+        <embed
+          src="/static/miRNASNP3/img/gain_loss_method.png"
+          style="display: block; width: 500px; margin-top: 30px; margin-bottom: 30px"
+        />
+      </div>
+    </div>
 
-				</div>
+    <div id="DRVs">
+      <p>
+        <span class="document"> Disease-related variations (DRVs) identified on miRNA/3'UTR in miRNASNP-v3</span>
+      </p>
+      <p>
+        In the "Disease" module, we integrated pathological information of 232,927 non-coding variations from
+        <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a>, disease information of 37,405 variations from
+        <a href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a> and disease/trait information of 235,085 SNPs from
+        <a target="_blank" href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a>. We divided these variations into three categories
+        based on their location. For variations in miRNA seed regions and gene 3'UTRs, target gain/loss information was presented. For
+        variations in pre-miRNAs, we provided the minimum free energy change of secondary structure of the pre-miRNA caused by the
+        variation. In this module, users can screen for variations associated with a particular disease by selecting a tissue of interest or
+        typing in a description of the disease.
+      </p>
+      <p>
+        To investigate SNPs with GWAS disease/traits, we downloaded all the tagSNPs from
+        <a target="_blank" href="https://www.ebi.ac.uk/gwas/">NHGRI GWAS catalog</a> with the linkage disequilibrium (LD) information
+        between tagSNPs and surrounding SNPs (D'>0.98, a LD measurement to show the degree of linkage disequilibrium between the selected
+        variant and other variants) of 26 populations by the Ensembl REST API (<a
+          target="_blank"
+          href="http://rest.ensembl.org/documentation/info/ld_pairwise_get"
+          >http://rest.ensembl.org/documentation/info/ld_pairwise_get</a
+        >). Then, a genome block between the minimum and maximum coordination of the surrounded SNPs was defined as the GWAS identified
+        trait associated regions of each tagSNP in each population. Finally, we identified 235,085 tagSNPs and SNPs in trait associated
+        regions. For each SNP, a plot of GWAS identified trait associated regions was presented (Plot regions &plusmn;250kb around SNP
+        position) in SNP detail panel.
+      </p>
+      <div align="center">
+        <img src="/static/miRNASNP3/img/phenotype_panel_0730.png" style="width: 100%; margin-top: 30px" />
+        <img src="/static/miRNASNP3/img/phenotype-gwas.png" style="width: 100%; margin-bottom: 30px" />
+      </div>
+    </div>
 
-				<div>
-						<p>
-							<span class="document">Target gain/loss</span>
-						</p>
-						<p>We provide the target gain/loss effect of SNPs in miRNA seed regions.
-							Firstly, for SNPs in miRNA seed region, we obtained miRNA wild sequence and SNP allele sequence.
-							Then, we used two target prediction tools <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> and <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> to predict their target sites respectively.
-							Four categories of results are recorded as wild <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST) and SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM).
-							If one miRNA's target gene shows in both WT and WM, but not in either ST or SM, we called that the miRNA lost this target gene.
-							On the contrary, if one target shows in both ST and SM, but not in either WT or WM, we called that the miRNA gained one target gene.</p>
+    <div id="enrichment">
+      <p>
+        <span class="document"> miRNA gained/lost target gene set enrichment analysis </span>
+      </p>
+      <p>
+        One SNV occurs on the miRNA seed region could lead to gain and/or lose a set of target genes. This gained/lost set of target genes
+        could be enriched in special biological pathways, so that the SNV could affect the miRNA function. To further benefit users
+        investigating biological functions of the altered miRNA targets caused by SNVs. We performed
+        <a target="_blank" href="http://geneontology.org/">Gene Ontology (GO)</a> and
+        <a target="_blank" href="https://www.kegg.jp/">Kyoto Encyclopedia of Genes and Genomes (KEGG)</a> enrichment analysis on gained/lost
+        gene sets with gene numbers from 50 to 1000. clusterprofile.....写细一点... The output of enrichment analysis will be presented like
+        Figure 4.
+      </p>
+      <div align="center">
+        <img src="/static/miRNASNP3/img/enrichment-help-2.png" style="width: 100%; margin-top: 30px; margin-bottom: 30px" />
+      </div>
+    </div>
 
-						We also provide the target gain/loss effect of SNPs in genes' 3'UTRs.
-							For SNPs in one gene 3'UTR, we obtained wild type 3'UTR sequence and corresponding SNP 3'UTR sequence.
-							Then, we used two target prediction tools (<a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> and <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a>) to predict their target sites respectively.
-							Four categories of results are recorded as wild <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a> site (WT), wild <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> site (WM), SNP <a href="http://www.targetscan.org/vert_72/">TargetScan</a> site (ST), SNP <a href="https://mirmap.ezlab.org/">miRmap</a> site (SM).
-							If one target site shows in both WT and WM, but not in either ST or SM, we called that the gene lost this target site.
-							On the contrary, if one target both show in ST and SM, but not in either WT or WM, we called that the gene gained one target site.</p>
-							(This method is also used to analyze the effect of variations (from <a target="_blank" href="https://cancer.sanger.ac.uk/cosmic">COSMIC</a> and <a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">ClinVar</a>) in miRNA seed regions and 3'UTRs on target gain/loss )
-							<div align="center">
-								<embed src="/static/miRNASNP3/img/gain_loss_method.png" style="display:block;width:500px;margin-top: 30px;margin-bottom: 30px">
-							</div>
-				</div>
+    <div id="drug">
+      <p>
+        <span class="document">Correlation between miRNA expression and drug sensitivity</span>
+      </p>
+      <p>
+        Drug sensitivity data (GI50) of 18,724 drug/compounds and 355 miRNAs expression data from
+        <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a> were download from
+        <a target="_blank" href="https://discover.nci.nih.gov/cellminercdb/">CellMinerCDB</a>. The drug/compounds were annotated by
+        <a target="_blank" href="https://dtp.cancer.gov/dtpstandard/cancerscreeningdata/index.jsp">NSC ID</a> with its corresponding
+        <a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a> SID. Then we performed Pearson correlation analysis between
+        drug sensitivity and miRNA expression. The result is present in miRNA detail panel,
+        <a href="http://bioinfo.life.hust.edu.cn/miRNASNP/#!/mirna?mirna_id=hsa-miR-10b-5p">for hsa-miR-10b-5p example</a>. And we only
+        preserve miRNA-compound pairs with |cor|&gt;0.5 and FDR&lt;0.05 in
+        <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a>. 加一个截图吧。
+      </p>
+    </div>
 
-				<div>
-						<p>
-								<span class="document">
-											Enrichment analysis for target gain/loss
-										</span>
-										</p>
-						<p>
-								Enrichment analysis of gained/lost targets by variations in miRNA seed region may help us further discover the underlying biological mechanisms effected by the variation.
-								We perform <a target="_blank" href="http://geneontology.org/">Gene Ontology (GO)</a> and <a target="_blank" href="https://www.kegg.jp/">Kyoto Encyclopedia of Genes and Genomes (KEGG)</a> enrichment analysis on gained/lost gene sets with gene numbers from 50 to 1000.
-						</p>
-							<div align="center">
-								<img src="/static/miRNASNP3/img/enrichment-help-2.png" style="width: 100%;margin-top: 30px;margin-bottom: 30px">
-							</div>
-				</div>
+    <div id="tcga-expr">
+      <p>
+        <span class="document"> Correlation between miRNA and target gene in TCGA cancers </span>
+      </p>
+      <p>
+        Gene expression data and miRNA expression data across 33 cancers were downloaded from
+        <a target="_blank" href="https://portal.gdc.cancer.gov/">TCGA portal</a>. For each cancer, we performed pearson correlation analysis
+        between genes and miRNAs. The overall correlation coefficient value was displayed in loss targets information panel, which can be
+        clicked to pop out a histogram of correlation coefficient value for each cancer type. However, because there is no expression data
+        for SNP type 3'UTR/miRNA, the correlation coefficient value for gain target is not available.
+      </p>
+      <div align="center">
+        <img style="width: 100%; margin-top: 30px; margin-bottom: 30px" src="/static/miRNASNP3/img/correlation_and_expression.png" />
+      </div>
+    </div>
 
-		<div>
-				<p>
-						<span  class="document">Correlation of drug sensitivity and miRNAs </span>
-					</p>
-				<p>
-						Drug sensitivity data (GI50) of 18,724 drug/compounds and 355 miRNAs expression data in <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a> were download from <a target="_blank" href="https://discover.nci.nih.gov/cellminercdb/">CellMinerCDB</a>.
-						The drug/compounds were annotated by <a target="_blank" href="https://dtp.cancer.gov/dtpstandard/cancerscreeningdata/index.jsp">NSC ID</a> with its corresponding <a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a> SID.
-						<!-- In addition, sensitivity data of 24 drugs measured by IC50 were downloaded from <a target="_blank" href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> with expression data of 626 miRNAs. -->
-						Then we performed Pearson correlation analysis between drug sensitivity and miRNA expression.
-						The result is present in miRNA detail panel, <a href="http://bioinfo.life.hust.edu.cn/miRNASNP/#!/mirna?mirna_id=hsa-miR-10b-5p">for hsa-miR-10b-5p example</a>. And we only preserve miRNA-compound pairs with |cor|&gt;0.5 and FDR&lt;0.05 in <a target="_blank" href="https://dtp.cancer.gov/discovery_development/nci-60/">NCI-60</a>.
-				</p>
-
-		</div>
-
-		<div>
-			<p>
-				<span  class="document"> Experimentally verified miRNA-target interactions (MTIs) </span>
-			</p>
-			<p>
-					We integrated experimentally verified miRNA-target interactions (MTIs)  from  the databases of <a target="_blank" href="http://starbase.sysu.edu.cn/">starBase</a>, <a target="_blank" href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>,
-					<a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a> and <a target="_blank" href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>.
-					 We downloaded 370,058 MTIs with supporting CLIP-seq (HITS-CLIP, PAR-CLIP, iCLIP, CLASH) experiments (>5) from <a href="http://starbase.sysu.edu.cn/">starBase</a>.
-					 422,390 and 37,490 MTIs were collected from <a target="_blank" href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a> and <a target="_blank" href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> respectively,
-					 they had been validated by luciferase report assay, western blot and high-throughput experiments.  We also integrated 240 MTIs from <a target="_blank" href="http://mirecords.biolead.org/">miRecords</a> experimentally verified by literature curation,
-					 and 641 MTIs from <a target="_blank" href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a> by luciferase reporter assay. Generally, 1,027,355 experimentally verified MTIs were obtained in miRNASNP-v3.
-					 It should be noted that, miRNA names were uniformed by miRBase nomenclature, and gene names was annotated by gene symbols.
-
-			</p>
-			<!--p>
+    <div id="validation">
+      <p>
+        <span class="document"> Experimentally verified miRNA-target interactions (MTIs) </span>
+      </p>
+      <p>
+        We integrated experimentally verified miRNA-target interactions (MTIs) from the databases of
+        <a target="_blank" href="http://starbase.sysu.edu.cn/">starBase</a>,
+        <a target="_blank" href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>,
+        <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a> and
+        <a target="_blank" href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>. We downloaded 370,058 MTIs with
+        supporting CLIP-seq (HITS-CLIP, PAR-CLIP, iCLIP, CLASH) experiments (>5) from <a href="http://starbase.sysu.edu.cn/">starBase</a>.
+        422,390 and 37,490 MTIs were collected from <a target="_blank" href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a> and
+        <a target="_blank" href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> respectively, they had been validated by luciferase
+        report assay, western blot and high-throughput experiments. We also integrated 240 MTIs from
+        <a target="_blank" href="http://mirecords.biolead.org/">miRecords</a> experimentally verified by literature curation, and 641 MTIs
+        from <a target="_blank" href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a> by luciferase reporter assay.
+        Generally, 1,027,355 experimentally verified MTIs were obtained in miRNASNP-v3. It should be noted that, miRNA names were uniformed
+        by miRBase nomenclature, and gene names was annotated by gene symbols.
+      </p>
+      <!--p>
 					We downloaded all experimentally verified human miRNA targets from the databases of <a href="http://diana.cslab.ece.ntua.gr/tarbase/">TarBase</a>,
 					 <a href="http://starbase.sysu.edu.cn/">starBase</a>, <a href="http://mirecords.biolead.org/">miRecords</a>, <a href="http://mirtarbase.mbc.nctu.edu.tw/">miRTarBase</a> and <a href="http://watson.compbio.iupui.edu:8080/miR2Disease/">miR2Disease</a>.
 
 			</p-->
-		</div>
+    </div>
 
-		<div>
-				<p>
-				<span class="document">
-					miRNA expression and correlation with mRNAs
-				</span>
-				</p>
-			<p>
-					Gene expression data and miRNA expression data across 33 cancers were downloaded from <a target="_blank" href="https://portal.gdc.cancer.gov/">TCGA portal</a>.
-					For each cancer, we performed pearson correlation analysis between genes and miRNAs.
-					The overall correlation coefficient value was displayed in loss targets information panel, which can be clicked to pop out a histogram of correlation coefficient value for each cancer type.
-					However, because there is no expression data for SNP type 3'UTR/miRNA, the correlation coefficient value for gain target is not available.
-			</p>
-			<div align="center">
-				<img style="width: 100%;margin-top: 30px;margin-bottom: 30px" src="/static/miRNASNP3/img/correlation_and_expression.png">
-			</div>
+    <div id="predict">
+      <p>
+        <span class="document">Predict module</span>
+      </p>
+      <p>
+        miRNASNP-v3 provides three kinds of online predictions. (1) Predicting the impact of variant in gene 3'UTR on miRNA:mRNA
+        interaction. First, this method will scan 2,652 mature miRNAs to predict target miRNAs for wild-type and SNP-type 3'UTR sequence by
+        <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> and
+        <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>. Then follow the analysis pipeline constructed in
+        miRNASNP to get the gain/loss targets. (2) Predicting the impact of variant in miRNA on miRNA-target interaction, this method will
+        scan 18,286 gene 3'UTRs to predict target genes for wild-type and SNP-type miRNA sequence.(In order to save the calculation time,
+        only the longest transcript of each gene was used to take online prediction in this module.) The prediction result will give a
+        summary panel and other four panels to show gain targets, loss targets, predicted targets of wild/SNP-type sequence. (3) For
+        predicting the impact of variations in pre-miRNA on miRNA structure, the minimum free energy (MFE) of SNP-type sequence for each SNP
+        is predicted by <a target="_blank" href="https://www.tbi.univie.ac.at/RNA/index.html">RNAfold</a>.
+      </p>
+      <div align="center">
+        <img src="/static/miRNASNP3/img/predict-help.png" style="width: 100%; margin-top: 30px; margin-bottom: 30px" />
+      </div>
+    </div>
 
-			</div>
+    <div id="source">
+      <p>
+        <span class="document">Data sources and tools</span>
+      </p>
+      <table class="table table-bordered table-striped table-hover">
+        <tbody>
+          <tr>
+            <th style="width: 25%">Data</th>
+            <th style="width: 25%">Source</th>
+            <th style="width: 50%">URL</th>
+          </tr>
+          <tr>
+            <td>miRNA</td>
+            <td>miRBase v22</td>
+            <td><a target="_blank" href="http://www.mirbase.org">http://www.mirbase.org</a></td>
+          </tr>
+          <tr>
+            <td>SNP</td>
+            <td>dbSNP v151</td>
+            <td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/">https://www.ncbi.nlm.nih.gov/snp/</a></td>
+          </tr>
+          <tr>
+            <td>GWAS SNPs</td>
+            <td>GWAS catelog</td>
+            <td><a target="_blank" href="https://www.ebi.ac.uk/gwas/home">https://www.ebi.ac.uk/gwas/home</a></td>
+          </tr>
+          <tr>
+            <td rowspan="2">Gene</td>
+            <td>UCSC</td>
+            <td><a target="_blank" href="https://genome.ucsc.edu/cgi-bin/hgTables">https://genome.ucsc.edu/cgi-bin/hgTables</a></td>
+          </tr>
+          <tr>
+            <td>Ensembl</td>
+            <td><a target="_blank" href="http://www.ensembl.org/biomart/martview">http://www.ensembl.org/biomart/martview</a></td>
+          </tr>
+          <tr>
+            <td>miRNA and gene expression</td>
+            <td>TCGA</td>
+            <td><a target="_blank" href="https://portal.gdc.cancer.gov/">https://portal.gdc.cancer.gov/</a></td>
+          </tr>
+          <tr>
+            <td>COSMIC Noncoding Variation</td>
+            <td>COSMIC v88</td>
+            <td><a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/">https://cancer.sanger.ac.uk/cosmic/</a></td>
+          </tr>
+          <tr>
+            <td>ClinVar variation</td>
+            <td>ClinVar</td>
+            <td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">https://www.ncbi.nlm.nih.gov/clinvar/</a></td>
+          </tr>
+          <tr>
+            <td rowspan="5">Experiment validated</td>
+            <td>TarBase v8</td>
+            <td>
+              <a target="_blank" href="http://carolina.imis.athena-innovation.gr/diana_tools/web/index.php?r=tarbasev8"
+                >http://carolina.imis.athena-innovation.gr/diana_tools/web/index.php?r=tarbasev8</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>miR2Disease</td>
+            <td><a target="_blank" href="http://www.mir2disease.org/">http://www.mir2disease.org/</a></td>
+          </tr>
+          <tr>
+            <td>miRecords v4</td>
+            <td><a target="_blank" href="http://c1.accurascience.com/miRecords/">http://c1.accurascience.com/miRecords/</a></td>
+          </tr>
+          <tr>
+            <td>miRTarBase v7</td>
+            <td><a target="_blank" href="http://mirtarbase.mbc.nctu.edu.tw/">http://mirtarbase.mbc.nctu.edu.tw/</a></td>
+          </tr>
+          <tr>
+            <td>StarBase v3</td>
+            <td><a target="_blank" href="http://starbase.sysu.edu.cn/tutorialAPI.php">http://starbase.sysu.edu.cn/tutorialAPI.php</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-bordered table-striped table-hover">
+        <tbody>
+          <tr>
+            <th style="width: 25%">Tools</th>
+            <th style="width: 25%">Usage</th>
+            <th style="width: 50%">Url</th>
+          </tr>
+          <tr>
+            <td>TargetScan</td>
+            <td>miRNA target prediction</td>
+            <td><a target="_blank" href="http://www.targetscan.org/vert_72/">http://www.targetscan.org/vert_72/</a></td>
+          </tr>
+          <tr>
+            <td>miRmap</td>
+            <td>miRNA target prediction</td>
+            <td><a target="_blank" href="https://mirmap.ezlab.org/">https://mirmap.ezlab.org/</a></td>
+          </tr>
+          <tr>
+            <td>VennaRNA</td>
+            <td>pre-miRNA secondary structure prediction</td>
+            <td><a target="_blank" href="https://www.tbi.univie.ac.at/RNA/index.html">https://www.tbi.univie.ac.at/RNA/index.html</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+    <div id="eleven">
+      <p>
+        <span class="document">Cite miRNASNP</span>
+      </p>
+      <p>
+        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4397995/" target="_blank">
+          <strong>An update of miRNASNP database for better SNP selection by GWAS data, miRNA expression and online tools. </strong>
+        </a>
+        <br />
+        Gong J, Liu CJ, Wu Y, Ma Z, Chen H and Guo AY. <em>Database</em>. (2015)
+      </p>
+      <p>
+        <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/humu.21641" target="_blank">
+          <strong>
+            Genome-wide identification of SNPs in microRNA genes and the SNP effects on microRNA target binding and biogenesis.
+          </strong> </a
+        ><br />
+        Gong J, Tong Y, Zhang HM, Wang K, Hu T, Shan G, Sun J and Guo AY. <em>Human Mutation</em>. (2011)
+      </p>
+    </div>
 
+    <div id="contact">
+      <p>
+        <span class="document">Contact us</span>
+      </p>
+      <address>
+        <strong>&nbsp;&nbsp;An-Yuan Guo, Ph.D. Professor of Bioinformatics</strong><br />
+        <strong style="font-size: 18px; margin-top: 1px">&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+        <img alt="An-Yuan Guo" src="/static/miRNASNP3/img/guoay_email.png" style="height: 20px" />
+      </address>
+      <address>
+        <strong>&nbsp;&nbsp;Xin Fu, M.S. student</strong><br />
+        <strong style="font-size: 18px; margin-top: 1px">&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
+        <img alt="Gui-Yan Xie" src="/static/miRNASNP3/img/fuxin_email.png" style="height: 20px" />
+      </address>
 
-		<!--div id="six">
-			<p>
-			<span class="document">
-				miRNA information and gene 3'UTR
-			</span>
-			</p>
-			<p>
-					The host gene information of miRNAs was extracted from mirna_context.txt file.
-					For miRNAs without host gene, we label them as intergenic.
-					The gene 3'UTR file and human genome sequence(GRCh38)  were downloaded by <a href="http://genome.ucsc.edu/cgi-bin/hgTables">the UCSC Table browser</a>, then we use bedtools to get the sequence
-					information for each transcript based on the genome position. To get a more reliable transcript set,
-					gene symbols and <a href="https://www.ncbi.nlm.nih.gov/refseq/">RefSeq</a> mRNA ID corresponding to the transcript ID was downloaded from <a href="http://asia.ensembl.org/biomart/martview/">Ensembl</a>, transcripts which not have gene symbol or <a href="https://www.ncbi.nlm.nih.gov/refseq/">RefSeq</a> mRNA ID
-					were excluded. Finally, 34,116 transcripts(transcripts with a sequence length greater than 6(seed region length)) of 18,286 genes were ultimately used for target analysis.
-			</p>
-		</div-->
-
-
-
-	<div>
-		<p>
-			<span class="document">Online prediction</span>
-		</p>
-		<p>
-				miRNASNP-v3 provides three kinds of online predictions. (1) Predicting the impact of variant in gene 3'UTR on miRNA:mRNA interaction. First, this method will scan 2,652 mature miRNAs
-    to predict target miRNAs for wild-type and SNP-type 3'UTR sequence by <a target="_blank" href="https://mirmap.ezlab.org/">miRmap</a> and <a target="_blank" href="http://www.targetscan.org/vert_72/">TargetScan</a>. Then follow the analysis pipeline constructed in
-    miRNASNP to get the gain/loss targets. (2) Predicting the impact of variant in miRNA on miRNA-target interaction, this method will scan 18,286 gene 3'UTRs to predict target genes
-    for wild-type and SNP-type miRNA sequence.(In order to save the calculation time, only the longest transcript of each gene was used to take online prediction in this module.)
-    The prediction result will give a summary panel and other four panels to show gain targets, loss targets, predicted targets of wild/SNP-type sequence. (3) For predicting the impact of variations in pre-miRNA on miRNA structure, the
-    minimum free energy (MFE) of SNP-type sequence for each SNP is predicted by <a target="_blank" href="https://www.tbi.univie.ac.at/RNA/index.html">RNAfold</a>.
-		</p>
-		<div align="center">
-				<img src="/static/miRNASNP3/img/predict-help.png" style="width: 100%;margin-top: 30px;margin-bottom: 30px">
-			</div>
-	</div>
-
-
-	<div>
-			<p>
-				<span class="document">Data sources and tools for analyze</span>
-			</p>
-			<table class="table table-bordered table-striped table-hover">
-				<tbody>
-					<tr>
-						<th style="width:25%">Data</th>
-						<th style="width:25%">Source</th>
-						<th style="width:50%">URL</th>
-					</tr>
-					<tr>
-						<td>miRNA</td>
-						<td>miRBase v22</td>
-						<td><a target="_blank" href="http://www.mirbase.org">http://www.mirbase.org</a></td>
-					</tr>
-					<tr>
-						<td>SNP</td>
-						<td>dbSNP v151</td>
-						<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/snp/">https://www.ncbi.nlm.nih.gov/snp/</a></td>
-					</tr>
-					<tr>
-						<td>GWAS SNPs</td>
-						<td>GWAS catelog</td>
-						<td><a target="_blank" href="https://www.ebi.ac.uk/gwas/home">https://www.ebi.ac.uk/gwas/home</a></td>
-					</tr>
-					<tr>
-						<td rowspan="2">Gene</td>
-						<td>UCSC</td>
-						<td><a target="_blank" href="https://genome.ucsc.edu/cgi-bin/hgTables">https://genome.ucsc.edu/cgi-bin/hgTables</a></td>
-					</tr>
-					<tr>
-						<td>Ensembl</td>
-						<td><a target="_blank" href="http://www.ensembl.org/biomart/martview">http://www.ensembl.org/biomart/martview</a></td>
-					</tr>
-					<tr>
-						<td>miRNA and gene expression</td>
-						<td>TCGA</td>
-						<td><a target="_blank" href="https://portal.gdc.cancer.gov/">https://portal.gdc.cancer.gov/</a></td>
-					</tr>
-					<tr>
-					<td>COSMIC Noncoding Variation</td>
-					<td>COSMIC v88</td>
-					<td><a target="_blank" href="https://cancer.sanger.ac.uk/cosmic/">https://cancer.sanger.ac.uk/cosmic/</a></td>
-					</tr>
-					<tr>
-						<td>ClinVar variation</td>
-						<td>ClinVar</td>
-						<td><a target="_blank" href="https://www.ncbi.nlm.nih.gov/clinvar/">https://www.ncbi.nlm.nih.gov/clinvar/</a></td>
-					</tr>
-					<tr>
-						<td rowspan="5">Experiment validated</td>
-						<td>TarBase v8</td>
-						<td><a target="_blank" href="http://carolina.imis.athena-innovation.gr/diana_tools/web/index.php?r=tarbasev8">http://carolina.imis.athena-innovation.gr/diana_tools/web/index.php?r=tarbasev8</a></td>
-					</tr>
-					<tr>
-						<td>miR2Disease</td>
-						<td><a target="_blank" href="http://www.mir2disease.org/">http://www.mir2disease.org/</a></td>
-					</tr>
-					<tr>
-						<td>miRecords v4</td>
-						<td><a target="_blank" href="http://c1.accurascience.com/miRecords/">http://c1.accurascience.com/miRecords/</a></td>
-					</tr>
-					<tr>
-						<td>miRTarBase v7</td>
-						<td><a target="_blank" href="http://mirtarbase.mbc.nctu.edu.tw/">http://mirtarbase.mbc.nctu.edu.tw/</a></td>
-					</tr>
-					<tr>
-						<td>StarBase v3</td>
-						<td><a target="_blank" href="http://starbase.sysu.edu.cn/tutorialAPI.php">http://starbase.sysu.edu.cn/tutorialAPI.php</a></td>
-					</tr>
-
-				</tbody>
-			</table>
-			<table class="table table-bordered table-striped table-hover">
-					<tbody>
-						<tr>
-							<th style="width:25%">Tools</th>
-							<th style="width:25%">Usage</th>
-							<th style="width:50%">Url</th>
-						</tr>
-						<tr>
-							<td>TargetScan</td>
-							<td>miRNA target prediction</td>
-							<td><a target="_blank" href="http://www.targetscan.org/vert_72/">http://www.targetscan.org/vert_72/</a></td>
-						</tr>
-						<tr>
-							<td>miRmap</td>
-							<td>miRNA target prediction</td>
-							<td><a target="_blank" href="https://mirmap.ezlab.org/">https://mirmap.ezlab.org/</a></td>
-						</tr>
-						<tr>
-							<td>VennaRNA</td>
-							<td>pre-miRNA secondary structure prediction </td>
-							<td><a target="_blank" href="https://www.tbi.univie.ac.at/RNA/index.html">https://www.tbi.univie.ac.at/RNA/index.html</a></td>
-						</tr>
-						</tbody>
-						</table>
-		</div>
-
-	<div id="eleven">
-		<p>
-			<span class="document">Cite miRNASNP</span>
-		</p>
-		<p>
-				<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4397995/" target="_blank">
-					<strong>An update of
-						miRNASNP database for better SNP selection by GWAS data, miRNA expression and online
-				tools.
-					</strong>
-				</a> <br />
-						Gong J, Liu CJ, Wu Y, Ma Z, Chen H and Guo AY. <em>Database</em>. (2015)
-			</p>
-			<p>
-					<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/humu.21641" target="_blank">
-						<strong>
-							Genome-wide identification of SNPs in microRNA genes and the SNP effects
-							on microRNA target binding and biogenesis.
-						</strong>
-					</a><br />
-							Gong J, Tong Y, Zhang HM, Wang K, Hu T, Shan G, Sun J and Guo AY. <em>Human Mutation</em>. (2011)
-				</p>
-	</div>
-
-	<div id="contact">
-		<p>
-			<span class="document">Contact us</span>
-		</p>
-		<address>
-				<strong>&nbsp;&nbsp;An-Yuan Guo, Ph.D. Professor of Bioinformatics</strong><br />
-				<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
-			   <img alt="An-Yuan Guo" src="/static/miRNASNP3/img/guoay_email.png" style="height: 20px">
-			</address>
-			<address>
-				<strong>&nbsp;&nbsp;Xin Fu, M.S. student</strong><br />
-				<strong style="font-size: 18px;margin-top: 1px" >&nbsp;&nbsp;Email:&nbsp</strong>&nbsp;
-			   <img alt="Gui-Yan Xie" src="/static/miRNASNP3/img/fuxin_email.png" style="height: 20px">
-			</address>
-
-		  <div class="address">
-				&nbsp;&nbsp;<a href="http://bioinfo.life.hust.edu.cn/" target="_blank">Hubei Bioinformatics & Molecular Imaging Key Laboratory</a> <br />
-				&nbsp;&nbsp;Department of Bioinformatics and Systems Biology<br />
-				&nbsp;&nbsp;<a href="http://life.hust.edu.cn/" target="_blank">College of Life Science and Technology</a><br />
-				&nbsp;&nbsp;<a href="http://www.hust.edu.cn/" target="_blank">Huazhong University of Science and Technology, Wuhan 430074 P.R. China</a><br />
-			</div>
-	</div>
-
-	</div>
+      <div class="address">
+        &nbsp;&nbsp;<a href="http://bioinfo.life.hust.edu.cn/" target="_blank">Hubei Bioinformatics & Molecular Imaging Key Laboratory</a>
+        <br />
+        &nbsp;&nbsp;Department of Bioinformatics and Systems Biology<br />
+        &nbsp;&nbsp;<a href="http://life.hust.edu.cn/" target="_blank">College of Life Science and Technology</a><br />
+        &nbsp;&nbsp;<a href="http://www.hust.edu.cn/" target="_blank"
+          >Huazhong University of Science and Technology, Wuhan 430074 P.R. China</a
+        ><br />
+      </div>
+    </div>
+  </div>
 </div>
-
-
-
-
