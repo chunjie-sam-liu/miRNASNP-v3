@@ -27,7 +27,7 @@ function GeneController($scope,$routeParams,$http,$filter,$document,miRNASNP3Ser
         $scope.initial=0;
         console.log(response)
         $scope.mutation_utr3_list=response.data.mutation_utr3_list;
-        $scope.mutation_utr3_count=response.data.mutation_utr3_count[0].count
+        $scope.mutation_utr3_count=response.data.mutation_utr3_count.count
     })
 }
 if(has_snp){
