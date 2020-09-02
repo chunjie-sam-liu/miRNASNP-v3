@@ -122,6 +122,9 @@ angular.module('miRNASNP3', ['ui.bootstrap', 'ngRoute', 'pageslide-directive', '
             .when("/test",{
                 templateUrl:"/static/miRNASNP3/lib/fornac/dist/test.html",
             })
+            .when("/index.bs",{
+                templateUrl:"/index.bs"
+            })
             .otherwise({
                 redirectTo: "/404.html"
             });
