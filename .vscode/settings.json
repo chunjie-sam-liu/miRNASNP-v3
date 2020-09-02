@@ -1,5 +1,4 @@
 {
-  "python.pythonPath": "/usr/bin/python2",
-  "python.formatting.provider": "yapf",
-  "cSpell.words": ["DRVs", "Faiza", "RNASNP", "RNAs", "SNPs", "SNVs", "UTRs", "glyphicon"]
+  "python.pythonPath": "/home/liucj/tools/anaconda3/bin/python",
+  "python.dataScience.jupyterServerURI": "http://guolabwebserver:9797/?token=null"
 }
