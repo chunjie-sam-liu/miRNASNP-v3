@@ -1,5 +1,21 @@
 {
   "python.pythonPath": "/usr/bin/python2",
   "python.formatting.provider": "yapf",
-  "cSpell.words": ["DRVs", "Faiza", "RNASNP", "RNAs", "SNPs", "SNVs", "UTRs", "glyphicon"]
+  "cSpell.words": [
+    "Clin",
+    "DRVs",
+    "Ensembl",
+    "Faiza",
+    "GWAS",
+    "KEGG",
+    "NHGRI",
+    "RNASNP",
+    "RNAs",
+    "Rmap",
+    "SNPs",
+    "SNVs",
+    "UTRs",
+    "clusterprofile",
+    "glyphicon"
+  ]
 }
