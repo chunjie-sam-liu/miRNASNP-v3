@@ -3,7 +3,7 @@
 
 ## Cite
 
-Liu, C. J., Fu, X., Xia, M., Zhang, Q., Gu, Z., & Guo, A. Y. (2020). miRNASNP-v3: a comprehensive database for SNPs and disease-related variations in miRNAs and miRNA targets. *Nucleic Acids Research*.
+[Liu, C. J., Fu, X., Xia, M., Zhang, Q., Gu, Z., & Guo, A. Y. (2020). miRNASNP-v3: a comprehensive database for SNPs and disease-related variations in miRNAs and miRNA targets. *Nucleic Acids Research*.](https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkaa783/5912820)
 
 ## Summary
 
