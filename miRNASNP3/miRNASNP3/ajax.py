@@ -214,9 +214,8 @@ class SnpSeedGainFull(Resource):
         group_count = {"$group": {"_id": "null", "count": {"$sum": 1}}}
     
         print(pipline)
-        per_page = 15
-        limit = {"$limit": per_page}
-        pipline = [match,limit,lookup_gene, lookup_mirna]
+        
+        pipline = [match,lookup_gene, lookup_mirna]
 
         snp_seed4666_gain_count = mongo.db.seed_gain_4666_redundancy.find(condition).count()
         snp_indel_gain_count = mongo.db.seed_gain_addindel_redundancy.find(condition).count()
