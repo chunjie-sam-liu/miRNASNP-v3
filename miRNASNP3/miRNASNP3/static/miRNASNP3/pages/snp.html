@@ -4,7 +4,9 @@
     </div>
 </div>
 
-
+<div ng-show="download">
+    <embed src="/static/miRNASNP3/graph/loading.gif"/>
+</div>
 
 <ul class="nav nav-tabs"  ng-show="snp_summary_count">
     <li id="one" ng-click="show_one('one')" ng-show="snp_summary_count" style="background-color:#EBEBEB;margin-right: 3px "
@@ -60,54 +62,27 @@
             </dl>
         </div>
     </div>
-    <!--div ng-show="snp_summary_alias_count">
-    <div class="panel panel-info" ng-show="one">
-        <div class="panel-heading">
-            <strong>Alias information of {$query_snp$}</strong>
-        </div>
-
-            <table style="text-align: center" ts-wrapper id="snp-alias-table" class="table table-bordered table-striped table-hover  table-condensed tablesorter tablesorter-bootstrap" >
-            <thead>
-            <tr>
-                <th>SNP ID</th>
-                <th>Position</th>
-                <th>Ref/Alt</th>
-                <th>Ref freq./Alt freq.</th>
-                <th>Region</th>
-                <th>{$head_identifier$}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="v in snp_summary_list">
-                <td>{$v.snp_id$}</td>
-                <td>{$v.snp_chr$}:{$v.snp_coordinate$}</td>
-                <td>{$v.ref$}/{$v.alt$}</td>
-                <td align="center">
-                    <span ng-if="v.ref_freq">{$v.ref_freq$}</span>
-                    <span ng-if="!v.ref_freq">-</span>/
-                    <span ng-if="v.alt_freq">{$v.alt_freq$}</span>
-                    <span ng-if="!v.alt_freq">-</span>
-                </td>
-                <td>{$v.location$}</td>
-                <td>{$v.identifier$}</td>
-            </tr>
-            </tbody>
-            </table>
-        </div>
-    </div-->
 </div>
 
 
 <div ng-show="two">
 <div class="panel panel-info" id="section-2">
     <div class="panel-heading">
-            <strong >{$ query_snp $} in miRNA seed region causes target gain</strong>
+        <button type="button" class="btn btn-default btn-xs" ng-click="downFile_target_gain_full(query_snp+'_in_miRNA_seed_region_causes_target_gain')">
+            <span class="glyphicon glyphicon-download" aria-hidden="true" data-placement="top"  data-container="body" data-toggle="popover" data-trigger="hover" 
+            data-content="Download the full table"></span>
+        </button>
+        <strong >{$ query_snp $} in miRNA seed region causes target gain</strong>
+        <!--button type="button" class="btn btn-default btn-sm pull-left"  ng-click="downFile_target_full(query_snp+'_in_miRNA_seed_region_causes_target_gain')" style="margin: -4px;">
+            Download
+        </button-->
         <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene" style="height: 24px;margin-right: 10px;">
                </div>
                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snp_seed_gain_list,query_snp+'_in_miRNA_seed_region_causes_target_gain')" style="margin: -4px;">
-                Download
+                <span aria-hidden="true" data-placement="top"  data-container="body" data-toggle="popover" data-trigger="hover" 
+            data-content="Download this page">Download</span>
             </button>
            </form>
     </div>
@@ -189,19 +164,26 @@
              ul-class="pagination"
              active-class="active"
              disabled-class="disabled"
-             paging-action="fetch_target_gain(page)"></div>
+             paging-action="fetch_target_gain(page)">          
+            </div>
+           
 </div>
 
 <div ng-show="three">
 <div class="panel panel-info" id="section-3">
     <div class="panel-heading">
+        <button type="button" class="btn btn-default btn-xs" ng-click="downFile_target_loss_full(query_snp+'_in_miRNA_seed_region_causes_target_loss')">
+            <span class="glyphicon glyphicon-download" aria-hidden="true" data-placement="top"  data-container="body" data-toggle="popover" data-trigger="hover" 
+            data-content="Download the full table"></span>
+        </button>
             <strong >{$ query_snp $} in miRNA seed region causes target loss</strong>
         <form class="form-inline pull-right">
                <div class="form-group">
                    <input type="text" class="form-control" placeholder="gene" id="search_gene_loss" style="height: 24px;margin-right: 10px;">
                </div>
                <button type="button" class="btn btn-default btn-sm pull-right"  ng-click="downFile_target(snp_seed_loss_list,query_snp+'_in_miRNA_seed_region_causes_target_loss')" style="margin: -4px;">
-                Download
+                <span aria-hidden="true" data-placement="top"  data-container="body" data-toggle="popover" data-trigger="hover" 
+            data-content="Download this page">Download</span>
             </button>
            </form>
         </div>
@@ -622,77 +604,18 @@
                 </table>
 </div>
 
-<!--div class="panel panel-info" ng-show="seven" id="section-7">
-    <div class="panel panel-info" ng-show="rcosmic_count">
-        <div class="panel-heading" >
-        <strong> {$rcosmic_count$}mutation in COSMIC relate with {$ query_snp $}</strong>
-    </div>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>COSMIC ID</th>
-            <th>Chromosome</th>
-            <th>Position</th>
-            <th>Ref</th>
-            <th>Alt</th>
-            <th>RelateSnp</th>
-            <th>Primary site</th>
-            <th>Primary histology</th>
-            <th>PubMed ID</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat=" line in rcosmic_list">
-            <td>{$ line.ID_NCV $}</td>
-            <td>{$ line.chrome$}</td>
-            <td>{$ line.position $}</td>
-            <td>{$ line.ref$}</td>
-            <td>{$ line.alt$}</td>
-            <td>{$ line.snp_id$}</td>
-            <td style="word-break:break-all">{$ line.Primary_site$}</td>
-            <td style="word-break:break-all">{$ line.Primary_histology $}</td>
-            <td>{$ line.PUBMED_PMID$}</td>
-        </tr>
-        </tbody>
-    </table>
-    </div>
-        <div class="panel panel-info" ng-show="rclinvar_count">
-            <div class="panel-heading">
-                <strong> {$rclinvar_count$} mutation in ClinVar relate with {$ query_snp $}</strong>
-            </div>
-
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ClinVar ID</th>
-                    <th>Chromosome</th>
-                    <th>Position</th>
-                    <th>Ref</th>
-                    <th>Alt</th>
-                    <th>RelateSnp</th>
-                    <th style="width: 25%">Disease</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat=" line in rclinvar_list">
-                    <td>{$ line.clinvar_id $}</td>
-                    <td>{$ line.chrome$}</td>
-                    <td>{$ line.position $}</td>
-                    <td>{$ line.ref$}</td>
-                    <td>{$ line.alt$}</td>
-                    <td>{$ line.snp_id$}</td>
-                    <td style="word-break:break-all">{$ line.disease $}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div-->
-
-
 <div class="fade" tabindex="-1">
     <div class="dialog">
         <div class="content"></div>
     </div>
+</div>
+
+<div class="modal fade" id="DownloadModal" tabindex="-1" role="dialog" aria-labelledby="DownloadLabel" aria-hidden="true">
+    <embed
+          src="/static/miRNASNP3/graph/loading.gif"
+        />
+</div>
+    
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 600px">

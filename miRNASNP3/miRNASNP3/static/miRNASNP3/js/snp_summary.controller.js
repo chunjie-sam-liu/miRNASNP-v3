@@ -348,21 +348,7 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
                 }
                 $scope.snp_seed_list=seed_list.sort(dict_sort("snp_position"))
             })
-            /*$http({
-                //url:base_url+ip_address,
-                url:base_url+'/api/snp_summary_mature',
-                method:'GET',
-                params:condition,
-            }).then(function(response){
-                $scope.initial=0;
-                var mature_list=response.data.snp_mature_list;
-                $scope.mature_count=response.data.snp_mature_count;
-                for(var i=0;i<mature_list.length;i++){
-                    if(Number(mature_list[i].ref_freq)==0.0){mature_list[i].ref_freq=0}
-                    if(Number(mature_list[i].alt_freq)==0.0){mature_list[i].alt_freq=0}
-                }
-                $scope.mature_list=mature_list;
-            })*/
+            
             $http({
                 //url:base_url+ip_address,
                 url:base_url+'/api/snp_summary_premir',
@@ -498,70 +484,6 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
             condition['mutation_rela']=1
         }
         if(flag_snp==0 && $scope.flag_identifier==0){
-            /*$http({
-                //url:base_url+ip_address,
-                url:base_url+'/api/snp_summary',
-                method:'GET',
-                params:condition,
-            }).then(function(response){
-                console.log(response);
-                $scope.initail=0;
-                switch(location){
-                    case 'mirseed':
-                        {
-                            var seed_list=response.data.snp_seed_list;
-                            for(var i=0;i<seed_list.length;i++){
-                                if(Number(seed_list[i].ref_freq)==0.0){seed_list[i].ref_freq=0}
-                                if(Number(seed_list[i].alt_freq)==0.0){seed_list[i].alt_freq=0}
-                                if(seed_list[i].location=='mirseed'){seed_list[i].location="seed";}
-                                if(seed_list[i].gain_count){seed_list[i].gain_count=parseInt(seed_list[i].gain_count).toLocaleString()}
-                                if(seed_list[i].loss_count){seed_list[i].loss_count=parseInt(seed_list[i].loss_count).toLocaleString()}
-                            }
-                            $scope.seed_list=seed_list
-                            //$scope.seed_count=response.data.snp_summary_count;
-                            break;
-                        }
-                    case 'mature':
-                        {
-                            var mature_list=response.data.snp_mature_list;
-                            for(var i=0;i<mature_list.length;i++){
-                                if(Number(mature_list[i].ref_freq)==0.0){mature_list[i].ref_freq=0}
-                                if(Number(mature_list[i].alt_freq)==0.0){mature_list[i].alt_freq=0}
-                            }
-                            $scope.mature_list=mature_list
-                            //$scope.mature_count=response.data.snp_summary_count;
-                            break;
-                        }
-                    case 'pre-miRNA':
-                        {
-                            var premir_list=response.data.snp_premir_list;
-                            for(var i=0;i<premir_list.length;i++){
-                                if(Number(premir_list[i].ref_freq)==0.0){premir_list[i].ref_freq=0}
-                                if(Number(premir_list[i].alt_freq)==0.0){premir_list[i].alt_freq=0}
-                            }
-                            $scope.premir_list=premir_list
-                            //$scope.premir_count=response.data.snp_summary_count;
-                            break;
-                        }
-                    case 'UTR3':
-                        {
-                            var utr3_list=response.data.snp_utr3_list;
-                            for(var i=0;i<utr3_list.length;i++){
-                                if(Number(utr3_list[i].ref_freq)==0.0){utr3_list[i].ref_freq=0}
-                                if(Number(utr3_list[i].alt_freq)==0.0){utr3_list[i].alt_freq=0}
-                                if(utr3_list[i].location=='UTR3'){utr3_list[i].location="3'UTR";}
-                                if(utr3_list[i].gain_count){utr3_list[i].gain_count=parseInt(utr3_list[i].gain_count).toLocaleString()}
-                                if(utr3_list[i].loss_count){utr3_list[i].loss_count=parseInt(utr3_list[i].loss_count).toLocaleString()}
-                            }
-                            $scope.utr3_list=utr3_list
-                            //$scope.utr3_count=response.data.snp_summary_count;
-                            break;
-                        }
-                }
-                //$scope.snp_summary_list=response.data.snp_summary_list;
-                //$scope.snp_summary_count=response.data.snp_summary_count;
-                
-            })*/
             switch(location){
                 case 'mirseed':
                     {
@@ -746,5 +668,5 @@ function SnpSummaryController($scope,$routeParams,$http,$route,miRNASNP3Service)
         $scope.utr3_nonitem=0
     }
     $scope.close_invalid()
-    
+
 }

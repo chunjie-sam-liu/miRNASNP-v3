@@ -35,6 +35,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
     var four=$routeParams.four;
     var five=$routeParams.five;
     var location=$routeParams.location
+    $scope.download=0;
 		
 	$scope.clear=function(){
         $scope.one=0;
@@ -757,22 +758,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         });
       });
 
-   /* $scope.modal_gain_site_utr=function(site){
-        $scope.modal_header="Target gain";
-        $scope.target_gain=1
-        $scope.target_loss=0
-		$scope.modal_site=site;
-        var align6=site.site_info.align6;
-       // if(site.site_info.align_1){
-        //    var distance=Number(site.snp_info.distance_align)+1;
-        //}else{
-            var distance=Number(site.snp_info.distance_align)+3;
-        //}
-		    $scope.align6_pre=align6.substring(0,distance);
-            $scope.align6_letter=align6[distance];
-            $scope.align6_later=align6.substring(distance+1,align6.length);
-        }*/
-
+   
     $scope.modal_gain_site_utr=function(site){
         $scope.modal_header="Target gain"
         $scope.target_gain=1
@@ -936,32 +922,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
             $scope.align7_later=''
         }
     }
-      /*  $scope.modal_loss_site_utr=function(site){
-            $scope.modal_header="Target Loss";
-            $scope.target_loss=1
-            $scope.target_gain=0
-            $scope.modal_site=site;
-            var align6=site.site_info.align6;
-            var align7=site.site_info.align7;
-            //if(site.site_info.align_1){
-            //    var distance=Number(site.snp_info.distance_align)+1;
-            //}else{
-                var distance=Number(site.snp_info.distance_align)+3;
-            //}
-                $scope.align6_pre=align6.substring(0,distance);
-                
-                if(site.utr_info.strand=='-'){
-                    $scope.align6_letter=RULE1[site.snp_info.curalt]
-                }else{
-                    $scope.align6_letter=site.snp_info.curalt;
-                }
-                $scope.align6_later=align6.substring(distance+1,align6.length);
-                $scope.align7_pre=align7.substring(0,distance);
-                $scope.align7_letter='X';
-                $scope.align7_later=align7.substring(distance+1,align7.length);
-            }*/
-    
-
+      
 
     $scope.fetch_snv_utr_loss=function(page){
         $http({
@@ -1337,7 +1298,7 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
                 df_content[i]['mirna_expression_mean'] = content[i]['mirna_expression'][0]['exp_mean']
 
             }else{
-                df_content[i]['mrina_expression_mean'] = 'null'
+                df_content[i]['mirna_expression_mean'] = 'null'
             }
             if(content[i]['corelation_detail']&&content[i]['corelation_detail'].length>0){
                 df_content[i]['correlation'] = content[i]['corelation_detail'][0]
@@ -1364,5 +1325,168 @@ function SnpController($scope,$routeParams,$http,$filter,miRNASNP3Service,) {
         document.body.removeChild(eleLink);
     }
 
+    $scope.downFile_target_gain_full=function(filename){
+        console.log("fetch_target_gain_full");
+        $scope.download=1;
+        var flag=0;
+        var query_gene_gain = $.trim($('#search_gene').val());
+        console.log(query_gene_gain)
+        if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_gain)) {
+            alert("Invalid input");
+            flag = 1;
+            history.back();
+        }
+        if(flag==0){
+    	$http({
+            //url:base_url+base_url+'/api/snp_seed_gain',
+            url:base_url+'/api/snp_seed_gain_full',
+			method: 'GET',
+			params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
+            }).then(
+                function (response) {
+                    console.log("Download full file")
+                    console.log(response)
+                    $scope.download=0;
+                    $scope.snp_seed_gain_full_list=response.data.snp_seed_gain_list
+                    $scope.snp_seed_gain_count=response.data.snp_seed_gain_count
+                    var content=$scope.snp_seed_gain_full_list
+                    var eleLink = document.createElement('a');
+                    eleLink.download = filename;
+                    eleLink.style.display = 'none';
+                    var df_content=[]
+                    for (var i=0;i<content.length;i++){
+                        df_content[i]={}
+                        df_content[i]['mirna_id'] = content[i]['mirna_id']
+                        df_content[i]['gene_symbol'] = content[i]['gene_symbol']
+                        df_content[i]['snp_id'] = content[i]['snp_id']
+                        df_content[i]['gene_acc'] = content[i]['utr_info']['acc']
+                        df_content[i]['snp_chromosome'] = content[i]['snp_info']['chr']
+                        df_content[i]['snp_position'] = content[i]['snp_info']['position']
+                        df_content[i]['snp_ref'] = content[i]['snp_info']['ref']
+                        if(content[i]['snp_info']['curalt']){
+                            df_content[i]['snp_alt'] = content[i]['snp_info']['curalt']
+                        }else{
+                            df_content[i]['snp_alt'] = content[i]['snp_info']['alt']
+                        }
+                        if(content[i]['gene_expression'].length>0){
+                            df_content[i]['gene_expression_mean'] = content[i]['gene_expression'][0]['exp_mean']
+
+                        }else{
+                            df_content[i]['gene_expression_mean'] = 'null'
+                        }
+                        if(content[i]['mirna_expression'].length>0){
+                            df_content[i]['mirna_expression_mean'] = content[i]['mirna_expression'][0]['exp_mean']
+
+                        }else{
+                            df_content[i]['mirna_expression_mean'] = 'null'
+                        }
+                        if(content[i]['corelation_detail']&&content[i]['corelation_detail'].length>0){
+                            df_content[i]['correlation'] = content[i]['corelation_detail'][0]
+                        }
+                        df_content[i]['mirmap_start'] = content[i]['site_info']['mm_start']
+                        df_content[i]['mirmap_end'] = content[i]['site_info']['mm_end']
+                        df_content[i]['tgs_start'] = content[i]['site_info']['tgs_start']
+                        df_content[i]['tgs_end'] = content[i]['site_info']['tgs_end']
+                        df_content[i]['mm_dg_duplex'] = content[i]['site_info']['dg_duplex']
+                        df_content[i]['mm_dg_binding'] = content[i]['site_info']['dg_binding']
+                        df_content[i]['mm_dg_open'] = content[i]['site_info']['dg_open']
+                        df_content[i]['mm_tgs_score'] = content[i]['site_info']['tgs_score']
+                        df_content[i]['mm_tgs_au'] = content[i]['site_info']['tgs_au']
+                        df_content[i]['prob_exac'] = content[i]['site_info']['prob_exac']
+                    }
+                    // 字符内容转变成blob地址
+                    //var blob = new Blob(content);
+                    var blob = new Blob([JSON.stringify(df_content, null, 2)], {type : 'text/plain'});
+                    eleLink.href = URL.createObjectURL(blob);
+                    // 触发点击
+                    document.body.appendChild(eleLink);
+                    eleLink.click();
+                    // 然后移除
+                    document.body.removeChild(eleLink);
+                })
+            }
+        }
     
+    $scope.downFile_target_loss_full=function(filename){
+        $scope.download=1;
+        console.log("fetch_target_loss_full");
+        var flag=0;
+        var query_gene_gain = $.trim($('#search_gene').val());
+        console.log(query_gene_gain)
+        if (/[@#\$%\^&\*<>\.\\\/\(\)]+/g.test(query_gene_gain)) {
+            alert("Invalid input");
+            flag = 1;
+            history.back();
+        }
+        if(flag==0){
+        $http({
+            //url:base_url+base_url+'/api/snp_seed_gain',
+            url:base_url+'/api/snp_seed_loss_full',
+            method: 'GET',
+            params: {snp_id: $scope.query_snp,page:page,gene:query_gene_gain}
+            }).then(
+                function (response) {
+                    console.log("Download full file")
+                    $scope.download=0
+                    console.log(response)
+                    $scope.snp_seed_loss_full_list=response.data.snp_seed_loss_list
+                    $scope.snp_seed_loss_count=response.data.snp_seed_loss_count
+                    var content=$scope.snp_seed_loss_full_list
+                    var eleLink = document.createElement('a');
+                    eleLink.download = filename;
+                    eleLink.style.display = 'none';
+                    var df_content=[]
+                    for (var i=0;i<content.length;i++){
+                        df_content[i]={}
+                        df_content[i]['mirna_id'] = content[i]['mirna_id']
+                        df_content[i]['gene_symbol'] = content[i]['gene_symbol']
+                        df_content[i]['snp_id'] = content[i]['snp_id']
+                        df_content[i]['gene_acc'] = content[i]['utr_info']['acc']
+                        df_content[i]['snp_chromosome'] = content[i]['snp_info']['chr']
+                        df_content[i]['snp_position'] = content[i]['snp_info']['position']
+                        df_content[i]['snp_ref'] = content[i]['snp_info']['ref']
+                        if(content[i]['snp_info']['curalt']){
+                            df_content[i]['snp_alt'] = content[i]['snp_info']['curalt']
+                        }else{
+                            df_content[i]['snp_alt'] = content[i]['snp_info']['alt']
+                        }
+                        if(content[i]['gene_expression'].length>0){
+                            df_content[i]['gene_expression_mean'] = content[i]['gene_expression'][0]['exp_mean']
+
+                        }else{
+                            df_content[i]['gene_expression_mean'] = 'null'
+                        }
+                        if(content[i]['mirna_expression'].length>0){
+                            df_content[i]['mirna_expression_mean'] = content[i]['mirna_expression'][0]['exp_mean']
+
+                        }else{
+                            df_content[i]['mirna_expression_mean'] = 'null'
+                        }
+                        if(content[i]['corelation_detail']&&content[i]['corelation_detail'].length>0){
+                            df_content[i]['correlation'] = content[i]['corelation_detail'][0]
+                        }
+                        df_content[i]['mirmap_start'] = content[i]['site_info']['mm_start']
+                        df_content[i]['mirmap_end'] = content[i]['site_info']['mm_end']
+                        df_content[i]['tgs_start'] = content[i]['site_info']['tgs_start']
+                        df_content[i]['tgs_end'] = content[i]['site_info']['tgs_end']
+                        df_content[i]['mm_dg_duplex'] = content[i]['site_info']['dg_duplex']
+                        df_content[i]['mm_dg_binding'] = content[i]['site_info']['dg_binding']
+                        df_content[i]['mm_dg_open'] = content[i]['site_info']['dg_open']
+                        df_content[i]['mm_tgs_score'] = content[i]['site_info']['tgs_score']
+                        df_content[i]['mm_tgs_au'] = content[i]['site_info']['tgs_au']
+                        df_content[i]['prob_exac'] = content[i]['site_info']['prob_exac']
+                    }
+                    // 字符内容转变成blob地址
+                    //var blob = new Blob(content);
+                    var blob = new Blob([JSON.stringify(df_content, null, 2)], {type : 'text/plain'});
+                        eleLink.href = URL.createObjectURL(blob);
+                    
+                    // 触发点击
+                    document.body.appendChild(eleLink);
+                    eleLink.click();
+                    // 然后移除
+                    document.body.removeChild(eleLink);
+                })
+            }
+        }
 }

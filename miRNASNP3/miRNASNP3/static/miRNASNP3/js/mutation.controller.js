@@ -117,8 +117,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         if (flag == 0) {
             $http({
-                //!apache_url!//url:base_url+base_url+'/api/mut_seed_gain',
-                url:base_url+ '/api/mut_seed_gain',
+                //!apache_url!//url:base_url+base_url+base_url+'/api/mut_seed_gain',
+                url:base_url+'/api/mut_seed_gain',
                 method: 'GET',
                 params: { mut_id: $scope.query_mutation, page: page, gene: query_gene_gain }
             }).then(
@@ -162,8 +162,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             if (flag == 0) {
                 console.log(query_gene_gain)
                 $http({
-                    //!apache_url!//url:base_url+base_url+'/api/mut_seed_gain',
-                    url:base_url+ '/api/mut_seed_gain',
+                    //!apache_url!//url:base_url+base_url+base_url+'/api/mut_seed_gain',
+                    url:base_url+'/api/mut_seed_gain',
                     method: 'GET',
                     params: { mut_id: $scope.query_mutation, page: page, gene: query_gene_gain }
                 }).then(
@@ -204,8 +204,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         if (flag == 0) {
             $http({
-                //!apache_url!//url:base_url+base_url+'/api/mut_seed_loss',
-                url:base_url+ '/api/mut_seed_loss',
+                //!apache_url!//url:base_url+base_url+base_url+'/api/mut_seed_loss',
+                url:base_url+'/api/mut_seed_loss',
                 method: 'GET',
                 params: { mut_id: $scope.query_mutation, page: page, gene: query_gene_loss }
             }).then(
@@ -256,8 +256,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             if (flag == 0) {
                 console.log(query_gene_loss)
                 $http({
-                    //url:base_url+base_url+'/api/mut_seed_loss',
-                    url:base_url+ '/api/mut_seed_loss',
+                    //url:base_url+base_url+base_url+'/api/mut_seed_loss',
+                    url:base_url+'/api/mut_seed_loss',
                     method: 'GET',
                     params: { mut_id: $scope.query_mutation, page: page, gene: query_gene_loss }
                 }).then(
@@ -300,8 +300,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
 
     $scope.fetch_utr_gain_mut = function (page) {
         $http({
-            //url:base_url+base_url+'/api/mut_utr_gain',
-            url:base_url+ '/api/mut_utr_gain',
+            //url:base_url+base_url+base_url+'/api/mut_utr_gain',
+            url:base_url+'/api/mut_utr_gain',
             method: 'GET',
             params: { mut_id: $scope.query_mutation, page: page }
         }).then(function (response) {
@@ -330,8 +330,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
 
     $scope.fetch_utr_loss_mut = function (page) {
         $http({
-            //url:base_url+base_url+'/api/mut_utr_loss',
-            url:base_url+ '/api/mut_utr_loss',
+            //url:base_url+base_url+base_url+'/api/mut_utr_loss',
+            url:base_url+'/api/mut_utr_loss',
             method: 'GET',
             params: { mut_id: $scope.query_mutation, page: page }
         }).then(function (response) {
@@ -379,8 +379,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         if (flag == 0) {
             $http({
-                //url:base_url+base_url+'/api/snp_seed_gain',
-                url:base_url+ '/api/snp_seed_gain',
+                //url:base_url+base_url+base_url+'/api/snp_seed_gain',
+                url:base_url+'/api/snp_seed_gain',
                 method: 'GET',
                 params: { snp_id: $scope.query_snp, page: page, gene: query_gene_gain }
             }).then(
@@ -430,8 +430,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             if (flag == 0) {
                 console.log(query_gene_gain)
                 $http({
-                    //url:base_url+base_url+'/api/snp_seed_gain',
-                    url:base_url+ '/api/snp_seed_gain',
+                    //url:base_url+base_url+base_url+'/api/snp_seed_gain',
+                    url:base_url+'/api/snp_seed_gain',
                     method: 'GET',
                     params: { snp_id: $scope.query_snp, page: page, gene: query_gene_gain }
                 }).then(
@@ -478,8 +478,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
         }
         if (flag == 0) {
             $http({
-                //url:base_url+base_url+'/api/snp_seed_loss',
-                url:base_url+ '/api/snp_seed_loss',
+                //url:base_url+base_url+base_url+'/api/snp_seed_loss',
+                url:base_url+'/api/snp_seed_loss',
                 method: 'GET',
                 params: { snp_id: $scope.query_snp, page: page, gene: query_gene_loss }
             }).then(
@@ -530,8 +530,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             if (flag == 0) {
                 console.log(query_gene_loss)
                 $http({
-                    //url:base_url+base_url+'/api/snp_seed_loss',
-                    url:base_url+ '/api/snp_seed_loss',
+                    //url:base_url+base_url+base_url+'/api/snp_seed_loss',
+                    url:base_url+'/api/snp_seed_loss',
                     method: 'GET',
                     params: { snp_id: $scope.query_snp, page: page, gene: query_gene_loss }
                 }).then(
@@ -570,8 +570,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
 
     $scope.fetch_snv_utr_loss = function (page) {
         $http({
-            //url:base_url+base_url+'/api/snv_utr_loss',
-            url:base_url+ '/api/snv_utr_loss',
+            //url:base_url+base_url+base_url+'/api/snv_utr_loss',
+            url:base_url+'/api/snv_utr_loss',
             method: 'Get',
             params: { snp_id: $scope.query_snp, page: page }
         }).then(function (response) {
@@ -608,8 +608,8 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
 
     $scope.fetch_snv_utr_gain = function (page) {
         $http({
-            //url:base_url+base_url+'/api/snv_utr_gain',
-            url:base_url+ '/api/snv_utr_gain',
+            //url:base_url+base_url+base_url+'/api/snv_utr_gain',
+            url:base_url+'/api/snv_utr_gain',
             method: 'GET',
             params: { snp_id: $scope.query_snp, page: page }
         }).then(function (response) {
@@ -1595,7 +1595,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             case "Seed":
                 {
                     $http({
-                        url:base_url+ '/api/mutation_summary_seed',
+                        url:base_url+'/api/mutation_summary_seed',
                         method: 'GET',
                         params: { mut_id: $scope.query_mutation }
                     }).then(function (response) {
@@ -1634,7 +1634,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             /*case 'pre-miRNA':
                 {
                     $http({
-                        url:base_url+'/api/mutation_summary_premir',
+                        url:base_url+base_url+'/api/mutation_summary_premir',
                         method:'GET',
                         params:{mut_id:$scope.query_mutation}
                     }).then(function(response){
@@ -1662,7 +1662,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
             case "3'UTR":
                 {
                     $http({
-                        url:base_url+ '/api/mutation_summary_utr3',
+                        url:base_url+'/api/mutation_summary_utr3',
                         method: 'GET',
                         params: { mut_id: $scope.query_mutation }
                     }).then(function (response) {
@@ -1702,7 +1702,7 @@ function MutationController($scope, $routeParams, $http, miRNASNP3Service) {
                 case "UTR3":
                     {
                         $http({
-                            url:base_url+ '/api/mutation_summary_utr3',
+                            url:base_url+'/api/mutation_summary_utr3',
                             method: 'GET',
                             params: { mut_id: $scope.query_mutation }
                         }).then(function (response) {

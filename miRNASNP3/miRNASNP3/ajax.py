@@ -165,23 +165,73 @@ gainsite_info = {
     "mirna_expression": fields.Nested(mirna_expression),
     "cor_key": fields.String,
 }
-"""
-group_count={
-    '_id':fields.String,
-    'count':fields.Integer
-}
 
-gainsite_info_group={
-    '_id':fields.Nested(gainsite_info),
-    'count':fields.Integer,
-    'ref_seq':fields.Nested(fields.String)
-}
-"""
 snp_seed_gain = {
     "snp_seed_gain_list": fields.Nested(gainsite_info),
     "snp_seed_gain_count": fields.Integer,
 }
 
+class SnpSeedGainFull(Resource):
+    @marshal_with(snp_seed_gain)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("snp_id", type=str)
+        parser.add_argument("mirna_id")
+        parser.add_argument("gene")
+        parser.add_argument("page", type=int, default=1)
+        args = parser.parse_args()
+        print(args["mirna_id"])
+        page = args["page"]
+        #per_page = 15
+        #record_skip = (int(page) - 1) * per_page
+        condition = {}
+        pipline = []
+        print(args["mirna_id"])
+        if args["snp_id"]:
+            condition["snp_id"] = args["snp_id"]
+        if args["mirna_id"]:
+            condition["mirna_id"] = args["mirna_id"]
+        if args["gene"]:
+            condition["gene_symbol"] = {"$regex": args["gene"], "$options": "$i"}
+        
+        lookup_gene = {
+            "$lookup": {
+                "from": "gene_expression",
+                "localField": "gene_symbol",
+                "foreignField": "symbol",
+                "as": "gene_expression",
+            }
+        }
+        lookup_mirna = {
+            "$lookup": {
+                "from": "mirna_expression",
+                "localField": "mirna_id",
+                "foreignField": "mir_id",
+                "as": "mirna_expression",
+            }
+        }
+        match = {"$match": condition}
+        group_count = {"$group": {"_id": "null", "count": {"$sum": 1}}}
+    
+        print(pipline)
+        per_page = 15
+        limit = {"$limit": per_page}
+        pipline = [match,limit,lookup_gene, lookup_mirna]
+
+        snp_seed4666_gain_count = mongo.db.seed_gain_4666_redundancy.find(condition).count()
+        snp_indel_gain_count = mongo.db.seed_gain_addindel_redundancy.find(condition).count()
+        snp_seed_gain_count = snp_seed4666_gain_count + snp_indel_gain_count
+        # snp_seed_gain_count=[]
+        snp_seed4666_gain_list = mongo.db.seed_gain_4666_redundancy.aggregate(pipline)
+        indel_seed_gain_list = mongo.db.seed_gain_addindel_redundancy.aggregate(pipline)
+        
+        snp_seed_gain_list = list(snp_seed4666_gain_list) + list(indel_seed_gain_list)
+        return {
+            "snp_seed_gain_list": list(snp_seed_gain_list),
+            "snp_seed_gain_count": snp_seed_gain_count,
+        }
+
+api.add_resource(SnpSeedGainFull, "/api/snp_seed_gain_full")
 
 class SnpSeedGain(Resource):
     @marshal_with(snp_seed_gain)
@@ -205,58 +255,7 @@ class SnpSeedGain(Resource):
             condition["mirna_id"] = args["mirna_id"]
         if args["gene"]:
             condition["gene_symbol"] = {"$regex": args["gene"], "$options": "$i"}
-        """
-        group_by={'$group':{
-            "_id":{
-                "site_info" : {
-                "align_1" :'$site_info.align_1',
-                "prob_exac" :"$site_info.prob_exac",
-                "mm_start" : "$site_info.mm_start",
-                "tgs_score" : "$site_info.tgs_score",
-                "align_4" : "$site_info.align_4",
-                "dg_binding" : "$site_info.dg_binding",
-                "chrome" : "$site_info.chrome",
-                "align7" : "$site_info.align7",
-                "dg_duplex" : "$site_info.dg_duplex",
-                "tgs_end" : "$site_info.tgs_end",
-                "dg_open" : "$site_info.dg_open",
-                "align8" : "$site_info.align8",
-                "align_2" : "$site_info.align_2",
-                "tgs_au" : "$site_info.tgs_au",
-                "mm_end" : "$site_info.mm_end",
-                "align_5" : "$site_info.align_5",
-                "tgs_start" : "$site_info.tgs_start",
-                "align_3" : "$site_info.align_3",
-                "align6" : "$site_info.align6"
-                },
-                "cor_key":"$cor_key",
-                "snp_info":{
-                    "distance":"$snp_info.distance",
-                    "curalt":"$snp_info.curalt",
-                    "chr":"$snp_info.chr",
-                    "position":"$snp_info.position",
-                    "snp_id":"$snp_info.snp_id",
-                    "alt":"$snp_info.alt",
-                    "ref":"$snp_info.ref"
-                },
-                "mirna_id":"$mirna_id",
-                "gene_symbol":"$gene_symbol",
-                "utr_info":{
-                    "position":"$utr_info.position",
-                    "enst_id":"$utr_info.enst_id",
-                    "gene_symbol":"$utr_info.gene_symbol"
-                },
-                "snp_id":"$snp_id",
-                "mir_seedstart":"$mir_seedstart",
-                "mir_seedend":"$mir_seedend",
-                "mir_seedchr":"$mir_seedchr",
-                "strand":"$strand"
-        },
-        "count":{'$sum':1},
-        'ref_seq':{'$push':'$utr_info.acc'}
-            }
-        }
-        """
+        
         lookup_gene = {
             "$lookup": {
                 "from": "gene_expression",
@@ -407,6 +406,75 @@ snp_seed_loss_list = {
     "snp_seed_loss_count": fields.Integer,
 }
 
+class SnpSeedLossFull(Resource):
+    @marshal_with(snp_seed_loss_list)
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("snp_id", type=str)
+        parser.add_argument("mirna_id")
+        parser.add_argument("gene")
+        parser.add_argument("page", type=int, default=1)
+        args = parser.parse_args()
+        page = args["page"]
+        condition = {}
+        print(args["mirna_id"])
+        if args["snp_id"]:
+            condition["snp_id"] = args["snp_id"]
+        if args["mirna_id"]:
+            condition["mirna_id"] = args["mirna_id"]
+        if args["gene"]:
+            condition["gene_symbol"] = {"$regex": args["gene"], "$options": "$i"}
+        lookup_gene = {
+            "$lookup": {
+                "from": "gene_expression",
+                "localField": "gene_symbol",
+                "foreignField": "symbol",
+                "as": "gene_expression",
+            }
+        }
+        lookup_mirna = {
+            "$lookup": {
+                "from": "mirna_expression",
+                "localField": "mirna_id",
+                "foreignField": "mir_id",
+                "as": "mirna_expression",
+            }
+        }
+        lookup_corelation = {
+            "$lookup": {
+                "from": "corelation_cancer_detail",
+                "localField": "cor_key",
+                "foreignField": "mir_gene",
+                "as": "corelation_detail",
+            }
+        }
+        match = {"$match": condition}
+        
+        pipline = [match, lookup_gene, lookup_mirna, lookup_corelation]
+        snp_seed4666_loss_count = mongo.db.seed_loss_4666_redundancy.find(
+            condition
+        ).count()
+        snp_indel_loss_count = mongo.db.seed_loss_addindel_redundancy.find(
+            condition
+        ).count()
+        snp_seed_loss_count = snp_seed4666_loss_count + snp_indel_loss_count
+        
+        snp_seed4666_loss_list = mongo.db.seed_loss_4666_redundancy.aggregate(
+                pipline
+            )
+        indel_seed_loss_list = mongo.db.seed_loss_addindel_redundancy.aggregate(
+                pipline
+            )
+        snp_seed_loss_list = list(snp_seed4666_loss_list) + list(indel_seed_loss_list)
+
+        
+        return {
+            "snp_seed_loss_list": list(snp_seed_loss_list),
+            "snp_seed_loss_count": snp_seed_loss_count,
+        }
+
+
+api.add_resource(SnpSeedLossFull, "/api/snp_seed_loss_full")
 
 class SnpSeedLoss(Resource):
     @marshal_with(snp_seed_loss_list)
